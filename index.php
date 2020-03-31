@@ -11,7 +11,7 @@
   </head>
   <body>
     <img id="albumArt" src="imgs/TTWW_POSTER.jpg" alt="To Those Who Wait Cover Art">
-    <audio class="media" src="audio/TTWW_TEST_MASTER_10.wav" controls>
+    <audio id="ttwwAudioFile" src="audio/TTWW_TEST_MASTER_10.wav" controls>
 
     </audio>
   </body>
