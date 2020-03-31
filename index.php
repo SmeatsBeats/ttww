@@ -4,6 +4,10 @@
   <head>
     <meta charset="utf-8">
     <title>To Those Who Wait</title>
+    <link rel="stylesheet" href="css/ttww.css"type="text/css">
+    <script type="text/javascript" src="js/ttww.js">
+
+    </script>
   </head>
   <body>
     <img src="imgs/TTWW_POSTER.jpg" alt="To Those Who Wait Cover Art">
