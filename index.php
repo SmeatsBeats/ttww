@@ -6,6 +6,7 @@
     <title>To Those Who Wait</title>
   </head>
   <body>
+    <img src="imgs/TTWW_POSTER.jpg" alt="To Those Who Wait Cover Art">
     <audio src="audio/TTWW_TEST_MASTER_10.wav" controls>
 
     </audio>
