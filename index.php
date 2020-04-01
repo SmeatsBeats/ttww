@@ -10,9 +10,15 @@
     </script>
   </head>
   <body>
-    <img id="albumArt" src="imgs/TTWW_POSTER.jpg" alt="To Those Who Wait Cover Art">
-    <audio id="ttwwAudioFile" src="audio/TTWW_TEST_MASTER_10.wav" controls>
 
-    </audio>
+    <section id="audioPlayer">
+      <div class="art">
+          <img id="albumArt" src="imgs/TTWW_POSTER.jpg" alt="To Those Who Wait Cover Art">
+      </div>
+      <div class="audio">
+          <audio id="ttwwAudioFile" src="audio/TTWW_TEST_MASTER_10.wav" controls></audio>
+      </div>
+    </section>
+
   </body>
 </html>
