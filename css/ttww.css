@@ -1,0 +1,14 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: auto;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+}
+#albumArt {
+  width: auto;
+  transform: rotate(270deg);
+}
