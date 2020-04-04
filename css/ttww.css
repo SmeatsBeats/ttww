@@ -7,14 +7,15 @@ html {
   background-size: cover;
 }
 */
-* {
+
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
 }
-html, body {
-  height: 100%;
-}
 #audioPlayer {
+  margin: 0;
+  padding: 0;
   width: auto;
   display: flex;
   flex-flow: column nowrap;
