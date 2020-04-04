@@ -11,7 +11,9 @@
   <body>
 
     <section id="audioPlayer">
-      <!-- this is my fantastic slideshow -->
+
+      <!-- this is my beautiful slideshow -->
+
       <div class="art">
           <img id="albumArt" src="imgs/TTWW_POSTER.jpg" alt="To Those Who Wait Cover Art">
       </div>
