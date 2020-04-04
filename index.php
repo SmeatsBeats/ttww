@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -12,6 +11,7 @@
   <body>
 
     <section id="audioPlayer">
+      <!-- this is my beautiful slideshow -->
       <div class="art">
           <img id="albumArt" src="imgs/TTWW_POSTER.jpg" alt="To Those Who Wait Cover Art">
       </div>
@@ -19,6 +19,7 @@
           <audio id="ttwwAudioFile" src="audio/TTWW_TEST_MASTER_10.wav" controls></audio>
       </div>
     </section>
+
     <section id="content">
       <h1>To Those Who Wait</h1>
       <p>What began as an exercise to ease cognitive disonance,
