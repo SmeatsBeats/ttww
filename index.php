@@ -72,7 +72,7 @@
         I probably really began to appreciate it around midterms. <br>
         A time when you're forced to question the loyalty of your own two feet. <br>
         "You can turn around," I remind myself. <br>
-        "You are a grown-ass man and can walk striaght out of here." <br>
+        "You are a grown-ass man and can walk straight out of here." <br>
         "Wait" suggests the light. <br>
         The traitors comply. <br><br>
         So that's how it's going to be.
