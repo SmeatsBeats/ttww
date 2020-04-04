@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -12,6 +11,9 @@
   <body>
 
     <section id="audioPlayer">
+
+      <!-- this is my beautiful slideshow -->
+
       <div class="art">
           <img id="albumArt" src="imgs/TTWW_POSTER.jpg" alt="To Those Who Wait Cover Art">
       </div>
@@ -19,6 +21,7 @@
           <audio id="ttwwAudioFile" src="audio/TTWW_TEST_MASTER_10.wav" controls></audio>
       </div>
     </section>
+
     <section id="content">
       <h1>To Those Who Wait</h1>
       <p>What began as an exercise to ease cognitive disonance,
@@ -72,7 +75,7 @@
         I probably really began to appreciate it around midterms. <br>
         A time when you're forced to question the loyalty of your own two feet. <br>
         "You can turn around," I remind myself. <br>
-        "You are a grown-ass man and can walk striaght out of here." <br>
+        "You are a grown-ass man and can walk straight out of here." <br>
         "Wait" suggests the light. <br>
         The traitors comply. <br><br>
         So that's how it's going to be.
