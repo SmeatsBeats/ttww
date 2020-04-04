@@ -29,9 +29,11 @@ html, body {
 }
 /* add content styles */
 #content {
+/*
   display: flex;
-  flex-flow: column no wrap;
+  flex-flow: column nowrap;
   align-items: center;
   font-family: 'Titillium Web', sans-serif;
-  color: green; 
+  */
+  color: green;
 }
