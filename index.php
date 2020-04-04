@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>To Those Who Wait</title>
     <link rel="stylesheet" href="css/ttww.css"type="text/css">
-    <script type="text/javascript" src="js/ttww.js">
-
-    </script>
+    <script type="text/javascript" src="js/ttww.js"></script>
+    <!--google fonts to include -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
   </head>
   <body>
 
@@ -23,7 +23,7 @@
     </section>
 
     <section id="content">
-      <h1>To Those Who Wait</h1>
+      <img src="imgs/TTWW_TITLE.jpg" alt="To Those Who Wait">
       <p>What began as an exercise to ease cognitive disonance,
          somehow took on a life of its own, becoming an earnest
          attempt to shed light on <em>Waiting</em> as a Mode of Being.
