@@ -12,7 +12,14 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  opacity: 1;
+  transition: 2.5s;
 }
+body.fade{
+  opacity: 0;
+  transition: none;
+}
+
 #audioPlayer {
   margin: 0;
   padding: 0;

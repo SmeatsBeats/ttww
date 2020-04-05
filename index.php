@@ -4,11 +4,17 @@
     <meta charset="utf-8">
     <title>To Those Who Wait</title>
     <link rel="stylesheet" href="css/ttww.css"type="text/css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
     <script type="text/javascript" src="js/ttww.js">
 
     </script>
+
   </head>
   <body>
+    <script>
+      document.body.className = 'fade';
+    </script>
 
     <section id="audioPlayer">
 
@@ -21,6 +27,13 @@
           <audio id="ttwwAudioFile" src="audio/TTWW_TEST_MASTER_10.wav" controls></audio>
       </div>
     </section>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function(e) {
+        document.body.className = '';
+      });
+    </script>
+
 
     <section id="content">
       <h1>To Those Who Wait</h1>
