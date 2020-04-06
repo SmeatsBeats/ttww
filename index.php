@@ -5,13 +5,31 @@
   <head>
     <meta charset="utf-8">
     <title>To Those Who Wait</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="css/ttww.css?v=11.2" type="text/css">
     <script type="text/javascript" src="js/ttww.js"></script>
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
+||||||| merged common ancestors
+    <link rel="stylesheet" href="css/ttww.css"type="text/css">
+    <script type="text/javascript" src="js/ttww.js">
+
+    </script>
+=======
+    <link rel="stylesheet" href="css/ttww.css"type="text/css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="js/ttww.js">
+
+    </script>
+
+>>>>>>> 01f4413c674b0bddae4ebe43be971f11610d5a87
   </head>
 
   <body>
+    <script>
+      document.body.className = 'fade';
+    </script>
 
     <section id="audioPlayer">
 
@@ -31,6 +49,7 @@
 
     </section>
 
+<<<<<<< HEAD
     <section class="content">
       <!--header title image -->
       <div id="content_head_container">
@@ -161,6 +180,38 @@
           I thought I had left it far enough in the past. <br>
           Apparently that is no way to think about it. <br>
           Though my feet, still ashamed, managed to resist his commanding tone this time around, my hand faltered. <br>
+||||||| merged common ancestors
+    <section id="content">
+      <h1>To Those Who Wait</h1>
+      <p>What began as an exercise to ease cognitive disonance,
+         somehow took on a life of its own, becoming an earnest
+         attempt to shed light on <em>Waiting</em> as a Mode of Being.
+      </p>
+      <h2>Easier Said Than Sung</h2>
+      <p>
+        As a sound engineer with serious difficulties keeping my opinions to myself,
+        I needed to establish some authority on the basis of which to justify shoving my opinions
+        into the faces of actual recording artists. <br><br>
+=======
+    <script>
+      document.addEventListener("DOMContentLoaded", function(e) {
+        document.body.className = '';
+      });
+    </script>
+
+
+    <section id="content">
+      <h1>To Those Who Wait</h1>
+      <p>What began as an exercise to ease cognitive disonance,
+         somehow took on a life of its own, becoming an earnest
+         attempt to shed light on <em>Waiting</em> as a Mode of Being.
+      </p>
+      <h2>Easier Said Than Sung</h2>
+      <p>
+        As a sound engineer with serious difficulties keeping my opinions to myself,
+        I needed to establish some authority on the basis of which to justify shoving my opinions
+        into the faces of actual recording artists. <br><br>
+>>>>>>> 01f4413c674b0bddae4ebe43be971f11610d5a87
         <!--
           I scraped together the lyrics of the first track from some notes I had scrawled down my second week at school. <br>
           At the time, they seemed to fit the tone, so I went with it. <br>
