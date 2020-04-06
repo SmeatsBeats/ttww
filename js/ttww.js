@@ -1,3 +1,4 @@
+
 //Global variables
 var playing = false;
 
@@ -18,8 +19,15 @@ var audioControl = function () {
 	}
 }
 
+// //Image color fades in 
+// function imageFader() {
+// 	$("albumArt").fade;
+// 	alert("test");
+// }
+
 //Window onload function
 window.onload = function () {
+	//imageFader();
 	$("albumArt").onclick = audioControl;
 }
 
