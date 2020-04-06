@@ -1,24 +1,16 @@
-/*
-html {
-  background: url(../imgs/TTWW_POSTER.jpg) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
-*/
-
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 #audioPlayer {
-  margin: 0;
-  padding: 0;
   width: auto;
   display: flex;
   flex-flow: column nowrap;
+}
+.art {
+  position: fixed;
+  z-index: -1;
 }
 #audioPlayer > div {
   display: flex;
@@ -26,14 +18,101 @@ html, body {
 #albumArt {
   width: 100%;
   height: 100vh;
+  /* hi there */
 }
-/* add content styles */
-#content {
-/*
+.audio {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+}
+#ttwwAudioFile {
+  width: 100vw;
+}
+
+/************ add content styles *******/
+.content {
+  position: relative;
+  top: 100vh;
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  background-color: white;
+}
+#content_head_container {
+  flex-basis: 100%;
+  background-color: white;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  font-family: 'Titillium Web', sans-serif;
+}
+.content_img, .about {
+  flex: 1 1 50%;
+}
+.about {
+  /*
+  background-color: white;
   */
-  color: green;
+  text-align: center;
+  font-family: 'Titillium Web', sans-serif;
+  font-size: x-large;
+}
+.about > p {
+  padding: 5%;
+}
+/* establish order for flex elements in the about section. consider doing this randomly for extra credit */
+#intro {
+  flex: 1 1 100%;
+  order: 1;
+}
+#easier_said {
+  order: 3;
+}
+#easier_said_2 {
+  order: 4;
+}
+#ancient_traces {
+  order: 7;
+}
+#ancient_traces_2 {
+  order: 8;
+}
+#betrayal {
+  order: 11;
+}
+#two_birds {
+  order: 12;
+}
+#defeat {
+  order: 14;
+}
+#conclusion {
+  order: 16;
+  flex: 1 1 100%;
+}
+/* flex order for imgs */
+#clock_1 {
+  order: 5;
+}
+
+#cello_1 {
+  order: 17;
+}
+#cello_2 {
+  order: 10;
+}
+#cello_3 {
+  order: 6;
+}
+#hand_1 {
+  order: 9;
+}
+#rope_1 {
+  order: 13;
+}
+#young_pull{
+  order: 15;
+}
+#old_pull {
+  order: 2;
 }
