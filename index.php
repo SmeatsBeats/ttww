@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=11.8" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=11.9" type="text/css">
     <script type="text/javascript" src="js/ttww.js"></script>
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
 
           <img id="albumArt"
             srcset="imgs/TTWW_POSTER_HALF.jpg 1273w, imgs/TTWW_POSTER.jpg 2837w"
-            sizes="100vw" 
+            sizes="100vw"
             alt="To Those Who Wait Cover Art">
 
       </div>
