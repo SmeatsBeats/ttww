@@ -7,11 +7,12 @@ html, body {
   width: auto;
   display: flex;
   flex-flow: column nowrap;
-  background-color: black; 
+  background-color: black;
 }
 .art {
   position: fixed;
   z-index: -1;
+  background-color: black; 
 }
 #audioPlayer > div {
   display: flex;
