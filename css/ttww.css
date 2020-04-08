@@ -161,6 +161,9 @@ body {
   }
 }
 /** hide content section to start work on credits **/
-.content {
+/* .content {
   display: none;
+} */
+.credits {
+  display: none; 
 }
