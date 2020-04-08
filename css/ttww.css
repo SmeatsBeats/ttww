@@ -4,15 +4,11 @@ html, body {
   padding: 0;
   width: 100%;
   display: flex;
-}
-html {
-  width: 100%;
   flex-flow: column nowrap;
   justify-content: flex-start;
 }
 body {
   flex: 1 1 100%;
-  flex-flow: column nowrap;
   justify-content: flex-start;
   /*this keeps the right edge of the poster picture visible */
   align-items: flex-end;
