@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=29.3" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=33.4" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
     <!--google fonts to include -->
@@ -33,18 +33,20 @@
 
       <!--header title image -->
 
-      <div id="content_head_container">
+      <div class="about" id="content_head_container">
 
         <img id="content_head" src="imgs/TTWW_TITLE.jpg" alt="To Those Who Wait">
 
       </div>
 
       <div class="about" id="about_intro">
+
         <p>
           What began as an exercise to ease cognitive disonance,
           somehow took on a life of its own, becoming an earnest
           attempt to shed light on <em>Waiting</em> as a Mode of Being.
         </p>
+
       </div>
 
       <div class="about" id="easier_said">
@@ -146,12 +148,10 @@
 
         <div>
 
+          <h2>Betrayal</h2>
+
           <img class="about_symbol" src="imgs/FATE.png" alt="Sacred semiotics">
 
-          <h2>Betrayal</h2>
-          <!--
-          <img src="imgs/FATE.svg" alt="Sacred semiotics">
-        -->
           <p>
             I probably really began to appreciate it around midterms. <br>
             A time when you're forced to question the loyalty of your own two feet. <br><br>
@@ -168,9 +168,9 @@
       <div class="about" id="two_birds">
         <div>
 
-          <img class="about_symbol" src="imgs/WAIT.png" alt="Sacred semiotics"/>
-
           <h2>Two Birds One Phone</h2>
+
+          <img class="about_symbol" src="imgs/WAIT.png" alt="Sacred semiotics"/>
 
           <p>
             Three years later the opportunity presents itself. <br>
@@ -219,44 +219,109 @@
 
       </div>
 
-      <!-- not certain that this section is necessary
+    <!-- should find a way to decouple this from a particular section and still have it display properly -->
 
-      <div class="about" id="about_conclusion">
+    <footer class="footer">
 
-        <div>
+      <h1>Dirty Mop Music</h1>
+      <h1>&</h1>
+      <h1>INLAE</h1>
 
-          <h2>Wasted</h2>
+    </footer>
 
-          <p>
-            So, my plan for revenge failed bitterly and I tanked my shot at any technical musical authority in the process. <br>
-            Frantic to render that evasive <em>image</em> visible, I amplified creaky piano pedals, included artifact-filled samples, and - worst of all - sang falsetto. <br>
-            The result is something that will never entice potential clients or bolster my mixing portfolio. <br>
-            Unlike my tormentor's masterpiece which is broadcast on street <em>crossings</em> nationwide, <br>
-            very few poeple will ever hear this. <br>
-            Most of the people who do will find it to be an unworthy interuption of their screen time. <br>
-            It won't save you from an oncoming vehicle. <br>
-            You might just find it annoying. <br>
-            But maybe not. <br>
-            Maybe after a few listens, you will start to appreciate the diction, the repitition, the not-so-subtle suggestiveness. <br>
-            If you're really unlucky, maybe, the murky image of that cruel, comical Mode of Being will even creep tentatively into focus. <br>
-          </p>
-
-        </div>
-
-      </div>
-    -->
-
-    <!-- add footer img preferably to just peek out at bottom
-         options atm are cello_1 or _3 rope_1 or clock_1-->
-    <div class="footer_view">
-      <!-- window to see footer img -->
-    </div>
-    <!--
-    <img src="imgs/CLOCK_1.JPG" alt="pocket watch at 12">
-  -->
     </section>
 
+    <!-- section to display credits -->
 
+    <section class="credits">
+
+      <div class="credits_item" id="credits_title">
+
+        <h1>Credits</h1>
+
+        <p>
+          Strangely, few people seemed to share my fascination with <em>Waiting</em> as a <em>Mode of Being.</em> <br>
+          So the project had to complete itself with a small team. <br><br>
+          Of course, I am still indebted to the people whose ideas I stole to make it happen. <br><br>
+          Likewise, if it weren't for the mentors, friends and family who have always waited for me, <br>
+          I'd still be waiting for my chance to finally make my music.
+        </p>
+
+      </div>
+
+      <div class="credits_item">
+
+        <h2>Calum Smeaton</h2>
+
+        <p>Music, Digital Art & Photography</p>
+
+      </div>
+
+      <div class="credits_item">
+
+        <h2>Justine Clougherty</h2>
+
+        <p>Artwork</p>
+
+      </div>
+
+      <div class="credits_item">
+
+        <h2>Louie Buchen</h2>
+
+        <p>Chief Data Officer & Best Fan</p>
+
+      </div>
+
+      <div class="credits_item">
+
+        <h2>Jess</h2>
+
+        <p>A "pretty good muse."</p>
+
+      </div>
+
+      <div class="credits_item">
+
+        <h2>Mom and Dad</h2>
+
+        <p>For not kicking me out yet.</p>
+
+      </div>
+
+      <div class="credits_item">
+
+        <h2>Sammy and Mario</h2>
+
+        <p>Weirdos.</p>
+
+      </div>
+
+      <div class="credits_item">
+
+        <h2>Stephan Fuchs</h2>
+
+        <p>Disgruntled Quasi-Thinker.</p>
+
+      </div>
+
+      <div class="credits_item">
+
+        <h2>Ben Green</h2>
+
+        <p>Definitely a genius.</p>
+
+      </div>
+
+      <div class="credits_item">
+
+        <h2>Oren Polak</h2>
+
+        <p>Sorry I never practiced.</p>
+
+      </div>
+
+    </section>
 
 
   </body>

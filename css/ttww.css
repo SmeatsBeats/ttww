@@ -16,6 +16,8 @@ body {
   justify-content: flex-start;
   /*this keeps the right edge of the poster picture visible */
   align-items: flex-end;
+  font-family: 'Titillium Web', sans-serif;
+  font-size: x-large;
 }
 #home {
   position: fixed;
@@ -41,7 +43,7 @@ body {
 }
 
 /************ add content styles *******/
-.content {
+.content, .credits {
   position: relative;
   top: 100vh;
   width: auto;
@@ -60,14 +62,14 @@ body {
 .about_img, .about {
   flex: 1 1 auto;
 }
-.about {
+.about, .credits_item {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
   justify-content: flex-end;
   text-align: center;
-  font-family: 'Titillium Web', sans-serif;
-  font-size: x-large;
+  /* font-family: 'Titillium Web', sans-serif;
+  font-size: x-large; */
   background-color: white;
 }
 /*code mobile first */
@@ -81,29 +83,14 @@ body {
 #easier_said_img, #defeat_img{
   /* it is absolutely crucial to specify this width, otherwise they will push the DOM beyond 100% on mobile */
   width: 50%;
-  /* this does something in firefox but nothing in chrome */
+  /* this does something in firefox but nothing in chrome on mobile
+  removing it makes the image huge in chrome and on both browsers mobile verzions
+  keeping it shrinks the image in firefox but not chrome
+  SOLUTION: specify width in media query*/
   flex: 0 0 50%;
 }
 #defeat {
   justify-content: flex-start;
-}
-/*adjust for desktop*/
-@media only screen and (min-device-width:600px){
-  .about > div, .about > img, .about p {
-    flex: 1 1 50%;
-  }
-  #easier_said_img, #defeat_img {
-    flex: 0 0 25%;
-  }
-  #easier_said_img {
-    order: 2;
-  }
-  #easier_said div {
-    order: 1;
-  }
-  #content_head {
-    width: 50%;
-  }
 }
 /* option for door to background
 #easier_said {
@@ -117,9 +104,67 @@ body {
 #ancient_traces {
   background: rgba(255, 255, 255, 0.7);
 }
-.footer_view {
+.footer {
   width: 100%;
-  height: 10vh;
   flex: 1 1 100%;
-  opacity: 0.5;
+  background: #ccc;
+  /* background-image: linear-gradient(#ccc, #888); */
+  text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
+}
+.footer h1 {
+  color: transparent;
+  background-color: #565656;
+  background-image: linear-gradient(#565656, #363636);
+  text-shadow: 2px 2px 3px rgba(255, 255, 255, 0.5);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+}
+.footer h1 {
+  flex: 1 1 100%;
+  /** try to fix clumsy spacing on phone without destroying desktop version **/
+  /* margin: 3%; */
+}
+.footer h1:nth-child(2), .footer h1:nth-child(1){
+  display: none;
+}
+
+
+/*adjust for desktop*/
+@media only screen and (min-device-width:600px){
+
+/**** ABOUT ****/
+  .about > div, .about > img, .about p {
+    flex: 1 1 50%;
+  }
+  #easier_said_img, #defeat_img {
+    width: 25%;
+    flex: 0 0 25%;
+  }
+  #easier_said_img {
+    order: 2;
+  }
+  #easier_said div {
+    order: 1;
+  }
+  #content_head {
+    width: 50%;
+  }
+  .footer h1:nth-child(2), .footer h1:nth-child(1) {
+    display: unset;
+  }
+  .footer h1:nth-child(1), .footer h1:nth-child(3) {
+    flex: 0 0 40%;
+  }
+  .footer h1:nth-child(2) {
+    flex: 0 0 10%;
+  }
+}
+/** hide content section to start work on credits **/
+.content {
+  display: none;
 }
