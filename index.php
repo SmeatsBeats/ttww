@@ -39,6 +39,14 @@
 
       </div>
 
+
+      <!-- widget section --> 
+      <div id="widget">
+
+        
+
+      </div>
+
       <div class="about" id="about_intro">
         <p>
           What began as an exercise to ease cognitive disonance,
