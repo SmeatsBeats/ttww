@@ -39,6 +39,15 @@
 
       </div>
 
+
+      <!-- widget section --> 
+      <div class="widget" id="widget_boi">
+
+
+        
+
+      </div>
+
       <div class="about" id="about_intro">
 
         <p>
