@@ -1,7 +1,9 @@
 $(document).ready(function() {
+  //get width of window
+  //alert($("html").width());
   //hide elements that are to fade in on onload
-  $("#albumArt").hide();
-  $("#albumArt").fadeIn(2500);
+  $("#album_art").hide();
+  $("#album_art").fadeIn(2500);
 });
 
 
@@ -27,12 +29,12 @@ $(document).ready(function() {
 //
 // // //Image color fades in
 // // function imageFader() {
-// // 	$("albumArt").fade;
+// // 	$("album_art").fade;
 // // 	alert("test");
 // // }
 //
 // //Window onload function
 // window.onload = function () {
 // 	//imageFader();
-// 	$("albumArt").onclick = audioControl;
+// 	$("album_art").onclick = audioControl;
 // }

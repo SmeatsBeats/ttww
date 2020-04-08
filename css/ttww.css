@@ -1,33 +1,43 @@
 html, body {
-  height: 100%;
+  /* height: 100%; */
   margin: 0;
   padding: 0;
-}
-#audioPlayer {
-  width: auto;
+  width: 100%;
   display: flex;
+}
+html {
+  width: 100%;
   flex-flow: column nowrap;
+  justify-content: flex-start;
+}
+body {
+  flex: 1 1 100%;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  /*this keeps the right edge of the poster picture visible */
+  align-items: flex-end;
+}
+#home {
+  position: fixed;
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
   background-color: black;
 }
-.art {
-  position: fixed;
-  z-index: -1;
-  background-color: black; 
-}
-#audioPlayer > div {
-  display: flex;
-}
-#albumArt {
+#album_art {
+  flex: 0 0 100%;
   height: 100vh;
+}
+#content_head {
+  width: 85%;
+}
+.about_symbol {
   width: auto;
 }
-.audio {
-  position: fixed;
-  z-index: 1;
-  top: 0;
-}
+
 #ttwwAudioFile {
-  width: 100vw;
+  width: 100%;
 }
 
 /************ add content styles *******/
@@ -37,8 +47,8 @@ html, body {
   width: auto;
   display: flex;
   flex-flow: row wrap;
-  align-items: center;
-  background-color: white;
+  /*align-items: center;*/
+  justify-content: flex-start;
 }
 #content_head_container {
   flex-basis: 100%;
@@ -47,14 +57,69 @@ html, body {
   flex-flow: column nowrap;
   align-items: center;
 }
-.content_img, .about {
+.about_img, .about {
   flex: 1 1 auto;
 }
 .about {
-  /*
-  background-color: white;
-  */
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: flex-end;
   text-align: center;
   font-family: 'Titillium Web', sans-serif;
   font-size: x-large;
+  background-color: white;
+}
+/*code mobile first */
+.about > div, .about > img, .about p {
+  flex: 1 1 100%;
+  /*flex: 1 1 50%;*/
+}
+.about p {
+  padding: 10px;
+}
+#easier_said_img, #defeat_img{
+  /* it is absolutely crucial to specify this width, otherwise they will push the DOM beyond 100% on mobile */
+  width: 50%;
+  /* this does something in firefox but nothing in chrome */
+  flex: 0 0 50%;
+}
+#defeat {
+  justify-content: flex-start;
+}
+/*adjust for desktop*/
+@media only screen and (min-device-width:600px){
+  .about > div, .about > img, .about p {
+    flex: 1 1 50%;
+  }
+  #easier_said_img, #defeat_img {
+    flex: 0 0 25%;
+  }
+  #easier_said_img {
+    order: 2;
+  }
+  #easier_said div {
+    order: 1;
+  }
+  #content_head {
+    width: 50%;
+  }
+}
+/* option for door to background
+#easier_said {
+  flex: 0 0 80%;
+}
+
+#easier_said_img, #defeat_img {
+  flex: 0 0 25%;
+}
+*/
+#ancient_traces {
+  background: rgba(255, 255, 255, 0.7);
+}
+.footer_view {
+  width: 100%;
+  height: 10vh;
+  flex: 1 1 100%;
+  opacity: 0.5;
 }

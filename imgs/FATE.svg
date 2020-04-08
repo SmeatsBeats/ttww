@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1.25in" height="1.25in" viewBox="0 0 89.73 89.73">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 59.91px;
+        font-family: Apple-Chancery, Apple Chancery;
+      }
+    </style>
+  </defs>
+  <title>FATE</title>
+  <g id="Sleeve_Inside" data-name="Sleeve Inside">
+    <text class="cls-1" transform="translate(29.8 61.88)">6</text>
+    <text class="cls-1" transform="translate(61.88 59.92) rotate(-90)">6</text>
+    <text class="cls-1" transform="translate(59.92 27.85) rotate(180)">6</text>
+    <text class="cls-1" transform="translate(27.85 29.8) rotate(90)">6</text>
+  </g>
+</svg>
