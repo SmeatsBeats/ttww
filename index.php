@@ -41,7 +41,8 @@
 
 
       <!-- widget section --> 
-      <div id="widget">
+      <div class="widget" id="widget_boi">
+
 
         
 
