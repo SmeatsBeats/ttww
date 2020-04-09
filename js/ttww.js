@@ -35,13 +35,28 @@ $(document).ready(function() {
 
   //MODE 2 MENU
   //Let the user select which content populates the page: ABOUT, CREDITS, SUPPORT
+  //hide the menu on load
+  $(".menu").hide();
+  $(".menu_mode").click(function(){
+    $(".menu").fadeIn(2000);
+  });
 
   //MODE 3 DOWNLOAD
   //download the audio file
   //as one track or as individual tracks?
 
+  //might not even need a jquery click for this
+  //when the mode is switched to download, just turn the icon into a download link
+  //<a id="audio_download" href="/audio/TTWW_TEST_MASTER_10.wav" download>Download</a>
+
   //MODE 4 HOME
   //Scroll to top
   //populate page with certain content?
+  $(".home_mode").click(function(){
+    $("html, body").animate({
+      scrollTop: 0
+    }, "slow");
+    return false;
+  });
 
 });

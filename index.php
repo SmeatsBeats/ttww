@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=34.7" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=35.0" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=2.0"></script>
+    <script type="text/javascript" src="js/ttww.js?v=2.3"></script>
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
   </head>
@@ -23,9 +23,9 @@
         <img id="album_art" src="imgs/TTWW_POSTER_HALF.jpg" alt="To Those Who Wait Cover Art" />
       </picture>
 
-      <!--
-      <audio id="ttwwAudioFile" src="audio/TTWW_TEST_MASTER_10.wav" controls></audio>
-      -->
+      <!-- allow audio to be played and downloaded -->
+      <audio id="ttwwAudioFile" src="audio/TTWW_TEST_MASTER_10.wav"></audio>
+
     </section>
 
     <section class="content">
@@ -50,6 +50,14 @@
         <h3 id="select_home_mode">Home</h3>
         <h3 id="select_download_mode">Download</h3>
         <h3 id="select_menu_mode">Menu</h3>
+      </div>
+
+      <!-- widget menu -->
+
+      <div class="menu">
+        <h2 id="about_nav">ABOUT</h2>
+        <h2 id="credits_nav">CREDITS</h2>
+        <h2 id="support_nav">SUPPORT</h2>
       </div>
 
       <div class="about" id="about_intro">
