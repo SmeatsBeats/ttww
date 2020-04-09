@@ -160,9 +160,6 @@ $(document).ready(function() {
       case "home_mode":
         scrollHome();
       case "audio_mode":
-
-        break;
-      case "audio_mode":
         audioControl(playing);
         playing = !playing;
         break;
