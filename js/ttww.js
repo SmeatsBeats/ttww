@@ -120,19 +120,34 @@ $(document).ready(function() {
 
 
   //Switch to Audio
-  var clickOnAudio = function(){
+  var clickOnAudio = function(playing){
     $("widget_boi").removeClass(widget_mode);
     $("widget_boi").addClass("audio_mode");
-    $("#widget_function").html("Play");
+    if(!playing) {
+      $("#widget_function").html("Play");
+    }
+    else{
+      $("#widget_function").html("Pause");
+    };
     widget_mode = "audio_mode";
     //return widget_mode;
   };
 
+
   $("#select_audio_mode").click(function() {
-    clickOnAudio();
+    clickOnAudio(playing);
     displayMode(widget_mode);
   });
 
+
+  var clickOnPlayOrPause = function(playing){
+    if(!playing) {
+      $("#widget_function").html("Play");
+    }
+    else{
+      $("#widget_function").html("Pause");
+    }
+  };
 
   //Switch to Download
   var clickOnDownload = function(){
@@ -162,6 +177,7 @@ $(document).ready(function() {
       case "audio_mode":
         audioControl(playing);
         playing = !playing;
+        clickOnPlayOrPause(playing);
         break;
       default:
         alert("running switch default");
