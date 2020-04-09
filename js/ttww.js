@@ -8,6 +8,8 @@ $(document).ready(function() {
 
   $("#album_art").fadeIn(2500);
 
+  
+
   //build function for easing effect on overscroll at bottom of page plus image swap
 
   //build function to:
