@@ -24,6 +24,22 @@ $(document).ready(function() {
 
   //MODE 1 AUDIO PLAYER
   //In this mode widget boi allows the user to pause the audio if it is playing and play the audio if it is paused
+  var playing = false;
+  var audioControl = function(){
+    if(playing = false){
+      $("#album_art").click(function() {
+        $("#ttwwAudioFile").play();
+        playing = true;
+      }
+    }
+    else(){
+      $("#album_art").click(function() {
+        $("#ttwwAudioFile").pause();
+        playing = false;
+      }
+    }
+  };
+
 
   //MODE 2 MENU
   //Let the user select which content populates the page: ABOUT, CREDITS, SUPPORT
@@ -146,6 +162,8 @@ $(document).ready(function() {
         break;
       case "home_mode":
         scrollHome();
+      case "audio_mode":
+
         break;
       default:
         alert("running switch default");
