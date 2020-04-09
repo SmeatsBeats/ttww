@@ -8,7 +8,11 @@ $(document).ready(function() {
 
   $("#album_art").fadeIn(2500);
 
+  $(".menu").hide();
 
+  var playing = false;
+
+  var audioFile = document.getElementById("ttwwAudioFile");
 
   //build function for easing effect on overscroll at bottom of page plus image swap
 
@@ -25,10 +29,21 @@ $(document).ready(function() {
   //MODE 1 AUDIO PLAYER
   //In this mode widget boi allows the user to pause the audio if it is playing and play the audio if it is paused
 
+
+
+  var audioControl = function(playing){
+    if(!playing){
+        audioFile.play();
+      }
+    else {
+        audioFile.pause();
+      }
+    };
+
   //MODE 2 MENU
   //Let the user select which content populates the page: ABOUT, CREDITS, SUPPORT
   //hide the menu on load
-  $(".menu").hide();
+ 
 
   var displayMenu = function(){
       $(".menu").fadeIn(2000);
@@ -110,7 +125,7 @@ $(document).ready(function() {
   var clickOnAudio = function(){
     $("widget_boi").removeClass(widget_mode);
     $("widget_boi").addClass("audio_mode");
-    $("#widget_function").html("Go to Audio");
+    $("#widget_function").html("Play");
     widget_mode = "audio_mode";
     //return widget_mode;
   };
@@ -146,6 +161,11 @@ $(document).ready(function() {
         break;
       case "home_mode":
         scrollHome();
+        break;
+      case "audio_mode":
+      alert(playing);
+        audioControl(playing);
+        playing = !playing;
         break;
       default:
         alert("running switch default");
