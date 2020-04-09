@@ -8,7 +8,7 @@ $(document).ready(function() {
 
   $("#album_art").fadeIn(2500);
 
-  
+
 
   //build function for easing effect on overscroll at bottom of page plus image swap
 
@@ -20,6 +20,14 @@ $(document).ready(function() {
   //In all modes, the time in the track should be visible and scrubbing should be possible
   //Do individual song names need to be indicated somehow?
 
+  //what mode is the widget in?
+  //audio_mode is default
+
+  //indicate mode
+  var widget_mode = $("#widget_boi").attr('class');
+  $("#widget_mode").html(widget_mode);
+
+
   //ALL MODES: AUDIO LOCATION AND SCRUBBING
 
   //MODE 1 AUDIO PLAYER
@@ -30,7 +38,7 @@ $(document).ready(function() {
 
   //MODE 3 DOWNLOAD
   //download the audio file
-  //as one track or as individual tracks? 
+  //as one track or as individual tracks?
 
   //MODE 4 HOME
   //Scroll to top

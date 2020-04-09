@@ -8,7 +8,7 @@
     <title>To Those Who Wait</title>
     <link rel="stylesheet" href="css/ttww.css?v=34.7" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
+    <script type="text/javascript" src="js/ttww.js?v=2.0"></script>
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
   </head>
@@ -41,8 +41,15 @@
 
 
       <!-- widget section -->
-      <div class="widget" id="widget_boi">
-        <h2>Play</h2>
+      <div class="audio_mode" id="widget_boi">
+        <h2 id="widget_mode"></h2>
+
+        <h2 id="widget_function">Play</h2>
+
+        <h3 id="select_audio_mode">Audio</h3>
+        <h3 id="select_home_mode">Home</h3>
+        <h3 id="select_download_mode">Download</h3>
+        <h3 id="select_menu_mode">Menu</h3>
       </div>
 
       <div class="about" id="about_intro">
