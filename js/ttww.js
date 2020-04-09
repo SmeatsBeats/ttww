@@ -90,6 +90,7 @@ displayMode(widget_mode);
     clickOnDownload();
     displayMode(widget_mode);
   });
+  $("#widget_mode").html(widget_mode);
 
 
   //ALL MODES: AUDIO LOCATION AND SCRUBBING
