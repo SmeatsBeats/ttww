@@ -25,6 +25,71 @@ $(document).ready(function() {
 
   //indicate mode
   var widget_mode = $("#widget_boi").attr('class');
+  
+  var displayMode = function(widget_mode){
+  $("#widget_mode").html(widget_mode);
+};
+
+displayMode(widget_mode);
+
+  //Switch to Home
+  var clickOnHome = function(){
+    $("widget_boi").removeClass(widget_mode);
+    $("widget_boi").addClass("home_mode");
+    $("#widget_function").html("Go to Home");
+    widget_mode = "home_mode";
+
+  };
+
+  $("#select_home_mode").click(function() {
+    clickOnHome();
+    displayMode(widget_mode);
+  });
+
+
+  //Switch to Menu
+  var clickOnMenu = function(){
+    $("widget_boi").removeClass(widget_mode);
+    $("widget_boi").addClass("menu_mode");
+    $("#widget_function").html("Go to Menu");
+    widget_mode = "menu_mode";
+
+  };
+
+  $("#select_menu_mode").click(function() {
+    clickOnMenu();
+    displayMode(widget_mode);
+  });
+
+
+  //Switch to Audio
+  var clickOnAudio = function(){
+    $("widget_boi").removeClass(widget_mode);
+    $("widget_boi").addClass("audio_mode");
+    $("#widget_function").html("Go to Audio");
+    widget_mode = "audio_mode";
+
+  };
+
+  $("#select_audio_mode").click(function() {
+    clickOnAudio();
+    displayMode(widget_mode);
+  });
+
+
+  //Switch to Download
+  var clickOnDownload = function(){
+    $("widget_boi").removeClass(widget_mode);
+    $("widget_boi").addClass("download_mode");
+    $("#widget_function").html('<a id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>Download</a>');
+    widget_mode = "download_mode";
+
+  };
+
+  $("#select_download_mode").click(function() {
+    clickOnDownload();
+    displayMode(widget_mode);
+  });
   $("#widget_mode").html(widget_mode);
 
 
