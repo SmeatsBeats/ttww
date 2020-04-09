@@ -26,7 +26,7 @@ body {
 #album_art {
   flex: 0 0 100%;
   height: 100vh;
-  width: 100%
+  width: 100%;
 }
 #content_head {
   width: 85%;
@@ -130,6 +130,14 @@ body {
 .footer h1:nth-child(2), .footer h1:nth-child(1){
   display: none;
 }
+/***** WIDGET BOI ***/
+#widget_boi {
+  position: fixed;
+  top: 40vh;
+  right: 40vw;
+  background: white;
+  color: black;
+}
 
 
 /*adjust for desktop*/
@@ -167,5 +175,5 @@ body {
   display: none;
 } */
 .credits {
-  display: none; 
+  display: none;
 }

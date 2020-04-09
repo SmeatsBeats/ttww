@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=34.4" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=34.5" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
     <!--google fonts to include -->
@@ -42,10 +42,7 @@
 
       <!-- widget section -->
       <div class="widget" id="widget_boi">
-
-
-
-
+        <h2>Play</h2>
       </div>
 
       <div class="about" id="about_intro">
