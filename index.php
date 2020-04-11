@@ -42,6 +42,11 @@
 
       <!-- widget section -->
       <div class="audio_mode" id="widget_boi">
+
+        <img src="imgs/AUDIO_TIMELINE.png" alt="Audio timeline indicator">
+        <img src="imgs/WIDGET_NAV.png" alt="Widget navigation">
+        <img src="imgs/WIDGET_BEZEL.png" alt="Model watch bezel">
+
         <h2 id="widget_mode"></h2>
 
         <h2 id="widget_function">Play</h2>
