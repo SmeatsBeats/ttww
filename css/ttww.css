@@ -133,10 +133,11 @@ body {
 /***** WIDGET BOI ***/
 #widget_boi {
   position: fixed;
-  top: 40vh;
+  top: 30vh;
   right: 45vw;
-  background: white;
-  color: black;
+  width: 20;
+  background: black;
+  color: white;
 }
 /***** WIDGET MENU ***/
 .menu {
