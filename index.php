@@ -6,14 +6,59 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=35.0" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=42.8" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=4.89"></script>
+    <script type="text/javascript" src="js/ttww.js?v=4.9"></script>
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
   </head>
 
   <body>
+
+    <!-- widget section -->
+    <div id="widget_boi">
+
+      <div class="widget_nav_container">
+
+        <div class="nav_options">
+          <div class="widget_home nav_box" id="select_home_mode">Home</div>
+          <div class="widget_audio nav_box" id="select_audio_mode">Audio</div>
+          <div class="widget_menu nav_box" id="select_menu_mode">Menu</div>
+          <div class="widget_download nav_box" id="select_download_mode">Download</div>
+        </div>
+
+        <div class="nav_img_container">
+          <img class="audio_timeline" src="imgs/AUDIO_TIMELINE.png" alt="Audio timeline indicator">
+          <!-- research svg tag to create and animate timeline -->
+          <img class="widget_nav" src="imgs/WIDGET_NAV.png" alt="Widget navigation">
+          <img class="widget_bezel" src="imgs/WIDGET_BEZEL.png" alt="Model watch bezel">
+        </div>
+
+        <div class="widget_function_container">
+          <h4 id="widget_function">Play</h4>
+        </div>
+
+      </div>
+
+
+      <!-- <h2 id="widget_mode"></h2> -->
+
+
+      <!--
+      <h3 id="select_audio_mode">Audio</h3>
+      <h3 id="select_home_mode">Home</h3>
+      <h3 id="select_download_mode">Download</h3>
+      <h3 id="select_menu_mode">Menu</h3>
+    -->
+    </div>
+
+    <!-- widget menu -->
+
+    <div class="menu">
+      <h2 id="about_nav">ABOUT</h2>
+      <h2 id="credits_nav">CREDITS</h2>
+      <h2 id="support_nav">SUPPORT</h2>
+    </div>
 
     <section id="home">
 
@@ -39,31 +84,6 @@
 
       </div>
 
-
-      <!-- widget section -->
-      <div class="audio_mode" id="widget_boi">
-
-        <img src="imgs/AUDIO_TIMELINE.png" alt="Audio timeline indicator">
-        <img src="imgs/WIDGET_NAV.png" alt="Widget navigation">
-        <img src="imgs/WIDGET_BEZEL.png" alt="Model watch bezel">
-
-        <h2 id="widget_mode"></h2>
-
-        <h2 id="widget_function">Play</h2>
-
-        <h3 id="select_audio_mode">Audio</h3>
-        <h3 id="select_home_mode">Home</h3>
-        <h3 id="select_download_mode">Download</h3>
-        <h3 id="select_menu_mode">Menu</h3>
-      </div>
-
-      <!-- widget menu -->
-
-      <div class="menu">
-        <h2 id="about_nav">ABOUT</h2>
-        <h2 id="credits_nav">CREDITS</h2>
-        <h2 id="support_nav">SUPPORT</h2>
-      </div>
 
       <div class="about" id="about_intro">
 
