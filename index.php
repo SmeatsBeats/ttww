@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=42.8" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=43.5" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=4.9"></script>
+    <script type="text/javascript" src="js/ttww.js?v=10.6"></script>
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
   </head>
@@ -21,17 +21,23 @@
       <div class="widget_nav_container">
 
         <div class="nav_options">
-          <div class="widget_home nav_box" id="select_home_mode">Home</div>
-          <div class="widget_audio nav_box" id="select_audio_mode">Audio</div>
-          <div class="widget_menu nav_box" id="select_menu_mode">Menu</div>
-          <div class="widget_download nav_box" id="select_download_mode">Download</div>
+          <div class="nav_row">
+            <div class="widget_home nav_box" id="select_home_mode"></div>
+            <div class="widget_audio nav_box" id="select_audio_mode"></div>
+          </div>
+          <div class="nav_row">
+            <div class="widget_menu nav_box" id="select_menu_mode"></div>
+            <div class="widget_download nav_box" id="select_download_mode"></div>
+          </div>
         </div>
 
         <div class="nav_img_container">
+
           <img class="audio_timeline" src="imgs/AUDIO_TIMELINE.png" alt="Audio timeline indicator">
+
           <!-- research svg tag to create and animate timeline -->
-          <img class="widget_nav" src="imgs/WIDGET_NAV.png" alt="Widget navigation">
-          <img class="widget_bezel" src="imgs/WIDGET_BEZEL.png" alt="Model watch bezel">
+          <img class="widget_nav" id="nav_options_img" src="imgs/WIDGET_NAV.png" alt="Widget navigation">
+          <img class="widget_bezel" id="widget_bezel_img" src="imgs/WIDGET_BEZEL_SMALL.png" alt="Model watch bezel">
         </div>
 
         <div class="widget_function_container">

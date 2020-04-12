@@ -137,7 +137,6 @@ body {
   height: 11vw;
   z-index: 2;
   position: fixed;
-<<<<<<< HEAD
   top: 30%;
   left: 45%;
 }
@@ -160,12 +159,12 @@ body {
   height: 100%;
 }
 .nav_box {
-  flex: 1 1 45%;
+  flex: 1 1 50%;
 }
 .nav_options {
   position: absolute;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column nowrap;
   justify-content: flex-start;
   width: 100%;
   height: 100%;
@@ -173,6 +172,13 @@ body {
   color: gray;
   color: transparent;
 }
+.nav_row {
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
 .widget_function_container {
   position: absolute;
   width: 100%;

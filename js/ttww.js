@@ -41,7 +41,7 @@ $(document).ready(function() {
   //MODE 2 MENU
   //Let the user select which content populates the page: ABOUT, CREDITS, SUPPORT
   //hide the menu on load
- 
+
 
   var displayMenu = function(){
       $(".menu").fadeIn(2000);
@@ -78,22 +78,156 @@ $(document).ready(function() {
 
   //indicate mode
   var widget_mode = "audio_mode";
+  var rotateDeg, spinTimer, rotateDist;
+  var deg = 0;
+  var bezelDeg = 0;
+  var spinTimer;
+  var spinCounter = 0;
+  var bezelSpinCounter = 0;
+  var bezelRotateDist;
+
+  // var spinMe = function(rotateDeg, deg, rotateDist){
+  //   alert("called: " + rotateDeg + " " + deg + " " + rotateDist + " " + i);
+  //   // need to account for over 360
+  //
+  //   if(i == rotateDist){
+  //     clearInterval(spinTimer);
+  //     alert("timer done");
+  //   }
+  //   else{
+  //     //alert("deg: " + deg);
+  //
+  //     var navOptionsImg = document.getElementById('nav_options_img');
+  //     navOptionsImg.style.transform = "rotate(" + deg + "deg)";
+  //     if(rotateDeg >= 0){
+  //       alert("positive");
+  //
+  //       i++;
+  //     }
+  //     else{
+  //       alert("negative");
+  //       i--;
+  //     }
+  //     deg += i;
+  //     alert("degree: " + deg);
+  //     //need to account for trying to go above or below 360 / 0
+  //
+  //   }
+  // };
+
+  var navRotate = function(rotateDeg){
+    //alert("deg: " + deg);
+    //alert("rotateDeg: " + rotateDeg);
+    //need to rotate the widget_nav img by specified angle
+
+    var rotateDist = rotateDeg - deg;
+    //alert(rotateDist);
+    if(rotateDist > 180){
+      rotateDist = -90;
+    }
+    else if (rotateDist < -180) {
+      rotateDist = 90;
+    }
+    else{
+      rotateDist = rotateDist;
+    }
+    if(rotateDist >= 0){
+      bezelRotateDist = rotateDist - 360;
+    }
+    else{
+      bezelRotateDist = rotateDist + 360;
+    }
+    //alert(bezelRotateDist);
+    //alert(rotateDist);
+    var spinTimer = setInterval(function(){
+      //alert("called: " + rotateDeg + " " + deg + " " + rotateDist + " " + spinCounter);
+      // need to account for over 360
+
+      if(spinCounter == rotateDist){
+        clearInterval(spinTimer);
+        spinCounter = 0;
+        //alert("timer done");
+      }
+      else{
+        //alert("deg: " + deg);
+        var navOptionsImg = document.getElementById('nav_options_img');
+        navOptionsImg.style.transform = "rotate(" + deg + "deg)";
+        if(rotateDist >= 0){
+          spinCounter++;
+          deg++;
+          //alert("positive: " + spinCounter);
+        }
+        else{
+          spinCounter--;
+          deg--;
+          //alert("negative: " + spinCounter);
+        }
+        //alert(deg);
+        //need to account for trying to go above or below 360 / 0
+
+      }
+    }, 3);
+
+    var bezelSpinTimer = setInterval(function(){
+
+
+      if(bezelSpinCounter == bezelRotateDist){
+        clearInterval(bezelSpinTimer);
+        bezelSpinCounter = 0;
+      }
+      else{
+        var bezelImg = document.getElementById('widget_bezel_img');
+        bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
+        if(bezelRotateDist >= 0){
+          bezelSpinCounter++;
+          bezelDeg++;
+        }
+        else{
+          bezelSpinCounter--;
+          bezelDeg--;
+        }
+      }
+
+    }, 3);
+  }
 
   var displayMode = function(widget_mode){
+    //this function should become responsible for animating the rotation of the widget images to indicate the current mode
+    //can combine withg existing switch for widget mode
     $("#widget_mode").html(widget_mode);
+    switch(widget_mode){
+      case "audio_mode":
+      rotateDeg = 0;
+      navRotate(rotateDeg);
+      break;
+      case "home_mode":
+      rotateDeg = 270;
+      navRotate(rotateDeg);
+      break;
+      case "menu_mode":
+      rotateDeg = 180;
+      navRotate(rotateDeg);
+      break;
+      case "download_mode":
+      rotateDeg = 90;
+      navRotate(rotateDeg);
+      break;
+      default:
+      rotateDeg = 0;
+      navRotate(rotateDeg)
+      alert("displayMode default");
+    }
   };
 
-  displayMode(widget_mode);
+  //displayMode(widget_mode);
 
   //Switch to Home
   var clickOnHome = function(){
-    $("widget_boi").removeClass(widget_mode);
-    $("widget_boi").addClass("home_mode");
     $("#widget_function").html("Go to Home");
     widget_mode = "home_mode";
     //alert("widget_mode switched:" + widget_mode);
     //could call scrollHome here. no reason to require 2 clicks. If they switch to this mode
-    scrollHome();
+    //scrollHome();
     //they probably want to scroll home
     //return widget_mode;
   };
@@ -106,8 +240,6 @@ $(document).ready(function() {
 
   //Switch to Menu
   var clickOnMenu = function(){
-    $("widget_boi").removeClass(widget_mode);
-    $("widget_boi").addClass("menu_mode");
     $("#widget_function").html("Go to Menu");
     widget_mode = "menu_mode";
     //return widget_mode;
@@ -121,8 +253,6 @@ $(document).ready(function() {
 
   //Switch to Audio
   var clickOnAudio = function(playing){
-    $("widget_boi").removeClass(widget_mode);
-    $("widget_boi").addClass("audio_mode");
     if(!playing) {
       $("#widget_function").html("Play");
     }
@@ -151,8 +281,6 @@ $(document).ready(function() {
 
   //Switch to Download
   var clickOnDownload = function(){
-    $("widget_boi").removeClass(widget_mode);
-    $("widget_boi").addClass("download_mode");
     $("#widget_function").html('<a id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>Download</a>');
     widget_mode = "download_mode";
     //return widget_mode;
@@ -174,6 +302,7 @@ $(document).ready(function() {
         break;
       case "home_mode":
         scrollHome();
+        break;
       case "audio_mode":
         audioControl(playing);
         playing = !playing;
