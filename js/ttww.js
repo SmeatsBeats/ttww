@@ -5,10 +5,13 @@ $(document).ready(function() {
 
   //hide elements that are to fade in on onload
   $("#album_art").hide();
+  $(".menu").hide();
+  $("#widget_boi").hide();
 
   $("#album_art").fadeIn(2500);
+  $("#widget_boi").fadeIn(3000);
 
-  $(".menu").hide();
+
 
   var playing = false;
 
@@ -223,7 +226,7 @@ $(document).ready(function() {
 
   //Switch to Home
   var clickOnHome = function(){
-    $("#widget_function").html("Go to Home");
+    $("#widget_function").html("Home");
     widget_mode = "home_mode";
     //alert("widget_mode switched:" + widget_mode);
     //could call scrollHome here. no reason to require 2 clicks. If they switch to this mode
@@ -240,7 +243,7 @@ $(document).ready(function() {
 
   //Switch to Menu
   var clickOnMenu = function(){
-    $("#widget_function").html("Go to Menu");
+    $("#widget_function").html("Menu");
     widget_mode = "menu_mode";
     //return widget_mode;
   };
