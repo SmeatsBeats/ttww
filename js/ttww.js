@@ -150,8 +150,8 @@ $(document).ready(function() {
     };
 
 
-    alert("deg: " + deg);
-    alert("rotateDeg: " + rotateDeg);
+    // alert("deg: " + deg);
+    // alert("rotateDeg: " + rotateDeg);
     //need to rotate the widget_nav img by specified angle
 
     var rotateDist = rotateDeg - deg;
