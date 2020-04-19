@@ -142,10 +142,16 @@ $(document).ready(function() {
     if(deg == -270){
       deg = 90;
     };
+    if(deg == -90){
+      deg = 270;
+    };
     if(deg == -180){
       deg = 180;
     };
 
+
+    alert("deg: " + deg);
+    alert("rotateDeg: " + rotateDeg);
     //need to rotate the widget_nav img by specified angle
 
     var rotateDist = rotateDeg - deg;
