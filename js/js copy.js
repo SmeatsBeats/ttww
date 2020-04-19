@@ -90,7 +90,6 @@ $(document).ready(function() {
   var bezelSpinCounter = 0;
   var bezelRotateDist;
   var bezelSpinRate;
-  var spinning;
 
   // var spinMe = function(rotateDeg, deg, rotateDist){
   //   alert("called: " + rotateDeg + " " + deg + " " + rotateDist + " " + i);
@@ -121,16 +120,15 @@ $(document).ready(function() {
   //   }
   // };
 
+  //Turn widget boi off (make clickable)
+  var turnOffWidgetBoi = function(){
+    $("#widget_boi").click(false);
+  };
 
-  // //Turn widget boi off (make clickable)
-  // var turnOffWidgetBoi = function(){
-  //   $(".nav_img_container").click(false);
-  // };
-
-  // //Turn widget boi on (make clickable)
-  // var turnOnWidgetBoi = function(){
-  //   $(".nav_img_container").click(true);
-  // };
+  //Turn widget boi on (make clickable)
+  var turnOnWidgetBoi = function(){
+    $("#widget_boi").click(true);
+  };
 
   //Determine rotation parameters for widget 
   var navRotate = function(rotateDeg){
@@ -177,11 +175,8 @@ $(document).ready(function() {
       // need to account for over 360
 
       if(spinCounter == rotateDist){
-        var navOptionsImg = document.getElementById('nav_options_img');
-        navOptionsImg.style.transform = "rotate(" + deg + "deg)";
         clearInterval(spinTimer);
         spinCounter = 0;
-        turnOnWidgetBoi();
         //alert("timer done");
       }
       else{
@@ -217,8 +212,6 @@ $(document).ready(function() {
 
 
       if(bezelSpinCounter == bezelRotateDist){
-        var bezelImg = document.getElementById('widget_bezel_img');
-        bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
         clearInterval(bezelSpinTimer);
         bezelSpinCounter = 0;
       }
@@ -248,6 +241,7 @@ $(document).ready(function() {
       case "audio_mode":
       rotateDeg = 0;
       navRotate(rotateDeg);
+
       break;
       case "home_mode":
       rotateDeg = 270;
