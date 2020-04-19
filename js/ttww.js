@@ -17,6 +17,8 @@ $(document).ready(function() {
 
   var audioFile = document.getElementById("ttwwAudioFile");
 
+  var spinning = false;
+
   //build function for easing effect on overscroll at bottom of page plus image swap
 
   //build function to:
@@ -90,7 +92,7 @@ $(document).ready(function() {
   var bezelSpinCounter = 0;
   var bezelRotateDist;
   var bezelSpinRate;
-  var spinning;
+  
 
   // var spinMe = function(rotateDeg, deg, rotateDist){
   //   alert("called: " + rotateDeg + " " + deg + " " + rotateDist + " " + i);
@@ -137,9 +139,13 @@ $(document).ready(function() {
     if(deg == 360 || deg == -360){
       deg = 0;
     };
+    if(deg == -270){
+      deg = 90;
+    };
+    if(deg == -180){
+      deg = 180;
+    };
 
-    // alert("deg: " + deg);
-    // alert("rotateDeg: " + rotateDeg);
     //need to rotate the widget_nav img by specified angle
 
     var rotateDist = rotateDeg - deg;
@@ -181,7 +187,6 @@ $(document).ready(function() {
         navOptionsImg.style.transform = "rotate(" + deg + "deg)";
         clearInterval(spinTimer);
         spinCounter = 0;
-        turnOnWidgetBoi();
         //alert("timer done");
       }
       else{
@@ -217,9 +222,11 @@ $(document).ready(function() {
 
 
       if(bezelSpinCounter == bezelRotateDist){
+        spinning = false;
         var bezelImg = document.getElementById('widget_bezel_img');
         bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
         clearInterval(bezelSpinTimer);
+        
         bezelSpinCounter = 0;
       }
       else{
@@ -242,23 +249,27 @@ $(document).ready(function() {
   //Determines current modes and calls for appropriate widget adjustments
   var displayMode = function(widget_mode){
     //this function should become responsible for animating the rotation of the widget images to indicate the current mode
-    //can combine withg existing switch for widget mode
+    //can combine with existing switch for widget mode
     $("#widget_mode").html(widget_mode);
     switch(widget_mode){
       case "audio_mode":
       rotateDeg = 0;
+      // spinning = true;
       navRotate(rotateDeg);
       break;
       case "home_mode":
       rotateDeg = 270;
+      // spinning = true;
       navRotate(rotateDeg);
       break;
       case "menu_mode":
       rotateDeg = 180;
+      
       navRotate(rotateDeg);
       break;
       case "download_mode":
       rotateDeg = 90;
+      // spinning = true;
       navRotate(rotateDeg);
       break;
       default:
@@ -282,8 +293,11 @@ $(document).ready(function() {
   };
 
   $("#select_home_mode").click(function() {
-    clickOnHome();
-    displayMode(widget_mode);
+    if(spinning == false){
+      spinning = true;
+      clickOnHome();
+      displayMode(widget_mode);
+  }
   });
 
 
@@ -295,8 +309,11 @@ $(document).ready(function() {
   };
 
   $("#select_menu_mode").click(function() {
-    clickOnMenu();
-    displayMode(widget_mode);
+    if(spinning == false){
+      spinning = true;
+      clickOnMenu();
+      displayMode(widget_mode);
+  }
   });
 
 
@@ -314,8 +331,11 @@ $(document).ready(function() {
 
 
   $("#select_audio_mode").click(function() {
-    clickOnAudio(playing);
-    displayMode(widget_mode);
+    if(spinning == false){
+      spinning = true;
+      clickOnAudio(playing);
+      displayMode(widget_mode);
+  }
   });
 
 
@@ -336,8 +356,11 @@ $(document).ready(function() {
   };
 
   $("#select_download_mode").click(function() {
-    clickOnDownload();
-    displayMode(widget_mode);
+    if(!spinning){
+      spinning = true;
+      clickOnDownload();
+      displayMode(widget_mode);
+    }
   });
   //$("#widget_mode").html(widget_mode);
 

@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=43.63" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=43.64" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=11.22"></script>
+    <script type="text/javascript" src="js/ttww.js?v=11.40"></script>
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
   </head>
@@ -22,12 +22,12 @@
 
         <div class="nav_options">
           <div class="nav_row">
-            <div class="widget_home nav_box" id="select_home_mode"></div>
-            <div class="widget_audio nav_box" id="select_audio_mode"></div>
+            <div class="widget_home nav_box" id="select_home_mode" title="Home"></div>
+            <div class="widget_audio nav_box" id="select_audio_mode" title="Audio"></div>
           </div>
           <div class="nav_row">
-            <div class="widget_menu nav_box" id="select_menu_mode"></div>
-            <div class="widget_download nav_box" id="select_download_mode"></div>
+            <div class="widget_menu nav_box" id="select_menu_mode" title="Menu"></div>
+            <div class="widget_download nav_box" id="select_download_mode" title="Download"></div>
           </div>
         </div>
 
@@ -321,7 +321,7 @@
 
         <h2>Louie Buchen</h2>
 
-        <p>Chief Data Officer & Best Fan</p>
+        <p>Web Developer, Visionary, & #1 Fan</p>
 
       </div>
 
