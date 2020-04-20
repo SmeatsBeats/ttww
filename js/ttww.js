@@ -4,11 +4,57 @@ $(document).ready(function() {
   //alert($("html").width());
 
   //hide elements that are to fade in on onload
-  $("#album_art").hide();
+  $("#album_art, .menu, .lyrics, .credits").hide();
 
   $("#album_art").fadeIn(2500);
 
-  $(".menu").hide();
+  //$(".menu").hide();
+
+  //widget menu functionality
+
+  function alertYolo(){
+    alert("yolo");
+  }
+
+  var displayMenu = function(){
+    $(".menu").show();
+      $(".menu_nav").animate({
+        "right" : "0"
+      }, 1000, "swing");
+  };
+
+  $(".menu").click(function(){
+    $(".menu_nav").animate({
+      "right" : "80%"
+    }, 800, "swing", function(){
+      $(".menu").hide();
+      //alert("menu hidden");
+    });
+  })
+
+  var menu_select = function(nav_selection){
+    $(".content").fadeOut("slow");
+    var selector = "." + nav_selection;
+    $(selector).fadeIn("slow");
+  }
+
+  $(".menu_nav").click(function(){
+    var item_id = $(this).attr("id");
+    //alert (item_id);
+    var nav_selection = item_id.substring(0, item_id.indexOf("_"));
+    //alert(nav_selection);
+    menu_select(nav_selection);
+    $(".menu").fadeOut("slow");
+  });
+
+  // $("#about_item_nav").click(function(){
+  //   $(".credits").fadeOut("slow");
+  //   $(".lyrics").fadeOut("slow");
+  //   $(".support").fadeOut("slow");
+  //   var menuIn = setTimeout(function(){
+  //     $()
+  //   })
+  // })
 
   var playing = false;
 
@@ -17,7 +63,7 @@ $(document).ready(function() {
   //build function for easing effect on overscroll at bottom of page plus image swap
 
   //build function to:
-  //1. setup display of about section for mobile and desktop devices
+  //1. setup display of about_item section for mobile and desktop devices
 
   /////WIDGET BOIIIIIIIIII
   //This widget will have 4 MODES each of which performs different functions
@@ -42,10 +88,6 @@ $(document).ready(function() {
   //Let the user select which content populates the page: ABOUT, CREDITS, SUPPORT
   //hide the menu on load
 
-
-  var displayMenu = function(){
-      $(".menu").fadeIn(2000);
-  };
 
   //MODE 3 DOWNLOAD
   //download the audio file
@@ -223,7 +265,7 @@ $(document).ready(function() {
 
   //Switch to Home
   var clickOnHome = function(){
-    $("#widget_function").html("Go to Home");
+    $("#widget_function").html("Home");
     widget_mode = "home_mode";
     //alert("widget_mode switched:" + widget_mode);
     //could call scrollHome here. no reason to require 2 clicks. If they switch to this mode
@@ -240,7 +282,7 @@ $(document).ready(function() {
 
   //Switch to Menu
   var clickOnMenu = function(){
-    $("#widget_function").html("Go to Menu");
+    $("#widget_function").html("Menu");
     widget_mode = "menu_mode";
     //return widget_mode;
   };
