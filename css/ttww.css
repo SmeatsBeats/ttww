@@ -207,6 +207,12 @@ body {
 .widget_bezel {
   z-index: 4;
 } */
+
+/******* WIDGET STICKS ****/
+.widget_stick {
+  margin: 2%;
+}
+
 /***** WIDGET MENU ***/
 .menu {
   display: flex;

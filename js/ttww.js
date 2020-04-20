@@ -92,7 +92,7 @@ $(document).ready(function() {
   var bezelSpinCounter = 0;
   var bezelRotateDist;
   var bezelSpinRate;
-  
+
 
   // var spinMe = function(rotateDeg, deg, rotateDist){
   //   alert("called: " + rotateDeg + " " + deg + " " + rotateDist + " " + i);
@@ -134,7 +134,7 @@ $(document).ready(function() {
   //   $(".nav_img_container").click(true);
   // };
 
-  //Determine rotation parameters for widget 
+  //Determine rotation parameters for widget
   var navRotate = function(rotateDeg){
     if(deg == 360 || deg == -360){
       deg = 0;
@@ -232,7 +232,7 @@ $(document).ready(function() {
         var bezelImg = document.getElementById('widget_bezel_img');
         bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
         clearInterval(bezelSpinTimer);
-        
+
         bezelSpinCounter = 0;
       }
       else{
@@ -270,7 +270,7 @@ $(document).ready(function() {
       break;
       case "menu_mode":
       rotateDeg = 180;
-      
+
       navRotate(rotateDeg);
       break;
       case "download_mode":
@@ -285,91 +285,117 @@ $(document).ready(function() {
     }
   };
 
+  var adjustIcon = function (prev_widget_mode, widget_mode) {
+    //12 cases
+
+    //prev = audio_mode
+
+  }
+
   //displayMode(widget_mode);
 
-  //Switch to Home
-  var clickOnHome = function(){
-    $("#widget_function").html("Home");
-    widget_mode = "home_mode";
-    //alert("widget_mode switched:" + widget_mode);
-    //could call scrollHome here. no reason to require 2 clicks. If they switch to this mode
-    //scrollHome();
-    //they probably want to scroll home
-    //return widget_mode;
-  };
+  //can consolidate below functions by grabbing id and substring
+  //will need to transfer play/pause and download functionality to new function
+  //function to change icon will need to know current icon and desired icon?
+  //or only end result
+  //since we must animate rotations by hand, will probably need to know both
 
-  $("#select_home_mode").click(function() {
-    if(spinning == false){
-      spinning = true;
-      clickOnHome();
-      displayMode(widget_mode);
-  }
-  });
-
-
-  //Switch to Menu
-  var clickOnMenu = function(){
-    $("#widget_function").html("Menu");
-    widget_mode = "menu_mode";
-    //return widget_mode;
-  };
-
-  $("#select_menu_mode").click(function() {
-    if(spinning == false){
-      spinning = true;
-      clickOnMenu();
-      displayMode(widget_mode);
-  }
-  });
-
-
-  //Switch to Audio
-  var clickOnAudio = function(playing){
-    if(!playing) {
-      $("#widget_function").html("Play");
-    }
-    else{
-      $("#widget_function").html("Pause");
-    };
-    widget_mode = "audio_mode";
-    //return widget_mode;
-  };
-
-
-  $("#select_audio_mode").click(function() {
-    if(spinning == false){
-      spinning = true;
-      clickOnAudio(playing);
-      displayMode(widget_mode);
-  }
-  });
-
-
-  var clickOnPlayOrPause = function(playing){
-    if(!playing) {
-      $("#widget_function").html("Play");
-    }
-    else{
-      $("#widget_function").html("Pause");
-    }
-  };
-
-  //Switch to Download
-  var clickOnDownload = function(){
-    $("#widget_function").html('<a id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>Download</a>');
-    widget_mode = "download_mode";
-    //return widget_mode;
-  };
-
-  $("#select_download_mode").click(function() {
+  $(".nav_box").click(function(){
+    var nav_box_id = $(this).attr("id");
+    // alert(nav_box_id);
+    var prev_widget_mode = widget_mode;
+    widget_mode = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
     if(!spinning){
       spinning = true;
-      clickOnDownload();
       displayMode(widget_mode);
+      adjustIcon(prev_widget_mode, widget_mode);
     }
+    // alert(widget_mode);
   });
-  //$("#widget_mode").html(widget_mode);
-
+  //
+  // //Switch to Home
+  // var clickOnHome = function(){
+  //   $("#widget_function").html("Home");
+  //   widget_mode = "home_mode";
+  //   //alert("widget_mode switched:" + widget_mode);
+  //   //could call scrollHome here. no reason to require 2 clicks. If they switch to this mode
+  //   //scrollHome();
+  //   //they probably want to scroll home
+  //   //return widget_mode;
+  // };
+  //
+  // $("#select_home_mode").click(function() {
+  //   if(spinning == false){
+  //     spinning = true;
+  //     clickOnHome();
+  //     displayMode(widget_mode);
+  // }
+  // });
+  //
+  //
+  // //Switch to Menu
+  // var clickOnMenu = function(){
+  //   $("#widget_function").html("Menu");
+  //   widget_mode = "menu_mode";
+  //   //return widget_mode;
+  // };
+  //
+  // $("#select_menu_mode").click(function() {
+  //   if(spinning == false){
+  //     spinning = true;
+  //     clickOnMenu();
+  //     displayMode(widget_mode);
+  // }
+  // });
+  //
+  //
+  // //Switch to Audio
+  // var clickOnAudio = function(playing){
+  //   if(!playing) {
+  //     $("#widget_function").html("Play");
+  //   }
+  //   else{
+  //     $("#widget_function").html("Pause");
+  //   };
+  //   widget_mode = "audio_mode";
+  //   //return widget_mode;
+  // };
+  //
+  //
+  // $("#select_audio_mode").click(function() {
+  //   if(spinning == false){
+  //     spinning = true;
+  //     clickOnAudio(playing);
+  //     displayMode(widget_mode);
+  // }
+  // });
+  //
+  //
+  // var clickOnPlayOrPause = function(playing){
+  //   if(!playing) {
+  //     $("#widget_function").html("Play");
+  //   }
+  //   else{
+  //     $("#widget_function").html("Pause");
+  //   }
+  // };
+  //
+  // //Switch to Download
+  // var clickOnDownload = function(){
+  //   $("#widget_function").html('<a id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>Download</a>');
+  //   widget_mode = "download_mode";
+  //   //return widget_mode;
+  // };
+  //
+  // $("#select_download_mode").click(function() {
+  //   if(!spinning){
+  //     spinning = true;
+  //     clickOnDownload();
+  //     displayMode(widget_mode);
+  //   }
+  // });
+  // //$("#widget_mode").html(widget_mode);
+  //
 
   //need a function to take mode and direct behavior when box clicked
 
@@ -392,7 +418,7 @@ $(document).ready(function() {
   };
 
   $("#widget_function").click(function(){
-    //alert(widget_mode);
+    // alert(widget_mode);
     widgetAction(widget_mode);
   });
 
