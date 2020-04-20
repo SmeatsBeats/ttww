@@ -289,8 +289,45 @@ $(document).ready(function() {
     //12 cases
 
     //prev = audio_mode
+    if(prev_widget_mode == "audio_mode" && widget_mode == "menu_mode"){
+      alert("audio to menu animation")
+    }
+    else if(prev_widget_mode == "audio_mode" && widget_mode == "home_mode"){
+      alert("audio to home animation")
+    }
+    else if(prev_widget_mode == "audio_mode" && widget_mode == "download_mode"){
+      alert("audio to download animation")
+    }
+    else if(prev_widget_mode == "menu_mode" && widget_mode == "audio_mode"){
+      alert("menu to audio animation")
+    }
+    else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
+      alert("menu to home animation")
+    }
+    else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
+      alert("menu to download animation")
+    }
+    else if(prev_widget_mode == "home_mode" && widget_mode == "audio_mode"){
+      alert("home to audio animation")
+    }
+    else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
+      alert("home to menu animation")
+    }
+    else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
+      alert("home to download animation")
+    }
+    else if(prev_widget_mode == "download_mode" && widget_mode == "audio_mode"){
+      alert("download to audio animation")
+    }
+    else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
+      alert("download to home animation")
+    }
+    else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
+      alert("download to menu animation")
+    }
 
-  }
+
+  };
 
   //displayMode(widget_mode);
 
