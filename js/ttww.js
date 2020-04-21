@@ -372,7 +372,7 @@ $(document).ready(function() {
           else{
             $("#a_stick").css("transform", "rotate(" + ia + "deg)");
             $("#b_stick").css("transform", "rotate(" + ib + "deg)");
-            $("#widget_stick").css("margin", im + "%");
+        
             ia++;
             ib--;
             im++;
