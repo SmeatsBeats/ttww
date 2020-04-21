@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=45.51" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=47.4" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <script type="text/javascript" src="js/ttww.js?v=11.96"></script>
+    <script type="text/javascript" src="js/ttww.js?v=13.1"></script>
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -44,8 +44,20 @@
 
         <div class="widget_function_container" id="widget_function_container">
           <div id="widget_function">
-            <span class="widget_stick" id="a_stick">|</span>
-            <span class="widget_stick" id="b_stick">|</span>
+
+            <a id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>
+              <div class="download_circle">
+              </div>
+            </a>
+
+              <svg style="width:5%; height:50%;" class="widget_stick" id="a_stick">
+                <rect width="100%" height="100%" style="fill: #999">
+              </svg>
+
+              <svg style="width:5%; height:50%;" class="widget_stick" id="b_stick">
+                <rect width="100%" height="100%" style="fill: #999">
+              </svg>
+
           </div>
         </div>
 

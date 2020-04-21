@@ -189,6 +189,7 @@ body {
   align-items: center;
 }
 #widget_function {
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -199,14 +200,14 @@ body {
   color: gray;
   /* starts on play mode */
   transform: rotate(90deg);
-  transform-origin: center center; 
+  transform-origin: center center;
 }
 
 #a_stick {
-  transform: rotate(45deg);
+  transform: rotate(35deg);
 }
 #b_stick {
-  transform: rotate(-45deg);
+  transform: rotate(-35deg);
 }
 
 /* .audio_timeline {
@@ -218,12 +219,25 @@ body {
 .widget_bezel {
   z-index: 4;
 } */
-
+.download_circle{
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+}
+#audio_download {
+  display: none;
+}
 /******* WIDGET STICKS ****/
 .widget_stick{
+  position: relative;
   transform-origin: center top;
-  font-size: 70px;
-  margin: -13%;
+  font-size: 260%;
+  padding: 0;
+  margin: 3%;
 }
 
 /***** WIDGET MENU ***/
