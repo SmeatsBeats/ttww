@@ -149,12 +149,13 @@ $(document).ready(function() {
   //   $(".nav_img_container").click(true);
   // };
 
+  /////////////////////////////////////////////////////////////////////// FUNCTIONS ///////////////////////////////////////////////////////////////////////////////////////
   //Determine rotation parameters for widget
   var navRotate = function(rotateDeg){
     if(deg == 360 || deg == -360){
       deg = 0;
     };
-    if(deg == -270){
+    if(deg == -270 || deg == 450){
       deg = 90;
     };
     if(deg == -90){
@@ -180,6 +181,13 @@ $(document).ready(function() {
     else{
       rotateDist = rotateDist;
     }
+
+    //check
+    if(Math.abs(rotateDist) == 180) {
+      rotateDist = 180;
+    }
+
+    //bezel 
     if(rotateDist >= 0){
       bezelRotateDist = rotateDist - 360;
     }
@@ -196,9 +204,8 @@ $(document).ready(function() {
       spinRate = 30;
     }
 
-    //alert(bezelRotateDist);
-    //alert(rotateDist);
-    //spint the nav
+
+    //spin the nav
     var spinTimer = setInterval(function(){
       //alert("called: " + rotateDeg + " " + deg + " " + rotateDist + " " + spinCounter);
       // need to account for over 360
@@ -264,40 +271,6 @@ $(document).ready(function() {
       }
 
     }, bezelSpinRate);
-  }
-
-
-  //Determines current modes and calls for appropriate widget adjustments
-  var displayMode = function(widget_mode){
-    //this function should become responsible for animating the rotation of the widget images to indicate the current mode
-    //can combine with existing switch for widget mode
-    $("#widget_mode").html(widget_mode);
-    switch(widget_mode){
-      case "audio_mode":
-      rotateDeg = 0;
-      // spinning = true;
-      navRotate(rotateDeg);
-      break;
-      case "home_mode":
-      rotateDeg = 270;
-      // spinning = true;
-      navRotate(rotateDeg);
-      break;
-      case "menu_mode":
-      rotateDeg = 180;
-
-      navRotate(rotateDeg);
-      break;
-      case "download_mode":
-      rotateDeg = 90;
-      // spinning = true;
-      navRotate(rotateDeg);
-      break;
-      default:
-      rotateDeg = 0;
-      navRotate(rotateDeg)
-      alert("displayMode default");
-    }
   };
 
   // var clickOnPlayOrPause = function(playing){
@@ -326,6 +299,8 @@ $(document).ready(function() {
 
     //DO WE NEED INDIVIDUAL MODES FOR PLAY AND PAUSE? HOW WOULD THAT WORK??
 
+      /////////////////////////////////////////////////////////////////////// AUDIO ///////////////////////////////////////////////////////////////////////////////////////
+
     //prev = audio_mode
     if(prev_widget_mode == "audio_mode" && widget_mode == "menu_mode"){
       // alert("audio to menu animation")
@@ -334,23 +309,22 @@ $(document).ready(function() {
         // $("#widget_function").css("transform", "rotate(90deg)");
         var i = 0;
         var iconRotate = setInterval(function(){
-          if(i == 180){
+          if(i == 90){
             clearInterval(iconRotate);
           }
           else{
             //cuurently at 90 degrees need to go 90 more
             $("#widget_function").css("transform", "rotate(" + i + "deg)");
-            i++;
+            i = i + 1.5;
           }
-        }, 10);
+        }, spinRate);
       }
       else{
         //remove any weird margin then rotate
         $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
       }
-      //rotate whole thing
-      $("#widget_function").css("transform", "rotate(90deg)");
     }
+
     else if(prev_widget_mode == "audio_mode" && widget_mode == "home_mode"){
       // alert("audio to home animation")
       if(playing){
@@ -373,11 +347,11 @@ $(document).ready(function() {
             $("#a_stick").css("transform", "rotate(" + ia + "deg)");
             $("#b_stick").css("transform", "rotate(" + ib + "deg)");
             $("#widget_stick").css("margin", im + "%");
-            ia++;
-            ib--;
+            ia = ia + 3;
+            ib = ib - 3;
             im++;
           }
-        }, 10);
+        }, spinRate);
 
 
       }
@@ -392,9 +366,9 @@ $(document).ready(function() {
           else{
             //cuurently at 90 degrees need to go 90 more
             $("#widget_function").css("transform", "rotate(" + i + "deg)");
-            i--;
+            i = i - 3;
           }
-        }, 10);
+        }, spinRate);
       }
 
     }
@@ -427,24 +401,37 @@ $(document).ready(function() {
           else{
             //cuurently at 90 degrees need to go 90 more
             $("#widget_function").css("transform", "rotate(" + i + "deg)");
-            i++;
+            i = i + 3;
           }
-        }, 10);
+        }, spinRate);
 
       }
 
     }
+      /////////////////////////////////////////////////////////////////////// MENU ///////////////////////////////////////////////////////////////////////////////////////
+
     else if(prev_widget_mode == "menu_mode" && widget_mode == "audio_mode"){
+
+      // $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
       // alert("menu to audio animation");
       if(playing){
-        $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
-        $("#widget_function").css("transform", "rotate(0deg)");
+        // alert("Pause to menu");
+        // $("#widget_function").css("transform", "rotate(90deg)");
+        var i = 90;
+        var iconRotate = setInterval(function(){
+          if(i == 180){
+            clearInterval(iconRotate);
+          }
+          else{
+            //cuurently at 90 degrees need to go 90 more
+            $("#widget_function").css("transform", "rotate(" + i + "deg)");
+            i = i + 1.5;
+          }
+        }, spinRate);
       }
       else{
-        $(".widget_stick").css("margin", "-13%");
-        $("#a_stick").css("transform", "rotate(45deg)");
-        $("#b_stick").css("transform", "rotate(-45deg)");
-        $("#widget_function").css("transform", "rotate(90deg)");
+        //remove any weird margin then rotate
+        $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
       }
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
@@ -461,6 +448,9 @@ $(document).ready(function() {
       $("#widget_function").css("transform", "rotate(180deg)");
       //alert("menu to download animation");
     }
+
+      /////////////////////////////////////////////////////////////////////// HOME //////////////////////////////////////////////////////////////////////////////////////////
+
     else if(prev_widget_mode == "home_mode" && widget_mode == "audio_mode"){
       // alert("home to audio animation");
       if(playing){
@@ -478,9 +468,9 @@ $(document).ready(function() {
           else{
             //cuurently at 90 degrees need to go 90 more
             $("#widget_function").css("transform", "rotate(" + i + "deg)");
-            i++;
+            i = i + 3;
           }
-        }, 10);
+        }, spinRate);
       }
     }
     else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
@@ -491,24 +481,25 @@ $(document).ready(function() {
 
     //NEED TO MAKE AND REMOVE DOWNLOAD LINK ACCORDINGLY
 
-
     else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
       // alert("home to download animation")
       // $("#widget_function").css("transform", "rotate(180deg)");
       var i = 0;
       var iconRotate = setInterval(function(){
-        if(i == -180){
+        if(i == 180){
           clearInterval(iconRotate);
         }
         else{
           //cuurently at 90 degrees need to go 90 more
           $("#widget_function").css("transform", "rotate(" + i + "deg)");
-          i--;
+          i = i + 3;
         }
-      }, 10);
+      }, spinRate);
 
 
     }
+      /////////////////////////////////////////////////////////////////////// DOWNLOAD ///////////////////////////////////////////////////////////////////////////////////////
+
     else if(prev_widget_mode == "download_mode" && widget_mode == "audio_mode"){
       // alert("download to audio animation");
       if(playing){
@@ -527,15 +518,25 @@ $(document).ready(function() {
           else{
             //cuurently at 90 degrees need to go 90 more
             $("#widget_function").css("transform", "rotate(" + i + "deg)");
-            i--;
+            i = i - 3;
           }
-        }, 10);
+        }, spinRate);
 
       }
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
       // alert("download to home animation");
-      $("#widget_function").css("transform", "rotate(0deg)");
+      var i = 180;
+      var iconRotate = setInterval(function(){
+        if(i == 360){
+          clearInterval(iconRotate);
+        }
+        else{
+          //cuurently at 90 degrees need to go 90 more
+          $("#widget_function").css("transform", "rotate(" + i + "deg)");
+          i = i + 3;
+        }
+      }, spinRate);
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
       // alert("download to menu animation");
@@ -644,6 +645,39 @@ $(document).ready(function() {
   //
 
   //need a function to take mode and direct behavior when box clicked
+
+   //Determines current modes and calls for appropriate widget adjustments
+  var displayMode = function(widget_mode){
+    //this function should become responsible for animating the rotation of the widget images to indicate the current mode
+    //can combine with existing switch for widget mode
+    $("#widget_mode").html(widget_mode);
+    switch(widget_mode){
+      case "audio_mode":
+      rotateDeg = 0;
+      // spinning = true;
+      navRotate(rotateDeg);
+      break;
+      case "home_mode":
+      rotateDeg = 270;
+      // spinning = true;
+      navRotate(rotateDeg);
+      break;
+      case "menu_mode":
+      rotateDeg = 180;
+
+      navRotate(rotateDeg);
+      break;
+      case "download_mode":
+      rotateDeg = 90;
+      // spinning = true;
+      navRotate(rotateDeg);
+      break;
+      default:
+      rotateDeg = 0;
+      navRotate(rotateDeg)
+      alert("displayMode default");
+    }
+  };
 
   var widgetAction = function(widget_mode){
     switch(widget_mode){
