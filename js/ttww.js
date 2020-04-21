@@ -12,6 +12,7 @@ $(document).ready(function() {
   $("#widget_boi").fadeIn(3000);
 
 
+  var widget_mode = "audio_mode";
 
   var playing = false;
 
@@ -34,14 +35,28 @@ $(document).ready(function() {
   //MODE 1 AUDIO PLAYER
   //In this mode widget boi allows the user to pause the audio if it is playing and play the audio if it is paused
 
-  var audioControl = function(playing){
-    if(!playing){
-        audioFile.play();
-      }
-    else {
+  var audioControl = function(){
+
+    if(playing){
         audioFile.pause();
+        playing = false;
+
+        //change icon to play
+        $(".widget_stick").css("margin", "-13%");
+        $("#a_stick").css("transform", "rotate(45deg)");
+        $("#b_stick").css("transform", "rotate(-45deg)");
+        $("#widget_function").css("transform", "rotate(90deg)");
       }
-    };
+      else{
+        audioFile.play();
+        playing = true;
+
+        //change icon to pause
+        $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
+        $("#widget_function").css("transform", "rotate(0deg)");
+      }
+
+    }
 
   //MODE 2 MENU
   //Let the user select which content populates the page: ABOUT, CREDITS, SUPPORT
@@ -82,7 +97,7 @@ $(document).ready(function() {
   //audio_mode is default
 
   //indicate mode
-  var widget_mode = "audio_mode";
+
   var rotateDeg, spinTimer, rotateDist;
   var deg = 0;
   var bezelDeg = 0;
@@ -285,45 +300,247 @@ $(document).ready(function() {
     }
   };
 
+  // var clickOnPlayOrPause = function(playing){
+  //   alert("called! " + playing);
+  //   if(!playing) {
+  //     // $("#widget_function").html("Play");
+  //     $(".widget_stick").css("margin", "-13%");
+  //     $("#a_stick").css("transform", "rotate(45deg)");
+  //     $("#b_stick").css("transform", "rotate(-45deg)");
+  //     $("#widget_function").css("transform", "rotate(90deg)");
+  //   }
+  //   else{
+  //     $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
+  //     $("#widget_function").css("transform", "rotate(0deg)");
+  //     // $("#widget_function").html("Pause");
+  //
+  //
+  //   };
+  //   // widget_mode = "audio_mode";
+  //   //return widget_mode;
+  // };
+
   var adjustIcon = function (prev_widget_mode, widget_mode) {
+
     //12 cases
+
+    //DO WE NEED INDIVIDUAL MODES FOR PLAY AND PAUSE? HOW WOULD THAT WORK??
 
     //prev = audio_mode
     if(prev_widget_mode == "audio_mode" && widget_mode == "menu_mode"){
-      alert("audio to menu animation")
+      // alert("audio to menu animation")
+      if(playing){
+        // alert("Pause to menu");
+        // $("#widget_function").css("transform", "rotate(90deg)");
+        var i = 0;
+        var iconRotate = setInterval(function(){
+          if(i == 180){
+            clearInterval(iconRotate);
+          }
+          else{
+            //cuurently at 90 degrees need to go 90 more
+            $("#widget_function").css("transform", "rotate(" + i + "deg)");
+            i++;
+          }
+        }, 10);
+      }
+      else{
+        //remove any weird margin then rotate
+        $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
+      }
+      //rotate whole thing
+      $("#widget_function").css("transform", "rotate(90deg)");
     }
     else if(prev_widget_mode == "audio_mode" && widget_mode == "home_mode"){
-      alert("audio to home animation")
+      // alert("audio to home animation")
+      if(playing){
+        //pause to home
+        // $(".widget_stick").css("margin", "-13%");
+        // $("#a_stick").css("transform", "rotate(45deg)");
+        // $("#b_stick").css("transform", "rotate(-45deg)");
+        // $("#widget_function").css("transform", "rotate(0deg)");
+
+        //no rotation for widget function required
+        //only need to move sticks
+        var ia = 0;
+        var ib = 0;
+        var im = -13;
+        var stickRotate = setInterval(function(){
+          if(ia == 45){
+            clearInterval(stickRotate);
+          }
+          else{
+            $("#a_stick").css("transform", "rotate(" + ia + "deg)");
+            $("#b_stick").css("transform", "rotate(" + ib + "deg)");
+            $("#widget_stick").css("margin", im + "%");
+            ia++;
+            ib--;
+            im++;
+          }
+        }, 10);
+
+
+      }
+      else{
+        // $("#widget_function").css("transform", "rotate(0deg)");
+        //all we change is i and whether it goes up or down and final destination
+        var i = 90;
+        var iconRotate = setInterval(function(){
+          if(i == 0){
+            clearInterval(iconRotate);
+          }
+          else{
+            //cuurently at 90 degrees need to go 90 more
+            $("#widget_function").css("transform", "rotate(" + i + "deg)");
+            i--;
+          }
+        }, 10);
+      }
+
     }
     else if(prev_widget_mode == "audio_mode" && widget_mode == "download_mode"){
-      alert("audio to download animation")
+
+      //this is only if audio is paused
+
+      // alert("audio to download animation")
+      //var whole_icon = document.getElementById("widget_function");
+
+      if(playing){
+        // alert("pause icon to download icon");
+        $(".widget_stick").css("margin", "-13%");
+        $("#a_stick").css("transform", "rotate(45deg)");
+        $("#b_stick").css("transform", "rotate(-45deg)");
+        $("#widget_function").css("transform", "rotate(180deg)");
+      }
+      else {
+        // $("#widget_function").css("transform", "rotate(180deg)");
+        //animate this bad boi
+
+        //before proceeding we should generalize this
+        // var iconRotateDist = 90;
+        //cuurently at 90 degrees need to go 90 more
+        var i = 90;
+        var iconRotate = setInterval(function(){
+          if(i == 180){
+            clearInterval(iconRotate);
+          }
+          else{
+            //cuurently at 90 degrees need to go 90 more
+            $("#widget_function").css("transform", "rotate(" + i + "deg)");
+            i++;
+          }
+        }, 10);
+
+      }
+
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "audio_mode"){
-      alert("menu to audio animation")
+      // alert("menu to audio animation");
+      if(playing){
+        $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
+        $("#widget_function").css("transform", "rotate(0deg)");
+      }
+      else{
+        $(".widget_stick").css("margin", "-13%");
+        $("#a_stick").css("transform", "rotate(45deg)");
+        $("#b_stick").css("transform", "rotate(-45deg)");
+        $("#widget_function").css("transform", "rotate(90deg)");
+      }
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
-      alert("menu to home animation")
+      // alert("menu to home animation");
+      $(".widget_stick").css("margin", "-13%");
+      $("#a_stick").css("transform", "rotate(45deg)");
+      $("#b_stick").css("transform", "rotate(-45deg)");
+      $("#widget_function").css("transform", "rotate(0deg)");
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
-      alert("menu to download animation")
+      $(".widget_stick").css("margin", "-13%");
+      $("#a_stick").css("transform", "rotate(45deg)");
+      $("#b_stick").css("transform", "rotate(-45deg)");
+      $("#widget_function").css("transform", "rotate(180deg)");
+      //alert("menu to download animation");
     }
     else if(prev_widget_mode == "home_mode" && widget_mode == "audio_mode"){
-      alert("home to audio animation")
+      // alert("home to audio animation");
+      if(playing){
+        // alert("home to pause");
+        $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
+        $("#widget_function").css("transform", "rotate(0deg)");
+      }
+      else{
+        // $("#widget_function").css("transform", "rotate(90deg)");
+        var i = 0;
+        var iconRotate = setInterval(function(){
+          if(i == 90){
+            clearInterval(iconRotate);
+          }
+          else{
+            //cuurently at 90 degrees need to go 90 more
+            $("#widget_function").css("transform", "rotate(" + i + "deg)");
+            i++;
+          }
+        }, 10);
+      }
     }
     else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
-      alert("home to menu animation")
+      // alert("home to menu animation");
+      $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
+      $("#widget_function").css("transform", "rotate(90deg)");
     }
+
+    //NEED TO MAKE AND REMOVE DOWNLOAD LINK ACCORDINGLY
+
+
     else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
-      alert("home to download animation")
+      // alert("home to download animation")
+      // $("#widget_function").css("transform", "rotate(180deg)");
+      var i = 0;
+      var iconRotate = setInterval(function(){
+        if(i == -180){
+          clearInterval(iconRotate);
+        }
+        else{
+          //cuurently at 90 degrees need to go 90 more
+          $("#widget_function").css("transform", "rotate(" + i + "deg)");
+          i--;
+        }
+      }, 10);
+
+
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "audio_mode"){
-      alert("download to audio animation")
+      // alert("download to audio animation");
+      if(playing){
+        // alert("download to pause");
+        $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
+        $("#widget_function").css("transform", "rotate(0deg)");
+      }
+      else{
+        // $("#widget_function").css("transform", "rotate(90deg)");
+
+        var i = 180;
+        var iconRotate = setInterval(function(){
+          if(i == 90){
+            clearInterval(iconRotate);
+          }
+          else{
+            //cuurently at 90 degrees need to go 90 more
+            $("#widget_function").css("transform", "rotate(" + i + "deg)");
+            i--;
+          }
+        }, 10);
+
+      }
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
-      alert("download to home animation")
+      // alert("download to home animation");
+      $("#widget_function").css("transform", "rotate(0deg)");
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
-      alert("download to menu animation")
+      // alert("download to menu animation");
+      $(".widget_stick").css({"transform" : "rotate(0deg)", "margin" : "4%"});
+      $("#widget_function").css("transform", "rotate(90deg)");
     }
 
 
@@ -386,18 +603,10 @@ $(document).ready(function() {
   // });
   //
   //
-  // //Switch to Audio
-  // var clickOnAudio = function(playing){
-  //   if(!playing) {
-  //     $("#widget_function").html("Play");
-  //   }
-  //   else{
-  //     $("#widget_function").html("Pause");
-  //   };
-  //   widget_mode = "audio_mode";
-  //   //return widget_mode;
-  // };
-  //
+  //Switch to Audio
+  //might end up putting this inside adjustIcon
+
+
   //
   // $("#select_audio_mode").click(function() {
   //   if(spinning == false){
@@ -445,12 +654,13 @@ $(document).ready(function() {
         scrollHome();
         break;
       case "audio_mode":
-        audioControl(playing);
-        playing = !playing;
-        clickOnPlayOrPause(playing);
+        audioControl();
+
+        // playing = !playing;
+        // clickOnPlayOrPause(playing);
         break;
       default:
-        alert("running switch default");
+        // alert("running switch default");
     }
   };
 

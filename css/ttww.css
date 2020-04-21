@@ -197,7 +197,18 @@ body {
   height: 65%;
   border-radius: 50%;
   color: gray;
+  /* starts on play mode */
+  transform: rotate(90deg);
+  transform-origin: center center; 
 }
+
+#a_stick {
+  transform: rotate(45deg);
+}
+#b_stick {
+  transform: rotate(-45deg);
+}
+
 /* .audio_timeline {
 
 } */
@@ -209,8 +220,10 @@ body {
 } */
 
 /******* WIDGET STICKS ****/
-.widget_stick {
-  margin: 2%;
+.widget_stick{
+  transform-origin: center top;
+  font-size: 50px;
+  margin: -13%;
 }
 
 /***** WIDGET MENU ***/
