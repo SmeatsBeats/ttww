@@ -39,7 +39,6 @@ $(document).ready(function() {
   //boolean value true means open flase means close
   var flip;
   //boolean value that states whether transform origin is top or bottom true = top
-  var top;
   var moveSticks = function(open, flip){
     if(open){
       //start at 0
@@ -96,7 +95,7 @@ $(document).ready(function() {
 
   var iconSpin = function(start, end, rate){
 
-    previousDeg = 270;
+    // previousDeg = 270;
     var start = start;
     var end = end;
     spinRate = rate;
@@ -107,6 +106,7 @@ $(document).ready(function() {
           $("#widget_function").css("transform", "rotate(0deg)");
         }
         clearInterval(spinWidgetFunction);
+        $("#widget_function").css("transform", "rotate(" + end + "deg)");
       }
       else{
 
