@@ -65,8 +65,8 @@ $(document).ready(function() {
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
 
-          ia++;
-          ib--;
+          ia = ia + 2.1875;
+          ib = ib - 2.1875;
 
 
         }
@@ -86,12 +86,12 @@ $(document).ready(function() {
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
 
-            ia--;
-            ib++;
+            ia= ia - 2.1875;
+            ib= ib + 2.1875;
 
         }
       }
-    }, spinRate);
+    }, 10);
   };
 
   var iconSpin = function(start, end){
@@ -110,11 +110,11 @@ $(document).ready(function() {
 
         $("#widget_function").css("transform", "rotate(" + start + "deg)");
         if(end > start){
-          start++;
+          start = start + 3;
         }
         else{
           //alert("backwards");
-          start--;
+          start = start - 3;
         }
       }
 
@@ -458,7 +458,7 @@ $(document).ready(function() {
           //now you're at 90
         }
         // $("#widget_function").css("transform", "rotate(90deg)");
-        spreadCheeks(true, false);
+        spreadCheeks(true, true);
 
         // $(".widget_stick").css("transform", "rotate(0deg)");
       }
