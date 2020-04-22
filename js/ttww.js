@@ -134,6 +134,12 @@ $(document).ready(function() {
     }, spinRate);
   };
 
+
+  var fullFlip= function(){
+    $("#a_stick").css("transform", "rotate(180deg)");
+    $("#b_stick").css("transform", "rotate(180deg)");
+  };
+
   var audioControl = function(){
 
     if(playing){
@@ -340,7 +346,7 @@ $(document).ready(function() {
       // alert("audio to menu animation")
       if(playing){
         // alert("Pause to menu");
-        iconSpin(0, 90, spinRate);
+        iconSpin(0, 90, 2 * spinRate);
         // $("#widget_function").css("transform", "rotate(90deg)");
         // var i = 0;
         // var iconRotate = setInterval(function(){
@@ -442,7 +448,7 @@ $(document).ready(function() {
       if(playing){
         //menu to pause
         // $("#widget_function").css("transform", "rotate(0deg)");
-        iconSpin(90, 180, spinRate);
+        iconSpin(270, 360, 2 * spinRate);
         //
         // $("#widget_function").css("transform", "rotate(90deg)");
         // var i = 90;
