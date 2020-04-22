@@ -238,8 +238,13 @@ body {
   font-size: 260%;
   padding: 0;
   margin: 3%;
+  fill: #999;
+  transition: fill 1s ease;
 }
-
+#widget_function:hover > .widget_stick{
+  fill: white;
+  transition: fill 1s ease;
+}
 /***** WIDGET MENU ***/
 .menu {
   display: flex;
