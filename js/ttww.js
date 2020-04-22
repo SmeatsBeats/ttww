@@ -39,7 +39,18 @@ $(document).ready(function() {
   //boolean value true means open flase means close
   var flip;
   //boolean value that states whether transform origin is top or bottom true = top
-  var moveSticks = function(open, flip){
+
+  var moveSticks = function(open, flip, doubleRate){
+
+    var moveRate;
+    var dr = doubleRate
+    if(dr){
+      moveRate = (2 * spinRate);
+    }
+    else{
+      moveRate = spinRate;
+    }
+
     if(open){
       //start at 0
       //counter for stick a
@@ -53,6 +64,7 @@ $(document).ready(function() {
     }
 
     var stickRotate = setInterval(function(){
+
       if(open){
         if(ia == 35){
           clearInterval(stickRotate);
@@ -64,8 +76,8 @@ $(document).ready(function() {
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
 
-          ia = ia + 2.1875;
-          ib = ib - 2.1875;
+          ia = ia + 1.25;
+          ib = ib - 1.25;
 
 
         }
@@ -85,12 +97,12 @@ $(document).ready(function() {
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
 
-            ia= ia - 2.1875;
-            ib= ib + 2.1875;
+            ia= ia - 1.25;
+            ib= ib + 1.25;
 
         }
       }
-    }, spinRate);
+    }, moveRate);
   };
 
   var iconSpin = function(start, end, rate){
@@ -121,7 +133,7 @@ $(document).ready(function() {
       }
 
     }, spinRate);
-  }
+  };
 
   var audioControl = function(){
 
@@ -130,7 +142,8 @@ $(document).ready(function() {
         playing = false;
 
         //change icon to play
-        moveSticks(true, false);
+        spinRate = 15;
+        moveSticks(true, false, false);
         iconSpin(0, 90, 15);
         // $(".widget_stick").css("margin", "-13%");
         // $("#a_stick").css("transform", "rotate(45deg)");
@@ -142,7 +155,8 @@ $(document).ready(function() {
         playing = true;
 
         //change icon to pause
-        moveSticks(false, false);
+        spinRate = 15;
+        moveSticks(false, false, false);
         iconSpin(90, 0, 15);
 
         // $(".widget_stick").css("transform", "rotate(0deg)");
@@ -344,7 +358,7 @@ $(document).ready(function() {
       else{
         //remove any weird margin then rotate
         // $(".widget_stick").css("transform", "rotate(0deg)");
-        moveSticks(false, false);
+        moveSticks(false, false, true);
       }
     }
 
@@ -352,8 +366,8 @@ $(document).ready(function() {
       // alert("audio to home animation")
       if(playing){
         //pause to home
-        // $(".widget_stick").css("transform-origin", "center top");
-        moveSticks(true, false);
+        $(".widget_stick").css("transform-origin", "center top");
+        moveSticks(true, false, false);
       }
       else{
         // $("#widget_function").css("transform", "rotate(0deg)");
@@ -392,7 +406,7 @@ $(document).ready(function() {
         // $("#b_stick").css("transform", "rotate(-45deg)");
         $("#widget_function").css("transform", "rotate(180deg)");
         // $(".widget_stick").css("transform-origin", "center bottom");
-        moveSticks(true, false);
+        moveSticks(true, false, false);
 
       }
       else {
@@ -428,6 +442,7 @@ $(document).ready(function() {
       // alert("menu to audio animation");
       if(playing){
         //menu to pause
+        // $("#widget_function").css("transform", "rotate(0deg)");
         iconSpin(90, 180, spinRate);
         //
         // $("#widget_function").css("transform", "rotate(90deg)");
@@ -461,14 +476,14 @@ $(document).ready(function() {
         //   //now you're at 90
         // }
         // $("#widget_function").css("transform", "rotate(90deg)");
-        moveSticks(true, false);
+        moveSticks(true, false, true);
         iconSpin(270, 450, spinRate);
         // $(".widget_stick").css("transform", "rotate(0deg)");
       }
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
       // alert("menu to home animation");
-      moveSticks(true, false);
+      moveSticks(true, false, false);
       iconSpin(270, 360, spinRate);
 
       // $("#a_stick").css("transform", "rotate(45deg)");
@@ -478,7 +493,7 @@ $(document).ready(function() {
     else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
       //menu to download
       $("#audio_download").show();
-      moveSticks(true, false);
+      moveSticks(true, false, false);
       iconSpin(270, 180, spinRate);
 
       // $(".widget_stick").css("margin", "-13%");
@@ -496,7 +511,7 @@ $(document).ready(function() {
         // alert("home to pause");
         // $(".widget_stick").css("transform", "rotate(0deg)");
         // $("#widget_function").css("transform", "rotate(0deg)");
-        moveSticks(false, false);
+        moveSticks(false, false, false);
       }
       else{
         iconSpin(0, 90, spinRate);
@@ -516,7 +531,7 @@ $(document).ready(function() {
     }
     else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
       // alert("home to menu animation");
-      moveSticks(false, false);
+      moveSticks(false, false, false);
       iconSpin(0, -90, spinRate);
 
       // $(".widget_stick").css("transform", "rotate(0deg)");
@@ -554,7 +569,7 @@ $(document).ready(function() {
         // alert("download to pause");
         // $(".widget_stick").css("transform", "rotate(0deg)");
         // $(".widget_stick").css("transform-origin", "center bottom");
-        moveSticks(false, true);
+        moveSticks(false, true, false);
 
       }
       else{
@@ -582,7 +597,7 @@ $(document).ready(function() {
     else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
       // alert("download to menu animation");
       $("#audio_download").hide();
-      moveSticks(false, false);
+      moveSticks(false, false, false);
       iconSpin(180, 270, spinRate);
 
       // $(".widget_stick").css("transform", "rotate(0deg)");
