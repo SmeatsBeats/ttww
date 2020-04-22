@@ -40,7 +40,7 @@ $(document).ready(function() {
   var flip;
   //boolean value that states whether transform origin is top or bottom true = top
   var top;
-  var spreadCheeks = function(open, flip){
+  var moveSticks = function(open, flip){
     if(open){
       //start at 0
       //counter for stick a
@@ -65,8 +65,8 @@ $(document).ready(function() {
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
 
-          ia = ia + 2.333333333333333333333333;
-          ib = ib - 2.333333333333333333333333;
+          ia = ia + 2.1875;
+          ib = ib - 2.1875;
 
 
         }
@@ -86,8 +86,8 @@ $(document).ready(function() {
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
 
-            ia= ia - 2.333333333333333333333333;
-            ib= ib + 2.333333333333333333333333;
+            ia= ia - 2.1875;
+            ib= ib + 2.1875;
 
         }
       }
@@ -130,7 +130,7 @@ $(document).ready(function() {
         playing = false;
 
         //change icon to play
-        spreadCheeks(true, false);
+        moveSticks(true, false);
         iconSpin(0, 90, 15);
         // $(".widget_stick").css("margin", "-13%");
         // $("#a_stick").css("transform", "rotate(45deg)");
@@ -142,7 +142,7 @@ $(document).ready(function() {
         playing = true;
 
         //change icon to pause
-        spreadCheeks(false, false);
+        moveSticks(false, false);
         iconSpin(90, 0, 15);
 
         // $(".widget_stick").css("transform", "rotate(0deg)");
@@ -344,7 +344,7 @@ $(document).ready(function() {
       else{
         //remove any weird margin then rotate
         // $(".widget_stick").css("transform", "rotate(0deg)");
-        spreadCheeks(false, false);
+        moveSticks(false, false);
       }
     }
 
@@ -353,7 +353,7 @@ $(document).ready(function() {
       if(playing){
         //pause to home
         // $(".widget_stick").css("transform-origin", "center top");
-        spreadCheeks(true, false);
+        moveSticks(true, false);
       }
       else{
         // $("#widget_function").css("transform", "rotate(0deg)");
@@ -392,7 +392,7 @@ $(document).ready(function() {
         // $("#b_stick").css("transform", "rotate(-45deg)");
         $("#widget_function").css("transform", "rotate(180deg)");
         // $(".widget_stick").css("transform-origin", "center bottom");
-        spreadCheeks(true, false);
+        moveSticks(true, false);
 
       }
       else {
@@ -461,14 +461,14 @@ $(document).ready(function() {
         //   //now you're at 90
         // }
         // $("#widget_function").css("transform", "rotate(90deg)");
-        spreadCheeks(true, false);
+        moveSticks(true, false);
         iconSpin(270, 450, spinRate);
         // $(".widget_stick").css("transform", "rotate(0deg)");
       }
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
       // alert("menu to home animation");
-      spreadCheeks(true, false);
+      moveSticks(true, false);
       iconSpin(270, 360, spinRate);
 
       // $("#a_stick").css("transform", "rotate(45deg)");
@@ -478,8 +478,8 @@ $(document).ready(function() {
     else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
       //menu to download
       $("#audio_download").show();
-      spreadCheeks(true, false);
-      iconSpin(90, 180, spinRate);
+      moveSticks(true, false);
+      iconSpin(270, 180, spinRate);
 
       // $(".widget_stick").css("margin", "-13%");
       // $("#a_stick").css("transform", "rotate(45deg)");
@@ -496,7 +496,7 @@ $(document).ready(function() {
         // alert("home to pause");
         // $(".widget_stick").css("transform", "rotate(0deg)");
         // $("#widget_function").css("transform", "rotate(0deg)");
-        spreadCheeks(false, false);
+        moveSticks(false, false);
       }
       else{
         iconSpin(0, 90, spinRate);
@@ -516,7 +516,7 @@ $(document).ready(function() {
     }
     else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
       // alert("home to menu animation");
-      spreadCheeks(false, false);
+      moveSticks(false, false);
       iconSpin(0, -90, spinRate);
 
       // $(".widget_stick").css("transform", "rotate(0deg)");
@@ -554,7 +554,7 @@ $(document).ready(function() {
         // alert("download to pause");
         // $(".widget_stick").css("transform", "rotate(0deg)");
         // $(".widget_stick").css("transform-origin", "center bottom");
-        spreadCheeks(false, true);
+        moveSticks(false, true);
 
       }
       else{
@@ -582,7 +582,7 @@ $(document).ready(function() {
     else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
       // alert("download to menu animation");
       $("#audio_download").hide();
-      spreadCheeks(false, false);
+      moveSticks(false, false);
       iconSpin(180, 270, spinRate);
 
       // $(".widget_stick").css("transform", "rotate(0deg)");
