@@ -137,8 +137,7 @@ $(document).ready(function() {
 
 
   var fullFlip= function(){
-    $("#a_stick").css("transform", "rotate(180deg)");
-    $("#b_stick").css("transform", "rotate(180deg)");
+    $(".widget_stick").css("transform", "rotate(180deg)");
   };
 
   var audioControl = function(){
