@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=83.8" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=84.1" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/ttww.js?v=13.2"></script>
     <!--google fonts to include -->
@@ -550,7 +550,7 @@
                 <img class="song_title" src="imgs/HOME.png" alt="HOME. Homecoming. ">
             </div>
 
-            <div class="sacred_symbol_container">
+            <div class="sacred_symbol_container" id="lyrics_fate_container">
                 <img class="sacred_symbol" src="imgs/FATE.png" alt="Sacred semiotics">
             </div>
 

@@ -120,13 +120,35 @@ body {
   background-position: left bottom;
 
   /*attempt to make mobile friendly by adding padding-bottom to clear space for bg img */
-  padding-bottom: 20%;
+  padding-bottom: 85%;
   background-size: 90%;
+}
+#home_song > div {
+  flex: 1 1 auto;
+  background: url("../imgs/CLOCK_SKETCH.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: right top;
+}
+#home_song_lyrics {
+  padding-top: 75%;
 }
 .song_title_container, .sacred_symbol_container {
   flex: 1 1 100%;
   display: flex;
   justify-content: center;
+}
+.song_title_container {
+  margin-top: 10%;
+}
+.sacred_symbol_container {
+  margin-top: 4%;
+}
+#lyrics_fate_container {
+  margin-top: 1%;
+}
+#heratic_title {
+  margin: 0;
 }
 .song_title {
   /* width: 50%; */
@@ -154,23 +176,13 @@ body {
   margin-left: auto;
 }
 #little_glass {
+  /* visibility: hidden; */
   margin-right: auto;
 }
 /* .lyrics_item_img {
   max-width: 40%;
 } */
 
-#home_song > div {
-  flex: 1 1 auto;
-  background: url("../imgs/CLOCK_SKETCH.png");
-  background-size: auto 25%;
-  background-repeat: repeat-y;
-  background-position: right top;
-}
-/* #home_song_lyrics {
-  border: 1px solid red;
-  flex: 2 1 auto;
-} */
 
 /* #clock_sketch {
   flex: 0 0 20%;
@@ -394,6 +406,9 @@ body {
     text-align: left;
     padding-left: 5%;
   }
+  .song_title_container {
+    margin-top: 0;
+  }
   #glass > div > p {
     padding-left: 15%;
   }
@@ -421,11 +436,22 @@ body {
     padding-bottom: 0;
     background-size: 40%;
   }
+  #home_song > div {
+
+    background-size: auto 25%;
+    background-repeat: repeat-y;
+  }
+  #home_song_lyrics {
+    padding-top: 0;
+  }
   #shards_small {
     /* setting margin to auto means take the available space in the element */
     margin-top: auto;
     flex-flow: column wrap;
     justify-content: flex-end;
+  }
+  #little_glass {
+    visibility: visible;
   }
   #shards_large {
     flex-flow: row wrap;
