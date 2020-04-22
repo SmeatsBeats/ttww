@@ -51,6 +51,7 @@ body {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  text-align: center;
 }
 #content_header_img {
   width: 85%;
@@ -62,6 +63,10 @@ body {
   flex-flow: row wrap;
   /*align-items: center;*/
   justify-content: flex-start;
+}
+.lyrics {
+  /*seams appear between lyrics_items on mobile */
+  background-color: white;
 }
 .about_item_img, .about_item {
   flex: 1 1 auto;
@@ -95,8 +100,17 @@ body {
 }
 .lyrics_item > div > p {
   /* width: 45%; */
+  /* font-family: 'Raleway', sans-serif; */
+  font-family: 'Reenie Beanie', cursive;
+  font-size: 130%;
   flex: 1 1 auto;
   text-align: center;
+  /* padding-left: 5%; */
+}
+#heratic_title{
+  font-family: 'Reenie Beanie', cursive;
+  text-align: center;
+  font-size: 150%;
 }
 #heratic > div {
   width: 70%;
@@ -104,7 +118,10 @@ body {
   background: url("../imgs/CREEPY_HAND.png");
   background-repeat: no-repeat;
   background-position: left bottom;
-  background-size: 40%;
+
+  /*attempt to make mobile friendly by adding padding-bottom to clear space for bg img */
+  padding-bottom: 20%;
+  background-size: 90%;
 }
 .song_title_container, .sacred_symbol_container {
   flex: 1 1 100%;
@@ -117,13 +134,32 @@ body {
   /*apparent;y default here is stretch which is no bueno for images */
   align-self: center;
 }
+.lyrics_item > div > p:first-letter {
+  font-family: 'Reenie Beanie', cursive;
+  /* float: left; */
+  /* color: #903; */
+  padding: 0;
+  margin: 0;
+  font-size: 280%;
+  font-weight: bold;
+}
 .lyrics_item {
   flex: 1 1 100%;
 }
-.lyrics_item_img_container {
-  display: flex;
-  flex: 1 1 auto;
+
+.lyrics_item_img {
+  max-width: 60%;
 }
+#big_glass {
+  margin-left: auto;
+}
+#little_glass {
+  margin-right: auto;
+}
+/* .lyrics_item_img {
+  max-width: 40%;
+} */
+
 #home_song > div {
   flex: 1 1 auto;
   background: url("../imgs/CLOCK_SKETCH.png");
@@ -135,16 +171,7 @@ body {
   border: 1px solid red;
   flex: 2 1 auto;
 } */
-#shards_small {
-  /* setting margin to auto means take the available space in the element */
-  margin-top: auto;
-  flex-flow: column wrap;
-  justify-content: flex-end;
-}
-#shards_large {
-  flex-flow: row wrap;
-  justify-content: flex-end;
-}
+
 /* #clock_sketch {
   flex: 0 0 20%;
   width: 20%;
@@ -157,11 +184,7 @@ body {
   border: 1px dashed black;
 } */
 /* using img as background img now. may want to reconsider for mobile. */
-.lyrics_item_img {
-  height: 25%;
-  flex: 0 0 auto;
-  align-self: flex-start;
-}
+
 #graduate, #broken {
   flex: 1 1 100%;
   width: 100%;
@@ -170,10 +193,14 @@ body {
   justify-content: center;
 }
 #graduate {
-  background: url("../imgs/ClOCK_1.JPG");
+  background: url("../imgs/CELLO_3.JPG");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 #broken{
-  background: url("../imgs/CELLO_3.JPG");
+  background: url("../imgs/ROPE_2.JPG");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 #graduate > div, #broken > div {
   /* color: #ccc;
@@ -355,6 +382,55 @@ body {
   #easier_said div {
     order: 1;
   }
+  /****** LYRICS *******/
+  .lyrics {
+    /*seams appear between lyrics_items on mobile */
+    /* background-color: transparent; */
+  }
+  .lyrics_item > div > p {
+    /* width: 45%; */
+    /* font-family: 'Raleway', sans-serif; */
+    flex: 0 0 auto;
+    text-align: left;
+    padding-left: 5%;
+  }
+  #glass > div > p {
+    padding-left: 15%;
+  }
+  #heratic > div > p {
+    padding-left: 9%;
+  }
+  .lyrics_item > div > p:first-letter {
+    /* font-family: 'Reenie Beanie', cursive; */
+    float: left;
+    /* color: #903; */
+    padding-top: 2%;
+    /* padding-right: 1%; */
+    font-size: 300%;
+    /*font-weight: bold; */
+  }
+  .lyrics_item_img_container {
+    display: flex;
+    flex: 1 1 auto;
+  }
+  .lyrics_item_img {
+    max-width: 100%;
+  }
+  /** try to make background imgs on lyrics page mobile friendly -- code here is for desktop */
+  #heratic > div {
+    padding-bottom: 0;
+    background-size: 40%;
+  }
+  #shards_small {
+    /* setting margin to auto means take the available space in the element */
+    margin-top: auto;
+    flex-flow: column wrap;
+    justify-content: flex-end;
+  }
+  #shards_large {
+    flex-flow: row wrap;
+    justify-content: flex-end;
+  }
   #content_header_img {
     width: 50%;
   }
@@ -367,7 +443,7 @@ body {
   .footer h1:nth-child(2) {
     flex: 0 0 10%;
   }
-  #widget_boi{
+  #widget_boi {
     width: 11vw;
     height: 11vw;
     top: 30%;

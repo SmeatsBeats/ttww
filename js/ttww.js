@@ -33,9 +33,9 @@ $(document).ready(function() {
   })
 
   var menu_select = function(nav_selection){
-    $(".content").fadeOut("slow");
+    $(".content").slideUp("slow");
     var selector = "." + nav_selection;
-    $(selector).fadeIn("slow");
+    $(selector).slideDown("slow");
   }
 
   $(".menu_nav").click(function(){
@@ -45,6 +45,10 @@ $(document).ready(function() {
     //alert(nav_selection);
     menu_select(nav_selection);
     $(".menu").fadeOut("slow");
+    //scroll to top of content
+    $("html, body").animate({
+      scrollTop: $("#real_body").offset().top
+    }, 1000);
   });
 
   // $("#about_item_nav").click(function(){

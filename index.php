@@ -6,11 +6,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=79.5" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=83.8" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=12.8"></script>
+    <script type="text/javascript" src="js/ttww.js?v=13.2"></script>
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
   </head>
 
   <body>
@@ -237,7 +238,7 @@
             <p>
               How or when it happened, I haven't the foggiest idea. <br>
               I thought I had left it far enough in the past. <br>
-              Apparently that is no way to think about_item it. <br>
+              Apparently that is no way to think about it. <br>
               Though my feet, still ashamed, managed to resist his commanding tone this time around, my hand faltered. <br>
             <!--
               I scraped together the lyrics of the first track from some notes I had scrawled down my second week at school. <br>
@@ -370,8 +371,8 @@
 
           <div>
 
-            <div class="song_title_container">
-              <h2>The Heratic</h2>
+            <div id="heratic_title" class="song_title_container">
+              <h1>The Heratic <br>(Prologue)</h1>
             </div>
 
             <p>
@@ -412,7 +413,7 @@
             </div>
 
             <p>
-              I've been clingin to the side <br>
+              I 've been clingin to the side <br>
               But my arms are getting tired <br>
               Told my mama please don't cry <br>
               But I think it might be time <br>
@@ -444,7 +445,7 @@
         <div class="lyrics_item" id="glass">
 
           <div class="lyrics_item_img_container" id="shards_small">
-            <img class="lyrics_item_img" src="imgs/SHARDS_SMALL.png" alt="Small glass shards">
+            <img id="little_glass" class="lyrics_item_img" src="imgs/SHARDS_SMALL.png" alt="Small glass shards">
           </div>
 
 
@@ -477,7 +478,7 @@
           </div>
 
           <div class="lyrics_item_img_container" id="shards_large">
-            <img class="lyrics_item_img" src="imgs/SHARDS_LARGE.png" alt="Glass shards in curious pattern.">
+            <img id="big_glass" class="lyrics_item_img" src="imgs/SHARDS_LARGE.png" alt="Glass shards in curious pattern.">
           </div>
 
         </div>
@@ -496,7 +497,7 @@
 
 
             <p>
-              I've been losing my mind <br>
+              I 've been losing my mind <br>
               I've been losing it slowly <br>
               I've been losing my mind <br>
               Trying to forget what they told me <br>
@@ -570,8 +571,7 @@
               Sleepless nights <br>
               Still haunt my daydreams <br>
               These old ghosts <br>
-              Are pulling me away
-
+              Are pulling me away <br><br>
               I let my train <br>
               Leave that station <br>
               Smothered sails <br>
