@@ -40,7 +40,7 @@ $(document).ready(function() {
   var flip;
   //boolean value that states whether transform origin is top or bottom true = top
   var top;
-  var spreadCheeks = function(open, flip){
+  var moveSticks = function(open, flip){
     if(open){
       //start at 0
       //counter for stick a
@@ -65,8 +65,8 @@ $(document).ready(function() {
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
 
-          ia++;
-          ib--;
+          ia = ia + 2.1875;
+          ib = ib - 2.1875;
 
 
         }
@@ -86,18 +86,20 @@ $(document).ready(function() {
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
 
-            ia--;
-            ib++;
+            ia= ia - 2.1875;
+            ib= ib + 2.1875;
 
         }
       }
     }, spinRate);
   };
 
-  var iconSpin = function(start, end){
+  var iconSpin = function(start, end, rate){
 
+    previousDeg = 270;
     var start = start;
     var end = end;
+    spinRate = rate;
     //must update to account for rate
     var spinWidgetFunction = setInterval(function(){
       if(start == end){
@@ -110,15 +112,15 @@ $(document).ready(function() {
 
         $("#widget_function").css("transform", "rotate(" + start + "deg)");
         if(end > start){
-          start++;
+          start = start + 3;
         }
         else{
           //alert("backwards");
-          start--;
+          start = start - 3;
         }
       }
 
-    }, 10);
+    }, spinRate);
   }
 
   var audioControl = function(){
@@ -128,8 +130,8 @@ $(document).ready(function() {
         playing = false;
 
         //change icon to play
-        spreadCheeks(true, false);
-        iconSpin(0, 90);
+        moveSticks(true, false);
+        iconSpin(0, 90, 15);
         // $(".widget_stick").css("margin", "-13%");
         // $("#a_stick").css("transform", "rotate(45deg)");
         // $("#b_stick").css("transform", "rotate(-45deg)");
@@ -140,8 +142,8 @@ $(document).ready(function() {
         playing = true;
 
         //change icon to pause
-        spreadCheeks(false, false);
-        iconSpin(90, 0);
+        moveSticks(false, false);
+        iconSpin(90, 0, 15);
 
         // $(".widget_stick").css("transform", "rotate(0deg)");
         // $("#widget_function").css("transform", "rotate(0deg)");
@@ -182,10 +184,11 @@ $(document).ready(function() {
   var bezelDeg = 0;
   var spinTimer;
   var spinCounter = 0;
-  var spinRate;
+  var spinRate = 15;
   var bezelSpinCounter = 0;
   var bezelRotateDist;
   var bezelSpinRate;
+  var previousDeg;
 
   /////////////////////////////////////////////////////////////////////// FUNCTIONS ///////////////////////////////////////////////////////////////////////////////////////
   //Determine rotation parameters for widget
@@ -324,7 +327,7 @@ $(document).ready(function() {
       // alert("audio to menu animation")
       if(playing){
         // alert("Pause to menu");
-        iconSpin(0, 90);
+        iconSpin(0, 90, spinRate);
         // $("#widget_function").css("transform", "rotate(90deg)");
         // var i = 0;
         // var iconRotate = setInterval(function(){
@@ -341,7 +344,7 @@ $(document).ready(function() {
       else{
         //remove any weird margin then rotate
         // $(".widget_stick").css("transform", "rotate(0deg)");
-        spreadCheeks(false, false);
+        moveSticks(false, false);
       }
     }
 
@@ -350,13 +353,13 @@ $(document).ready(function() {
       if(playing){
         //pause to home
         // $(".widget_stick").css("transform-origin", "center top");
-        spreadCheeks(true, false);
+        moveSticks(true, false);
       }
       else{
         // $("#widget_function").css("transform", "rotate(0deg)");
         //all we change is i and whether it goes up or down and final destination
 
-        iconSpin(90, 0);
+        iconSpin(90, 0, spinRate);
 
         // var i = 90;
         // var iconRotate = setInterval(function(){
@@ -389,7 +392,7 @@ $(document).ready(function() {
         // $("#b_stick").css("transform", "rotate(-45deg)");
         $("#widget_function").css("transform", "rotate(180deg)");
         // $(".widget_stick").css("transform-origin", "center bottom");
-        spreadCheeks(true, false);
+        moveSticks(true, false);
 
       }
       else {
@@ -400,7 +403,7 @@ $(document).ready(function() {
         // var iconRotateDist = 90;
         //cuurently at 90 degrees need to go 90 more
 
-        iconSpin(90, 180);
+        iconSpin(90, 180, spinRate);
 
         // var i = 90;
         // var iconRotate = setInterval(function(){
@@ -425,7 +428,7 @@ $(document).ready(function() {
       // alert("menu to audio animation");
       if(playing){
         //menu to pause
-        iconSpin(90, 180);
+        iconSpin(90, 180, spinRate);
         //
         // $("#widget_function").css("transform", "rotate(90deg)");
         // var i = 90;
@@ -447,26 +450,26 @@ $(document).ready(function() {
         //for now, just check if you are at 270
         //this is sketcht as hell and I'm not sure if there will be a 7 on all machines. Maybe search for .
         //to be a little less sjetch
-        var matrix = $("#widget_function").css("transform");
-        var currentPos = matrix.indexOf("7");
-        // alert(currentPos);
-        //if there is a 7 somewhere in this then it is not at 90 but 270
-        if(currentPos > -1){
-          //this means it found a 7
-          //so you are at 270
-          $("#widget_function").css("transform", "rotate(90deg)");
-          //now you're at 90
-        }
+        // var matrix = $("#widget_function").css("transform");
+        // var currentPos = matrix.indexOf("7");
+        // // alert(currentPos);
+        // //if there is a 7 somewhere in this then it is not at 90 but 270
+        // if(currentPos > -1){
+        //   //this means it found a 7
+        //   //so you are at 270
+        //   $("#widget_function").css("transform", "rotate(90deg)");
+        //   //now you're at 90
+        // }
         // $("#widget_function").css("transform", "rotate(90deg)");
-        spreadCheeks(true, false);
-
+        moveSticks(true, false);
+        iconSpin(270, 450, spinRate);
         // $(".widget_stick").css("transform", "rotate(0deg)");
       }
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
       // alert("menu to home animation");
-      spreadCheeks(true, false);
-      iconSpin(90, 0);
+      moveSticks(true, false);
+      iconSpin(270, 360, spinRate);
 
       // $("#a_stick").css("transform", "rotate(45deg)");
       // $("#b_stick").css("transform", "rotate(-45deg)");
@@ -475,8 +478,8 @@ $(document).ready(function() {
     else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
       //menu to download
       $("#audio_download").show();
-      spreadCheeks(true, false);
-      iconSpin(90, 180);
+      moveSticks(true, false);
+      iconSpin(270, 180, spinRate);
 
       // $(".widget_stick").css("margin", "-13%");
       // $("#a_stick").css("transform", "rotate(45deg)");
@@ -493,10 +496,10 @@ $(document).ready(function() {
         // alert("home to pause");
         // $(".widget_stick").css("transform", "rotate(0deg)");
         // $("#widget_function").css("transform", "rotate(0deg)");
-        spreadCheeks(false, false);
+        moveSticks(false, false);
       }
       else{
-        iconSpin(0, 90);
+        iconSpin(0, 90, spinRate);
         // $("#widget_function").css("transform", "rotate(90deg)");
         // var i = 0;
         // var iconRotate = setInterval(function(){
@@ -513,8 +516,8 @@ $(document).ready(function() {
     }
     else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
       // alert("home to menu animation");
-      spreadCheeks(false, false);
-      iconSpin(0, -90);
+      moveSticks(false, false);
+      iconSpin(0, -90, spinRate);
 
       // $(".widget_stick").css("transform", "rotate(0deg)");
       // $("#widget_function").css("transform", "rotate(90deg)");
@@ -526,7 +529,7 @@ $(document).ready(function() {
       // alert("home to download animation")
       // $("#widget_function").css("transform", "rotate(180deg)");
       $("#audio_download").show();
-      iconSpin(0, 180);
+      iconSpin(0, 180, spinRate);
 
       // var i = 0;
       // var iconRotate = setInterval(function(){
@@ -551,12 +554,12 @@ $(document).ready(function() {
         // alert("download to pause");
         // $(".widget_stick").css("transform", "rotate(0deg)");
         // $(".widget_stick").css("transform-origin", "center bottom");
-        spreadCheeks(false, true);
+        moveSticks(false, true);
 
       }
       else{
         // $("#widget_function").css("transform", "rotate(90deg)");
-        iconSpin(180, 90);
+        iconSpin(180, 90, spinRate);
         // var i = 180;
         // var iconRotate = setInterval(function(){
         //   if(i == 90){
@@ -574,13 +577,13 @@ $(document).ready(function() {
     else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
       // alert("download to home animation");
       $("#audio_download").hide();
-      iconSpin(180, 360);
+      iconSpin(180, 360, spinRate);
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
       // alert("download to menu animation");
       $("#audio_download").hide();
-      spreadCheeks(false, false);
-      iconSpin(180, 270);
+      moveSticks(false, false);
+      iconSpin(180, 270, spinRate);
 
       // $(".widget_stick").css("transform", "rotate(0deg)");
       // $("#widget_function").css("transform", "rotate(90deg)");
