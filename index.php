@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
 
-    <link rel="stylesheet" href="css/ttww.css?v=84.3" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=84.4" type="text/css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
