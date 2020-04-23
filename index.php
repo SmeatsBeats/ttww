@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
 
-    <link rel="stylesheet" href="css/ttww.css?v=47.9" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=84.3" type="text/css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <script type="text/javascript" src="js/ttww.js?v=13.57"></script>
-
+    <script type="text/javascript" src="js/ttww.js?v=13.3"></script>
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
   </head>
 
   <body>
 
     <!-- widget section -->
-    <div id="widget_boi">
+    <div id="widget_boi" class="no_select">
 
       <div class="widget_nav_container">
 
@@ -53,11 +53,11 @@
               </div>
             </a>
 
-              <svg style="width:5%; height:50%;" class="widget_stick" id="a_stick">
+              <svg style="width:5%; height:50%;" class="widget_stick no_select" id="a_stick">
                 <rect width="100%" height="100%">
               </svg>
 
-              <svg style="width:5%; height:50%;" class="widget_stick" id="b_stick">
+              <svg style="width:5%; height:50%;" class="widget_stick no_select" id="b_stick">
                 <rect width="100%" height="100%">
               </svg>
 
@@ -66,24 +66,15 @@
 
       </div>
 
-
-      <!-- <h2 id="widget_mode"></h2> -->
-
-
-      <!--
-      <h3 id="select_audio_mode">Audio</h3>
-      <h3 id="select_home_mode">Home</h3>
-      <h3 id="select_download_mode">Download</h3>
-      <h3 id="select_menu_mode">Menu</h3>
-    -->
     </div>
 
     <!-- widget menu -->
 
     <div class="menu">
-      <h2 id="about_nav">ABOUT</h2>
-      <h2 id="credits_nav">CREDITS</h2>
-      <h2 id="support_nav">SUPPORT</h2>
+      <h2 class="menu_nav" id="about_nav">ABOUT</h2>
+      <h2 class="menu_nav" id="lyrics_nav">SONGS</h2>
+      <h2 class="menu_nav" id="credits_nav">CREDITS</h2>
+      <h2 class="menu_nav" id="support_nav">SUPPORT</h2>
     </div>
 
     <section id="home">
@@ -99,19 +90,14 @@
 
     </section>
 
-    <section class="content">
+    <!-- this div will contain everything under the home section -->
 
+    <div id="real_body">
 
-      <!--header title image -->
+      <section id="content_header">
+        <!--header title image -->
 
-      <div class="about" id="content_head_container">
-
-        <img id="content_head" src="imgs/TTWW_TITLE.jpg" alt="To Those Who Wait">
-
-      </div>
-
-
-      <div class="about" id="about_intro">
+        <img id="content_header_img" src="imgs/TTWW_TITLE.jpg" alt="To Those Who Wait">
 
         <p>
           What began as an exercise to ease cognitive disonance,
@@ -119,81 +105,97 @@
           attempt to shed light on <em>Waiting</em> as a Mode of Being.
         </p>
 
-      </div>
+      </section>
 
-      <div class="about" id="easier_said">
+      <section class="about content">
 
-        <img class="about_img" id="easier_said_img" src="imgs/YOUNG_PULL.JPG" alt="Nerd pulling on door">
+        <div class="about_item" id="easier_said">
 
-        <div>
+          <img class="about_item_img" id="easier_said_img" src="imgs/YOUNG_PULL.JPG" alt="Nerd pulling on door">
 
-          <h2>Easier Said Than Sung</h2>
+          <div>
+
+            <h2>Easier Said Than Sung</h2>
+
+            <p>
+              As a sound engineer with serious difficulties keeping my opinions to myself,
+              I needed to establish some authority on the basis of which to justify shoving my opinions
+              into the faces of actual recording artists. <br><br>
+              <!--
+              "Let's run another take, but with a bit more <em>energy</em> this time. <br>
+              Does that make sense? Of course it does. Great. <br>
+              Okay, Rolling." <br><br>
+              For some reason, that next take still lacked the precision and clarity that it needed. <br>
+              And the next take. The clock ticks, the meter runs, frustration surfaces. <br><br>
+              But what can I do? It's not my fault if you can't perform your track the way it sounds in your head. <br>
+              I'm just here to record what you give me. <br>
+              Sure. All sorts of analog and digital <em>processing</em> can be applied to the recording after the fact, but this will
+              introduce unexpected <em>color</em> and a result that just isn't the same as an outright inspired performace. <br><br>
+              Halfway through the session, we are still missing those crucial three decibels around four kilohertz. <br>
+              But how the hell do you tease those three decibels out of an artist without turning their session into an episode of <em>Bill Nye the Science Guy?</em> <br>
+              Maybe this time I'll tell them to do it with more <em>Atitude.</em> <br><br>
+              This could only go on so long. <br>
+              As fulfilling as it was, claiming status and power on the basis of some shiny gear, it was time for a reality sandwich. <br>
+              Telling someone again and again that they could be doing something better-without being able to demonstrate how or why-gets old. <br>
+              -->
+              I decided the only thing for it was to step out of my comfort zone. <br>
+              I needed to climb down from my pulpit at the console and get in front of a microphone.
+              I needed experience.<br><br>
+              But the first thing I experienced in front of the mic was speechlessness. <br>
+              Was I cured of my inability to shut up already? <br><br>
+              Unfortunately (for anyone still willing to work with me) I didn't give up so easily. <br>
+              But I did have to concede that coming up with something worth recording is a daunting task in itself.
+            </p>
+          </div>
+
+          <!-- <img class="about_item_img" id="easier_said_img" src="imgs/YOUNG_PULL.JPG" alt="Nerd pulling on door"> -->
+
+        </div>
+
+        <!--
+        <div class="about_item" id="about_item_2">
 
           <p>
-            As a sound engineer with serious difficulties keeping my opinions to myself,
-            I needed to establish some authority on the basis of which to justify shoving my opinions
-            into the faces of actual recording artists. <br><br>
-            <!--
-            "Let's run another take, but with a bit more <em>energy</em> this time. <br>
-            Does that make sense? Of course it does. Great. <br>
-            Okay, Rolling." <br><br>
-            For some reason, that next take still lacked the precision and clarity that it needed. <br>
-            And the next take. The clock ticks, the meter runs, frustration surfaces. <br><br>
-            But what can I do? It's not my fault if you can't perform your track the way it sounds in your head. <br>
-            I'm just here to record what you give me. <br>
-            Sure. All sorts of analog and digital <em>processing</em> can be applied to the recording after the fact, but this will
-            introduce unexpected <em>color</em> and a result that just isn't the same as an outright inspired performace. <br><br>
-            Halfway through the session, we are still missing those crucial three decibels around four kilohertz. <br>
-            But how the hell do you tease those three decibels out of an artist without turning their session into an episode of <em>Bill Nye the Science Guy?</em> <br>
-            Maybe this time I'll tell them to do it with more <em>Atitude.</em> <br><br>
-            This could only go on so long. <br>
-            As fulfilling as it was, claiming status and power on the basis of some shiny gear, it was time for a reality sandwich. <br>
-            Telling someone again and again that they could be doing something better-without being able to demonstrate how or why-gets old. <br>
-            -->
-            I decided the only thing for it was to step out of my comfort zone. <br>
-            I needed to climb down from my pulpit at the console and get in front of a microphone.
-            I needed experience.<br><br>
             But the first thing I experienced in front of the mic was speechlessness. <br>
-            Was I cured of my inability to shut up already? <br><br>
+            Was I cured of my inability to shut up already? <br>
             Unfortunately (for anyone still willing to work with me) I didn't give up so easily. <br>
             But I did have to concede that coming up with something worth recording is a daunting task in itself.
           </p>
+
         </div>
+        -->
+        <div class="about_item" id="ancient_traces">
 
-        <!-- <img class="about_img" id="easier_said_img" src="imgs/YOUNG_PULL.JPG" alt="Nerd pulling on door"> -->
+          <div>
 
-      </div>
+            <h2>Ancient Traces</h2>
 
-      <!--
-      <div class="about" id="about_2">
+            <img class="sacred_symbol" src="imgs/LATE.png" alt="Sacred semiotics" />
 
-        <p>
-          But the first thing I experienced in front of the mic was speechlessness. <br>
-          Was I cured of my inability to shut up already? <br>
-          Unfortunately (for anyone still willing to work with me) I didn't give up so easily. <br>
-          But I did have to concede that coming up with something worth recording is a daunting task in itself.
-        </p>
+            <p>
+              I turned to a three-year-old field recording that I found on an old hard drive. <br>
+              It was accompanied by a note in which my younger self vowed to claim poetic revenge. <br>
+              The audio file was a recording of one of those traffic lights, tricked out with audio <br>
+              to assist blind people &mdash; though I'm certain that
+              this one mostly saved clueless students, drifting towards the curb with their faces glued to some screen. <br><br>
+              "Wait... Wait... Wait..." <br><br>
+              To the more alert pedestrians, it was annoying. <br>
+              To a nerd like me, it was poetry.<br><br>
+              Without question, my poet had a limited arsenal of literary devices and an even worse vocabulary. <br>
+              But I couldn't deny that his careful diction and subtle mastery of repitition fit the meaning of his piece. <br>
+              What struck me most of all, was the masked suggestiveness: I was stuck in the Mode of Being of Waiting. <br>
+              Maybe a lot of us were. <br>
+              Quite the critique from a traffic light!
+            </p>
 
-      </div>
-      -->
-      <div class="about" id="ancient_traces">
+          </div>
 
-        <div>
-
-          <h2>Ancient Traces</h2>
-
-          <img class="about_symbol" src="imgs/LATE.png" alt="Sacred semiotics" />
+        </div>
+        <!--
+        <div class="about_item" id="about_item_4">
 
           <p>
-            I turned to a three-year-old field recording that I found on an old hard drive. <br>
-            It was accompanied by a note in which my younger self vowed to claim poetic revenge. <br>
-            The audio file was a recording of one of those traffic lights, tricked out with audio <br>
-            to assist blind people &mdash; though I'm certain that
-            this one mostly saved clueless students, drifting towards the curb with their faces glued to some screen. <br><br>
-            "Wait... Wait... Wait..." <br><br>
-            To the more alert pedestrians, it was annoying. <br>
-            To a nerd like me, it was poetry.<br><br>
-            Without question, my poet had a limited arsenal of literary devices and an even worse vocabulary. <br>
+            My poet had a limited arsenal of literary devices, and an even more limited vocabulary... <br>
             But I couldn't deny that his careful diction and subtle mastery of repitition fit the meaning of his piece. <br>
             What struck me most of all, was the masked suggestiveness: I was stuck in the Mode of Being of Waiting. <br>
             Maybe a lot of us were. <br>
@@ -201,200 +203,432 @@
           </p>
 
         </div>
+      -->
+        <div class="about_item" id="betrayal">
 
-      </div>
-      <!--
-      <div class="about" id="about_4">
+          <div>
 
-        <p>
-          My poet had a limited arsenal of literary devices, and an even more limited vocabulary... <br>
-          But I couldn't deny that his careful diction and subtle mastery of repitition fit the meaning of his piece. <br>
-          What struck me most of all, was the masked suggestiveness: I was stuck in the Mode of Being of Waiting. <br>
-          Maybe a lot of us were. <br>
-          Quite the critique from a traffic light!
-        </p>
+            <h2>Betrayal</h2>
 
-      </div>
-    -->
-      <div class="about" id="betrayal">
+            <img class="sacred_symbol" src="imgs/FATE.png" alt="Sacred semiotics">
 
-        <div>
+            <p>
+              I probably really began to appreciate it around midterms. <br>
+              A time when you're forced to question the loyalty of your own two feet. <br><br>
+              "You can turn around," I remind myself. <br>
+              "You are a grown-ass man and can walk straight out of here." <br><br>
+              "Wait," suggests the light. <br><br>
+              The traitors comply. So that's how it's going to be.
+            </p>
 
-          <h2>Betrayal</h2>
+          </div>
 
-          <img class="about_symbol" src="imgs/FATE.png" alt="Sacred semiotics">
+        </div>
+
+        <div class="about_item" id="two_birds">
+          <div>
+
+            <h2>Two Birds One Phone</h2>
+
+            <img class="sacred_symbol" src="imgs/WAIT.png" alt="Sacred semiotics"/>
+
+            <p>
+              Three years later the opportunity presents itself. <br>
+              No more waiting. Time for some good old fashioned poetic justice. <br>
+              As he twisted my feet aginst my will I will twist his words in my music. <br><br>
+              Now I had something to record and if I did it right, <br>
+              I might just escape that poem's cruel circling.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="about_item" id="defeat">
+
+          <img class="about_item_img" id="defeat_img" src="imgs/OLD_PULL.JPG" alt="Older nerd pulling on door">
+
+          <div>
+
+            <h2>Defeat</h2>
+
+            <img class="sacred_symbol" src="imgs/HATE.png" alt="Sacred semiotics" />
+
+            <p>
+              How or when it happened, I haven't the foggiest idea. <br>
+              I thought I had left it far enough in the past. <br>
+              Apparently that is no way to think about it. <br>
+              Though my feet, still ashamed, managed to resist his commanding tone this time around, my hand faltered. <br>
+            <!--
+              I scraped together the lyrics of the first track from some notes I had scrawled down my second week at school. <br>
+              At the time, they seemed to fit the tone, so I went with it. <br>
+              In hindsight, probably not my best strategic move. <br>
+              I listened to that first track again and again until I thought I knew what had to come next. <br><br>
+            -->
+              The project seemed to write itself. <br>
+              I convinced myself that this was creativity or inspiration or something. <br>
+            <!--
+              If it can be called anything like that, it was more like a Haunting In Connecticut style demon-posession. <br>
+            -->
+              Before my eyes,
+              the calculated, spite-born plot to transcend that poem forever melted instead into a <em>thesis</em> on its central theme. <br><br>
+              It became a phenomenology of Waiting.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- section to display credits -->
+
+      <section class="content credits">
+
+        <div class="credits_item" id="credits_title">
+
+          <h1>Credits</h1>
 
           <p>
-            I probably really began to appreciate it around midterms. <br>
-            A time when you're forced to question the loyalty of your own two feet. <br><br>
-            "You can turn around," I remind myself. <br>
-            "You are a grown-ass man and can walk straight out of here." <br><br>
-            "Wait," suggests the light. <br><br>
-            The traitors comply. So that's how it's going to be.
+            Strangely, few people seemed to share my fascination with <em>Waiting</em> as a <em>Mode of Being.</em> <br>
+            So the project had to complete itself with a small team. <br><br>
+            Of course, I am still indebted to the people whose ideas I stole to make it happen. <br><br>
+            Likewise, if it weren't for the mentors, friends and family who have always waited for me, <br>
+            I'd still be waiting for my chance to finally make my music.
           </p>
 
         </div>
 
-      </div>
+        <div class="credits_item">
 
-      <div class="about" id="two_birds">
-        <div>
+          <h2>Calum Smeaton</h2>
 
-          <h2>Two Birds One Phone</h2>
-
-          <img class="about_symbol" src="imgs/WAIT.png" alt="Sacred semiotics"/>
-
-          <p>
-            Three years later the opportunity presents itself. <br>
-            No more waiting. Time for some good old fashioned poetic justice. <br>
-            As he twisted my feet aginst my will I will twist his words in my music. <br><br>
-            Now I had something to record and if I did it right, <br>
-            I might just escape that poem's cruel circling.
-          </p>
+          <p>Music, Digital Art & Photography</p>
 
         </div>
 
-      </div>
+        <div class="credits_item">
 
-      <div class="about" id="defeat">
+          <h2>Justine Clougherty</h2>
 
-        <img class="about_img" id="defeat_img" src="imgs/OLD_PULL.JPG" alt="Older nerd pulling on door">
-
-        <div>
-
-          <h2>Defeat</h2>
-
-          <img class="about_symbol" src="imgs/HATE.png" alt="Sacred semiotics" />
-
-          <p>
-            How or when it happened, I haven't the foggiest idea. <br>
-            I thought I had left it far enough in the past. <br>
-            Apparently that is no way to think about it. <br>
-            Though my feet, still ashamed, managed to resist his commanding tone this time around, my hand faltered. <br>
-          <!--
-            I scraped together the lyrics of the first track from some notes I had scrawled down my second week at school. <br>
-            At the time, they seemed to fit the tone, so I went with it. <br>
-            In hindsight, probably not my best strategic move. <br>
-            I listened to that first track again and again until I thought I knew what had to come next. <br><br>
-          -->
-            The project seemed to write itself. <br>
-            I convinced myself that this was creativity or inspiration or something. <br>
-          <!--
-            If it can be called anything like that, it was more like a Haunting In Connecticut style demon-posession. <br>
-          -->
-            Before my eyes,
-            the calculated, spite-born plot to transcend that poem forever melted instead into a <em>thesis</em> on its central theme. <br><br>
-            It became a phenomenology of Waiting.
-          </p>
+          <p>Artwork</p>
 
         </div>
 
-      </div>
+        <div class="credits_item">
 
-    <!-- should find a way to decouple this from a particular section and still have it display properly -->
+          <h2>Louie Buchen</h2>
 
-    <footer class="footer">
+          <p>Web Developer, Visionary, & #1 Fan</p>
 
-      <h1>Dirty Mop Music</h1>
-      <h1>&</h1>
-      <h1>INLAE</h1>
+        </div>
 
-    </footer>
+        <div class="credits_item">
 
-    </section>
+          <h2>Jess</h2>
 
-    <!-- section to display credits -->
+          <p>A "pretty good muse."</p>
 
-    <section class="credits">
+        </div>
 
-      <div class="credits_item" id="credits_title">
+        <div class="credits_item">
 
-        <h1>Credits</h1>
+          <h2>Mom and Dad</h2>
 
-        <p>
-          Strangely, few people seemed to share my fascination with <em>Waiting</em> as a <em>Mode of Being.</em> <br>
-          So the project had to complete itself with a small team. <br><br>
-          Of course, I am still indebted to the people whose ideas I stole to make it happen. <br><br>
-          Likewise, if it weren't for the mentors, friends and family who have always waited for me, <br>
-          I'd still be waiting for my chance to finally make my music.
-        </p>
+          <p>For not kicking me out yet.</p>
 
-      </div>
+        </div>
 
-      <div class="credits_item">
+        <div class="credits_item">
 
-        <h2>Calum Smeaton</h2>
+          <h2>Sammy and Mario</h2>
 
-        <p>Music, Digital Art & Photography</p>
+          <p>Weirdos.</p>
 
-      </div>
+        </div>
 
-      <div class="credits_item">
+        <div class="credits_item">
 
-        <h2>Justine Clougherty</h2>
+          <h2>Stephan Fuchs</h2>
 
-        <p>Artwork</p>
+          <p>Disgruntled Quasi-Thinker.</p>
 
-      </div>
+        </div>
 
-      <div class="credits_item">
+        <div class="credits_item">
 
-        <h2>Louie Buchen</h2>
+          <h2>Ben Green</h2>
 
-        <p>Web Developer, Visionary, & #1 Fan</p>
+          <p>Definitely a genius.</p>
 
-      </div>
+        </div>
 
-      <div class="credits_item">
+        <div class="credits_item">
 
-        <h2>Jess</h2>
+          <h2>Oren Polak</h2>
 
-        <p>A "pretty good muse."</p>
+          <p>Sorry I never practiced.</p>
 
-      </div>
+        </div>
 
-      <div class="credits_item">
+      </section>
 
-        <h2>Mom and Dad</h2>
+      <section class="content lyrics">
 
-        <p>For not kicking me out yet.</p>
 
-      </div>
+        <!--header title image -->
 
-      <div class="credits_item">
+        <!-- <div class="lyrics_container" id="content_head_container">
 
-        <h2>Sammy and Mario</h2>
+          <img id="content_head" src="imgs/TTWW_TITLE.jpg" alt="To Those Who Wait">
 
-        <p>Weirdos.</p>
+        </div> -->
 
-      </div>
+        <div class="lyrics_item" id="heratic">
 
-      <div class="credits_item">
+          <!-- <img class="lyrics_item_img" id="heartic_img" src="imgs/CREEPY_HAND.png" alt="Creepy Hand"> -->
 
-        <h2>Stephan Fuchs</h2>
+          <div>
 
-        <p>Disgruntled Quasi-Thinker.</p>
+            <div id="heratic_title" class="song_title_container">
+              <h1>The Heratic <br>(Prologue)</h1>
+            </div>
 
-      </div>
+            <p>
+              Put fire to the future and the past is singed <br><br>
+              Though its frame may creak <br>
+              As its sails swirl to ashes <br>
+              He will count out the oars <br>
+              'Til his ghostly ship crashes <br><br>
+              But what better way to the essence? <br>
+              He cries! <br>
+              What surer route to the heart? <br><br>
+              Headlong towards the end <br>
+              Determined. He waits. <br>
+              To know what he had at the start <br><br>
+              Does no mariner fear that his future is stone? <br>
+              Such a ship can go down by her captain alone <br><br>
+              Beckoning future <br>
+              Shunning fate <br>
+              What becomes of those who wait? <br>
+            </p>
+          </div>
 
-      <div class="credits_item">
+          <!-- <img class="about_item_img" id="easier_said_img" src="imgs/YOUNG_PULL.JPG" alt="Nerd pulling on door"> -->
 
-        <h2>Ben Green</h2>
+        </div>
 
-        <p>Definitely a genius.</p>
+        <div class="lyrics_item" id="graduate">
 
-      </div>
+          <div>
 
-      <div class="credits_item">
+            <!-- <h2>Graduate</h2> -->
+            <div class="song_title_container">
+                <img class="song_title" src="imgs/GRADUATE.png" alt="Gradu-wait. Mysterious message.">
+            </div>
 
-        <h2>Oren Polak</h2>
+            <div class="sacred_symbol_container">
+              <img class="sacred_symbol" src="imgs/WAIT.png" alt="Sacred semiotics"/>
+            </div>
 
-        <p>Sorry I never practiced.</p>
+            <p>
+              I 've been clingin to the side <br>
+              But my arms are getting tired <br>
+              Told my mama please don't cry <br>
+              But I think it might be time <br>
+              To let go <br><br>
+              If you could hear my thoughts <br>
+              Then you would know my fears <br>
+              You know I'd give it all <br>
+              To make them disappear <br>
+              I don't wanna wait a day <br>
+              I don't wanna wait a year <br>
+              I want to do it now <br>
+              I want to do it here <br><br>
 
-      </div>
+              But I'm still clinging to the side <br>
+              Justify it in my mind <br>
+              You can see it in my eyes <br>
+              I'm just not the type of guy <br>
+              Who lets go <br><br>
+              I've been clingin to the side <br>
+              But my arms are getting tired <br>
+              Told my mama please don't cry <br>
+              But I think it might be time to let go
+            </p>
 
-    </section>
+          </div>
 
+        </div>
+
+        <div class="lyrics_item" id="glass">
+
+          <div class="lyrics_item_img_container" id="shards_small">
+            <img id="little_glass" class="lyrics_item_img" src="imgs/SHARDS_SMALL.png" alt="Small glass shards">
+          </div>
+
+
+          <div>
+
+            <!-- <h2>Glass</h2> -->
+            <div class="song_title_container">
+                <img class="song_title" src="imgs/GLASS.png" alt="Glass. Occult code.">
+            </div>
+
+            <div class="sacred_symbol_container">
+              <img class="sacred_symbol" src="imgs/HATE.png" alt="Sacred semiotics" />
+            </div>
+
+            <p>
+              How long will she stay <br>
+              How long can this last <br>
+              Always wishing time away <br>
+              Wishing time wasn't so fast <br><br>
+              I'm a beggar on the doorstep <br>
+              I'm on the wrong side of the glass <br>
+              With one foot stuck in the future <br>
+              I'll keep crying for the past <br><br>
+              I can hear those sirens calling <br>
+              My minds slipping through the crack <br>
+              When I lose my fear of falling <br>
+              She always pulls me back
+            </p>
+
+          </div>
+
+          <div class="lyrics_item_img_container" id="shards_large">
+            <img id="big_glass" class="lyrics_item_img" src="imgs/SHARDS_LARGE.png" alt="Glass shards in curious pattern.">
+          </div>
+
+        </div>
+
+        <div class="lyrics_item" id="broken">
+          <div>
+
+            <!-- <h2>>roken</h2> -->
+            <div class="song_title_container">
+              <img class="song_title" src="imgs/BROKEN.png" alt="Broken. Esocteric artifacts.">
+            </div>
+
+            <div class="sacred_symbol_container">
+              <img class="sacred_symbol" src="imgs/LATE.png" alt="Sacred semiotics" />
+            </div>
+
+
+            <p>
+              I 've been losing my mind <br>
+              I've been losing it slowly <br>
+              I've been losing my mind <br>
+              Trying to forget what they told me <br>
+              I know I should be over it by now <br>
+              I know I should have figured this shit out <br>
+              So long ago <br><br>
+              I went to see a magic man <br>
+              And he waved his magic wand <br>
+              His spell it helps them to pretend <br>
+              That nothing's going wrong <br>
+              But his potions won't be strong enough <br>
+              When all these drugs are gone <br>
+              The water's getting higher <br>
+              But I'm still playing along <br><br>
+              I've been losing my mind  <br>
+              I've been losing it slowly <br>
+              I've been losing my mind <br>
+              Trying to forget what they told me <br>
+              I know I should be over it by now <br>
+              I know I should have figured this shit out <br>
+              So long ago <br><br>
+
+              But where will the scale tip? <br>
+              The glass has long been broken <br>
+              Even if I sink this ship now <br>
+              The doors they won't reopen <br>
+              Overflowing <br><br>
+              I've been losing my mind <br>
+              I've been losing it slowly <br>
+              I've been losing my mind <br>
+              Trying to forget what they told me <br>
+              I know I should be over it by now <br>
+              But I still feel lost <br>
+              Within this madding crowd <br>
+              Take me home
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="lyrics_item" id="home_song">
+
+          <!-- <img class="about_item_img" id="defeat_img" src="imgs/OLD_PULL.JPG" alt="Older nerd pulling on door"> -->
+
+          <div id="home_song_lyrics">
+
+            <!-- <h2>Home</h2> -->
+            <div class="song_title_container">
+                <img class="song_title" src="imgs/HOME.png" alt="HOME. Homecoming. ">
+            </div>
+
+            <div class="sacred_symbol_container" id="lyrics_fate_container">
+                <img class="sacred_symbol" src="imgs/FATE.png" alt="Sacred semiotics">
+            </div>
+
+
+            <p>
+              So far to fall <br>
+              So much to lose <br>
+              Wagers wasted <br>
+              I paid my youth <br><br>
+              Sleepless nights <br>
+              Still haunt my daydreams <br>
+              Guilty pleasures <br>
+              Keeping me awake <br><br>
+              I tried to change <br>
+              Change for you <br>
+              Dout the sparks <br>
+              Burn the proof <br><br>
+              Sleepless nights <br>
+              Still haunt my daydreams <br>
+              These old ghosts <br>
+              Are pulling me away <br><br>
+              I let my train <br>
+              Leave that station <br>
+              Smothered sails <br>
+              Have always pulled me through <br><br>
+              But sleepless nights <br>
+              Still haunt my daydreams <br>
+              Stubborn ghosts <br>
+              Are leading me astray <br><br>
+              I tried to wait <br>
+              Wait for you  <br>
+              Left my wagers <br>
+              On fading truths <br><br>
+              Sleepless nights <br>
+              Haunt my daydreams <br>
+              Guilty pleasures <br>
+              Keeping me awake
+            </p>
+
+          </div>
+
+          <!-- <div class="lyrics_item_img_container" id="clock_sketch">
+            <img class="lyrics_item_img" src="imgs/CLOCK_SKETCH.png" alt="Pocketwatch at 12 hangs from rope.">
+          </div> -->
+
+
+        </div>
+
+      </section>
+
+      <footer class="footer">
+
+        <h1>Dirty Mop Music</h1>
+        <h1>&</h1>
+        <h1>INLAE</h1>
+
+      </footer>
+
+    </div>
 
   </body>
 

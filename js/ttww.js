@@ -4,15 +4,61 @@ $(document).ready(function() {
   //alert($("html").width());
 
   //hide elements that are to fade in on onload
-  $("#album_art").hide();
-  $(".menu").hide();
-  $("#widget_boi").hide();
+
+
+  $("#album_art, .menu, .lyrics, .credits").hide();
+
 
   $("#album_art").fadeIn(2500);
   $("#widget_boi").fadeIn(3000);
 
+  //$(".menu").hide();
 
-  var widget_mode = "audio_mode";
+  //widget menu functionality
+
+  var displayMenu = function(){
+    $(".menu").show();
+      $(".menu_nav").animate({
+        "right" : "0"
+      }, 1000, "swing");
+  };
+
+  $(".menu").click(function(){
+    $(".menu_nav").animate({
+      "right" : "80%"
+    }, 800, "swing", function(){
+      $(".menu").hide();
+      //alert("menu hidden");
+    });
+  })
+
+  var menu_select = function(nav_selection){
+    $(".content").slideUp("slow");
+    var selector = "." + nav_selection;
+    $(selector).slideDown("slow");
+  }
+
+  $(".menu_nav").click(function(){
+    var item_id = $(this).attr("id");
+    //alert (item_id);
+    var nav_selection = item_id.substring(0, item_id.indexOf("_"));
+    //alert(nav_selection);
+    menu_select(nav_selection);
+    $(".menu").fadeOut("slow");
+    //scroll to top of content
+    $("html, body").animate({
+      scrollTop: $("#real_body").offset().top
+    }, 1000);
+  });
+
+  // $("#about_item_nav").click(function(){
+  //   $(".credits").fadeOut("slow");
+  //   $(".lyrics").fadeOut("slow");
+  //   $(".support").fadeOut("slow");
+  //   var menuIn = setTimeout(function(){
+  //     $()
+  //   })
+  // })
 
   var playing = false;
 
@@ -20,10 +66,12 @@ $(document).ready(function() {
 
   var spinning = false;
 
+  var widget_mode = "audio_mode";
+
   //build function for easing effect on overscroll at bottom of page plus image swap
 
   //build function to:
-  //1. setup display of about section for mobile and desktop devices
+  //1. setup display of about_item section for mobile and desktop devices
 
   /////WIDGET BOIIIIIIIIII
   //This widget will have 4 MODES each of which performs different functions
@@ -173,11 +221,6 @@ $(document).ready(function() {
   //MODE 2 MENU
   //Let the user select which content populates the page: ABOUT, CREDITS, SUPPORT
   //hide the menu on load
-
-
-  var displayMenu = function(){
-      $(".menu").fadeIn(1500);
-  };
 
   //MODE 3 DOWNLOAD
   //download the audio file
