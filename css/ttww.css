@@ -410,22 +410,31 @@ body {
 /***** WIDGET MENU ***/
 .menu {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  align-items: center;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
   text-align: center;
   color: #999;
   z-index: 2;
   position: fixed;
   width: 100%;
-  height: 100%;
+  height: 60%;
 }
 .menu_nav {
   position: relative;
-  right: 80%;
-  background: rgba(50, 50, 50, 0.8);
-  width: 80%;
-  flex: 0 0 80%;
+  margin: 0;
+  background: rgba(20, 20, 20, 0.8);
+  /* width: 100%; */
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white;
+}
+#about_nav, #credits_nav {
+  right: 100%;
+}
+#lyrics_nav, #support_nav {
+  left: 100%;
 }
 /********END WIDGET BOI ****/
 /*adjust for desktop*/

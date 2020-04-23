@@ -6,7 +6,7 @@ $(document).ready(function() {
   //hide elements that are to fade in on onload
 
 
-  $("#album_art, .menu, .lyrics, .credits").hide();
+  $("#album_art, .lyrics, .credits").hide();
 
 
   $("#album_art").fadeIn(2500);
@@ -16,21 +16,50 @@ $(document).ready(function() {
 
   //widget menu functionality
 
-  var displayMenu = function(){
-    $(".menu").show();
-      $(".menu_nav").animate({
-        "right" : "0"
-      }, 1000, "swing");
-  };
+  //we need a far cooler menu display function
 
-  $(".menu").click(function(){
-    $(".menu_nav").animate({
-      "right" : "80%"
-    }, 800, "swing", function(){
-      $(".menu").hide();
-      //alert("menu hidden");
-    });
-  })
+  //if show is true, show the menu. otherwise hide it
+
+  // var menuOpen = false;
+
+  var displayMenu = function(show){
+
+    //alert(show);
+    if(show){
+      //$(".menu").show();
+      var slideDest = "0%";
+      var about_delay = 0;
+      var lyrics_delay = 100;
+      var credits_delay = 200;
+      var support_delay = 300;
+      // menuOpen = true;
+      //alert(slideDest);
+    }
+    else{
+      var slideDest = "100%";
+      var about_delay = 300;
+      var lyrics_delay = 200;
+      var credits_delay = 100;
+      var support_delay = 0;
+      // menuOpen = false;
+    }
+
+    $("#about_nav").delay(about_delay).animate({
+      "right" : slideDest
+    }, 800);
+
+    $("#lyrics_nav").delay(lyrics_delay).animate({
+      "left" : slideDest
+    }, 800);
+
+    $("#credits_nav").delay(credits_delay).animate({
+      "right" : slideDest
+    }, 800);
+
+    $("#support_nav").delay(support_delay).animate({
+      "left" : slideDest
+    }, 800);
+  };
 
   var menu_select = function(nav_selection){
     $(".content").slideUp("slow");
@@ -44,21 +73,37 @@ $(document).ready(function() {
     var nav_selection = item_id.substring(0, item_id.indexOf("_"));
     //alert(nav_selection);
     menu_select(nav_selection);
-    $(".menu").fadeOut("slow");
+    // $(".menu").fadeOut("slow");
+    displayMenu(false);
     //scroll to top of content
     $("html, body").animate({
       scrollTop: $("#real_body").offset().top
     }, 1000);
   });
 
-  // $("#about_item_nav").click(function(){
-  //   $(".credits").fadeOut("slow");
-  //   $(".lyrics").fadeOut("slow");
-  //   $(".support").fadeOut("slow");
-  //   var menuIn = setTimeout(function(){
-  //     $()
-  //   })
-  // })
+  //close menu on click outside
+
+  // $("html").click(function){
+  //   if(menuOpen){
+  //     displayMenu(false);
+  //   }
+  // }
+
+
+  $("html").click(function(event){
+    //alert("hi");
+    $target = $(event.target);
+    //var target_length = target_closest.length;
+    //only close it if it is open
+    var menu_pos = $("#about_nav").css("right");
+    //alert(menu_pos);
+    //alert($target.closest(".menu").length);
+    if(!$target.closest(".menu").length && menu_pos == "0px"){
+      //alert("close the menu I think");
+      displayMenu(false);
+    }
+    //alert(menu_pos);
+  });
 
   var playing = false;
 
@@ -714,7 +759,7 @@ $(document).ready(function() {
   var widgetAction = function(widget_mode){
     switch(widget_mode){
       case "menu_mode":
-        displayMenu();
+        displayMenu(true);
         break;
       case "home_mode":
         scrollHome();
