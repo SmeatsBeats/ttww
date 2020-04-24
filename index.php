@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
 
-    <link rel="stylesheet" href="css/ttww.css?v=47.9" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=48.7" type="text/css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-    <script type="text/javascript" src="js/ttww.js?v=13.56"></script>
+    <script type="text/javascript" src="js/ttww.js?v=13.73"></script>
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -44,8 +44,8 @@
           <img class="widget_bezel" id="widget_bezel_img" src="imgs/WIDGET_BEZEL_SMALL.png" alt="Model watch bezel">
         </div>
 
-        <div class="widget_function_container" id="widget_function_container">
-          <div id="widget_function">
+        <div class="widget_function_container" id="widget_function_container"> 
+          <div id="widget_function" title = "Play"> 
 
             <a id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>
               <div class="download_circle">

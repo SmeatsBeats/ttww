@@ -11,6 +11,27 @@ $(document).ready(function() {
   $("#album_art").fadeIn(2500);
   $("#widget_boi").fadeIn(3000);
 
+  var rotateWidget = function(){
+
+    var ia = 0;
+
+    var doit = setInterval(function(){
+
+        if(ia == 360){
+          clearInterval(doit);
+          //for some modes we rotate from bottom i.e. pause to download
+          //when this is complete make sure we reset transform origin
+          // $(".widget_stick").css("transform-origin", "center top");
+        }
+        else{
+          $("#widget_boi").css("transform", "rotate(" + ia + "deg)");
+          ia = ia + 3;
+           }
+    }, 10);
+  };
+
+  rotateWidget();
+
 
   var widget_mode = "audio_mode";
 
@@ -645,21 +666,30 @@ $(document).ready(function() {
       rotateDeg = 0;
       // spinning = true;
       navRotate(rotateDeg);
+      if(playing){
+        $('#widget_function').attr('title', 'Pause');
+      }
+      else{
+        $('#widget_function').attr('title', 'Play');
+      }
       break;
       case "home_mode":
       rotateDeg = 270;
       // spinning = true;
       navRotate(rotateDeg);
+        $('#widget_function').attr('title', 'Go to Home');
       break;
       case "menu_mode":
       rotateDeg = 180;
 
       navRotate(rotateDeg);
+        $('#widget_function').attr('title', 'Open Menu');
       break;
       case "download_mode":
       rotateDeg = 90;
       // spinning = true;
       navRotate(rotateDeg);
+        $('#widget_function').attr('title', 'Download Audio File');
       break;
       default:
       rotateDeg = 0;
@@ -691,7 +721,5 @@ $(document).ready(function() {
     // alert(widget_mode);
     widgetAction(widget_mode);
   });
-
-
 
 });
