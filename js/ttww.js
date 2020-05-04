@@ -1,16 +1,359 @@
 $(document).ready(function() {
 
+  // alert("all good");
   //get width of window. useful for css media queries
   //alert($("html").width());
 
+  //help put css and set dimensions of sliders so overflow:hidden doesn't destroy them
+  // var slider_width = $(".support_img_slider").width() / $(".support_img_slider").parent().width() * 100;
+  // var slider_height = $(".support_img_slider").height() / $(".support_img_slider").parent().height() * 100;
+  // var slider_height = $(".support_img_slider").height();
+  // alert(slider_width, slider_height);
+
   //hide elements that are to fade in on onload
 
+  $("#album_art, .lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu").hide();
+  $(".prev_arrow").addClass("no_arrow");
+  //messing with mobile gesture events
 
-  $("#album_art, .lyrics, .credits").hide();
+  // $(".support_img_container:first-child").css("left", "0%");
+  //var img_index;
+
+  var getSliderIndex = function($currentSlider){
+    //alert("getting index");
+    var $get_current_img = $($currentSlider).find(".current_img");
+    //alert($get_current_img);
+    var img_sibs = $($get_current_img).prevAll().length;
+    //alert("i count " + img_sibs);
+    var slider_index = img_sibs;
+    return slider_index;
+  }
+
+  var sliderUpdate = function(next, $currentSlider, slider_index){
+    //getSliderIndex($currentSlider);
+    //alert("howdy");
+    //$($currentSlider).hide();
+    //alert("returned " + slider_index);
+    var slide_imgs = $($currentSlider).children(".support_img");
+    var num_imgs = slide_imgs.length;
+    var prev_img = slide_imgs[slider_index];
+    var prev_dot_class = ".dot_boi_" + slider_index;
+    //alert(prev_dot_class);
+    var prev_dot = $($currentSlider).find(prev_dot_class);
+/*
+    var setImgDot = function(slider_index){
+      alert("setting img and dot");
+      var current_img = slide_imgs[img_index];
+      var current_dot_class = ".dot_boi_" + slider_index;
+      var current_dot = $($currentSlider).find(current_dot_class);
+      return current_img, current_dot;
+    }
+*/
+    if(next){
+      //go right
+      slider_index++;
+      //alert(slider_index);
+      //setImgDot(slider_index);
+      //alert("img and dot set" + current_img + current_dot);
+      //alert(slider_index + " " + num_imgs);
+
+      if(slider_index == 1){
+        //alert("bring in prev");
+        $($currentSlider).find(".prev_arrow").removeClass("no_arrow");
+        if(num_imgs <= 2){
+          $($currentSlider).find(".next_arrow").addClass("no_arrow");
+        }
+      }
+      else if(slider_index == num_imgs - 1){
+        $($currentSlider).find(".next_arrow").addClass("no_arrow");
+      }
+      // else if(slider_index == num_imgs)
+
+      var current_img = slide_imgs[slider_index];
+      var current_dot_class = ".dot_boi_" + slider_index;
+      //alert(current_dot_class);
+      // alert(thisSlider);
+      var current_dot = $($currentSlider).find(current_dot_class);
+      //alert(current_dot);
+
+      // var current_dot_class_name = $(current_dot).attr("class");
+      // alert(current_dot_class_name);
+
+      if(slider_index == num_imgs){
+
+        slider_index = num_imgs - 1;
+
+      }
+      else{
+
+        //update dot
+        //alert(current_dot_class_name);
+        //$(current_dot).html("yolo");
+        $(prev_dot).removeClass("selected_dot");
+        $(current_dot).addClass("selected_dot");
+        $(prev_img).removeClass("current_img");
+        $(current_img).addClass("current_img");
+
+        $(prev_img).animate({
+          "left" : "-100%"
+        }, 800);
+
+        $(current_img).animate({
+          "left" : "0%"
+        }, 800);
+        //add class to current img to detect it
+      }
+    }
+    else{
+      //go left
+      slider_index--;
+      //setImgDot(slider_index);
+      //alert("img and dot set" + current_img + current_dot);
+
+      //alert(slider_index + " " + num_imgs);
+
+      if(num_imgs > 2){
+        if(slider_index == num_imgs - 2){
+          //show the next arrow
+          $($currentSlider).find(".next_arrow").removeClass("no_arrow");
+        }
+        else if(slider_index == 0){
+          //hide prev arrow
+          $($currentSlider).find(".prev_arrow").addClass("no_arrow");
+        }
+
+      }
+      else if(num_imgs == 2){
+        if(slider_index == 0){
+          $($currentSlider).find(".prev_arrow").addClass("no_arrow");
+          $($currentSlider).find(".next_arrow").removeClass("no_arrow");
+        }
+
+      }
+
+
+
+      var current_img = slide_imgs[slider_index];
+      var current_dot_class = ".dot_boi_" + slider_index;
+      var current_dot = $($currentSlider).find(current_dot_class);
+
+      //double check this
+
+      if(slider_index == -1){
+        slider_index = 0;
+        // $($currentSlider).find(".prev_arrow").fadeOut();
+
+        //alert("no more left");
+      }
+      else{
+        // $(thisSlider).find(current_dot).html("gotcha!");
+        // alert((prev_dot).attr("class"));
+        //alert(current_dot);
+        $(prev_dot).removeClass("selected_dot");
+        $(current_dot).addClass("selected_dot");
+        $(prev_img).removeClass("current_img");
+        $(current_img).addClass("current_img");
+
+        $(prev_img).animate({
+          "left" : "100%"
+        }, 800);
+
+        $(current_img).animate({
+          "left" : "0%"
+        }, 800);
+      }
+    }
+  }
+
+  $(".support_img_slider").each(function(){
+    var img_index = 0;
+
+    var dots = "";
+    var slide_imgs = $(this).children(".support_img");
+    var num_imgs = slide_imgs.length;
+
+    if(num_imgs == 1){
+      //remove next arrow
+      $(this).find(".next_arrow").addClass("no_arrow");
+    }
+
+    //alert(num_imgs);
+    //generate img_indicator icons for each picture in slider
+
+
+    //nice
+    var i = 0;
+    $(slide_imgs).each(function(){
+      dots += "<span class='dot_boi'><svg class='lil_dot_container'><circle class='lil_dot dot_boi_" + i + "' cx='50%' cy='50%' r='0.5em'></svg></span>";
+      //$(this).next(".support_img_info").find(".img_indicator").html(dots);
+      //alert($(this).attr("class"));
+      //returns support_img
+      //alert($(this).parent().find(".img_indicator").attr("class"));
+      $(this).parent().find(".img_indicator").html(dots);
+      i++;
+    });
+
+    //hilight 1st dot
+
+    $(".dot_boi_0").addClass("selected_dot");
+
+    //need to hilight dot that corresponds with curent img
+    // var dot_squad = $(this).next(".support_img_info").find(".dot_boi");
+    // alert(dot_squad.length);
+
+    //slideright when arrow clicked for desktop version
+
+    var $currentSlider = $(this);
+    //var slider_class = $(thisSlider).attr("class");
+    //alert(slider_class);
+
+    var hammertime = new Hammer(this);
+
+    hammertime.on("swipeleft swiperight press", function(event){
+
+      //alert(slider_class);
+
+
+      var eventType = event.type;
+      // alert(eventType);
+
+      var prev_img = slide_imgs[img_index];
+      var prev_dot_class = ".dot_boi_" + img_index;
+      var prev_dot = $($currentSlider).find(prev_dot_class);
+
+      var slider_index = getSliderIndex($currentSlider);
+
+      if(eventType == "tap" || eventType == "swipeleft"){
+
+
+        sliderUpdate(true, $currentSlider, slider_index);
+        /*
+        //alert("go right");
+        img_index++;
+
+        var current_img = slide_imgs[img_index];
+        var current_dot_class = ".dot_boi_" + img_index;
+        //alert(current_dot_class);
+        // alert(thisSlider);
+        var current_dot = $($this).find(current_dot_class);
+        //alert(current_dot);
+
+        // var current_dot_class_name = $(current_dot).attr("class");
+        // alert(current_dot_class_name);
+
+        if(img_index == num_imgs){
+          img_index = num_imgs - 1;
+
+          //alert("no more right");
+        }
+        else{
+
+          //update dot
+          //alert(current_dot_class_name);
+          //$(current_dot).html("yolo");
+          $(prev_dot).removeClass("selected_dot");
+          $(current_dot).addClass("selected_dot");
+
+          $(prev_img).animate({
+            "left" : "-100%"
+          }, 800);
+
+          $(current_img).animate({
+            "left" : "0%"
+          }, 800);
+        }
+        */
+      }
+      else{
+        sliderUpdate(false, $currentSlider, slider_index);
+        /*
+        //alert("go left");
+        img_index --;
+
+        var current_img = slide_imgs[img_index];
+        var current_dot_class = ".dot_boi_" + img_index;
+        var current_dot = $($this).find(current_dot_class);
+        if(img_index == -1){
+          img_index = 0;
+
+          //alert("no more left");
+        }
+        else{
+          // $(thisSlider).find(current_dot).html("gotcha!");
+          // alert((prev_dot).attr("class"));
+          //alert(current_dot);
+          $(prev_dot).removeClass("selected_dot");
+          $(current_dot).addClass("selected_dot");
+
+          $(prev_img).animate({
+            "left" : "100%"
+          }, 800);
+
+          $(current_img).animate({
+            "left" : "0%"
+          }, 800);
+        }
+        */
+      }
+
+      return false;
+    });
+  });
+
+  $(".slider_arrow").click(function(){
+    var arrow_class = $(this).attr("class");
+    var arrow_type = arrow_class.substring(0, arrow_class.indexOf("_"));
+    //alert(arrow_type);
+    var $currentSlider = $(this).closest(".support_img_slider");
+    var slider_index = getSliderIndex($currentSlider);
+    //alert(arrow_type);
+    if(arrow_type == "next"){
+      //alert("calling with true and " + slider_index);
+      sliderUpdate(true, $currentSlider, slider_index);
+    }
+    else{
+      sliderUpdate(false, $currentSlider, slider_index);
+    }
+  });
+
+
+
 
 
   $("#album_art").fadeIn(2500);
   $("#widget_boi").fadeIn(3000);
+
+  /////////////SUPPORT PAGE ///////////////
+  ///totally stumped
+  //the position of the image does not seem to update to js or css
+  //the mouseenter event only seems to be recognized when the mouse enters some fixed location
+  //where the page thinks the image is
+  ///RAHHHHHHH
+  //ok.. so the menu width is set to 100% so even when the menu options are off the screen
+  //the containing box is present with a high z-index
+  //so it covers the whole top of the screen and as you scroll down it blocks the top half of elements...
+  //took me all day to figure this out :) and I just took out the line that hid menu a few days ago lol
+
+  //show item info on hover
+
+  $(".support_img_slider").hover(function(){
+    $(this).children(".support_img_info, .support_img_swap_container, .support_img_swap").fadeIn("fast");
+  }, function(){
+    $(this).children(".support_img_info, .support_img_swap_container, .support_img_swap").fadeOut("slow");
+  });
+
+  // $(document.body).on("mouseenter", '.support_img_slider', function(){
+  //   alert("in for the love of god");
+  // });
+
+  // $(".support_img_slider").mouseenter(function(){
+  //   $(this).children(".support_img_info").fadeIn();
+  //
+  //   $(".support_img_slider").mouseleave(function(){
+  //     $(this).children(".support_img_info").fadeOut();
+  //   });
+  // });
+
 
   //$(".menu").hide();
 
@@ -26,7 +369,7 @@ $(document).ready(function() {
 
     //alert(show);
     if(show){
-      //$(".menu").show();
+      $(".menu").show();
       var slideDest = "0%";
       var about_delay = 0;
       var lyrics_delay = 100;
@@ -42,11 +385,17 @@ $(document).ready(function() {
       var credits_delay = 100;
       var support_delay = 0;
       // menuOpen = false;
+      //hide the menu after
     }
 
     $("#about_nav").delay(about_delay).animate({
       "right" : slideDest
-    }, 800);
+    }, 800, function(){
+      if(!show){
+        // alert("hide menu");
+        $(".menu").hide();
+      }
+    });
 
     $("#lyrics_nav").delay(lyrics_delay).animate({
       "left" : slideDest
@@ -62,9 +411,38 @@ $(document).ready(function() {
   };
 
   var menu_select = function(nav_selection){
-    $(".content").slideUp("slow");
+
+
+    var msg;
+
+    switch(nav_selection){
+      case "about":
+      msg = "The key question is whether such a system has braking mechanisms at its disposal...";
+      break;
+      case "lyrics":
+      msg = "6. Death is a choice. Life is indecision.";
+      break;
+      case "credits":
+      msg = "Death, if that is what we want to call this non-entity, is of all things the most dreadful.";
+      break;
+      case "support":
+      msg = "Please help me buy a farm and move out of my parents' basement.";
+      break;
+      default:
+      alert("YOLO");
+    }
+
+    $("#content_head_msg").html(msg);
+
+    //dont' slide up or down if already open
+
+
+
     var selector = "." + nav_selection;
-    $(selector).slideDown("slow");
+    if($(selector).is(":hidden")){
+      $(".content").slideUp("slow");
+      $(selector).slideDown("slow");
+    }
   }
 
   $(".menu_nav").click(function(){
@@ -779,7 +1157,6 @@ $(document).ready(function() {
     // alert(widget_mode);
     widgetAction(widget_mode);
   });
-
 
 
 });

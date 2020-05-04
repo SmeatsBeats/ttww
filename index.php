@@ -6,16 +6,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-
-    <link rel="stylesheet" href="css/ttww.css?v=85.3" type="text/css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-    <script type="text/javascript" src="js/ttww.js?v=25"></script>
-
+    <link rel="stylesheet" href="css/ttww.css?v=63" type="text/css">
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
+
+
+    <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css"> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://hammerjs.github.io/dist/hammer.js"></script>
+
+
+
+    <script type="text/javascript" src="js/ttww.js?v=1.6"></script>
+
+
+
   </head>
 
   <body>
@@ -94,12 +101,14 @@
 
     <div id="real_body">
 
+      <!-- pushing this element down by 100vh did not make jquery happy -->
+
       <section id="content_header">
         <!--header title image -->
 
         <img id="content_header_img" src="imgs/TTWW_TITLE.jpg" alt="To Those Who Wait">
 
-        <p>
+        <p id="content_head_msg">
           What began as an exercise to ease cognitive disonance,
           somehow took on a life of its own, becoming an earnest
           attempt to shed light on <em>Waiting</em> as a Mode of Being.
@@ -611,12 +620,174 @@
 
           </div>
 
-          <!-- <div class="lyrics_item_img_container" id="clock_sketch">
-            <img class="lyrics_item_img" src="imgs/CLOCK_SKETCH.png" alt="Pocketwatch at 12 hangs from rope.">
-          </div> -->
-
 
         </div>
+
+      </section>
+
+      <section class="support content">
+
+        <!-- CD -->
+
+        <div class="support_img_slider">
+
+
+          <img class="support_img current_img" src="imgs/CD_FRONT.JPG">
+
+
+          <img class="support_img" src="imgs/CD_BACK.JPG">
+
+          <img class="support_img" src="imgs/CD_TTWW.JPG">
+
+          <img class="support_img" src="imgs/CD_PHENOM.JPG">
+
+          <img class="support_img" src="imgs/CD_INSIDE.JPG">
+
+          <img class="support_img" src="imgs/CD_DISC.JPG">
+
+          <img class="support_img" src="imgs/CD_BOOKLET.JPG">
+
+
+          <div class="support_img_info">
+            <div class="prev_arrow slider_arrow">
+              <span><</span>
+            </div>
+            <div class="support_img_title_container">
+              <h2 class="support_img_title">Project CD</h2>
+            </div>
+            <div class="next_arrow slider_arrow">
+              <span>></span>
+            </div>
+            <!-- <div class="img_indicator"></div> -->
+          </div>
+          <div class="img_indicator_container">
+
+
+            <div class="img_indicator"></div>
+
+
+          </div>
+        </div>
+
+
+          <!-- CARD HOLDER -->
+
+          <div class="support_img_slider">
+
+
+            <img class="support_img current_img" src="imgs/CARD_HOLDER_FRONT_SMALL.JPG">
+
+
+            <img class="support_img" src="imgs/CARD_HOLDER_BACK_SMALL.JPG">
+
+
+            <div class="support_img_info">
+              <div class="prev_arrow slider_arrow">
+                <span><</span>
+              </div>
+              <div class="support_img_title_container">
+                <h2 class="support_img_title">Card Holder</h2>
+              </div>
+              <div class="next_arrow slider_arrow">
+                <span>></span>
+              </div>
+              <!-- <div class="img_indicator"></div> -->
+            </div>
+            <div class="img_indicator_container">
+
+
+              <div class="img_indicator"></div>
+
+
+            </div>
+          </div>
+
+          <!-- FACTS -->
+          <!-- <div class="support_img_slider">
+
+              <p class="support_facts">All goods handmade in my sweatshop.</p>
+
+            <div class="support_img_info">
+              <h2 class="support_img_title">Facts</h2>
+            </div>
+          </div> -->
+
+          <!-- CORNER BOOKMARK -->
+
+          <div class="support_img_slider">
+
+            <img class="support_img" src="imgs/CORNER_BOOKMARK_FRONT_SMALL.JPG">
+
+
+
+            <img class="support_img" src="imgs/CORNER_BOOKMARK_BACK_SMALL.JPG">
+
+
+
+            <img class="support_img" src="imgs/BOOKMARK_FRONT_WEAVE.JPG">
+
+
+            <img class="support_img" src="imgs/BOOKMARK_BACK_WEAVE.JPG">
+
+
+
+
+            <img class="support_img" src="imgs/BOOKMARK_CLOSED_KAFKA.JPG">
+
+
+
+            <div class="support_img_info">
+              <div class="prev_arrow slider_arrow">
+                <span><</span>
+              </div>
+              <div class="support_img_title_container">
+                <h2 class="support_img_title">Corner Bookmark</h2>
+              </div>
+              <div class="next_arrow slider_arrow">
+                <span>></span>
+              </div>
+            </div>
+            <div class="img_indicator_container">
+              <div class="img_indicator"></div>
+            </div>
+          </div>
+
+
+          <!-- KEY PULL -->
+
+          <div class="support_img_slider">
+
+              <img class="support_img" src="imgs/KEY_PULL_FRONT_SMALL.JPG">
+
+
+              <img class="support_img" src="imgs/KEY_PULL_BACK_SMALL.JPG">
+
+              <img class="support_img" src="imgs/KEY_PULL_FRONT_BIKE.JPG">
+
+              <img class="support_img" src="imgs/KEY_PULL_BACK_BIKE.JPG">
+
+
+
+
+
+
+            <div class="support_img_info">
+              <div class="prev_arrow slider_arrow">
+                <span><</span>
+              </div>
+              <div class="support_img_title_container">
+                <h2 class="support_img_title">Keychain</h2>
+              </div>
+              <div class="next_arrow slider_arrow">
+                <span>></span>
+              </div>
+            </div>
+            <div class="img_indicator_container">
+              <div class="img_indicator"></div>
+            </div>
+
+
+          </div>
 
       </section>
 

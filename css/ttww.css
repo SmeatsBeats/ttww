@@ -25,9 +25,9 @@ body {
 }
 #home {
   position: fixed;
+  z-index: -1;
   height: 100vh;
   flex: 1 1 100%;
-  display: flex;
   flex-flow: row nowrap;
   justify-content: flex-end;
   background-color: black;
@@ -64,6 +64,10 @@ body {
   /*align-items: center;*/
   justify-content: flex-start;
 }
+.credits {
+  flex-flow: column;
+  align-items: center;
+}
 .lyrics {
   /*seams appear between lyrics_items on mobile */
   background-color: white;
@@ -81,7 +85,7 @@ body {
   font-size: x-large; */
   background-color: white;
 }
-.lyrics_item, .credits_item {
+.lyrics_item {
   background-color: white;
   text-align: center;
   /* align-self: center; */
@@ -91,6 +95,15 @@ body {
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
+}
+.credits_item {
+  display: flex;
+  background-color: white;
+  text-align: center;
+  flex-flow: column;
+  align-items: center;
+  flex: 1 1 auto;
+  width: 100%;
 }
 .lyrics_item > div {
   display: flex;
@@ -252,7 +265,164 @@ body {
   background: rgba(255, 255, 255, 0.7);
   flex-basis: 100%;
 }
+
+/****** SUPPORT *******/
+
+.support {
+  /* flex-flow: column wrap;  */
+  background-color: white;
+  flex-flow: row wrap;
+}
+
+
+
+.support_img_slider {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10%;
+  /*this is preventing the images from displaying at all on mobile */
+  /* overflow-x: hidden; */
+  /* padding: 15%; */
+  overflow: hidden;
+}
+
+/***** dot_boi is span which contains SVG lil_dot_container which contains the actual circle lil_dot ****/
+.lil_dot_container {
+  font-size: xx-small;
+  width: 1em;
+  height: 1em;
+  margin: 1em;
+}
+.lil_dot {
+  fill: #555;
+  margin: 8%;
+}
+.selected_dot {
+  fill: #999;
+  transition: fill 1s ease;
+}
+
+.support_img {
+
+  position: absolute;
+  left: 100%;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  /* min-width: 0; */
+  align-self: center;
+}
+.support_img:first-child {
+  position: relative;
+  left: 0%;
+}
+
+
+/* .support_img {
+  flex: 1 1 auto;
+  border: 1px solid yellow;
+} */
+
+.support_facts{
+  flex: 1 1 auto;
+  text-align: center;
+  padding: 10% auto;
+}
+
+.support_img_info {
+  position: absolute;
+  flex: 1 1 100%;
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  /* flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around; */
+  text-align: center;
+  background: rgba(30, 30, 30, 0.8);
+}
+
+/* .support_img_info {
+  z-index: 3;
+  flex: 1 1 95%;
+  min-width: 95%;
+  min-height: 95%;
+
+} */
+.support_img_title_container {
+  width: 100%;
+  flex: 1 1 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.support_img_title {
+  border: 1px solid #999;
+  color: #999;
+  padding: 5%;
+}
+.img_indicator_container {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: absolute;
+  flex: 1 1 100%;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: 2;
+
+  /* border: 1px solid blue;
+  flex: 1 1 auto;
+  max-height: 5%; */
+
+
+  /* display: flex;
+  justify-content: center; */
+  /* margin-top: auto;
+  margin-bottom: 2%; */
+}
+.img_indicator {
+  display: flex;
+  flex-flow: row nowrap;
+  /* flex: 1 1 auto; */
+  /* min-width: 50%; */
+}
+.dot_boi {
+  flex: 1 1 auto;
+  /* margin: 10%; */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.slider_arrow {
+  /* border: 1px solid red; */
+  z-index: 3;
+  cursor: pointer;
+  color: #999;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  font-size: xx-large;
+  transition: color 1s ease;
+}
+.no_arrow{
+  color: transparent;
+  transition: color 1s ease;
+}
+/* .support_img_slider .support_img_info:hover {
+  background: rgba(30, 30, 30, 0.8);
+} */
+
 .footer {
+  /* position: relative; */
   width: 100%;
   flex: 1 1 100%;
   background: #ccc;
@@ -285,13 +455,11 @@ body {
 #widget_boi {
   width: 38vw;
   height: 38vw;
-  z-index: 3;
   position: fixed;
-  top: 70%;
-  left: 52%;
-  cursor: pointer;
-  bottom: 3vh;
-  left: 3vh;
+  z-index: 3;
+  bottom: 2vh;
+  right: 2vh;
+  /* border: 1px solid blue; */
 }
 /***** prevent annoying blue box when clicked on mobile ***/
 .no_select {
@@ -321,9 +489,7 @@ body {
   width: 100%;
   height: 100%;
 }
-.nav_box {
-  flex: 1 1 50%;
-}
+
 .nav_options {
   position: absolute;
   display: flex;
@@ -331,7 +497,8 @@ body {
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 4;
+  cursor: pointer;
   color: gray;
   color: transparent;
 }
@@ -341,7 +508,11 @@ body {
   display: flex;
   flex-flow: row nowrap;
 }
-
+.nav_box {
+  flex: 1 1 50%;
+  cursor: pointer;
+  /* border: 1px solid yellow; */
+}
 .widget_function_container {
   position: absolute;
   width: 100%;
@@ -355,7 +526,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 4;
+  z-index: 5;
   width: 65%;
   height: 65%;
   border-radius: 50%;
@@ -363,6 +534,8 @@ body {
   /* starts on play mode */
   transform: rotate(90deg);
   transform-origin: center center;
+  cursor: pointer;
+  /* border: 1px solid red; */
 }
 
 #a_stick {
@@ -388,7 +561,8 @@ body {
   border-radius: 50%;
   width: 100%;
   height: 100%;
-  z-index: 4;
+  z-index: 6;
+  /* border: 1px solid green; */
 }
 #audio_download {
   display: none;
@@ -414,10 +588,11 @@ body {
   justify-content: flex-start;
   text-align: center;
   color: #999;
-  z-index: 2;
   position: fixed;
+  z-index: 7;
   width: 100%;
   height: 60%;
+  cursor: pointer;
 }
 .menu_nav {
   position: relative;
@@ -532,8 +707,12 @@ body {
   #widget_boi {
     width: 11vw;
     height: 11vw;
-    top: 30%;
-    left: 45%;
+    top: 5%;
+    left: 5%;
+  }
+  .support_img_slider {
+    flex: 1 1 auto;
+    margin: 0;
   }
 }
 /** hide content section to start work on credits **/
