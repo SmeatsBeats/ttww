@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=63" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=66" type="text/css">
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
 
 
 
-    <script type="text/javascript" src="js/ttww.js?v=1.6"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
 
 
 
@@ -77,7 +77,7 @@
 
     <!-- widget menu -->
 
-    <div class="menu">
+    <div class="menu no_select">
       <h2 class="menu_nav" id="about_nav">ABOUT</h2>
       <h2 class="menu_nav" id="lyrics_nav">SONGS</h2>
       <h2 class="menu_nav" id="credits_nav">CREDITS</h2>

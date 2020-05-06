@@ -29,13 +29,14 @@ $(document).ready(function() {
     return slider_index;
   }
 
-  var sliderUpdate = function(next, $currentSlider, slider_index){
+  var sliderUpdate = function(next, $currentSlider, slider_index, jumpTo){
     //getSliderIndex($currentSlider);
     //alert("howdy");
     //$($currentSlider).hide();
     //alert("returned " + slider_index);
     var slide_imgs = $($currentSlider).children(".support_img");
     var num_imgs = slide_imgs.length;
+    var prev_index = slider_index;
     var prev_img = slide_imgs[slider_index];
     var prev_dot_class = ".dot_boi_" + slider_index;
     //alert(prev_dot_class);
@@ -51,26 +52,38 @@ $(document).ready(function() {
 */
     if(next){
       //go right
-      slider_index++;
+      if(typeof jumpTo !== "undefined"){
+        //alert("jumping to " + jumpTo);
+        slider_index = jumpTo;
+      }
+      else{
+        //alert("normal increment");
+        slider_index++;
+      }
+      //slider_index++;
       //alert(slider_index);
       //setImgDot(slider_index);
       //alert("img and dot set" + current_img + current_dot);
       //alert(slider_index + " " + num_imgs);
 
-      if(slider_index == 1){
+      if(slider_index >= 1 && slider_index <= num_imgs - 2){
         //alert("bring in prev");
         $($currentSlider).find(".prev_arrow").removeClass("no_arrow");
+        $($currentSlider).find(".next_arrow").removeClass("no_arrow");
         if(num_imgs <= 2){
           $($currentSlider).find(".next_arrow").addClass("no_arrow");
         }
       }
       else if(slider_index == num_imgs - 1){
         $($currentSlider).find(".next_arrow").addClass("no_arrow");
+        $($currentSlider).find(".prev_arrow").removeClass("no_arrow");
       }
       // else if(slider_index == num_imgs)
 
       var current_img = slide_imgs[slider_index];
+
       var current_dot_class = ".dot_boi_" + slider_index;
+
       //alert(current_dot_class);
       // alert(thisSlider);
       var current_dot = $($currentSlider).find(current_dot_class);
@@ -102,24 +115,54 @@ $(document).ready(function() {
           "left" : "0%"
         }, 800);
         //add class to current img to detect it
+
+        //if you are jumping to the right you must move all imgs in between
+
+        //var imgs_between = current_img - prev_img;
+        if(jumpTo){
+          var i;
+          for(i = prev_index + 1; i < slider_index; i++){
+            //alert(i);
+            $(slide_imgs[i]).animate({
+              "left" : "-100%"
+            }, 800);
+          }
+        }
+
       }
     }
     else{
       //go left
-      slider_index--;
+      //alert("jumpTo: " + jumpTo);
+      //remember 0 counts as false so can't just do if(jumpTo)
+      if(typeof jumpTo !== "undefined"){
+        //alert("jumping to " + jumpTo);
+        slider_index = jumpTo;
+        //alert(slider_index);
+      }
+      else{
+        //alert("normal decrement");
+        slider_index--;
+      }
+
       //setImgDot(slider_index);
       //alert("img and dot set" + current_img + current_dot);
 
       //alert(slider_index + " " + num_imgs);
 
+
+
+
       if(num_imgs > 2){
-        if(slider_index == num_imgs - 2){
+        if(slider_index > 0 && slider_index <= num_imgs - 2){
           //show the next arrow
           $($currentSlider).find(".next_arrow").removeClass("no_arrow");
+          $($currentSlider).find(".prev_arrow").removeClass("no_arrow");
         }
         else if(slider_index == 0){
           //hide prev arrow
           $($currentSlider).find(".prev_arrow").addClass("no_arrow");
+          $($currentSlider).find(".next_arrow").removeClass("no_arrow");
         }
 
       }
@@ -135,6 +178,7 @@ $(document).ready(function() {
 
       var current_img = slide_imgs[slider_index];
       var current_dot_class = ".dot_boi_" + slider_index;
+      //alert(current_dot_class);
       var current_dot = $($currentSlider).find(current_dot_class);
 
       //double check this
@@ -161,6 +205,14 @@ $(document).ready(function() {
         $(current_img).animate({
           "left" : "0%"
         }, 800);
+        if(jumpTo){
+          var i;
+          for(i = prev_index - 1; i > slider_index; i--){
+            $(slide_imgs[i]).animate({
+              "left" : "100%"
+            }, 800);
+          }
+        }
       }
     }
   }
@@ -227,73 +279,10 @@ $(document).ready(function() {
 
 
         sliderUpdate(true, $currentSlider, slider_index);
-        /*
-        //alert("go right");
-        img_index++;
 
-        var current_img = slide_imgs[img_index];
-        var current_dot_class = ".dot_boi_" + img_index;
-        //alert(current_dot_class);
-        // alert(thisSlider);
-        var current_dot = $($this).find(current_dot_class);
-        //alert(current_dot);
-
-        // var current_dot_class_name = $(current_dot).attr("class");
-        // alert(current_dot_class_name);
-
-        if(img_index == num_imgs){
-          img_index = num_imgs - 1;
-
-          //alert("no more right");
-        }
-        else{
-
-          //update dot
-          //alert(current_dot_class_name);
-          //$(current_dot).html("yolo");
-          $(prev_dot).removeClass("selected_dot");
-          $(current_dot).addClass("selected_dot");
-
-          $(prev_img).animate({
-            "left" : "-100%"
-          }, 800);
-
-          $(current_img).animate({
-            "left" : "0%"
-          }, 800);
-        }
-        */
       }
       else{
         sliderUpdate(false, $currentSlider, slider_index);
-        /*
-        //alert("go left");
-        img_index --;
-
-        var current_img = slide_imgs[img_index];
-        var current_dot_class = ".dot_boi_" + img_index;
-        var current_dot = $($this).find(current_dot_class);
-        if(img_index == -1){
-          img_index = 0;
-
-          //alert("no more left");
-        }
-        else{
-          // $(thisSlider).find(current_dot).html("gotcha!");
-          // alert((prev_dot).attr("class"));
-          //alert(current_dot);
-          $(prev_dot).removeClass("selected_dot");
-          $(current_dot).addClass("selected_dot");
-
-          $(prev_img).animate({
-            "left" : "100%"
-          }, 800);
-
-          $(current_img).animate({
-            "left" : "0%"
-          }, 800);
-        }
-        */
       }
 
       return false;
@@ -301,6 +290,20 @@ $(document).ready(function() {
   });
 
   $(".slider_arrow").click(function(){
+
+    //if you click on empty arrow treat like click on box and fadeout img info
+
+    if($(this).hasClass("no_arrow")){
+      if(!runningHover){
+        if($(this).closest(".support_img_slider").find(".support_img_info").is(":visible")){
+          $(this).closest(".support_img_slider").find(".support_img_info").fadeOut("slow");
+        }
+        else{
+          $(this).closest(".support_img_slider").find(".support_img_info").fadeIn("fast");
+        }
+      }
+    }
+
     var arrow_class = $(this).attr("class");
     var arrow_type = arrow_class.substring(0, arrow_class.indexOf("_"));
     //alert(arrow_type);
@@ -316,8 +319,34 @@ $(document).ready(function() {
     }
   });
 
+  $(".dot_boi").click(function(){
+    var dotClass = $(this).find(".lil_dot").attr("class");
+    //alert(dotClass);
+    var jumpTo = parseInt(dotClass.match(/[0-9]/g));
+    //alert(jumpTo);
+
+    var $currentSlider = $(this).closest(".support_img_slider");
+    var slider_index = getSliderIndex($currentSlider);
+    var slider_index = parseInt(slider_index);
+
+    //alert(slider_index);
+
+    if(jumpTo > slider_index){
+      //going right
+      //alert("go right: " + jumpTo + " " + slider_index);
+      sliderUpdate(true, $currentSlider, slider_index, jumpTo);
+    }
+    else if(jumpTo < slider_index){
+      //alert("go left: " + jumpTo + " " + slider_index);
+      sliderUpdate(false, $currentSlider, slider_index, jumpTo);
+    }
 
 
+    //need to determine if going right or left
+
+
+
+  });
 
 
   $("#album_art").fadeIn(2500);
@@ -336,11 +365,49 @@ $(document).ready(function() {
 
   //show item info on hover
 
-  $(".support_img_slider").hover(function(){
-    $(this).children(".support_img_info, .support_img_swap_container, .support_img_swap").fadeIn("fast");
+  //var supInfoVis = false;
+  //var holMeBak = true;
+  var runningHover;
+
+  $(".support_img_slider").hover(function(event){
+    //alert("you hovered");
+      runningHover = true;
+      //$(this).closest(".img_indicator_container").siblings(".support_img_info").fadeIn("fast");
+      $(this).children(".support_img_info").fadeIn("fast", function(){
+        runningHover = false;
+      });
+      //supInfoVis = true;
+
+
+
   }, function(){
-    $(this).children(".support_img_info, .support_img_swap_container, .support_img_swap").fadeOut("slow");
+    //$(this).closest(".img_indicator_container").siblings(".support_img_info").fadeOut("slow");
+    $(this).children(".support_img_info").fadeOut("slow");
+    //supInfoVis = false;
   });
+
+
+  //can improve this by preventing fadeOut on last and first imgs
+  $(".img_indicator_container").click(function(event){
+      if(!runningHover){
+        //alert("img: " + $(this).hasClass("img_indicator_container") + "no_arrow: " + $(this).hasClass("no_arrow"));
+        $target = event.target;
+        //alert($($target).attr("class"));
+        if($($target).hasClass("img_indicator_container")){
+          //container was clicked
+          if($($target).closest(".support_img_slider").find(".support_img_info").is(":visible")){
+          //  alert("be gone");
+            $($target).closest(".support_img_slider").find(".support_img_info").fadeOut("slow");
+            //alert("fading out");
+          }
+          else{
+            $($target).closest(".support_img_slider").find(".support_img_info").fadeIn("fast");
+          }
+          //$(this).siblings(".support_img_info").fadeOut("slow");
+        }
+      }
+  })
+
 
   // $(document.body).on("mouseenter", '.support_img_slider', function(){
   //   alert("in for the love of god");
@@ -1097,6 +1164,56 @@ $(document).ready(function() {
       adjustIcon(prev_widget_mode, widget_mode);
     }
     // alert(widget_mode);
+  });
+
+  //ADD MOBILE GESTURES
+
+  var getWidget = document.getElementById("widget_boi");
+
+  var mc = new Hammer(getWidget);
+
+  mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+
+  mc.on("swipeleft swiperight swipeup swipedown press", function(ev){
+    var widgetGesture = ev.type;
+    var prev_widget_mode = widget_mode;
+    //alert(widget_mode);
+    switch(widgetGesture){
+      case "swipeup":
+      widget_mode = "home_mode";
+      if(!spinning){
+        spinning = true;
+        displayMode(widget_mode);
+        adjustIcon(prev_widget_mode, widget_mode);
+      }
+      break;
+      case "swipeleft":
+      widget_mode = "menu_mode";
+      if(!spinning){
+        spinning = true;
+        displayMode(widget_mode);
+        adjustIcon(prev_widget_mode, widget_mode);
+      }
+      break;
+      case "swipedown":
+      widget_mode = "download_mode";
+      if(!spinning){
+        spinning = true;
+        displayMode(widget_mode);
+        adjustIcon(prev_widget_mode, widget_mode);
+      }
+      break;
+      case "swiperight":
+      widget_mode = "audio_mode";
+      if(!spinning){
+        spinning = true;
+        displayMode(widget_mode);
+        adjustIcon(prev_widget_mode, widget_mode);
+      }
+      break;
+      default:
+      alert("gesture error");
+    }
   });
 
   //need a function to take mode and direct behavior when box clicked
