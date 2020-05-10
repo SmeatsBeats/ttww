@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=66" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=69" type="text/css">
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
 
 
 
-    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.6"></script>
 
 
 
@@ -28,6 +28,17 @@
   <body>
 
     <!-- widget section -->
+
+    <div class="widget_intro">
+      <div class="intro_info intro_item">
+        Swipe in any direction from the center of the widget.
+      </div>
+      <div class="intro_done intro_item">
+        Skip
+      </div>
+    </div>
+
+
     <div id="widget_boi" class="no_select">
 
       <div class="widget_nav_container">
@@ -48,12 +59,21 @@
           <img class="audio_timeline" src="imgs/AUDIO_TIMELINE.png" alt="Audio timeline indicator">
 
           <!-- research svg tag to create and animate timeline -->
+
           <img class="widget_nav" id="nav_options_img" src="imgs/WIDGET_NAV.png" alt="Widget navigation">
+
+
+          <img class="widget_nav" id="nav_options_dark" src="imgs/WIDGET_NAV_DARK.png" alt="Widget navigation">
           <img class="widget_bezel" id="widget_bezel_img" src="imgs/WIDGET_BEZEL_SMALL.png" alt="Model watch bezel">
         </div>
 
         <div class="widget_function_container" id="widget_function_container">
+          <div class="intro_msg">
+            Hi
+          </div>
           <div id="widget_function">
+
+
 
             <a id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>
               <div class="download_circle">

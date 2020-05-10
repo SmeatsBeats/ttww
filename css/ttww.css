@@ -461,8 +461,12 @@ body {
   height: 38vw;
   position: fixed;
   z-index: 4;
+  /*
   bottom: 2vh;
   right: 2vh;
+  */
+  bottom: 33vh;
+  right: 32vw;
   /* border: 1px solid blue; */
 }
 /***** prevent annoying blue box when clicked on mobile ***/
@@ -506,6 +510,13 @@ body {
   color: gray;
   color: transparent;
 }
+#nav_options_img{
+  /*hide the img with selection for intro */
+  opacity: 0;
+}
+#nav_options_dark{
+  z-index: -1;
+}
 .nav_row {
   width: 100%;
   height: 50%;
@@ -525,7 +536,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-#widget_function {
+#widget_function, .intro_msg {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -536,12 +547,24 @@ body {
   border-radius: 50%;
   color: gray;
   /* starts on play mode */
+  /*moving this transform to js after intro msg fades out */
   transform: rotate(90deg);
   transform-origin: center center;
   cursor: pointer;
   /* border: 1px solid red; */
 }
-
+.intro_msg{
+  position: absolute;
+  text-align: center;
+  font-size: 200%;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 100%;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(0deg);
+  /* border: 1px solid green; */
+}
 #a_stick {
   transform: rotate(35deg);
 }
@@ -580,6 +603,8 @@ body {
   margin: 3%;
   fill: #999;
   transition: fill 1s ease;
+  /* also for intro */
+  opacity: 0;
 }
 #widget_function:hover > .widget_stick{
   fill: white;
@@ -616,6 +641,25 @@ body {
   left: 100%;
 }
 /********END WIDGET BOI ****/
+/********WIDGET INTRO ********/
+.widget_intro{
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+  color: white;
+  background-color: black;
+  text-align: center;
+}
+.widget_intro > div{
+  flex: 1 1 100%;
+  min-width: 100%;
+  /* border: 1px solid blue; */
+}
 /*adjust for desktop*/
 @media only screen and (min-device-width:600px){
 
@@ -711,8 +755,8 @@ body {
   #widget_boi {
     width: 11vw;
     height: 11vw;
-    top: 5%;
-    left: 5%;
+    top: 40.5vh;
+    left: 44.5vw;
   }
   .support_img_slider {
     flex: 1 1 auto;
