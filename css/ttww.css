@@ -460,13 +460,21 @@ body {
   width: 38vw;
   height: 38vw;
   position: fixed;
-  z-index: 4;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
   /*
   bottom: 2vh;
   right: 2vh;
   */
-  bottom: 33vh;
-  right: 32vw;
+  /* bottom: 33vh; */
+  /* right: 32vw; */
+  /* top: 50%;
+  margin-top: -19vw;
+  left: 0;
+  right: 0;
+  margin: auto; */
   /* border: 1px solid blue; */
 }
 /***** prevent annoying blue box when clicked on mobile ***/
@@ -505,7 +513,7 @@ body {
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-  z-index: 5;
+  z-index: 6;
   cursor: pointer;
   color: gray;
   color: transparent;
@@ -541,7 +549,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 6;
+  z-index: 7;
   width: 65%;
   height: 65%;
   border-radius: 50%;
@@ -618,7 +626,7 @@ body {
   text-align: center;
   color: #999;
   position: fixed;
-  z-index: 8;
+  z-index: 9;
   width: 100%;
   height: 60%;
   cursor: pointer;
@@ -642,26 +650,131 @@ body {
 }
 /********END WIDGET BOI ****/
 /********WIDGET INTRO ********/
-.widget_intro{
+.widget_intro {
   position: fixed;
-  z-index: 2;
+  /* bumped up to 4 to prevent dots on support page lil_dots from lingering when this fades in */
+  z-index: 4;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  align-items: center;
+  /* display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+  align-items: center; */
   color: white;
   background-color: black;
   text-align: center;
 }
-.widget_intro > div{
-  flex: 1 1 100%;
-  min-width: 100%;
+.widget_intro > div {
+  position: fixed;
+  right: 0;
+  left: 0;
+  margin: auto;
+  width: 80%;
+  /* flex: 1 1 100%;
+  min-width: 100%; */
   /* border: 1px solid blue; */
 }
+.intro_info {
+  top: 5%;
+}
+.intro_done {
+  position: absolute;
+  height: 10%;
+  bottom: 5%;
+  /* padding: 5%;  */
+  margin-bottom: 5%;
+  border-radius: 2%;
+  background-image: linear-gradient(to bottom right, #555, #333);
+  /* background-image: linear-gradient(to right, green, #222 25%); */
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.intro_done > span {
+  color: #111;
+  z-index: 4;
+}
+.intro_load_bar, .intro_done_bar {
+  position: absolute;
+  border-radius: 2%;
+  flex: 1 1 100%;
+  min-width: 100%;
+  min-height: 100%;
+}
+.intro_load_bar {
+  /* z-index: 2; */
+  right: 100%;
+  background: linear-gradient(to bottom right, #777, #999);
+}
+.intro_done_bar {
+  z-index: 4;
+  left: 100%;
+  background: linear-gradient(to bottom left, #3689EE, #2169D4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.intro_dots{
+  /* need to counteract initial rotation of containing box widget_function */
+  /* transform: rotate(-90deg); */
+  position: absolute;
+  height: 180%;
+  width: 180%;
+  /* border: 1px solid blue; */
+  font-size: xx-small;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+.dot_row {
+  /* border: 1px solid red; */
+  min-width: 100%;
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.dot_row:nth-child(2) {
+  justify-content: space-between;
+}
+.dot_row:first-child, .dot_row:last-child{
+  flex-flow: column nowrap;
+
+}
+.dot_row:first-child {
+  justify-content: flex-start;
+}
+.dot_row:last-child {
+  justify-content: flex-end;
+}
+
+.audio_intro_dot {
+  margin-left: auto;
+}
+.home_intro_dot {
+  margin-bottom: auto;
+}
+.download_intro_dot {
+  margin-top: auto;
+}
+
+.intro_dot {
+  height: 3em;
+  width: 3em;
+  fill: #555;
+  /* border: 1px solid green; */
+}
+.bright_dot {
+  fill: white;
+  transition: fill 1s ease;
+}
 /*adjust for desktop*/
-@media only screen and (min-device-width:600px){
+@media only screen and (min-device-width:600px) {
 
 /**** ABOUT ****/
   .about_item > div, .about_item > img, .about_item p {
@@ -755,8 +868,15 @@ body {
   #widget_boi {
     width: 11vw;
     height: 11vw;
-    top: 40.5vh;
-    left: 44.5vw;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* top: 50%;
+    margin-top: -5.5vw;
+    left: 0;
+    right: 0;
+    margin: auto; */
   }
   .support_img_slider {
     flex: 1 1 auto;

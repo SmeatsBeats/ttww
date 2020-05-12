@@ -12,7 +12,8 @@ $(document).ready(function() {
 
   //hide elements that are to fade in on onload
 
-  $("#album_art, .lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, .intro_msg, #widget_boi, .intro_item").hide();
+  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button").hide();
+  $(".intro_msg, #album_art, #real_body").css("opacity", "0");
   $(".prev_arrow").addClass("no_arrow");
   //messing with mobile gesture events
 
@@ -30,7 +31,7 @@ $(document).ready(function() {
   var download_mode_explored = false;
   var gotcha = false;
   var set_intro_msg;
-  var introTimer;
+  var introTimer = true;
   var fadeIntroMsg;
   var completeNavSpin;
   var darkNavSpin = 0;
@@ -40,18 +41,27 @@ $(document).ready(function() {
   var introAnimation = function(){
     intro_mode = true;
     //could move this to css as well
-    $("html").css("overflow", "hidden");
+    $("html").css("overflow-y", "hidden");
     //$("#nav_options_img").css("opacity", "0");
     //$(".widget_stick").css("opacity", "0");
     $("#widget_boi").fadeIn("slow");
     $(".intro_item").fadeIn(2000);
-    fadeIntroMsg = setTimeout(function(){
 
-      $(".intro_msg").fadeIn("slow");
-    }, 1800);
+
+      //$(".intro_msg").css("opacity", "1");
+
+      $(".intro_msg").delay(3000).animate({
+        "opacity" : "1"
+      }, 2500);
+
+
+
+      // $(".intro_msg").fadeIn("slow");
+
+
 
     //intro msg sequence
-    var intro_msgs = ["im", "widget", "boi"];
+    var intro_msgs = ["im", "widget", "boi", "hi"];
     var msg = 0;
     set_intro_msg = setInterval(function(){
       //alert(msg);
@@ -60,11 +70,26 @@ $(document).ready(function() {
         msg = 0;
       }
       //alert(intro_msgs[msg]);
+
+      $(".intro_msg").stop().animate({
+        "opacity" : "0"
+      }, 2500, function(){
+        $(".intro_msg").html(intro_msgs[msg]);
+        $(".intro_msg").animate({
+          "opacity" : "1"
+        }, 2500);
+        msg++;
+      });
+      /*
+
       $(".intro_msg").fadeOut(2500, function(){
         $(".intro_msg").html(intro_msgs[msg]);
         $(".intro_msg").fadeIn(3000);
         msg++;
       });
+
+      */
+
     }, 9000);
 
 
@@ -587,7 +612,10 @@ $(document).ready(function() {
     //alert (item_id);
     var nav_selection = item_id.substring(0, item_id.indexOf("_"));
     //alert(nav_selection);
-    menu_select(nav_selection);
+    if(!intro_mode){
+      menu_select(nav_selection);
+    }
+
     // $(".menu").fadeOut("slow");
     displayMenu(false);
     //scroll to top of content
@@ -1193,7 +1221,7 @@ $(document).ready(function() {
 
     if(intro_mode){
 
-      $(".intro_info").animate({
+      $(".intro_info").stop().animate({
         "opacity": "0"
       }, 1000);
     }
@@ -1212,6 +1240,10 @@ $(document).ready(function() {
           var callback = audio_demo;
           if(!audio_mode_explored){
             audio_mode_explored = true;
+            //can I use introHint here somehow? or remove it entirely?
+            //alert("you found audio mode");
+            $(".audio_intro_dot").addClass("bright_dot");
+
             intro_index++;
           }
         }
@@ -1224,6 +1256,8 @@ $(document).ready(function() {
           var callback = home_demo;
           if(!home_mode_explored){
             home_mode_explored = true;
+            //alert("you found home mode");
+            $(".home_intro_dot").addClass("bright_dot");
             intro_index++;
           }
         }
@@ -1235,6 +1269,8 @@ $(document).ready(function() {
           var callback = menu_demo;
           if(!menu_mode_explored){
             menu_mode_explored = true;
+            //alert("you found menu mode");
+            $(".menu_intro_dot").addClass("bright_dot");
             intro_index++;
           }
         }
@@ -1247,6 +1283,8 @@ $(document).ready(function() {
           var callback = download_demo;
           if(!download_mode_explored){
             download_mode_explored = true;
+            //alert("you found download mode");
+            $(".download_intro_dot").addClass("bright_dot");
             intro_index++;
           }
         }
@@ -1259,17 +1297,8 @@ $(document).ready(function() {
       }
       if(intro_mode){
 
-        if(intro_index == 4 && gotcha == false){
-          gotcha = true;
-          $(".intro_done").animate({
-            "opacity" : "0"
-          }, 1500, function(){
-            $(".intro_done").html("Got it.");
-            $(".intro_done").animate({
-              "opacity" : "1"
-            }, 2000);
-          });
-        }
+        introLoadBar();
+
       }
     }
 
@@ -1320,6 +1349,8 @@ $(document).ready(function() {
       audio_demo();
       if(!audio_mode_explored){
         audio_mode_explored = true;
+        //alert("audio");
+        $(".audio_intro_dot").addClass("bright_dot");
         intro_index++;
       }
       break;
@@ -1327,6 +1358,7 @@ $(document).ready(function() {
       home_demo();
       if(!home_mode_explored){
         home_mode_explored = true;
+        $(".home_intro_dot").addClass("bright_dot");
         intro_index++;
       }
       break;
@@ -1334,6 +1366,7 @@ $(document).ready(function() {
       menu_demo();
       if(!menu_mode_explored){
         menu_mode_explored = true;
+        $(".menu_intro_dot").addClass("bright_dot");
         intro_index++;
       }
       break;
@@ -1341,6 +1374,7 @@ $(document).ready(function() {
       download_demo();
       if(!download_mode_explored){
         download_mode_explored = true;
+        $(".download_intro_dot").addClass("bright_dot");
         intro_index++;
       }
     }
@@ -1349,17 +1383,20 @@ $(document).ready(function() {
 
 
   var audio_demo = function(){
-    $(".intro_info").html("Audio Mode. Control audio playback. Good luck scrubbing chump.");
-    $(".intro_info").animate({
+    $(".intro_info").html("Audio Mode. <br> Control audio playback.");
+
+
+    $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
+
     //adjustIcon(prev_widget_mode, widget_mode);
   }
 
   var download_demo = function(){
     //alert("Download Mode. Download the audio file.");
-    $(".intro_info").html("Download Mode. Download the audio file.");
-    $(".intro_info").animate({
+    $(".intro_info").html("Download Mode. <br> Download the audio file.");
+    $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
     //prev_widget_mode = widget_mode;
@@ -1369,15 +1406,15 @@ $(document).ready(function() {
   }
   var menu_demo = function(){
     //alert("Menu Mode. Display the full menu.");
-    $(".intro_info").html("Menu Mode. Display the full menu.");
-    $(".intro_info").animate({
+    $(".intro_info").html("Menu Mode. <br> Display the full menu.");
+    $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
   }
   var home_demo = function(){
     //alert("Home Mode. Return to top of site from anywhere.");
-    $(".intro_info").html("Home Mode. Return to top of site from anywhere.");
-    $(".intro_info").animate({
+    $(".intro_info").html("Home Mode. <br> Return to top of site from anywhere.");
+    $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
   }
@@ -1422,12 +1459,14 @@ $(document).ready(function() {
   var intro_swipe = function(){
     firstSwipe = false;
     introStarted = true;
-    clearInterval(fadeIntroMsg);
+    //clearInterval(fadeIntroMsg);
+    $(".intro_msg").clearQueue();
     clearInterval(set_intro_msg);
     clearInterval(introTimer);
     introNavSpinEnd();
+    //introLoadBar();
     introTimer = false;
-    $(".intro_msg").fadeOut("fast");
+    $(".intro_msg").stop().fadeOut("fast");
     //need to get bezel to nearest stop
     validBezelSet = true;
     var endDeg;
@@ -1466,6 +1505,7 @@ $(document).ready(function() {
         $("#nav_options_img").css("transform", "rotate(" + endDeg + "deg)")
         widgetDress(true);
         introHint();
+        introLoadBar();
         //adjustIcon(prev_widget_mode, widget_mode, widgetDress);
       }
       else{
@@ -1521,13 +1561,41 @@ $(document).ready(function() {
     intro_mode = false;
     //if you close between widget msg it can't fadeout
     //animate opacity instead to guarantee invisibilty
-    $(".intro_msg, .widget_intro").fadeOut("fast", function(){
+    $("#real_body").css("opacity", "1");
+    $(".widget_intro, .intro_msg, .intro_dots").animate({
+      "opacity" : "0"
+    }, 1500, function(){
+      //$("html").css("overflow", "auto");
+      $(".widget_stick").animate({
+        "opacity" : "1"
+      }, 1500);
+      $(".widget_intro, .intro_dots").hide();
+    });
+
+    /*
+    $(".widget_stick").animate({
+      "opacity" : "1"
+    }, 2000);
+    */
+
+    //$("#album_art").fadeIn(3000);
+
+    $("#album_art").animate({
+      "opacity" : "1"
+    }, 3000);
+
+
+
+    /*
+    $(".widget_intro").fadeOut("fast", function(){
       $("#album_art").fadeIn(3000);
       //$("#widget_function").css("transform", "rotate(90deg)");
       $(".widget_stick").animate({
         "opacity" : "1"
       }, 3000);
     });
+    */
+
     $("#nav_options_img").animate({
       "opacity" : "1"
     }, 1500, function(){
@@ -1536,15 +1604,17 @@ $(document).ready(function() {
       }, 200, function (){
 
 
-        $("html").css("overflow-y", "auto");
+        $("html").css("overflow-y", "scroll");
       });
     });
   }
 
   $(".intro_done").click(function(){
-
+    $(".intro_msg").clearQueue();
     finishIntro();
-    clearInterval(fadeIntroMsg);
+    //clearInterval(fadeIntroMsg);
+
+
 
     /*
 
@@ -1574,6 +1644,41 @@ $(document).ready(function() {
 
   });
 
+  var introLoadBar = function(){
+    var loadVal;
+    var introDoneBar = false;
+    switch(intro_index){
+      case 1:
+        //alert("index is 1");
+        loadVal = "75%";
+        break;
+      case 2:
+        loadVal = "50%";
+        break;
+      case 3:
+        //alert("thats 3");
+        loadVal = "25%";
+        break;
+      case 4:
+      //alert("dunzo my bunzo");
+      loadVal = "0";
+      introDoneBar = true;
+      // $(".intro_load_bar").css("background", "#1E2122");
+      break;
+      default:
+      alert("hmmm");
+    }
+    $(".intro_load_bar").animate({
+      "right" : loadVal
+    }, 1000, "swing", function(){
+      if(introDoneBar){
+        $(".intro_done_bar").animate({
+          "left" : "0"
+        }, 1000, "swing");
+      }
+    });
+  }
+
   var reset_intro_mode = function(){
     //intro_mode = true;
     intro_mode = true;
@@ -1591,8 +1696,14 @@ $(document).ready(function() {
     // firstSwipe = true;
     //intro_mode = true;
     //$(".intro_info").html("Swipe in any direction from the center of the widget.");
-    $(".widget_intro").fadeIn("slow");
-    $(".intro_done").html("Done");
+
+    $(".widget_intro, .intro_dots").show().animate({
+      "opacity" : "1"
+    }, 1500, function(){
+      $("#real_body, #album_art").css("opacity" , "0");
+    });
+    $("html").css("overflow", "hidden");
+    //$(".intro_done").html("Done");
     //widgetDress(false);
     //introAnimation();
   }

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=69" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=8" type="text/css">
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
 
 
 
-    <script type="text/javascript" src="js/ttww.js?v=1.6"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.7"></script>
 
 
 
@@ -34,12 +34,24 @@
         Swipe in any direction from the center of the widget.
       </div>
       <div class="intro_done intro_item">
-        Skip
+
+        <!-- <span id="intro_done_button">Skip Intro</span> -->
+        <span id="intro_done_button">Skip</span>
+        <span id="got_it_button">Got It</span>
+
+        <div class="intro_load_bar">
+
+        </div>
+        <div class="intro_done_bar">
+          Done
+        </div>
       </div>
     </div>
 
 
     <div id="widget_boi" class="no_select">
+
+
 
       <div class="widget_nav_container">
 
@@ -69,8 +81,29 @@
 
         <div class="widget_function_container" id="widget_function_container">
           <div class="intro_msg">
-            Hi
+            hi
           </div>
+          <div class="intro_dots">
+
+            <div class="dot_row">
+              <svg class='intro_dot'><circle class='home_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
+            </div>
+
+            <div class="dot_row">
+
+              <svg class='intro_dot'><circle class='menu_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
+
+              <svg class='intro_dot'><circle class='audio_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
+            </div>
+
+            <div class="dot_row">
+              <svg class='intro_dot'><circle class='download_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
+
+            </div>
+
+
+          </div>
+
           <div id="widget_function">
 
 
