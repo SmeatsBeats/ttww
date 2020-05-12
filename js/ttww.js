@@ -631,7 +631,15 @@ $(document).ready(function() {
   //     displayMenu(false);
   //   }
   // }
-
+  $(".menu").click(function(){
+    $target = $(event.target);
+    //alert($target.closest(".menu").length);
+    if ($($target).hasClass("menu_nav") == false){
+      //alert("empty");
+      displayMenu(false);
+    }
+    //displayMenu(false);
+  });
 
   $("html").click(function(event){
     //alert("hi");
