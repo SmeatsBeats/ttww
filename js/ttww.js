@@ -1162,9 +1162,9 @@ $(document).ready(function() {
   //since we must animate rotations by hand, will probably need to know both
 
 
-  $(".nav_box").click(function(){
+  $(".nav_box").mousedown(function(){
 
-    if(spinning == false){
+    if(!spinning && !draggable){
       var nav_box_id = $(this).attr("id");
       // alert(nav_box_id);
       var prev_widget_mode = widget_mode;
@@ -1258,35 +1258,47 @@ $(document).ready(function() {
       spinning = true;
       switch(widgetGesture){
         case "swipeup":
-        widget_mode = "home_mode";
+        if(!draggable){
+          widget_mode = "home_mode";
 
 
-          displayMode(widget_mode);
-          adjustIcon(prev_widget_mode, widget_mode);
+            displayMode(widget_mode);
+            adjustIcon(prev_widget_mode, widget_mode);
+        }
+
 
         break;
         case "swipeleft":
-        widget_mode = "menu_mode";
-          //alert("calling displayMode with WM: " + widget_mode);
+        if(!draggable){
+          widget_mode = "menu_mode";
+            //alert("calling displayMode with WM: " + widget_mode);
 
-          displayMode(widget_mode);
-          adjustIcon(prev_widget_mode, widget_mode);
+            displayMode(widget_mode);
+            adjustIcon(prev_widget_mode, widget_mode);
+        }
+
 
         break;
         case "swipedown":
-        widget_mode = "download_mode";
+        if(!draggable){
+          widget_mode = "download_mode";
 
 
-          displayMode(widget_mode);
-          adjustIcon(prev_widget_mode, widget_mode);
+            displayMode(widget_mode);
+            adjustIcon(prev_widget_mode, widget_mode);
+        }
+
 
         break;
         case "swiperight":
-        widget_mode = "audio_mode";
+        if(!draggable){
+          widget_mode = "audio_mode";
 
 
-          displayMode(widget_mode);
-          adjustIcon(prev_widget_mode, widget_mode);
+            displayMode(widget_mode);
+            adjustIcon(prev_widget_mode, widget_mode);
+        }
+
 
         break;
         default:
@@ -1334,6 +1346,14 @@ $(document).ready(function() {
 
           break;
           default:
+
+          displayMode("home_mode");
+
+          draggable = true;
+          //fade out widget function
+          $("#widget_function").fadeOut();
+
+          /*
           //home mode has no press function atm
           //just let it reopen tutorial for now
           displayMode(widget_mode);
@@ -1343,6 +1363,8 @@ $(document).ready(function() {
             reset_intro_mode();
             introHint();
           }
+          */
+
         }
 
       }
@@ -1550,6 +1572,7 @@ $(document).ready(function() {
       widgetDblClick = true;
       //alert("you dbl clicked the widget");
       //make it draggable
+      /*
       if(draggable){
         draggable = false;
         //fade in widget function
@@ -1560,8 +1583,9 @@ $(document).ready(function() {
         //fade out widget function
         $("#widget_function").fadeOut();
       }
-
+      */
     }
+
     else {
       if(!intro_mode){
         var widgetCallX = ev.pageX;
@@ -1642,9 +1666,12 @@ function dragElement(elmnt) {
 
     document.ontouchend = null;
     document.ontouchmove = null;
-    //draggable = false;
+    draggable = false;
+    $("#widget_function").fadeIn();
   }
 }
+
+
 
   /////////////DOWNLOAD MENU
 

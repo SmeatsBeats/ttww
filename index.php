@@ -19,7 +19,7 @@
 
 
 
-    <script type="text/javascript" src="js/ttww.js?v=1.4"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.2"></script>
 
 
 
