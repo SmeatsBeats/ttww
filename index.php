@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=7" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=4" type="text/css">
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
@@ -19,19 +19,114 @@
 
 
 
-    <script type="text/javascript" src="js/ttww.js?v=1.5"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.4"></script>
 
 
 
   </head>
 
   <body>
+    <div class="tip_top">
+      <!-- this div will be used as a reference as the top of the page -->
+    </div>
+    <!--download page -->
+
+    <div class="download_options" id="download_menu">
+
+
+
+
+
+      <div class="download_option" id="download_instructions">
+        <span class="download_instructions">
+          Select tracks to download.
+        </span>
+        <!-- Select All
+
+        <span class="download_symbol">Full Circle</span>
+        <span class="download_song_title">W8</span> -->
+
+      </div>
+
+
+
+
+
+      <div class="download_option" id="graduate_download">
+        <!-- Graduate -->
+
+
+        <img class="download_symbol" src="imgs/WAIT.png" alt="Sacred semiotics"/>
+        <img class="download_song_title" src="imgs/GRADUATE.png" alt="Gradu-wait. Mysterious message.">
+
+      </div>
+      <div class="download_option" id="glass_download">
+        <!-- 8lass -->
+
+        <img class="download_symbol" src="imgs/HATE.png" alt="Sacred semiotics" />
+        <img class="download_song_title" src="imgs/GLASS.png" alt="Glass. Occult code.">
+
+      </div>
+      <div class="download_option" id="broken_download">
+        <!-- >roken -->
+
+        <img class="download_symbol" src="imgs/LATE.png" alt="Sacred semiotics" />
+        <img class="download_song_title" src="imgs/BROKEN.png" alt="Broken. Esocteric artifacts.">
+
+
+      </div>
+      <div class="download_option" id="home_download">
+        <!-- home -->
+
+        <img class="download_symbol" src="imgs/FATE.png" alt="Sacred semiotics">
+        <img class="download_song_title" src="imgs/HOME.png" alt="HOME. Homecoming.">
+
+      </div>
+
+      <div class="download_option" id="download_confirm">
+
+        <span id="download_button">
+          <a id="audio_download_link" href="audio/TO_THOSE_WHO_W8.wav" download>Download </a>
+        </span>
+        <span id="download_done_button">Done</span>
+        <span id="download_cancel_button">Cancel</span>
+      </div>
+
+
+
+    </div>
 
     <!-- widget section -->
 
     <div class="widget_intro">
       <div class="intro_info intro_item">
-        Swipe in any direction from the center of the widget.
+        <span id="init_intro_info">
+          Swipe in any direction from the center of the widget.
+        </span>
+
+        <span class="mode_intro_info" id="audio_intro_info">
+          <span class='intro_mode_title'>Audio Mode</span> <br>
+          <span class='intro_function' id='audio_tap'>Tap: Play/Pause.</span> <br>
+          <span class='intro_function' id='audio_press'>Press: Audio controls.</span>
+        </span>
+
+        <span class="mode_intro_info" id="download_intro_info">
+          <span class='intro_mode_title'>Download Mode</span> <br>
+          <span class='intro_function' id='download_tap'>Tap: Download project.</span> <br>
+          <span class='intro_function' id='download_press'>Press: Download options.</span>
+        </span>
+
+        <span class="mode_intro_info" id="menu_intro_info">
+          <span class='intro_mode_title'>Menu Mode</span> <br>
+          <span class='intro_function' id='menu_tap'>Tap: Display full menu.</span> <br>
+          <span class='intro_function' id='menu_press'>Press: Reopen this tutorial.</span>
+        </span>
+
+        <span class="mode_intro_info" id="home_intro_info">
+          <span class='intro_mode_title'>Home Mode</span> <br>
+          <span class='intro_function' id='home_tap'>Tap: Return to top.</span>
+        </span>
+
       </div>
       <div class="intro_done intro_item">
 
@@ -48,8 +143,7 @@
       </div>
     </div>
 
-
-    <div id="widget_boi" class="no_select">
+    <div id="widget_boi" class="no_select widget_swipe">
 
 
 
@@ -107,11 +201,12 @@
           <div id="widget_function">
 
 
-
-            <a id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>
-              <div class="download_circle">
+            <!--
+            <span class="widget_swipe" id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>
+              <div class="download_circle widget_swipe">
               </div>
-            </a>
+            </span>
+          -->
 
               <svg style="width:5%; height:50%;" class="widget_stick no_select" id="a_stick">
                 <rect width="100%" height="100%">
@@ -152,7 +247,7 @@
       </picture>
 
       <!-- allow audio to be played and downloaded -->
-      <audio id="ttwwAudioFile" src="audio/TTWW_TEST_MASTER_10.wav"></audio>
+      <audio id="ttwwAudioFile" src="audio/TO_THOSE_WHO_W8.wav"></audio>
 
     </section>
 

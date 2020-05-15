@@ -12,7 +12,7 @@ $(document).ready(function() {
 
   //hide elements that are to fade in on onload
 
-  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button").hide();
+  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol").hide();
   $(".intro_msg, #album_art, #real_body").css("opacity", "0");
   $(".prev_arrow").addClass("no_arrow");
   //messing with mobile gesture events
@@ -22,13 +22,27 @@ $(document).ready(function() {
 
 
   var intro_mode = true;
+  var draggable = false;
+  var widgetDblClick = false;
+  var widget_press = false;
+  var intro_first_open = true;
   var firstSwipe = true;
   var preventFullSpin = true;
   var intro_index = 0;
   var audio_mode_explored = false;
+  var audio_tap = false;
+  var audio_press = false;
   var home_mode_explored = false;
+  var home_tap = false;
+  var scroll_fx = false;
   var menu_mode_explored = false;
+  var menu_tap = false;
+  var menu_press = false;
   var download_mode_explored = false;
+  var download_tap = false;
+  var download_press = false;
+  var menu_tap = false;
+  var mennu_press = false;
   var gotcha = false;
   var set_intro_msg;
   var introTimer = true;
@@ -61,7 +75,7 @@ $(document).ready(function() {
 
 
     //intro msg sequence
-    var intro_msgs = ["im", "widget", "boi", "hi"];
+    var intro_msgs = ["mi", "nam", "is", "wdgt", "boi", "hi"];
     var msg = 0;
     set_intro_msg = setInterval(function(){
       //alert(msg);
@@ -1000,7 +1014,11 @@ $(document).ready(function() {
         var bezelImg = document.getElementById('widget_bezel_img');
         bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
         clearInterval(bezelSpinTimer);
+        if(widget_press){
+          widget_press = false;
+        }
         if(typeof callback !== "undefined"){
+
           callback();
           if(intro_mode){
             widgetDress(true);
@@ -1036,6 +1054,7 @@ $(document).ready(function() {
     //prev = audio_mode
     if(prev_widget_mode == "audio_mode" && widget_mode == "menu_mode"){
       if(playing){
+        //did I only put callback here for a reason?
         iconSpin(0, 90, 2 * spinRate, callback);
       }
       else{
@@ -1056,7 +1075,7 @@ $(document).ready(function() {
     }
     else if(prev_widget_mode == "audio_mode" && widget_mode == "download_mode"){
 
-      $("#audio_download").show();
+      //$("#audio_download").show();
 
       if(playing){
         $("#widget_function").css("transform", "rotate(180deg)");
@@ -1085,7 +1104,7 @@ $(document).ready(function() {
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
       //menu to download
-      $("#audio_download").show();
+      //$("#audio_download").show();
       moveSticks(true, false, false);
       iconSpin(270, 180, spinRate);
     }
@@ -1109,13 +1128,13 @@ $(document).ready(function() {
     //NEED TO MAKE AND REMOVE DOWNLOAD LINK ACCORDINGLY
 
     else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
-      $("#audio_download").show();
+      //$("#audio_download").show();
       iconSpin(0, 180, spinRate);
     }
       /////////////////////////////////////////////////////////////////////// DOWNLOAD ///////////////////////////////////////////////////////////////////////////////////////
 
     else if(prev_widget_mode == "download_mode" && widget_mode == "audio_mode"){
-      $("#audio_download").hide();
+      //$("#audio_download").hide();
       if(playing){
         moveSticks(false, true, false);
       }
@@ -1124,11 +1143,11 @@ $(document).ready(function() {
       }
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
-      $("#audio_download").hide();
+      //$("#audio_download").hide();
       iconSpin(180, 360, spinRate);
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
-      $("#audio_download").hide();
+      //$("#audio_download").hide();
       moveSticks(false, false, false);
       iconSpin(180, 270, spinRate);
     }
@@ -1161,6 +1180,70 @@ $(document).ready(function() {
   //ADD MOBILE GESTURES
 
   var getWidget = document.getElementById("widget_boi");
+  //var getWidget = document.getElementsByClassName("widget_swipe");
+
+
+/*
+  $(".widget_swipe").each(function(){
+    var mc = new Hammer(this);
+
+    mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+
+    mc.on("swipeleft swiperight swipeup swipedown press", function(ev){
+      var widgetGesture = ev.type;
+      alert(widgetGesture);
+      var prev_widget_mode = widget_mode;
+      //alert(widget_mode);
+      //alert(spinning);
+      if(!spinning){
+        spinning = true;
+        switch(widgetGesture){
+          case "swipeup":
+          widget_mode = "home_mode";
+
+
+            displayMode(widget_mode);
+            adjustIcon(prev_widget_mode, widget_mode);
+
+          break;
+          case "swipeleft":
+          widget_mode = "menu_mode";
+            //alert("calling displayMode with WM: " + widget_mode);
+
+            displayMode(widget_mode);
+            adjustIcon(prev_widget_mode, widget_mode);
+
+          break;
+          case "swipedown":
+          widget_mode = "download_mode";
+
+
+            displayMode(widget_mode);
+            adjustIcon(prev_widget_mode, widget_mode);
+
+          break;
+          case "swiperight":
+          widget_mode = "audio_mode";
+
+
+            displayMode(widget_mode);
+            adjustIcon(prev_widget_mode, widget_mode);
+
+          break;
+          default:
+          //this is a press
+          //reset intro mode if this is the case
+          introHint();
+          displayMode(widget_mode);
+          reset_intro_mode();
+        }
+      }
+
+    });
+  });
+
+  */
+
 
   var mc = new Hammer(getWidget);
 
@@ -1171,7 +1254,7 @@ $(document).ready(function() {
     var prev_widget_mode = widget_mode;
     //alert(widget_mode);
     //alert(spinning);
-    if(!spinning){
+    if(!spinning && !draggable){
       spinning = true;
       switch(widgetGesture){
         case "swipeup":
@@ -1207,15 +1290,67 @@ $(document).ready(function() {
 
         break;
         default:
-        //this is a press
-        //reset intro mode if this is the case
-        introHint();
-        displayMode(widget_mode);
-        reset_intro_mode();
+        ///////////////////this is a press////////////////////
+        widget_press = true;
+        switch(widget_mode){
+
+          case "audio_mode":
+          displayMode(widget_mode);
+          //hilight intro task
+          if(!audio_press){
+            audio_press = true;
+            $("#audio_press").addClass("intro_task_done");
+          }
+          //open audio controls
+          alert("open audio controls");
+          break;
+          case "download_mode":
+          displayMode(widget_mode);
+          if(!download_press){
+            download_press = true;
+            $("#download_press").addClass("intro_task_done");
+          }
+          //open the download options menu
+          downloadOptions();
+          break;
+          case "menu_mode":
+          //alert("menu mode pressed");
+          //update the intro tasks
+          if(!menu_press){
+            menu_press = true;
+            $("#menu_press").addClass("intro_task_done");
+          }
+
+          //$("#menu_press").css("color", "white");
+          //reset intro mode if this is the case
+          //introHint();
+          displayMode(widget_mode);
+
+          if(!intro_mode){
+            //alert("reset intro mode pls");
+            reset_intro_mode();
+            introHint();
+          }
+
+          break;
+          default:
+          //home mode has no press function atm
+          //just let it reopen tutorial for now
+          displayMode(widget_mode);
+
+          if(!intro_mode){
+            //alert("reset intro mode pls");
+            reset_intro_mode();
+            introHint();
+          }
+        }
+
       }
     }
 
   });
+
+
 
   //need a function to take mode and direct behavior when box clicked
 
@@ -1228,10 +1363,15 @@ $(document).ready(function() {
     //hate to clutter this up more with intro bs but yolo
 
     if(intro_mode){
+      if(!widget_press){
+        $(".intro_info").stop().animate({
+          "opacity": "0"
+        }, 1000, function(){
+          $("#init_intro_info").hide();
+        });
+      }
 
-      $(".intro_info").stop().animate({
-        "opacity": "0"
-      }, 1000);
+
     }
 
     //if it is the intro we need to stop the spinning and establish a valid value for prev_widget_mode
@@ -1274,7 +1414,13 @@ $(document).ready(function() {
         case "menu_mode":
         rotateDeg = 180;
         if(intro_mode){
+
+
           var callback = menu_demo;
+
+
+
+          //var callback = menu_demo;
           if(!menu_mode_explored){
             menu_mode_explored = true;
             //alert("you found menu mode");
@@ -1317,25 +1463,517 @@ $(document).ready(function() {
     switch(widget_mode){
       case "menu_mode":
         displayMenu(true);
+        if(!menu_tap){
+          menu_tap = true;
+          $("#menu_tap").addClass("intro_task_done");
+        }
         break;
       case "home_mode":
+      if(!home_tap){
+        home_tap = true;
+        $("#home_tap").addClass("intro_task_done");
+      }
+        if(intro_mode){
+          //alert("scroll_animation");
+          //$(".widget_intro").css("position", "absolute");
+
+          var originalInfo = $(".intro_info").offset();
+          var infoTop = originalInfo.top;
+          var originalDone = $(".intro_done").offset();
+          var doneTop = originalDone.top;
+
+          //only run the animation if it is not already running
+          if(!scroll_fx){
+            scroll_fx = true;
+
+            $(".intro_done").animate({
+              "top" : "+=100%"
+            }, 200, "swing");
+
+            $(".intro_info").animate({
+              "top" : "+=100%"
+            }, 200, "swing", function(){
+              //position to bring in from top
+              $(".intro_info").css("top", "-=300%");
+              $(".intro_done").css("top", "-=300%");
+              $(".intro_info").animate({
+                "top" : infoTop
+              }, 300);
+              $(".intro_done").animate({
+                "top" : doneTop
+              }, 300, function(){
+                scroll_fx = false;
+              });
+            });
+          }
+
+        }
         scrollHome();
         break;
       case "audio_mode":
-        audioControl();
-
+      if(!audio_tap){
+        audio_tap = true;
+        $("#audio_tap").addClass("intro_task_done");
+      }
+        if(!firstSwipe){
+          audioControl();
+        }
         // playing = !playing;
         // clickOnPlayOrPause(playing);
         break;
       default:
         // alert("running switch default");
+          //downloadOptions();
+          //find a way to trigger default download of full project when clicked
+          if(!download_tap){
+            download_tap = true;
+            $("#download_tap").addClass("intro_task_done");
+          }
+          downloadOptions(true);
+          buildDownloadLink(true);
+
     }
   };
 
+
+  ///////////////////////CALL WIDGET
+
+  //call widget to dbl click location
+
+  $("html").dblclick(function(ev){
+    //don't move him during the intro probably
+    var isWidget = false;
+    var $target = ev.target;
+    var isWidgetLength = $($target).closest("#widget_boi").length;
+    //alert(isWidgetLength);
+    if(isWidgetLength == 1){
+      widgetDblClick = true;
+      //alert("you dbl clicked the widget");
+      //make it draggable
+      if(draggable){
+        draggable = false;
+        //fade in widget function
+        $("#widget_function").fadeIn();
+      }
+      else{
+        draggable = true;
+        //fade out widget function
+        $("#widget_function").fadeOut();
+      }
+
+    }
+    else {
+      if(!intro_mode){
+        var widgetCallX = ev.pageX;
+        var dblClickY = ev.pageY;
+        var scrollTop = $(document).scrollTop();
+        //var widgetCallX = dblClickX - scrollTop;
+        var widgetCallY = dblClickY - scrollTop;
+        //alert(dblClickX + " " + dblClickY);
+        //move widget to this location
+        //will need to make sure it stays within the page
+
+        //this takes too long but would be cute to add quick rotation animation whlile it moves
+        //displayMode(widget_mode);
+
+
+        $("#widget_boi").animate({
+          "top" : widgetCallY,
+          "left" : widgetCallX
+        }, 700, "swing");
+      }
+    }
+    //alert(isWidget);
+
+
+  })
+
+  //make widget draggable
+
+dragElement(document.getElementById("widget_boi"));
+
+function dragElement(elmnt) {
+
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  // if (document.getElementById(elmnt.id + "header")) {
+  //   // if present, the header is where you move the DIV from:
+  //   document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  // } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+
+    elmnt.onmousedown = dragMouseDown;
+    elmnt.ontouchstart = dragMouseDown;
+
+  //}
+
+  function dragMouseDown(e) {
+    if(draggable){
+      e = e || window.event;
+      e.preventDefault();
+      // get the mouse cursor position at startup:
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      document.ontouchend = closeDragElement;
+      // call a function whenever the cursor moves:
+      document.onmousemove = elementDrag;
+      document.ontouchmove = elementDrag;
+    }
+
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+
+    document.ontouchend = null;
+    document.ontouchmove = null;
+    //draggable = false;
+  }
+}
+
+  /////////////DOWNLOAD MENU
+
+var downloadOptions = function(simple){
+  $(".download_options").show();
+  if(!simple){
+    $("html").css("overflow", "hidden");
+  }
+
+  //set this when it exists
+
+
+
+  downloadConfirmHeight = $("#download_confirm").height();
+  movVal = "-" + downloadConfirmHeight;
+  var docHeight = $(window).height();
+  var difHeight = docHeight - downloadConfirmHeight;
+  //var downloadConfirmHeightPercent = (downloadConfirmHeight / docHeight) * 100;
+  //var downloadOptionsHeight = 100 - downloadConfirmHeightPercent + "%";
+  //alert(difHeight);
+
+
+  //alert(downloadConfirmHeight);
+  $("#download_confirm").animate({
+    "bottom" : movVal
+  }, 0, function(){
+
+    var downloadConfirmOffset = $("#download_confirm").offset();
+    var tipTopOffset = $(".tip_top").offset();
+    var offsetDif = downloadConfirmOffset.top - tipTopOffset.top;
+    //alert(downloadConfirmOffset.top);
+    var downloadOptionsHeight = offsetDif - downloadConfirmHeight;
+    $(".download_options").css("height", downloadOptionsHeight);
+
+
+    //setDownloadMenuHeight();
+
+    $("#download_confirm").animate({
+      "bottom" : "0"
+    }, 1000, "swing");
+    if(!simple){
+      $(".download_options").animate({
+        "top" : "0"
+      }, 1000, "swing");
+    }
+  });
+}
+
+  var downloadConfirmHeight;
+  var movVal;
+
+  $("#download_cancel_button, #download_done_button").click(function(){
+    $("html").css("overflow", "auto");
+    $(".download_options").animate({
+      "top" : "-100%"
+    }, 1000, "swing", function(){
+      $("#download_button").css("right", "30%");
+      $(this).hide();
+    });
+
+    //height of download confirm will vary based on device
+
+    //var downloadConfirmHeight = $("#download_confirm").height();
+
+    //alert(movVal);
+
+    $("#download_confirm").animate({
+      "bottom" : movVal
+    }, 1000, "swing", function(){
+      //$(this).hide();
+    });
+
+    /*
+    $(".download_options").animate({
+      "height" : "0",
+      "width" : "0"
+    }, 1000, function(){
+      $(".download_options").hide();
+    });
+    */
+  });
+
+  //the height of download options needs to change if user scrolls on mobile, hiding the search bar
+
+  var getDownloadOffsets = function(){
+    var downloadConfirmOffset = $("#download_confirm").offset();
+    //var distance = downloadConfirmOffset - scrollTop;
+    //alert("top of download " + downloadConfirmOffset.top);
+    var tipTopOffset = $(".tip_top").offset();
+    //alert("tipTopOffset " + tipTopOffset.top);
+    var offsetDif = downloadConfirmOffset.top - tipTopOffset.top;
+    return offsetDif;
+  }
+  var offsetDif;
+  function setDownloadMenuHeight(ev) {
+    //alert("pls set the height of the download menu");
+    var delayHeight = setTimeout(function(){
+      var offsetDif = getDownloadOffsets();
+      $(".download_options").css("height", offsetDif);
+    }, 5);
+
+    var delayHeightCleanUp = setTimeout(function(){
+      var offsetDif = getDownloadOffsets();
+      $(".download_options").css("height", offsetDif);
+    }, 300);
+
+  }
+
+  var downloadMenu = document.getElementById("download_menu");
+  downloadMenu.ontouchend = setDownloadMenuHeight;
+
+
+
+//need to generate correct download link based on what is included
+//use id to determine which track selected
+  var downloadTracks = [];
+  var downloadLink;
+
+  $(".download_option").not("#download_instructions, #download_confirm").click(function(){
+
+    $(this).toggleClass("download_option_selected");
+
+    //get id
+
+    var downloadId = $(this).attr("id");
+    var downloadTrack = downloadId.substring(0, downloadId.indexOf("_"));
+    //alert(downloadTrack);
+    //var arrow_type = arrow_class.substring(0, arrow_class.indexOf("_"));
+
+
+    //add to array
+    if(downloadTrack !== "download"){
+
+      if($(this).hasClass("download_option_selected")){
+        //alert("hasClass");
+        downloadTracks.push(downloadTrack);
+        $(this).find(".download_song_title").hide();
+        $(this).find(".download_symbol").show();
+        //$(this).addClass("download_option_selected");
+        //$(this).css("box-shadow", "0px 0px 10px #444 inset");
+        //need to mkae existing shadows show up on it
+        //do this by reducing the z-index of each to something lower than the one above it
+        //need to knwo which number it is
+
+        var optionLayer = "-" + $(this).prevAll().length;
+        //alert(optionNum);
+
+        //$(this).css({"background-color" : "#ccc", "border-left" : "20px solid #3689EE", "z-index" : optionLayer});
+        $(this).css({"border-left" : "20px solid #3689EE", "z-index" : optionLayer});
+        //$(this).next().css("box-shadow", "0px 3px 5px #444, 0px -3px 5px #444");
+
+        //try to prevent shadow if two next to each other selected
+        if($(this).prev().hasClass("download_option_selected") && $(this).next().hasClass("download_option_selected")){
+          //alert("help I'm surrounded");
+          $(this).css({"box-shadow" : "none", "border-top" : "1px solid #eee"});
+        }
+        else if($(this).prev().hasClass("download_option_selected")){
+          //alert("the guy before me is selected");
+          $(this).css({"box-shadow" : "none", "border-top" : "1px solid #eee"});
+          $(this).next().css("box-shadow", "0px 3px 5px #444, 0px -1px 3px #bbb");
+          $(this).prev().css("box-shadow", "none");
+        }
+        else if($(this).next().hasClass("download_option_selected")){
+          //alert("the guy after me is selected");
+          $(this).css({"box-shadow" : "none", "border-bottom" : "1px solid #eee"});
+          $(this).css("box-shadow", "none");
+          $(this).next().css("box-shadow", "none");
+        }
+
+        else{
+            $(this).next().css("box-shadow", "0px 3px 5px #444, 0px -1px 3px #bbb");
+        }
+
+      }
+      else{
+        //alert("noClass");
+        $(this).find(".download_song_title").show();
+        $(this).find(".download_symbol").hide();
+
+        if($(this).prev().hasClass("download_option_selected") && $(this).next().hasClass("download_option_selected")){
+          //alert("help I'm surrounded");
+          $(this).css("box-shadow", "0px 3px 5px #444, 0px -1px 3px #bbb");
+        }
+        else if($(this).prev().hasClass("download_option_selected")){
+          //alert("the guy before me is selected");
+          $(this).css("box-shadow", "0px 3px 5px #444, 0px -1px 3px #bbb");
+          $(this).next().css("box-shadow", "0px 3px 5px #444");
+        }
+        else if($(this).next().hasClass("download_option_selected")){
+          $(this).css("box-shadow", "0px 3px 5px #444");
+          //alert("next is selected");
+        }
+        else{
+          //alert("hmm");
+          $(this).css("box-shadow", "0px 3px 5px #444");
+          $(this).next().css("box-shadow", "0px 3px 5px #444");
+        }
+
+        $(this).css({"background-color" : "white", "border" : "none", "z-index" : "0"});
+        //$(this).next().css("box-shadow", "0px 3px 5px #444");
+        //$(this).css("border", "none");
+        //remove the track from array
+        var aryIndex = downloadTracks.indexOf(downloadTrack);
+        downloadTracks.splice(aryIndex, 1);
+        //alert(downloadTracks);
+        //buildDownloadLink();
+        //$(this).removeClass("download_option_selected");
+      }
+
+      //alert(downloadTracks);
+      //buildDownloadLink();
+    }
+    else{
+      //they clicked all tracks or one of the buttons
+      if(downloadId.indexOf("full") > -1){
+        //clicked all tracks
+        //alert("all tracks");
+        downloadLink = "ALL.zip";
+      }
+    }
+    //alert(downloadTracks);
+    buildDownloadLink();
+
+  });
+
+  var buildDownloadLink = function(simple){
+
+    if(simple){
+      downloadLink = "ALL.zip";
+    }
+    else{
+      downloadLink = "";
+      if(downloadTracks.length == 4){
+        //download all
+        downloadLink = "ALL.zip";
+      }
+      else if(downloadTracks.length == 0){
+        //none slected
+        downloadLink = "empty";
+      }
+      else if (downloadTracks.length == 2){
+        //download the 2 requested tracks
+        if(downloadTracks.indexOf("graduate") > -1){
+          //download GRAD and something else
+          if(downloadTracks.indexOf("glass") > -1){
+            downloadLink = "GRAD_GLASS.zip";
+            //need to remove bottom shadow from grad and top from glass
+            //alert("update shadow");
+            //$("#graduate_download").css("box-shadow", "0px 0px 10px #444 inset, none, 0px 0px 10px #444 inset");
+            //$("#graduate_download").css("box-shadow", "none");
+          }
+          else if(downloadTracks.indexOf("broken") > -1){
+            downloadLink = "GRAD_BROKEN.zip";
+          }
+          else if(downloadTracks.indexOf("home") > -1){
+            downloadLink = "GRAD_HOME.zip";
+          }
+        }
+        else if(downloadTracks.indexOf("glass") > -1){
+          if(downloadTracks.indexOf("home") > -1){
+            downloadLink = "GLASS_HOME.zip";
+          }
+          else if(downloadTracks.indexOf("broken") > -1){
+            downloadLink = "GLASS_BROKEN.zip";
+          }
+        }
+        else if(downloadTracks.indexOf("broken") > -1){
+          downloadLink = "BROKEN_HOME.zip";
+        }
+      }
+      else if (downloadTracks.length == 3){
+        if(downloadTracks.indexOf("home") == -1){
+          //download all but home or GRAD_GLASS_BROKEN
+          downloadLink = "GRAD_GLASS_BROKEN.zip";
+        }
+        else if(downloadTracks.indexOf("glass") == -1){
+          //download all but glass or GRAD_BROKEN_HOME
+          downloadLink = "GRAD_BROKEN_HOME.zip";
+        }
+        else if(downloadTracks.indexOf("graduate") == -1){
+          //all but grad
+          downloadLink = "GLASS_BROKEN_HOME.zip";
+        }
+        else if(downloadTracks.indexOf("broken") == -1){
+          //all but broken
+          downloadLink = "GLASS_GRAD_HOME.zip";
+        }
+      }
+      else{
+        //one track
+        if(downloadTracks.indexOf("graduate") > -1){
+          downloadLink = "graduate.wav";
+        }
+        else if(downloadTracks.indexOf("glass") > -1){
+          downloadLink = "8lass.wav";
+        }
+        else if(downloadTracks.indexOf("broken") > -1){
+          downloadLink = "_roken.wav";
+        }
+        else{
+          downloadLink = "home.wav";
+        }
+      }
+    }
+
+
+
+    //put the link in the anchor element
+    //alert(downloadLink);
+    $("#download_button").html("<a id='audio_download_link' href='audio/" + downloadLink + "' download>Download </a>")
+  }
+
+
+  //animate when download is clicked
+  $("#download_button").click(function(){
+    //alert("clicked");
+    $(this).animate({
+      "right" : "0%"
+    }, 1500);
+  });
+
   $("#widget_function").click(function(){
+
     // alert(widget_mode);
+    if(widget_press){
+      //alert("ur pressed");
+    }
     //prevent click while spinning if audio mode
-    if(widget_mode == "audio_mode"){
+    else if(widget_mode == "audio_mode"){
       if(!spinning){
         widgetAction(widget_mode);
       }
@@ -1391,8 +2029,9 @@ $(document).ready(function() {
 
 
   var audio_demo = function(){
-    $(".intro_info").html("Audio Mode. <br> Control audio playback.");
-
+    //$(".intro_info").html("<span class='intro_mode_title'>Audio Mode</span> <br><span class='intro_function' id='audio_tap'>Tap: Play/Pause.</span> <br> <span class='intro_function' id='audio_press'>Press: Audio controls.</span>");
+    $(".mode_intro_info, #init_intro_info").hide();
+    $("#audio_intro_info").show();
 
     $(".intro_info").stop().animate({
       "opacity": "1"
@@ -1403,7 +2042,9 @@ $(document).ready(function() {
 
   var download_demo = function(){
     //alert("Download Mode. Download the audio file.");
-    $(".intro_info").html("Download Mode. <br> Download the audio file.");
+    //$(".intro_info").html("<span class='intro_mode_title'>Download Mode</span> <br><span class='intro_function' id='download_tap'>Tap: Download project.</span> <br> <span class='intro_function' id='download_press'>Press: Download options.</span>");
+    $(".mode_intro_info, #init_intro_info").hide();
+    $("#download_intro_info").show();
     $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
@@ -1414,14 +2055,18 @@ $(document).ready(function() {
   }
   var menu_demo = function(){
     //alert("Menu Mode. Display the full menu.");
-    $(".intro_info").html("Menu Mode. <br> Display the full menu.");
+    //$(".intro_info").html("<span class='intro_mode_title'>Menu Mode</span> <br><span class='intro_function' id='menu_tap'>Tap: Display full menu.</span> <br> <span class='intro_function' id='menu_press'>Press: Reopen this tutorial.</span>");
+    $(".mode_intro_info, #init_intro_info").hide();
+    $("#menu_intro_info").show();
     $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
   }
   var home_demo = function(){
     //alert("Home Mode. Return to top of site from anywhere.");
-    $(".intro_info").html("Home Mode. <br> Return to top of site from anywhere.");
+    $(".mode_intro_info, #init_intro_info").hide();
+    $("#home_intro_info").show();
+    //$(".intro_info").html("<span class='intro_mode_title'>Home Mode</span> <br><span class='intro_function' id='home_tap'>Tap: Return to top.</span>");
     $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
@@ -1468,13 +2113,16 @@ $(document).ready(function() {
     firstSwipe = false;
     introStarted = true;
     //clearInterval(fadeIntroMsg);
-    $(".intro_msg").clearQueue();
+    $(".intro_msg").stop().clearQueue();
+
     clearInterval(set_intro_msg);
     clearInterval(introTimer);
     introNavSpinEnd();
     //introLoadBar();
     introTimer = false;
-    $(".intro_msg").stop().fadeOut("fast");
+    $(".intro_msg").stop().fadeOut("fast", function(){
+      $(".intro_msg").html("");
+    });
     //need to get bezel to nearest stop
     validBezelSet = true;
     var endDeg;
@@ -1573,6 +2221,7 @@ $(document).ready(function() {
     $(".widget_intro, .intro_msg, .intro_dots").animate({
       "opacity" : "0"
     }, 1500, function(){
+      $(".intro_msg").html("");
       //$("html").css("overflow", "auto");
       $(".widget_stick").animate({
         "opacity" : "1"
@@ -1618,39 +2267,63 @@ $(document).ready(function() {
   }
 
   $(".intro_done").click(function(){
-    $(".intro_msg").clearQueue();
-    finishIntro();
-    //clearInterval(fadeIntroMsg);
+    introCleanUp();
+  });
+
+  var introCleanUp = function(){
+
+    if(!spinning){
+
+      $(".intro_msg").clearQueue();
+      //$(".intro_msg").html("");
+      finishIntro();
+      //clearInterval(fadeIntroMsg);
 
 
 
-    /*
+      /*
 
-    if(firstSwipe){
-      firstSwipe = false;
-    }
-    if(navRotateInit){
-      navRotateInit = false;
-    }
-
-    */
-
-    if(introTimer){
-      finishSpin();
-      navRotateInit = false;
-      firstSwipe = false;
-    }
-    else{
-      if(introStarted){
-        prev_widget_mode = widget_mode;
-        widget_mode = "audio_mode";
-        displayMode(widget_mode);
-        adjustIcon(prev_widget_mode, widget_mode);
+      if(firstSwipe){
+        firstSwipe = false;
+      }
+      if(navRotateInit){
+        navRotateInit = false;
       }
 
-    }
+      */
 
-  });
+      if(introTimer){
+        finishSpin();
+        navRotateInit = false;
+        firstSwipe = false;
+      }
+      else{
+        if(introStarted){
+          prev_widget_mode = widget_mode;
+          if(intro_first_open){
+            widget_mode = "audio_mode";
+            intro_first_open = false;
+          }
+
+          displayMode(widget_mode);
+          adjustIcon(prev_widget_mode, widget_mode);
+        }
+
+      }
+  }
+
+  //wookie engineered "listener"
+  //don't want to destroy widget so wait until it finishes spinning to end intro
+  else{
+    var spinListener = setInterval(function(){
+      if(!spinning){
+        //if it was spinning and now it isn't
+        clearInterval(spinListener);
+        introCleanUp();
+      }
+    }, 5);
+  }
+  };
 
   var introLoadBar = function(){
     var loadVal;
@@ -1704,6 +2377,13 @@ $(document).ready(function() {
     // firstSwipe = true;
     //intro_mode = true;
     //$(".intro_info").html("Swipe in any direction from the center of the widget.");
+
+    //return widget to center
+
+    $("#widget_boi").animate({
+      "top" : "50%",
+      "left" : "50%"
+    }, 700, "swing");
 
     $(".widget_intro, .intro_dots").show().animate({
       "opacity" : "1"
