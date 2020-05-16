@@ -966,7 +966,6 @@ body {
 
 /******************* TOOLTIPS ***********************/
 .toolTip {
-  visibility: hidden;
   background: #242424;
   color: #999;
   border-radius: 6px;

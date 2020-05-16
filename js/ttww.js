@@ -12,7 +12,7 @@ $(document).ready(function() {
 
   //hide elements that are to fade in on onload
 
-  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol").hide();
+  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip").hide();
   $(".intro_msg, #album_art, #real_body").css("opacity", "0");
   $(".prev_arrow").addClass("no_arrow");
   //messing with mobile gesture events
@@ -1182,7 +1182,7 @@ $(document).ready(function() {
   //show tooltip on hover over certain mode
   $(".nav_box").hover(function(){
 
-
+      $("tipContent").fadeOut();
       var nav_box_id = $(this).attr("id");
       // alert(nav_box_id);
 
@@ -1191,7 +1191,9 @@ $(document).ready(function() {
 
       var noScore = which_box.replace("_", " ");
 
-      $(".toolTip").html(noScore);
+      $(".tipContent").html(noScore);
+      $(".toolTip").fadeIn("slow");
+      $("tipContent").fadeIn("slow");
 
 
       //setTip();
