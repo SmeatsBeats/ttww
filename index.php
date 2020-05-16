@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=4" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=6" type="text/css">
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
 
 
 
-    <script type="text/javascript" src="js/ttww.js?v=1.2"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.6"></script>
 
 
 
@@ -119,12 +119,13 @@
         <span class="mode_intro_info" id="menu_intro_info">
           <span class='intro_mode_title'>Menu Mode</span> <br>
           <span class='intro_function' id='menu_tap'>Tap: Display full menu.</span> <br>
-          <span class='intro_function' id='menu_press'>Press: Reopen this tutorial.</span>
+          <span class='intro_function' id='menu_press'>Press: Open this tutorial.</span>
         </span>
 
         <span class="mode_intro_info" id="home_intro_info">
           <span class='intro_mode_title'>Home Mode</span> <br>
-          <span class='intro_function' id='home_tap'>Tap: Return to top.</span>
+          <span class='intro_function' id='home_tap'>Tap: Return to top.</span> <br>
+          <span class='intro_function' id='home_press'>Press: Position widget.</span>
         </span>
 
       </div>
@@ -196,6 +197,9 @@
             </div>
 
 
+          </div>
+          <div class="toolTip">
+            Hi there.
           </div>
 
           <div id="widget_function">

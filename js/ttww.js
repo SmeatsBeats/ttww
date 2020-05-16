@@ -34,6 +34,7 @@ $(document).ready(function() {
   var audio_press = false;
   var home_mode_explored = false;
   var home_tap = false;
+  var home_press = false;
   var scroll_fx = false;
   var menu_mode_explored = false;
   var menu_tap = false;
@@ -41,6 +42,7 @@ $(document).ready(function() {
   var download_mode_explored = false;
   var download_tap = false;
   var download_press = false;
+  var downloadSimpleOpen = false;
   var menu_tap = false;
   var mennu_press = false;
   var gotcha = false;
@@ -1177,6 +1179,40 @@ $(document).ready(function() {
     // alert(widget_mode);
   });
 
+  //show tooltip on hover over certain mode
+  $(".nav_box").hover(function(){
+
+
+      var nav_box_id = $(this).attr("id");
+      // alert(nav_box_id);
+
+      var toolTipText = "";
+      var which_box = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
+
+      var noScore = which_box.replace("_", " ");
+
+      $(".toolTip").html(noScore);
+
+
+      //setTip();
+
+    // alert(widget_mode);
+  }, function(){
+    var current_mode = widget_mode.replace("_", " ");
+    $(".toolTip").html(current_mode);
+  });
+
+  var setTip = function(){
+    switch(widget_mode){
+      case "audio_mode":
+      toolTipText = "Audio Mode";
+      break;
+      case "home_mode":
+      toolTipText = ""
+
+    }
+  }
+
   //ADD MOBILE GESTURES
 
   var getWidget = document.getElementById("widget_boi");
@@ -1347,11 +1383,124 @@ $(document).ready(function() {
           break;
           default:
 
+          //make widget draggable
+
           displayMode("home_mode");
 
           draggable = true;
           //fade out widget function
           $("#widget_function").fadeOut();
+
+          //could be cool to spin widget throughout move
+
+          //dragMouseDown();
+
+        var dragElmnt = document.getElementById("widget_boi");
+
+
+
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+          // if (document.getElementById(elmnt.id + "header")) {
+          //   // if present, the header is where you move the DIV from:
+          //   document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+          // } else {
+            // otherwise, move the DIV from anywhere inside the DIV:
+
+            //dragElmnt.onmousedown = dragMouseDown;
+            //dragElmnt.ontouchstart = dragMouseDown;
+
+          //}
+
+          //function dragMouseDown() {
+
+
+              //alert(ev.type);
+              //e = e || window.event;
+              //e.preventDefault();
+
+              // get the mouse cursor position at startup:
+              pos3 = ev.center.x;
+              pos4 = ev.center.y;
+              //alert(pos3);
+              //pos3 = ev.clientX;
+              //pos4 = ev.clientY;
+
+              document.onmouseup = closeDragElement;
+              document.ontouchend = closeDragElement;
+              // call a function whenever the cursor moves:
+              //document.onmousemove = elementDrag;
+
+              $(document).on("mousemove touchmove", function(e){
+
+                  e = e || window.event;
+                  e.preventDefault();
+
+                  touch = undefined;
+                  if(e.originalEvent.touches){
+                    touch = e.originalEvent.touches[0];
+                    var scrollTop = $(document).scrollTop();
+                    pos1 = pos3 - touch.clientX;
+                    pos2 = pos4 - touch.clientY;
+                    pos3 = touch.clientX;
+                    pos4 = touch.clientY;
+                  }
+                  else{
+                    // calculate the new cursor position:
+                    //alert(e);
+
+                    pos1 = pos3 - e.clientX;
+                    pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                  }
+
+                  //alert(e.type);
+
+                  //alert(pos4);
+                  //$(".intro_done").html(pos3);
+
+                  // set the element's new position:
+
+                    dragElmnt.style.top = (dragElmnt.offsetTop - pos2) + "px";
+                    dragElmnt.style.left = (dragElmnt.offsetLeft - pos1) + "px";
+
+
+                  //alert(dragElmnt.offsetTop - pos2);
+
+              });
+
+
+              //document.ontouchmove = elementDrag;
+
+
+          function closeDragElement() {
+            //alert("called");
+            // stop moving when mouse button is released:
+            document.onmouseup = null;
+            document.onmousemove = null;
+
+            document.ontouchend = null;
+            document.ontouchmove = null;
+            $(document).off("mousemove touchmove");
+            draggable = false;
+            $("#widget_function").fadeIn();
+            if(intro_mode){
+              $("#widget_boi").delay(500).animate({
+                "top" : "50%",
+                "left" : "50%"
+              }, 700, "swing");
+              if(!home_press){
+                home_press = true;
+                $("#home_press").addClass("intro_task_done");
+              }
+            }
+
+          }
+
+
+
+
+
 
           /*
           //home mode has no press function atm
@@ -1611,6 +1760,7 @@ $(document).ready(function() {
 
 
   })
+  /*
 
   //make widget draggable
 
@@ -1671,11 +1821,13 @@ function dragElement(elmnt) {
   }
 }
 
-
+*/
 
   /////////////DOWNLOAD MENU
-
+  var downloadConfirmHeight;
+  var movVal;
 var downloadOptions = function(simple){
+
   $(".download_options").show();
   if(!simple){
     $("html").css("overflow", "hidden");
@@ -1695,6 +1847,13 @@ var downloadOptions = function(simple){
 
 
   //alert(downloadConfirmHeight);
+
+  if(downloadSimpleOpen){
+    movVal = 0;
+  }
+
+
+
   $("#download_confirm").animate({
     "bottom" : movVal
   }, 0, function(){
@@ -1703,15 +1862,25 @@ var downloadOptions = function(simple){
     var tipTopOffset = $(".tip_top").offset();
     var offsetDif = downloadConfirmOffset.top - tipTopOffset.top;
     //alert(downloadConfirmOffset.top);
-    var downloadOptionsHeight = offsetDif - downloadConfirmHeight;
+    if(downloadSimpleOpen){
+      var downloadOptionsHeight = offsetDif;
+    }
+    else{
+      var downloadOptionsHeight = offsetDif - downloadConfirmHeight;
+    }
+
+
     $(".download_options").css("height", downloadOptionsHeight);
 
 
     //setDownloadMenuHeight();
+    if(!downloadSimpleOpen){
+      $("#download_confirm").animate({
+        "bottom" : "0"
+      }, 1000, "swing");
+      downloadSimpleOpen = true;
+    }
 
-    $("#download_confirm").animate({
-      "bottom" : "0"
-    }, 1000, "swing");
     if(!simple){
       $(".download_options").animate({
         "top" : "0"
@@ -1720,16 +1889,16 @@ var downloadOptions = function(simple){
   });
 }
 
-  var downloadConfirmHeight;
-  var movVal;
+
 
   $("#download_cancel_button, #download_done_button").click(function(){
+    movVal = "-" + downloadConfirmHeight;
     $("html").css("overflow", "auto");
     $(".download_options").animate({
       "top" : "-100%"
     }, 1000, "swing", function(){
       $("#download_button").css("right", "30%");
-      $(this).hide();
+      $(".download_options").hide();
     });
 
     //height of download confirm will vary based on device
@@ -1742,6 +1911,7 @@ var downloadOptions = function(simple){
       "bottom" : movVal
     }, 1000, "swing", function(){
       //$(this).hide();
+      downloadSimpleOpen = false;
     });
 
     /*
