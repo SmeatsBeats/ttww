@@ -542,11 +542,34 @@ $(document).ready(function() {
   //if show is true, show the menu. otherwise hide it
 
   // var menuOpen = false;
+  var prevWidgetTop, prevWidgetLeft;
 
   var displayMenu = function(show){
 
     //alert(show);
     if(show){
+
+      //use this to send widget back to where it was when the menu opened
+      //need to account for the transform
+
+      var widgetHeight = $("#widget_boi").height();
+      var widgetWidth = $("#widget_boi").width();
+
+      var widgetOffset = $("#widget_boi").offset();
+      prevWidgetLeft = widgetOffset.left + (widgetWidth / 2);
+      prevWidgetTop = widgetOffset.top - $(document).scrollTop() +(widgetHeight / 2);
+
+      //send widget to center
+
+      $("#widget_boi").animate({
+        "top" : "50%",
+        "left" : "50%"
+      }, 800, "swing");
+
+      //spinny
+
+      displayMode(widget_mode);
+
       $(".menu").show();
       var slideDest = "0%";
       var about_delay = 0;
@@ -557,6 +580,13 @@ $(document).ready(function() {
       //alert(slideDest);
     }
     else{
+
+      //send widget back
+      $("#widget_boi").animate({
+        "top" : prevWidgetTop,
+        "left" : prevWidgetLeft
+      }, 700, "swing");
+
       var slideDest = "100%";
       var about_delay = 300;
       var lyrics_delay = 200;
@@ -1179,41 +1209,143 @@ $(document).ready(function() {
     // alert(widget_mode);
   });
 
+  var tipsOn = false;
+  var contextHint = "Hi there.";
+
+  $(".toolTip").click(function(){
+    tipsOn = true;
+  });
+
+  $("#widget_boi").hover(function(){
+    $(".toolTip").fadeIn();
+  }, function(){
+    $(".toolTip").fadeOut();
+  });
+
+  var hinterval;
+  $("#widget_function").hover(function(){
+    //alert(widget_mode);
+
+    var hintA, hintB;
+    var hintDex = 2;
+
+
+
+
+    if(widget_mode == "audio_mode"){
+      if(playing){
+        hintA = "Tap to pause.";
+      }
+      else{
+        hintA = "Tap to play.";
+      }
+      hintB = "Press for audio controls.";
+
+
+    }
+    else if(widget_mode == "home_mode"){
+      hintA = "Tap to scroll to top.";
+      hintB = "Press to drag widget.";
+      //contextHint = "Tap: Scroll to top. Press: <br> Drag widget.";
+    }
+    else if(widget_mode == "menu_mode"){
+      hintA = "Tap to display menu.";
+      hintB = "Press for widget help.";
+      //contextHint = "Tap: Display menu. <br> Press: Widget help.";
+    }
+    else if(widget_mode == "download_mode"){
+      hintA = "Tap to download all audio.";
+      hintB = "Press for download options.";
+      //contextHint = "Tap: Download audio. Press: Download options.";
+    }
+    else{
+      hintA = "Yeeeet";
+      hintB = "Yolo";
+    }
+
+    $("#hint_content").html(hintA);
+
+    hinterval = setInterval(function(){
+      if(hintDex % 2 == 0){
+        $("#hint_content").html(hintB);
+      }
+      else{
+        $("#hint_content").html(hintA);
+      }
+      hintDex++;
+
+    }, 5000);
+
+
+  }, function(){
+    //alert("interval cleared!");
+    clearInterval(hinterval);
+    //alert(hinterval);
+    $("#hint_content").html("Hi there.");
+
+  });
+
+
+  var tipCurrentMode = function(){
+    var current_mode = widget_mode.replace("_", " ");
+    $("#mode_content").html(current_mode);
+  }
+
+
+  tipCurrentMode();
+
+
   //show tooltip on hover over certain mode
+  //using nav box as hover target means if you smoothly hover from one to next the tip doesn't chnage
+
+  $("#select_home_mode").hover(function(){
+    var contextHint = "Home Mode";
+    $("#hint_content").html(contextHint);
+    $("#hint_content").fadeIn();
+  });
+  $("#select_audio_mode").hover(function(){
+    var contextHint = "Audio Mode";
+    $("#hint_content").html(contextHint);
+  });
+  $("#select_menu_mode").hover(function(){
+    var contextHint = "Menu Mode";
+    $("#hint_content").html(contextHint);
+  });
+  $("#select_download_mode").hover(function(){
+    var contextHint = "Download Mode";
+    $("#hint_content").html(contextHint);
+  });
+
+
+  /*
   $(".nav_box").hover(function(){
 
-      $("tipContent").fadeOut();
       var nav_box_id = $(this).attr("id");
-      // alert(nav_box_id);
+    // alert(nav_box_id);
 
-      var toolTipText = "";
       var which_box = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
 
-      var noScore = which_box.replace("_", " ");
+      var contextHint = which_box.replace("_", " ");
 
-      $(".tipContent").html(noScore);
-      $(".toolTip").fadeIn("slow");
-      $("tipContent").fadeIn("slow");
+      $("#context_hint").html(contextHint);
+
+      //$("#tipContent").fadeIn("slow");
 
 
       //setTip();
 
     // alert(widget_mode);
   }, function(){
-    var current_mode = widget_mode.replace("_", " ");
-    $(".toolTip").html(current_mode);
+
+
+      var current_mode = widget_mode.replace("_", " ");
+      $("#tipContent").html(current_mode);
+
+
+
   });
 
-  var setTip = function(){
-    switch(widget_mode){
-      case "audio_mode":
-      toolTipText = "Audio Mode";
-      break;
-      case "home_mode":
-      toolTipText = ""
-
-    }
-  }
+  */
 
   //ADD MOBILE GESTURES
 
@@ -1532,6 +1664,8 @@ $(document).ready(function() {
    //Determines current modes and calls for appropriate widget adjustments
   var displayMode = function(widget_mode, callback){
 
+    tipCurrentMode();
+
     //this function should become responsible for animating the rotation of the widget images to indicate the current mode
     //can combine with existing switch for widget mode
 
@@ -1557,6 +1691,7 @@ $(document).ready(function() {
       $("#widget_mode").html(widget_mode);
       switch(widget_mode){
         case "audio_mode":
+
         rotateDeg = 0;
         // spinning = true;
         if(intro_mode){

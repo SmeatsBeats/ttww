@@ -142,7 +142,7 @@ body {
 #heratic > div {
   width: 70%;
   flex: 1 1 auto;
-  background: url("../imgs/CREEPY_HAND.png");
+  background: url("../imgs/HAND.svg");
   background-repeat: no-repeat;
   background-position: left bottom;
 
@@ -152,7 +152,7 @@ body {
 }
 #home_song > div {
   flex: 1 1 auto;
-  background: url("../imgs/CLOCK_SKETCH.png");
+  background: url("../imgs/CLOCK.svg");
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: right top;
@@ -164,6 +164,7 @@ body {
   flex: 1 1 100%;
   display: flex;
   justify-content: center;
+  overflow: visible;
 }
 .song_title_container {
   margin-top: 10%;
@@ -171,9 +172,7 @@ body {
 .sacred_symbol_container {
   margin-top: 4%;
 }
-#lyrics_fate_container {
-  margin-top: 1%;
-}
+
 #heratic_title {
   margin: 0;
 }
@@ -548,7 +547,6 @@ body {
 .nav_box {
   flex: 1 1 50%;
   cursor: pointer;
-  /* border: 1px solid yellow; */
 }
 .widget_function_container {
   position: absolute;
@@ -558,6 +556,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 #widget_function, .intro_msg {
   position: absolute;
   display: flex;
@@ -576,6 +575,7 @@ body {
   /* border: 1px solid red; */
 }
 .intro_msg{
+  z-index: -1;
   position: absolute;
   text-align: center;
   font-size: 200%;
@@ -675,6 +675,11 @@ body {
   flex: 1 1 100%;
   box-shadow: 0px 3px 5px #444;
   z-index: 0;
+}
+.download_song_title{
+  margin: 1%;
+  max-height: 90%;
+  max-width: 90%;
 }
 #download_instructions {
   cursor: default;
@@ -985,9 +990,15 @@ body {
   border-radius: 6px;
   padding: 1% 5%;
   position: absolute;
+  text-align: center;
+}
+#current_mode{
   top: -40%;
 }
 
+#context_hint {
+  top: 110%;
+}
 
 /*adjust for desktop*/
 @media only screen and (min-device-width:600px) {
