@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=1" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=5" type="text/css">
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
 
 
 
-    <script type="text/javascript" src="js/ttww.js?v=1.2"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
 
 
 
@@ -56,30 +56,30 @@
         <!-- Graduate -->
 
 
-        <img class="download_symbol" src="imgs/WAIT.png" alt="Sacred semiotics"/>
-        <img class="download_song_title" src="imgs/GRADUATE.png" alt="Gradu-wait. Mysterious message.">
+        <img class="download_symbol" src="imgs/WAIT.svg" alt="Sacred semiotics"/>
+        <img class="download_song_title" src="imgs/GRADUATE.svg" alt="Gradu-wait. Mysterious message.">
 
       </div>
       <div class="download_option" id="glass_download">
         <!-- 8lass -->
 
-        <img class="download_symbol" src="imgs/HATE.png" alt="Sacred semiotics" />
-        <img class="download_song_title" src="imgs/GLASS.png" alt="Glass. Occult code.">
+        <img class="download_symbol" src="imgs/HATE.svg" alt="Sacred semiotics" />
+        <img class="download_song_title" src="imgs/GLASS.svg" alt="Glass. Occult code.">
 
       </div>
       <div class="download_option" id="broken_download">
         <!-- >roken -->
 
-        <img class="download_symbol" src="imgs/LATE.png" alt="Sacred semiotics" />
-        <img class="download_song_title" src="imgs/BROKEN.png" alt="Broken. Esocteric artifacts.">
+        <img class="download_symbol" src="imgs/LATE.svg" alt="Sacred semiotics" />
+        <img class="download_song_title" src="imgs/BROKEN.svg" alt="Broken. Esocteric artifacts.">
 
 
       </div>
       <div class="download_option" id="home_download">
         <!-- home -->
 
-        <img class="download_symbol" src="imgs/FATE.png" alt="Sacred semiotics">
-        <img class="download_song_title" src="imgs/HOME.png" alt="HOME. Homecoming.">
+        <img class="download_symbol" src="imgs/FATE.svg" alt="Sacred semiotics">
+        <img class="download_song_title" src="imgs/HOME.svg" alt="HOME. Homecoming.">
 
       </div>
 
@@ -163,15 +163,15 @@
 
         <div class="nav_img_container">
 
-          <img class="audio_timeline" src="imgs/AUDIO_TIMELINE.png" alt="Audio timeline indicator">
+          <img class="audio_timeline" src="imgs/WIDGET_TIMELINE.svg" alt="Audio timeline indicator">
 
           <!-- research svg tag to create and animate timeline -->
 
-          <img class="widget_nav" id="nav_options_img" src="imgs/WIDGET_NAV.png" alt="Widget navigation">
+          <img class="widget_nav" id="nav_options_img" src="imgs/WIDGET_NAV.svg" alt="Widget navigation">
 
 
-          <img class="widget_nav" id="nav_options_dark" src="imgs/WIDGET_NAV_DARK.png" alt="Widget navigation">
-          <img class="widget_bezel" id="widget_bezel_img" src="imgs/WIDGET_BEZEL_SMALL.png" alt="Model watch bezel">
+          <img class="widget_nav" id="nav_options_dark" src="imgs/WIDGET_NAV_DARK.svg" alt="Widget navigation">
+          <img class="widget_bezel" id="widget_bezel_img" src="imgs/WIDGET_BEZEL_SMALL.svg" alt="Model watch bezel">
         </div>
 
         <div class="widget_function_container" id="widget_function_container">
@@ -198,8 +198,11 @@
 
 
           </div>
-          <div class="toolTip">
-            <span id="tipContent">Hi there.</span>
+          <div class="toolTip" id="current_mode">
+            <span id="mode_content">Hi there.</span>
+          </div>
+          <div class="toolTip" id="context_hint">
+            <span id="hint_content">Hi there.</span>
           </div>
 
           <div id="widget_function">
@@ -278,7 +281,7 @@
 
         <div class="about_item" id="easier_said">
 
-          <img class="about_item_img" id="easier_said_img" src="imgs/YOUNG_PULL.JPG" alt="Nerd pulling on door">
+          <img class="about_item_img" id="easier_said_img" src="imgs/YOUNG_PULL.svg" alt="Nerd pulling on door">
 
           <div>
 
@@ -337,7 +340,7 @@
 
             <h2>Ancient Traces</h2>
 
-            <img class="sacred_symbol" src="imgs/LATE.png" alt="Sacred semiotics" />
+            <img class="sacred_symbol" src="imgs/LATE.svg" alt="Sacred semiotics" />
 
             <p>
               I turned to a three-year-old field recording that I found on an old hard drive. <br>
@@ -377,7 +380,7 @@
 
             <h2>Betrayal</h2>
 
-            <img class="sacred_symbol" src="imgs/FATE.png" alt="Sacred semiotics">
+            <img class="sacred_symbol" src="imgs/FATE.svg" alt="Sacred semiotics">
 
             <p>
               I probably really began to appreciate it around midterms. <br>
@@ -397,7 +400,7 @@
 
             <h2>Two Birds One Phone</h2>
 
-            <img class="sacred_symbol" src="imgs/WAIT.png" alt="Sacred semiotics"/>
+            <img class="sacred_symbol" src="imgs/WAIT.svg" alt="Sacred semiotics"/>
 
             <p>
               Three years later the opportunity presents itself. <br>
@@ -413,13 +416,13 @@
 
         <div class="about_item" id="defeat">
 
-          <img class="about_item_img" id="defeat_img" src="imgs/OLD_PULL.JPG" alt="Older nerd pulling on door">
+          <img class="about_item_img" id="defeat_img" src="imgs/OLD_PULL.svg" alt="Older nerd pulling on door">
 
           <div>
 
             <h2>Defeat</h2>
 
-            <img class="sacred_symbol" src="imgs/HATE.png" alt="Sacred semiotics" />
+            <img class="sacred_symbol" src="imgs/HATE.svg" alt="Sacred semiotics" />
 
             <p>
               How or when it happened, I haven't the foggiest idea. <br>
@@ -591,11 +594,11 @@
 
             <!-- <h2>Graduate</h2> -->
             <div class="song_title_container">
-                <img class="song_title" src="imgs/GRADUATE.png" alt="Gradu-wait. Mysterious message.">
+                <img class="song_title" src="imgs/GRADUATE.svg" alt="Gradu-wait. Mysterious message.">
             </div>
 
             <div class="sacred_symbol_container">
-              <img class="sacred_symbol" src="imgs/WAIT.png" alt="Sacred semiotics"/>
+              <img class="sacred_symbol" src="imgs/WAIT.svg" alt="Sacred semiotics"/>
             </div>
 
             <p>
@@ -631,7 +634,7 @@
         <div class="lyrics_item" id="glass">
 
           <div class="lyrics_item_img_container" id="shards_small">
-            <img id="little_glass" class="lyrics_item_img" src="imgs/SHARDS_SMALL.png" alt="Small glass shards">
+            <img id="little_glass" class="lyrics_item_img" src="imgs/SHARDS_SMALL.svg" alt="Small glass shards">
           </div>
 
 
@@ -639,11 +642,11 @@
 
             <!-- <h2>Glass</h2> -->
             <div class="song_title_container">
-                <img class="song_title" src="imgs/GLASS.png" alt="Glass. Occult code.">
+                <img class="song_title" src="imgs/GLASS.svg" alt="Glass. Occult code.">
             </div>
 
             <div class="sacred_symbol_container">
-              <img class="sacred_symbol" src="imgs/HATE.png" alt="Sacred semiotics" />
+              <img class="sacred_symbol" src="imgs/HATE.svg" alt="Sacred semiotics" />
             </div>
 
             <p>
@@ -664,7 +667,7 @@
           </div>
 
           <div class="lyrics_item_img_container" id="shards_large">
-            <img id="big_glass" class="lyrics_item_img" src="imgs/SHARDS_LARGE.png" alt="Glass shards in curious pattern.">
+            <img id="big_glass" class="lyrics_item_img" src="imgs/SHARDS_LARGE.svg" alt="Glass shards in curious pattern.">
           </div>
 
         </div>
@@ -674,11 +677,11 @@
 
             <!-- <h2>>roken</h2> -->
             <div class="song_title_container">
-              <img class="song_title" src="imgs/BROKEN.png" alt="Broken. Esocteric artifacts.">
+              <img class="song_title" src="imgs/BROKEN.svg" alt="Broken. Esocteric artifacts.">
             </div>
 
             <div class="sacred_symbol_container">
-              <img class="sacred_symbol" src="imgs/LATE.png" alt="Sacred semiotics" />
+              <img class="sacred_symbol" src="imgs/LATE.svg" alt="Sacred semiotics" />
             </div>
 
 
@@ -733,11 +736,11 @@
 
             <!-- <h2>Home</h2> -->
             <div class="song_title_container">
-                <img class="song_title" src="imgs/HOME.png" alt="HOME. Homecoming. ">
+                <img class="song_title" src="imgs/HOME.svg" alt="HOME. Homecoming. ">
             </div>
 
             <div class="sacred_symbol_container" id="lyrics_fate_container">
-                <img class="sacred_symbol" src="imgs/FATE.png" alt="Sacred semiotics">
+                <img class="sacred_symbol" src="imgs/FATE.svg" alt="Sacred semiotics">
             </div>
 
 

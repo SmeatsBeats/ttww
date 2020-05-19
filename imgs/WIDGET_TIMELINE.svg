@@ -1,0 +1,19 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="52.12" height="51.85" viewBox="0 0 52.12 51.85">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: gray;
+        stroke-miterlimit: 10;
+        stroke-width: 0.5px;
+      }
+    </style>
+  </defs>
+  <g id="Timeline">
+    <path class="cls-1" d="M30.88,51.6a25.88,25.88,0,0,0,21-25.45"/>
+    <g>
+      <path class="cls-1" d="M21.23,51.6A25.91,25.91,0,0,1,26.06.25"/>
+      <path class="cls-1" d="M51.87,26.15A25.86,25.86,0,0,0,26.06.25"/>
+    </g>
+  </g>
+</svg>
