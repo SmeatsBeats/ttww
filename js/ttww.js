@@ -12,7 +12,7 @@ $(document).ready(function() {
 
   //hide elements that are to fade in on onload
 
-  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip").hide();
+  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, .audio_control, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip").hide();
   $(".intro_msg, #album_art, #real_body").css("opacity", "0");
   $(".prev_arrow").addClass("no_arrow");
   //messing with mobile gesture events
@@ -1352,7 +1352,9 @@ $(document).ready(function() {
             $("#audio_press").addClass("intro_task_done");
           }
           //open audio controls
-          alert("open audio controls");
+          //alert("open audio controls");
+          $(".audio_control").show();
+          $(".audio_control").animate({"top": "0px"}, 700);
           break;
           case "download_mode":
           displayMode(widget_mode);

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Those Who Wait</title>
-    <link rel="stylesheet" href="css/ttww.css?v=1" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=2.22" type="text/css">
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
@@ -19,17 +19,34 @@
 
 
 
-    <script type="text/javascript" src="js/ttww.js?v=1.2"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.43"></script>
 
 
 
   </head>
 
   <body>
+
+
+
+
     <div class="tip_top">
       <!-- this div will be used as a reference as the top of the page -->
     </div>
+
+
+    <div class="audio_control">
+      
+      <!-- allow audio to be played and downloaded -->
+      <audio controls id="ttwwAudioFile" src="audio/TO_THOSE_WHO_W8.wav"></audio>
+
+    </div>
+    
+
     <!--download page -->
+
+
+
 
     <div class="download_options" id="download_menu">
 
@@ -250,8 +267,6 @@
         <img id="album_art" src="imgs/TTWW_POSTER_HALF.jpg" alt="To Those Who Wait Cover Art" />
       </picture>
 
-      <!-- allow audio to be played and downloaded -->
-      <audio id="ttwwAudioFile" src="audio/TO_THOSE_WHO_W8.wav"></audio>
 
     </section>
 
