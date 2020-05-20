@@ -1515,7 +1515,9 @@ $(document).ready(function() {
             $("#audio_press").addClass("intro_task_done");
           }
           //open audio controls
-          alert("open audio controls");
+          //alert("open audio controls");
+          $(".audio_control").show();
+          $(".audio_control").animate({"top": "0px"}, 700);
           break;
           case "download_mode":
           displayMode(widget_mode);
