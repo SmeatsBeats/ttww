@@ -12,7 +12,7 @@ $(document).ready(function() {
 
   //hide elements that are to fade in on onload
 
-  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip").hide();
+  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator").hide();
   $(".intro_msg, #album_art, #real_body").css("opacity", "0");
   $(".prev_arrow").addClass("no_arrow");
   //messing with mobile gesture events
@@ -1217,71 +1217,90 @@ $(document).ready(function() {
   });
 
   $("#widget_boi").hover(function(){
-    $(".toolTip").fadeIn();
+    if(!draggable && !intro_mode){
+      $(".toolTip").fadeIn();
+    }
+
   }, function(){
-    $(".toolTip").fadeOut();
+    if(!draggable && !intro_mode){
+      $(".toolTip").fadeOut();
+    }
+
   });
 
   var hinterval;
   $("#widget_function").hover(function(){
-    //alert(widget_mode);
+    if(!draggable && !intro_mode){
+      //$(".tool_dot").first().addClass("selected_tool_dot");
 
-    var hintA, hintB;
-    var hintDex = 2;
+      //alert(widget_mode);
+
+      var hintA, hintB;
+      var hintDex = 2;
+
+      //put dots to show that another hint is coming
+      $("#hinticator").html("<svg class='tool_dot_container'><circle class='tool_dot selected_tool_dot' cx='50%' cy='50%' r='0.2em'></svg><svg class='tool_dot_container'><circle class='tool_dot' cx='50%' cy='50%' r='0.2em'></svg>");
+      $("#hinticator").show();
+
+      if(widget_mode == "audio_mode"){
+        if(playing){
+          hintA = "Tap to pause.";
+        }
+        else{
+          hintA = "Tap to play.";
+        }
+        hintB = "Press for audio controls.";
 
 
-
-
-    if(widget_mode == "audio_mode"){
-      if(playing){
-        hintA = "Tap to pause.";
+      }
+      else if(widget_mode == "home_mode"){
+        hintA = "Tap to scroll to top.";
+        hintB = "Press to drag widget.";
+        //contextHint = "Tap: Scroll to top. Press: <br> Drag widget.";
+      }
+      else if(widget_mode == "menu_mode"){
+        hintA = "Tap to display menu.";
+        hintB = "Press for widget help.";
+        //contextHint = "Tap: Display menu. <br> Press: Widget help.";
+      }
+      else if(widget_mode == "download_mode"){
+        hintA = "Tap to download all audio.";
+        hintB = "Press for download options.";
+        //contextHint = "Tap: Download audio. Press: Download options.";
       }
       else{
-        hintA = "Tap to play.";
+        hintA = "Yeeeet";
+        hintB = "Yolo";
       }
-      hintB = "Press for audio controls.";
 
+      $("#hint_content").html(hintA);
 
-    }
-    else if(widget_mode == "home_mode"){
-      hintA = "Tap to scroll to top.";
-      hintB = "Press to drag widget.";
-      //contextHint = "Tap: Scroll to top. Press: <br> Drag widget.";
-    }
-    else if(widget_mode == "menu_mode"){
-      hintA = "Tap to display menu.";
-      hintB = "Press for widget help.";
-      //contextHint = "Tap: Display menu. <br> Press: Widget help.";
-    }
-    else if(widget_mode == "download_mode"){
-      hintA = "Tap to download all audio.";
-      hintB = "Press for download options.";
-      //contextHint = "Tap: Download audio. Press: Download options.";
-    }
-    else{
-      hintA = "Yeeeet";
-      hintB = "Yolo";
+      hinterval = setInterval(function(){
+        $(".tool_dot").toggleClass("selected_tool_dot");
+        if(hintDex % 2 == 0){
+          $("#hint_content").html(hintB);
+          //hilight hinticator #2
+        }
+        else{
+          $("#hint_content").html(hintA);
+        }
+        hintDex++;
+
+      }, 5000);
     }
 
-    $("#hint_content").html(hintA);
 
-    hinterval = setInterval(function(){
-      if(hintDex % 2 == 0){
-        $("#hint_content").html(hintB);
-      }
-      else{
-        $("#hint_content").html(hintA);
-      }
-      hintDex++;
-
-    }, 5000);
 
 
   }, function(){
-    //alert("interval cleared!");
-    clearInterval(hinterval);
-    //alert(hinterval);
-    $("#hint_content").html("Hi there.");
+    if(!draggable && !intro_mode){
+      //alert("interval cleared!");
+      clearInterval(hinterval);
+      $("#hinticator").hide();
+      //alert(hinterval);
+      $("#hint_content").html("Hi there.");
+    }
+
 
   });
 
@@ -1299,21 +1318,33 @@ $(document).ready(function() {
   //using nav box as hover target means if you smoothly hover from one to next the tip doesn't chnage
 
   $("#select_home_mode").hover(function(){
-    var contextHint = "Home Mode";
-    $("#hint_content").html(contextHint);
-    $("#hint_content").fadeIn();
+    if(!draggable && !intro_mode){
+      var contextHint = "Home Mode";
+      $("#hint_content").html(contextHint);
+      //$("#hint_content").fadeIn();
+    }
+
   });
   $("#select_audio_mode").hover(function(){
-    var contextHint = "Audio Mode";
-    $("#hint_content").html(contextHint);
+    if(!draggable && !intro_mode){
+      var contextHint = "Audio Mode";
+      $("#hint_content").html(contextHint);
+    }
+
   });
   $("#select_menu_mode").hover(function(){
-    var contextHint = "Menu Mode";
-    $("#hint_content").html(contextHint);
+    if(!draggable && !intro_mode){
+      var contextHint = "Menu Mode";
+      $("#hint_content").html(contextHint);
+    }
+
   });
   $("#select_download_mode").hover(function(){
-    var contextHint = "Download Mode";
-    $("#hint_content").html(contextHint);
+    if(!draggable && !intro_mode){
+      var contextHint = "Download Mode";
+      $("#hint_content").html(contextHint);
+    }
+
   });
 
 
@@ -1522,6 +1553,10 @@ $(document).ready(function() {
           displayMode("home_mode");
 
           draggable = true;
+          clearInterval(hinterval);
+          $("#hinticator").hide();
+
+          $("#hint_content").html("Drag Me");
           //fade out widget function
           $("#widget_function").fadeOut();
 
@@ -1617,6 +1652,7 @@ $(document).ready(function() {
             document.ontouchmove = null;
             $(document).off("mousemove touchmove");
             draggable = false;
+            $("#hint_content").html("Nice");
             $("#widget_function").fadeIn();
             if(intro_mode){
               $("#widget_boi").delay(500).animate({

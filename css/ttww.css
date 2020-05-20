@@ -979,11 +979,27 @@ body {
   text-align: center;
 }
 #current_mode{
-  top: -40%;
+  top: -30%;
 }
 
 #context_hint {
   top: 110%;
+}
+#hinticator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tool_dot_container {
+  width: 1em;
+  height: 1em;
+  margin: 2%;
+}
+.tool_dot {
+  fill: #444;
+}
+.selected_tool_dot {
+  fill: #999;
 }
 
 /*adjust for desktop*/
