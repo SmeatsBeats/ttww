@@ -1244,28 +1244,28 @@ $(document).ready(function() {
 
       if(widget_mode == "audio_mode"){
         if(playing){
-          hintA = "Tap to pause.";
+          hintA = "Tap to pause";
         }
         else{
-          hintA = "Tap to play.";
+          hintA = "Tap to play";
         }
-        hintB = "Press for audio controls.";
+        hintB = "Press for audio controls";
 
 
       }
       else if(widget_mode == "home_mode"){
-        hintA = "Tap to scroll to top.";
-        hintB = "Press to drag widget.";
+        hintA = "Tap to scroll home";
+        hintB = "Press to move widget";
         //contextHint = "Tap: Scroll to top. Press: <br> Drag widget.";
       }
       else if(widget_mode == "menu_mode"){
-        hintA = "Tap to display menu.";
-        hintB = "Press for widget help.";
+        hintA = "Tap for menu";
+        hintB = "Press for widget help";
         //contextHint = "Tap: Display menu. <br> Press: Widget help.";
       }
       else if(widget_mode == "download_mode"){
-        hintA = "Tap to download all audio.";
-        hintB = "Press for download options.";
+        hintA = "Tap to download";
+        hintB = "Press for options";
         //contextHint = "Tap: Download audio. Press: Download options.";
       }
       else{
@@ -1276,15 +1276,24 @@ $(document).ready(function() {
       $("#hint_content").html(hintA);
 
       hinterval = setInterval(function(){
-        $(".tool_dot").toggleClass("selected_tool_dot");
-        if(hintDex % 2 == 0){
-          $("#hint_content").html(hintB);
-          //hilight hinticator #2
-        }
-        else{
-          $("#hint_content").html(hintA);
-        }
-        hintDex++;
+
+        $("#hint_content").animate({
+          "opacity" : "0"
+        }, 1000, function(){
+          if(hintDex % 2 == 0){
+            $("#hint_content").html(hintB);
+            //hilight hinticator #2
+          }
+          else{
+            $("#hint_content").html(hintA);
+          }
+          $(".tool_dot").toggleClass("selected_tool_dot");
+          hintDex++;
+          $(this).animate({
+            "opacity" : "1"
+          }, 1000)
+        });
+
 
       }, 5000);
     }

@@ -997,23 +997,47 @@ body {
 }
 
 #context_hint {
-  top: 110%;
-}
-#hinticator {
   display: flex;
   justify-content: center;
   align-items: center;
+  top: 110%;
+  width: 130%;
+  height: 25%;
+  padding: 0;
 }
+#hint_content {
+  /* border: 1px solid green; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  min-height: 100%;
+  flex-grow: 9;
+}
+#hinticator {
+  /* border: 1px solid blue; */
+  border-radius: 0px 6px 6px 0px;
+  width: 10%;
+  min-height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #111;
+}
+
 .tool_dot_container {
   width: 1em;
   height: 1em;
-  margin: 2%;
+  /* margin: 2%; */
 }
 .tool_dot {
   fill: #444;
+  transition: fill 1s ease;
 }
 .selected_tool_dot {
   fill: #999;
+  transition: fill 1s ease;
 }
 
 /*adjust for desktop*/
