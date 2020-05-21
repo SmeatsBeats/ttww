@@ -1,25 +1,7 @@
 $(document).ready(function() {
 
-  // alert("all good");
-  //get width of window. useful for css media queries
-  //alert($("html").width());
 
-  //help put css and set dimensions of sliders so overflow:hidden doesn't destroy them
-  // var slider_width = $(".support_img_slider").width() / $(".support_img_slider").parent().width() * 100;
-  // var slider_height = $(".support_img_slider").height() / $(".support_img_slider").parent().height() * 100;
-  // var slider_height = $(".support_img_slider").height();
-  // alert(slider_width, slider_height);
-
-  //hide elements that are to fade in on onload
-
-  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator").hide();
-  $(".intro_msg, #album_art, #real_body").css("opacity", "0");
-  $(".prev_arrow").addClass("no_arrow");
-  //messing with mobile gesture events
-
-  // $(".support_img_container:first-child").css("left", "0%");
-  //var img_index;
-
+  ////////////////////////////////////////////////////////////////////////////////////// INITIALIZE GLOBALS //////////////////////////////////////////////
 
   var intro_mode = true;
   var draggable = false;
@@ -45,6 +27,7 @@ $(document).ready(function() {
   var downloadSimpleOpen = false;
   var menu_tap = false;
   var mennu_press = false;
+  var menuOpen = false;
   var gotcha = false;
   var set_intro_msg;
   var introTimer = true;
@@ -54,79 +37,30 @@ $(document).ready(function() {
   var introBezelSpin = 360;
   var dark_nav = document.getElementById("nav_options_dark");
   var intro_bezel = document.getElementById("widget_bezel_img");
-  var introAnimation = function(){
-    intro_mode = true;
-    //could move this to css as well
-    $("html").css("overflow-y", "hidden");
-    //$("#nav_options_img").css("opacity", "0");
-    //$(".widget_stick").css("opacity", "0");
-    $("#widget_boi").fadeIn("slow");
-    $(".intro_item").fadeIn(2000);
+  var playing = false;
+  var audioFile = document.getElementById("ttwwAudioFile");
+  var spinning = false;
+  var widget_mode = "audio_mode";
 
 
-      //$(".intro_msg").css("opacity", "1");
+  ///////////////////////////////////////////////////////////////////////////////// PAGE SETUP //////////////////////////////////////////
+  //call functions that will set the page up how it needs to be initially
 
-      $(".intro_msg").delay(3000).animate({
-        "opacity" : "1"
-      }, 2500);
+  //introAnimation();
 
+  //some elements need to load before being hidden so js can get their dimensions
+  //these cannot be hidden initially in the css
 
+  //however, some of these I put here because I am a lazy shit
+  //they should be moved to the css file to prevent appearing before page is fully loaded
+  //good luck figure out which ones!
 
-      // $(".intro_msg").fadeIn("slow");
-
-
-
-    //intro msg sequence
-    var intro_msgs = ["mi", "nam", "is", "wdgt", "boi", "hi"];
-    var msg = 0;
-    set_intro_msg = setInterval(function(){
-      //alert(msg);
-      if(msg == intro_msgs.length){
-        //alert("reset");
-        msg = 0;
-      }
-      //alert(intro_msgs[msg]);
-
-      $(".intro_msg").stop().animate({
-        "opacity" : "0"
-      }, 2500, function(){
-        $(".intro_msg").html(intro_msgs[msg]);
-        $(".intro_msg").animate({
-          "opacity" : "1"
-        }, 2500);
-        msg++;
-      });
-      /*
-
-      $(".intro_msg").fadeOut(2500, function(){
-        $(".intro_msg").html(intro_msgs[msg]);
-        $(".intro_msg").fadeIn(3000);
-        msg++;
-      });
-
-      */
-
-    }, 9000);
+  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator").hide();
+  $(".intro_msg, #album_art, #real_body").css("opacity", "0");
+  $(".prev_arrow").addClass("no_arrow");
 
 
-    //spin tings for intro
-
-    introTimer = setInterval(function(){
-      if(darkNavSpin == 360){
-        darkNavSpin = 0;
-      }
-      if(introBezelSpin == 0){
-        introBezelSpin = 360;
-      }
-      dark_nav.style.transform = "rotate(" + darkNavSpin + "deg)";
-      intro_bezel.style.transform = "rotate(" + introBezelSpin + "deg)";
-      introBezelSpin--;
-      darkNavSpin++;
-    }, 5);
-
-  }
-
-  introAnimation();
+  ///////////////////////////////////////////////////////////////////////////////////////// SLIDER /////////////////////////////////////////////////
 
 
   var getSliderIndex = function($currentSlider){
@@ -450,34 +384,8 @@ $(document).ready(function() {
       //alert("go left: " + jumpTo + " " + slider_index);
       sliderUpdate(false, $currentSlider, slider_index, jumpTo);
     }
-
-
-    //need to determine if going right or left
-
-
-
   });
 
-  //currently fading this in after completion of intro animation
-  //need a way to skip intro animation if you have visited site before
-  //$("#album_art").fadeIn(2500);
-  $("#widget_boi").fadeIn(3000);
-
-  /////////////SUPPORT PAGE ///////////////
-  ///totally stumped
-  //the position of the image does not seem to update to js or css
-  //the mouseenter event only seems to be recognized when the mouse enters some fixed location
-  //where the page thinks the image is
-  ///RAHHHHHHH
-  //ok.. so the menu width is set to 100% so even when the menu options are off the screen
-  //the containing box is present with a high z-index
-  //so it covers the whole top of the screen and as you scroll down it blocks the top half of elements...
-  //took me all day to figure this out :) and I just took out the line that hid menu a few days ago lol
-
-  //show item info on hover
-
-  //var supInfoVis = false;
-  //var holMeBak = true;
   var runningHover;
 
   $(".support_img_slider").hover(function(event){
@@ -487,16 +395,11 @@ $(document).ready(function() {
       $(this).children(".support_img_info").fadeIn("fast", function(){
         runningHover = false;
       });
-      //supInfoVis = true;
-
-
 
   }, function(){
     //$(this).closest(".img_indicator_container").siblings(".support_img_info").fadeOut("slow");
     $(this).children(".support_img_info").fadeOut("slow");
-    //supInfoVis = false;
   });
-
 
   //can improve this by preventing fadeOut on last and first imgs
   $(".img_indicator_container").click(function(event){
@@ -514,222 +417,285 @@ $(document).ready(function() {
           else{
             $($target).closest(".support_img_slider").find(".support_img_info").fadeIn("fast");
           }
-          //$(this).siblings(".support_img_info").fadeOut("slow");
         }
       }
   })
 
 
-  // $(document.body).on("mouseenter", '.support_img_slider', function(){
-  //   alert("in for the love of god");
-  // });
+  //////////////////////////////////////////////////////////////////// WIDGET BOIIIIIIIIII /////////////////////////////////////////////////////////////////////
 
-  // $(".support_img_slider").mouseenter(function(){
-  //   $(this).children(".support_img_info").fadeIn();
-  //
-  //   $(".support_img_slider").mouseleave(function(){
-  //     $(this).children(".support_img_info").fadeOut();
-  //   });
-  // });
+  ///////////////////////////////////////////////////////////////////////// 1. WIDGET CONTROL ////////////////////////////////////////////////////////////////
 
+  //////////////////////////////////////////// MOBILE GESTURES //////////////////////////////////////////////
 
-  //$(".menu").hide();
+  $(".nav_box").mousedown(function(){
 
-  //widget menu functionality
-
-  //we need a far cooler menu display function
-
-  //if show is true, show the menu. otherwise hide it
-
-  // var menuOpen = false;
-  var prevWidgetTop, prevWidgetLeft;
-
-  var displayMenu = function(show){
-
-    //alert(show);
-    if(show){
-
-      //use this to send widget back to where it was when the menu opened
-      //need to account for the transform
-
-      var widgetHeight = $("#widget_boi").height();
-      var widgetWidth = $("#widget_boi").width();
-
-      var widgetOffset = $("#widget_boi").offset();
-      prevWidgetLeft = widgetOffset.left + (widgetWidth / 2);
-      prevWidgetTop = widgetOffset.top - $(document).scrollTop() +(widgetHeight / 2);
-
-      //send widget to center
-
-      $("#widget_boi").animate({
-        "top" : "50%",
-        "left" : "50%"
-      }, 800, "swing");
-
-      //spinny
-
+    if(!spinning && !draggable){
+      var nav_box_id = $(this).attr("id");
+      // alert(nav_box_id);
+      var prev_widget_mode = widget_mode;
+      widget_mode = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
+      //this guy is prime suspect for widget bug where input is still recognized by icon during spin
+      spinning = true;
       displayMode(widget_mode);
+      adjustIcon(prev_widget_mode, widget_mode);
+    }
+    // alert(widget_mode);
+  });
 
-      $(".menu").show();
-      var slideDest = "0%";
-      var about_delay = 0;
-      var lyrics_delay = 100;
-      var credits_delay = 200;
-      var support_delay = 300;
-      // menuOpen = true;
-      //alert(slideDest);
+  var getWidget = document.getElementById("widget_boi");
+  //var getWidget = document.getElementsByClassName("widget_swipe");
+
+  var mc = new Hammer(getWidget);
+
+  mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+
+  mc.on("swipeleft swiperight swipeup swipedown press", function(ev){
+    var widgetGesture = ev.type;
+    var prev_widget_mode = widget_mode;
+    //alert(widget_mode);
+    //alert(spinning);
+    if(!spinning && !draggable){
+      spinning = true;
+      switch(widgetGesture){
+        case "swipeup":
+        if(!draggable){
+          widget_mode = "home_mode";
+          displayMode(widget_mode);
+          adjustIcon(prev_widget_mode, widget_mode);
+        }
+        break;
+        case "swipeleft":
+        if(!draggable){
+          widget_mode = "menu_mode";
+          //alert("calling displayMode with WM: " + widget_mode);
+          displayMode(widget_mode);
+          adjustIcon(prev_widget_mode, widget_mode);
+        }
+        break;
+        case "swipedown":
+        if(!draggable){
+          widget_mode = "download_mode";
+          displayMode(widget_mode);
+          adjustIcon(prev_widget_mode, widget_mode);
+        }
+        break;
+        case "swiperight":
+        if(!draggable){
+          widget_mode = "audio_mode";
+          displayMode(widget_mode);
+          adjustIcon(prev_widget_mode, widget_mode);
+        }
+        break;
+        default:
+        ///////////////////this is a press////////////////////
+        widget_press = true;
+        switch(widget_mode){
+
+          case "audio_mode":
+            displayMode(widget_mode);
+            //hilight intro task
+            if(!audio_press){
+              audio_press = true;
+              $("#audio_press").addClass("intro_task_done");
+            }
+            //open audio controls
+            //alert("open audio controls");
+            $(".audio_control").show();
+            $(".audio_control").animate({"top": "0px"}, 700);
+          break;
+          case "download_mode":
+            displayMode(widget_mode);
+            if(!download_press){
+              download_press = true;
+              $("#download_press").addClass("intro_task_done");
+            }
+            //open the download options menu
+            downloadOptions();
+          break;
+          case "menu_mode":
+            //alert("menu mode pressed");
+            //update the intro tasks
+            if(!menu_press){
+              menu_press = true;
+              $("#menu_press").addClass("intro_task_done");
+            }
+
+            displayMode(widget_mode);
+
+            if(!intro_mode){
+              //alert("reset intro mode pls");
+              reset_intro_mode();
+              introHint();
+            }
+          break;
+          default:
+          //make widget draggable
+            dragWidget(ev);
+        }
+      }
+    }
+
+  });
+
+  //need a function to take mode and direct behavior when box clicked
+
+   //Determines current modes and calls for appropriate widget adjustments
+  var displayMode = function(widget_mode, callback){
+
+    tipCurrentMode();
+
+    //this function should become responsible for animating the rotation of the widget images to indicate the current mode
+    //can combine with existing switch for widget mode
+
+    //hate to clutter this up more with intro bs but yolo
+
+    if(intro_mode){
+      if(!widget_press){
+        $(".intro_info").stop().animate({
+          "opacity": "0"
+        }, 1000, function(){
+          $("#init_intro_info").hide();
+        });
+      }
+    }
+    //if it is the intro we need to stop the spinning and establish a valid value for prev_widget_mode
+    if(firstSwipe){
+      intro_swipe();
     }
     else{
+      $("#widget_mode").html(widget_mode);
+      switch(widget_mode){
+        case "audio_mode":
 
-      //send widget back
-      $("#widget_boi").animate({
-        "top" : prevWidgetTop,
-        "left" : prevWidgetLeft
-      }, 700, "swing");
+        rotateDeg = 0;
+        // spinning = true;
+        if(intro_mode){
+          var callback = audio_demo;
+          if(!audio_mode_explored){
+            audio_mode_explored = true;
+            //can I use introHint here somehow? or remove it entirely?
+            //alert("you found audio mode");
+            $(".audio_intro_dot").addClass("bright_dot");
 
-      var slideDest = "100%";
-      var about_delay = 300;
-      var lyrics_delay = 200;
-      var credits_delay = 100;
-      var support_delay = 0;
-      // menuOpen = false;
-      //hide the menu after
-    }
-
-    $("#about_nav").delay(about_delay).animate({
-      "right" : slideDest
-    }, 800, function(){
-      if(!show){
-        // alert("hide menu");
-        $(".menu").hide();
+            intro_index++;
+          }
+        }
+        navRotate(rotateDeg, callback);
+        break;
+        case "home_mode":
+        rotateDeg = 270;
+        // spinning = true;
+        if(intro_mode){
+          var callback = home_demo;
+          if(!home_mode_explored){
+            home_mode_explored = true;
+            //alert("you found home mode");
+            $(".home_intro_dot").addClass("bright_dot");
+            intro_index++;
+          }
+        }
+        navRotate(rotateDeg, callback);
+        break;
+        case "menu_mode":
+        rotateDeg = 180;
+        if(intro_mode){
+          var callback = menu_demo;
+          //var callback = menu_demo;
+          if(!menu_mode_explored){
+            menu_mode_explored = true;
+            //alert("you found menu mode");
+            $(".menu_intro_dot").addClass("bright_dot");
+            intro_index++;
+          }
+        }
+        navRotate(rotateDeg, callback);
+        break;
+        case "download_mode":
+        rotateDeg = 90;
+        // spinning = true;
+        if(intro_mode){
+          var callback = download_demo;
+          if(!download_mode_explored){
+            download_mode_explored = true;
+            //alert("you found download mode");
+            $(".download_intro_dot").addClass("bright_dot");
+            intro_index++;
+          }
+        }
+        navRotate(rotateDeg, callback);
+        break;
+        default:
+        rotateDeg = 0;
+        navRotate(rotateDeg, callback)
+        alert("displayMode default");
       }
-    });
-
-    $("#lyrics_nav").delay(lyrics_delay).animate({
-      "left" : slideDest
-    }, 800);
-
-    $("#credits_nav").delay(credits_delay).animate({
-      "right" : slideDest
-    }, 800);
-
-    $("#support_nav").delay(support_delay).animate({
-      "left" : slideDest
-    }, 800);
+      if(intro_mode){
+        introLoadBar();
+      }
+    }
   };
 
-  var menu_select = function(nav_selection){
-
-
-    var msg;
-
-    switch(nav_selection){
-      case "about":
-      msg = "The key question is whether such a system has braking mechanisms at its disposal...";
+  var widgetAction = function(widget_mode){
+    switch(widget_mode){
+      case "menu_mode":
+        displayMenu(true);
+        if(!menu_tap){
+          menu_tap = true;
+          $("#menu_tap").addClass("intro_task_done");
+        }
       break;
-      case "lyrics":
-      msg = "6. Death is a choice. Life is indecision.";
+      case "home_mode":
+        if(!home_tap){
+          home_tap = true;
+          $("#home_tap").addClass("intro_task_done");
+        }
+        if(intro_mode){
+          introScrollFx();
+        }
+      scrollHome();
       break;
-      case "credits":
-      msg = "Death, if that is what we want to call this non-entity, is of all things the most dreadful.";
-      break;
-      case "support":
-      msg = "Please help me buy a farm and move out of my parents' basement.";
-      break;
+      case "audio_mode":
+        if(!audio_tap){
+          audio_tap = true;
+          $("#audio_tap").addClass("intro_task_done");
+        }
+        if(!firstSwipe){
+          audioControl();
+        }
+        break;
       default:
-      alert("YOLO");
+          if(!download_tap){
+            download_tap = true;
+            $("#download_tap").addClass("intro_task_done");
+          }
+          downloadOptions(true);
+          buildDownloadLink(true);
     }
+  };
 
-    $("#content_head_msg").html(msg);
-
-    //dont' slide up or down if already open
-
-
-
-    var selector = "." + nav_selection;
-    if($(selector).is(":hidden")){
-      $(".content").slideUp("slow");
-      $(selector).slideDown("slow");
+  $("#widget_function").click(function(){
+    // alert(widget_mode);
+    if(widget_press){
+      //alert("ur pressed");
     }
-  }
-
-  $(".menu_nav").click(function(){
-    var item_id = $(this).attr("id");
-    //alert (item_id);
-    var nav_selection = item_id.substring(0, item_id.indexOf("_"));
-    //alert(nav_selection);
-    if(!intro_mode){
-      menu_select(nav_selection);
+    //prevent click while spinning if audio mode
+    else if(widget_mode == "audio_mode"){
+      if(!spinning){
+        widgetAction(widget_mode);
+      }
     }
-
-    // $(".menu").fadeOut("slow");
-    displayMenu(false);
-    //scroll to top of content
-    $("html, body").animate({
-      scrollTop: $("#real_body").offset().top
-    }, 1000);
+    //otherwise knock yourself out
+    else{
+      widgetAction(widget_mode);
+    }
   });
 
-  //close menu on click outside
+  /////////////////////////////////////////////////////////////////// 2. WIDGET DISPLAY //////////////////////////////////////////////////////////////////////
 
-  // $("html").click(function){
-  //   if(menuOpen){
-  //     displayMenu(false);
-  //   }
-  // }
-  $(".menu").click(function(){
-    $target = $(event.target);
-    //alert($target.closest(".menu").length);
-    if ($($target).hasClass("menu_nav") == false){
-      //alert("empty");
-      displayMenu(false);
-    }
-    //displayMenu(false);
-  });
+  //////////////////////////////////////////////////////////////////// WIDGET ICON ////////////////////////////////////////////////////////////////////////
 
-  $("html").click(function(event){
-    //alert("hi");
-    $target = $(event.target);
-    //var target_length = target_closest.length;
-    //only close it if it is open
-    var menu_pos = $("#about_nav").css("right");
-    //alert(menu_pos);
-    //alert($target.closest(".menu").length);
-    if(!$target.closest(".menu").length && menu_pos == "0px"){
-      //alert("close the menu I think");
-      displayMenu(false);
-    }
-    //alert(menu_pos);
-  });
-
-  var playing = false;
-
-  var audioFile = document.getElementById("ttwwAudioFile");
-
-  var spinning = false;
-
-  var widget_mode = "audio_mode";
-
-  //build function for easing effect on overscroll at bottom of page plus image swap
-
-  //build function to:
-  //1. setup display of about_item section for mobile and desktop devices
-
-  /////WIDGET BOIIIIIIIIII
-  //This widget will have 4 MODES each of which performs different functions
-  //In all modes, the time in the track should be visible and scrubbing should be possible
-  //Do individual song names need to be indicated somehow?
-
-  //ALL MODES: AUDIO LOCATION AND SCRUBBING
-
-  //MODE 1 AUDIO PLAYER
-  //In this mode widget boi allows the user to pause the audio if it is playing and play the audio if it is paused
-  ///////////////FUNCTION TO TRANSITION FROM PARALLEL LINES TO TRIANGLE
-  //should the cheeks open or close?
-  //boolean value true means open flase means close
   var flip;
-  //boolean value that states whether transform origin is top or bottom true = top
-
   var moveSticks = function(open, flip, doubleRate){
 
     var moveRate;
@@ -831,59 +797,121 @@ $(document).ready(function() {
     $(".widget_stick").css("transform", "rotate(180deg)");
   };
 
-  var audioControl = function(){
 
-    if(playing){
-        audioFile.pause();
-        playing = false;
 
-        //change icon to play
-        spinRate = 15;
-        moveSticks(true, false, false);
-        iconSpin(0, 90, 15);
-        // $(".widget_stick").css("margin", "-13%");
-        // $("#a_stick").css("transform", "rotate(45deg)");
-        // $("#b_stick").css("transform", "rotate(-45deg)");
-        // $("#widget_function").css("transform", "rotate(90deg)");
+
+
+  var adjustIcon = function (prev_widget_mode, widget_mode, callback) {
+
+
+    //////////////////////////////// from audio //////////////////////////////////
+
+    //prev = audio_mode
+    if(prev_widget_mode == "audio_mode" && widget_mode == "menu_mode"){
+      if(playing){
+        //did I only put callback here for a reason?
+        iconSpin(0, 90, 2 * spinRate, callback);
       }
       else{
-        audioFile.play();
-        playing = true;
+        moveSticks(false, false, true);
+      }
+    }
 
-        //change icon to pause
-        spinRate = 15;
-        moveSticks(false, false, false);
-        iconSpin(90, 0, 15);
+    else if(prev_widget_mode == "audio_mode" && widget_mode == "home_mode"){
+      if(playing){
+        $(".widget_stick").css("transform-origin", "center top");
+        moveSticks(true, false, false);
+      }
+      else{
 
-        // $(".widget_stick").css("transform", "rotate(0deg)");
-        // $("#widget_function").css("transform", "rotate(0deg)");
+        iconSpin(90, 0, spinRate);
       }
 
     }
+    else if(prev_widget_mode == "audio_mode" && widget_mode == "download_mode"){
 
-  //MODE 2 MENU
-  //Let the user select which content populates the page: ABOUT, CREDITS, SUPPORT
-  //hide the menu on load
+      //$("#audio_download").show();
 
-  //MODE 3 DOWNLOAD
-  //download the audio file
-  //as one track or as individual tracks?
+      if(playing){
+        $("#widget_function").css("transform", "rotate(180deg)");
+        moveSticks(true, false, false);
 
-  //might not even need a jquery click for this
-  //when the mode is switched to download, just turn the icon into a download link
-  //<a id="audio_download" href="/audio/TTWW_TEST_MASTER_10.wav" download>Download</a>
+      }
+      else {
+        iconSpin(90, 180, spinRate);
+      }
 
-  //MODE 4 HOME
-  //Scroll to top
-  //populate page with certain content?
+    }
+    ////////////////////////////////// from menu ///////////////////////////////////////
 
-  var scrollHome = function(){
-    $("html, body").animate({
-      scrollTop: 0
-    }, "slow");
-    return false;
+    else if(prev_widget_mode == "menu_mode" && widget_mode == "audio_mode"){
+      if(playing){
+        iconSpin(270, 360, 2 * spinRate);
+      }
+      else{
+        moveSticks(true, false, true);
+        iconSpin(270, 450, spinRate);
+      }
+    }
+    else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
+      moveSticks(true, false, false);
+      iconSpin(270, 360, spinRate);
+    }
+    else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
+      //menu to download
+      //$("#audio_download").show();
+      moveSticks(true, false, false);
+      iconSpin(270, 180, spinRate);
+    }
+
+    //////////////////////////////////// from home /////////////////////////////////////
+
+    else if(prev_widget_mode == "home_mode" && widget_mode == "audio_mode"){
+      if(playing){
+        moveSticks(false, false, false);
+      }
+      else{
+        iconSpin(0, 90, spinRate);
+      }
+    }
+    else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
+      // alert("home to menu animation");
+      moveSticks(false, false, false);
+      iconSpin(0, -90, spinRate);
+    }
+
+    //NEED TO MAKE AND REMOVE DOWNLOAD LINK ACCORDINGLY
+
+    else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
+      //$("#audio_download").show();
+      iconSpin(0, 180, spinRate);
+    }
+      ////////////////////////////////// from download ///////////////////////////////
+
+    else if(prev_widget_mode == "download_mode" && widget_mode == "audio_mode"){
+      //$("#audio_download").hide();
+      if(playing){
+        moveSticks(false, true, false);
+      }
+      else{
+        iconSpin(180, 90, spinRate);
+      }
+    }
+    else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
+      //$("#audio_download").hide();
+      iconSpin(180, 360, spinRate);
+    }
+    else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
+      //$("#audio_download").hide();
+      moveSticks(false, false, false);
+      iconSpin(180, 270, spinRate);
+    }
   };
 
+
+
+  ///////////////////////////////////////////////////////////////////////  WIDGET NAV ///////////////////////////////////////////////////////////////////////////////////////
+  //Determine rotation parameters for widget
   var rotateDeg, spinTimer, rotateDist;
   var deg = 0;
   var bezelDeg = 0;
@@ -895,10 +923,10 @@ $(document).ready(function() {
   var bezelSpinRate;
   var previousDeg;
 
-  /////////////////////////////////////////////////////////////////////// FUNCTIONS ///////////////////////////////////////////////////////////////////////////////////////
-  //Determine rotation parameters for widget
   var initial_swipe = true;
   var navRotateInit = true;
+
+
   var navRotate = function(rotateDeg, callback){
 
 
@@ -906,16 +934,7 @@ $(document).ready(function() {
 
       //alert(prev_widget_mode);
       if(navRotateInit){
-        //prev_widget_mode = widget_mode;
-        //alert(prev_widget_mode);
-        //if it is the first swipe, the nav wheel is hidden so does not need to rotate
-        //the bezel should not move in its normal opposing fashion
-        //it should just continue until it reaches the selected location
-        //do we really want to even call thie navRotate function on first swipe?
 
-        //solved problem above by using seperate function for first assignment
-        //this only pushed the problem of switching to this function back a step
-        //need a way to initialize this guy with proper values
 
         switch(prev_widget_mode){
 
@@ -1075,823 +1094,40 @@ $(document).ready(function() {
     }, bezelSpinRate);
   };
 
-  var adjustIcon = function (prev_widget_mode, widget_mode, callback) {
+  ///////////////////////////////// transition widget between intro setup and normal use
 
-    //12 cases
+  var widgetDress = function(don, callback){
+    if(don){
+      //show some respect for yourself!
+      $(".widget_stick").animate({
+        "opacity" : "1"
+      }, 3000);
 
-    //DO WE NEED INDIVIDUAL MODES FOR PLAY AND PAUSE? HOW WOULD THAT WORK??
-
-      /////////////////////////////////////////////////////////////////////// AUDIO ///////////////////////////////////////////////////////////////////////////////////////
-
-    //prev = audio_mode
-    if(prev_widget_mode == "audio_mode" && widget_mode == "menu_mode"){
-      if(playing){
-        //did I only put callback here for a reason?
-        iconSpin(0, 90, 2 * spinRate, callback);
-      }
-      else{
-        moveSticks(false, false, true);
-      }
-    }
-
-    else if(prev_widget_mode == "audio_mode" && widget_mode == "home_mode"){
-      if(playing){
-        $(".widget_stick").css("transform-origin", "center top");
-        moveSticks(true, false, false);
-      }
-      else{
-
-        iconSpin(90, 0, spinRate);
-      }
-
-    }
-    else if(prev_widget_mode == "audio_mode" && widget_mode == "download_mode"){
-
-      //$("#audio_download").show();
-
-      if(playing){
-        $("#widget_function").css("transform", "rotate(180deg)");
-        moveSticks(true, false, false);
-
-      }
-      else {
-        iconSpin(90, 180, spinRate);
-      }
-
-    }
-      /////////////////////////////////////////////////////////////////////// MENU ///////////////////////////////////////////////////////////////////////////////////////
-
-    else if(prev_widget_mode == "menu_mode" && widget_mode == "audio_mode"){
-      if(playing){
-        iconSpin(270, 360, 2 * spinRate);
-      }
-      else{
-        moveSticks(true, false, true);
-        iconSpin(270, 450, spinRate);
-      }
-    }
-    else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
-      moveSticks(true, false, false);
-      iconSpin(270, 360, spinRate);
-    }
-    else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
-      //menu to download
-      //$("#audio_download").show();
-      moveSticks(true, false, false);
-      iconSpin(270, 180, spinRate);
-    }
-
-      /////////////////////////////////////////////////////////////////////// HOME //////////////////////////////////////////////////////////////////////////////////////////
-
-    else if(prev_widget_mode == "home_mode" && widget_mode == "audio_mode"){
-      if(playing){
-        moveSticks(false, false, false);
-      }
-      else{
-        iconSpin(0, 90, spinRate);
-      }
-    }
-    else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
-      // alert("home to menu animation");
-      moveSticks(false, false, false);
-      iconSpin(0, -90, spinRate);
-    }
-
-    //NEED TO MAKE AND REMOVE DOWNLOAD LINK ACCORDINGLY
-
-    else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
-      //$("#audio_download").show();
-      iconSpin(0, 180, spinRate);
-    }
-      /////////////////////////////////////////////////////////////////////// DOWNLOAD ///////////////////////////////////////////////////////////////////////////////////////
-
-    else if(prev_widget_mode == "download_mode" && widget_mode == "audio_mode"){
-      //$("#audio_download").hide();
-      if(playing){
-        moveSticks(false, true, false);
-      }
-      else{
-        iconSpin(180, 90, spinRate);
-      }
-    }
-    else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
-      //$("#audio_download").hide();
-      iconSpin(180, 360, spinRate);
-    }
-    else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
-      //$("#audio_download").hide();
-      moveSticks(false, false, false);
-      iconSpin(180, 270, spinRate);
-    }
-  };
-
-  //displayMode(widget_mode);
-
-  //can consolidate below functions by grabbing id and substring
-  //will need to transfer play/pause and download functionality to new function
-  //function to change icon will need to know current icon and desired icon?
-  //or only end result
-  //since we must animate rotations by hand, will probably need to know both
-
-
-  $(".nav_box").mousedown(function(){
-
-    if(!spinning && !draggable){
-      var nav_box_id = $(this).attr("id");
-      // alert(nav_box_id);
-      var prev_widget_mode = widget_mode;
-      widget_mode = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
-      //this guy is prime suspect for widget bug where input is still recognized by icon during spin
-      spinning = true;
-      displayMode(widget_mode);
-      adjustIcon(prev_widget_mode, widget_mode);
-    }
-    // alert(widget_mode);
-  });
-
-  var tipsOn = false;
-  var contextHint = "Hi there.";
-
-  $(".toolTip").click(function(){
-    tipsOn = true;
-  });
-
-  $("#widget_boi").hover(function(){
-    if(!draggable && !intro_mode){
-      $(".toolTip").fadeIn();
-    }
-
-  }, function(){
-    if(!draggable && !intro_mode){
-      $(".toolTip").fadeOut();
-    }
-
-  });
-
-  var hinterval;
-  $("#widget_function").hover(function(){
-    if(!draggable && !intro_mode){
-      //$(".tool_dot").first().addClass("selected_tool_dot");
-
-      //alert(widget_mode);
-
-      var hintA, hintB;
-      var hintDex = 2;
-
-      //put dots to show that another hint is coming
-      $("#hinticator").html("<svg class='tool_dot_container'><circle class='tool_dot selected_tool_dot' cx='50%' cy='50%' r='0.2em'></svg><svg class='tool_dot_container'><circle class='tool_dot' cx='50%' cy='50%' r='0.2em'></svg>");
-      $("#hinticator").show();
-
-      if(widget_mode == "audio_mode"){
-        if(playing){
-          hintA = "Tap to pause";
-        }
-        else{
-          hintA = "Tap to play";
-        }
-        hintB = "Press for audio controls";
-
-
-      }
-      else if(widget_mode == "home_mode"){
-        hintA = "Tap to scroll home";
-        hintB = "Press to move widget";
-        //contextHint = "Tap: Scroll to top. Press: <br> Drag widget.";
-      }
-      else if(widget_mode == "menu_mode"){
-        hintA = "Tap for menu";
-        hintB = "Press for widget help";
-        //contextHint = "Tap: Display menu. <br> Press: Widget help.";
-      }
-      else if(widget_mode == "download_mode"){
-        hintA = "Tap to download";
-        hintB = "Press for options";
-        //contextHint = "Tap: Download audio. Press: Download options.";
-      }
-      else{
-        hintA = "Yeeeet";
-        hintB = "Yolo";
-      }
-
-      $("#hint_content").html(hintA);
-
-      hinterval = setInterval(function(){
-
-        $("#hint_content").animate({
+      $("#nav_options_img").animate({
+        "opacity" : "1"
+      }, 1500, function(){
+        $("#nav_options_dark").animate({
           "opacity" : "0"
-        }, 1000, function(){
-          if(hintDex % 2 == 0){
-            $("#hint_content").html(hintB);
-            //hilight hinticator #2
-          }
-          else{
-            $("#hint_content").html(hintA);
-          }
-          $(".tool_dot").toggleClass("selected_tool_dot");
-          hintDex++;
-          $(this).animate({
-            "opacity" : "1"
-          }, 1000)
-        });
-
-
-      }, 5000);
-    }
-
-
-
-
-  }, function(){
-    if(!draggable && !intro_mode){
-      //alert("interval cleared!");
-      clearInterval(hinterval);
-      $("#hinticator").hide();
-      //alert(hinterval);
-      $("#hint_content").html("Hi there.");
-    }
-
-
-  });
-
-
-  var tipCurrentMode = function(){
-    var current_mode = widget_mode.replace("_", " ");
-    $("#mode_content").html(current_mode);
-  }
-
-
-  tipCurrentMode();
-
-
-  //show tooltip on hover over certain mode
-  //using nav box as hover target means if you smoothly hover from one to next the tip doesn't chnage
-
-  $("#select_home_mode").hover(function(){
-    if(!draggable && !intro_mode){
-      var contextHint = "Home Mode";
-      $("#hint_content").html(contextHint);
-      //$("#hint_content").fadeIn();
-    }
-
-  });
-  $("#select_audio_mode").hover(function(){
-    if(!draggable && !intro_mode){
-      var contextHint = "Audio Mode";
-      $("#hint_content").html(contextHint);
-    }
-
-  });
-  $("#select_menu_mode").hover(function(){
-    if(!draggable && !intro_mode){
-      var contextHint = "Menu Mode";
-      $("#hint_content").html(contextHint);
-    }
-
-  });
-  $("#select_download_mode").hover(function(){
-    if(!draggable && !intro_mode){
-      var contextHint = "Download Mode";
-      $("#hint_content").html(contextHint);
-    }
-
-  });
-
-
-  /*
-  $(".nav_box").hover(function(){
-
-      var nav_box_id = $(this).attr("id");
-    // alert(nav_box_id);
-
-      var which_box = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
-
-      var contextHint = which_box.replace("_", " ");
-
-      $("#context_hint").html(contextHint);
-
-      //$("#tipContent").fadeIn("slow");
-
-
-      //setTip();
-
-    // alert(widget_mode);
-  }, function(){
-
-
-      var current_mode = widget_mode.replace("_", " ");
-      $("#tipContent").html(current_mode);
-
-
-
-  });
-
-  */
-
-  //ADD MOBILE GESTURES
-
-  var getWidget = document.getElementById("widget_boi");
-  //var getWidget = document.getElementsByClassName("widget_swipe");
-
-
-/*
-  $(".widget_swipe").each(function(){
-    var mc = new Hammer(this);
-
-    mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-
-    mc.on("swipeleft swiperight swipeup swipedown press", function(ev){
-      var widgetGesture = ev.type;
-      alert(widgetGesture);
-      var prev_widget_mode = widget_mode;
-      //alert(widget_mode);
-      //alert(spinning);
-      if(!spinning){
-        spinning = true;
-        switch(widgetGesture){
-          case "swipeup":
-          widget_mode = "home_mode";
-
-
-            displayMode(widget_mode);
-            adjustIcon(prev_widget_mode, widget_mode);
-
-          break;
-          case "swipeleft":
-          widget_mode = "menu_mode";
-            //alert("calling displayMode with WM: " + widget_mode);
-
-            displayMode(widget_mode);
-            adjustIcon(prev_widget_mode, widget_mode);
-
-          break;
-          case "swipedown":
-          widget_mode = "download_mode";
-
-
-            displayMode(widget_mode);
-            adjustIcon(prev_widget_mode, widget_mode);
-
-          break;
-          case "swiperight":
-          widget_mode = "audio_mode";
-
-
-            displayMode(widget_mode);
-            adjustIcon(prev_widget_mode, widget_mode);
-
-          break;
-          default:
-          //this is a press
-          //reset intro mode if this is the case
-          introHint();
-          displayMode(widget_mode);
-          reset_intro_mode();
-        }
-      }
-
-    });
-  });
-
-  */
-
-
-  var mc = new Hammer(getWidget);
-
-  mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-
-  mc.on("swipeleft swiperight swipeup swipedown press", function(ev){
-    var widgetGesture = ev.type;
-    var prev_widget_mode = widget_mode;
-    //alert(widget_mode);
-    //alert(spinning);
-    if(!spinning && !draggable){
-      spinning = true;
-      switch(widgetGesture){
-        case "swipeup":
-        if(!draggable){
-          widget_mode = "home_mode";
-
-
-            displayMode(widget_mode);
-            adjustIcon(prev_widget_mode, widget_mode);
-        }
-
-
-        break;
-        case "swipeleft":
-        if(!draggable){
-          widget_mode = "menu_mode";
-            //alert("calling displayMode with WM: " + widget_mode);
-
-            displayMode(widget_mode);
-            adjustIcon(prev_widget_mode, widget_mode);
-        }
-
-
-        break;
-        case "swipedown":
-        if(!draggable){
-          widget_mode = "download_mode";
-
-
-            displayMode(widget_mode);
-            adjustIcon(prev_widget_mode, widget_mode);
-        }
-
-
-        break;
-        case "swiperight":
-        if(!draggable){
-          widget_mode = "audio_mode";
-
-
-            displayMode(widget_mode);
-            adjustIcon(prev_widget_mode, widget_mode);
-        }
-
-
-        break;
-        default:
-        ///////////////////this is a press////////////////////
-        widget_press = true;
-        switch(widget_mode){
-
-          case "audio_mode":
-          displayMode(widget_mode);
-          //hilight intro task
-          if(!audio_press){
-            audio_press = true;
-            $("#audio_press").addClass("intro_task_done");
-          }
-          //open audio controls
-          //alert("open audio controls");
-          $(".audio_control").show();
-          $(".audio_control").animate({"top": "0px"}, 700);
-          break;
-          case "download_mode":
-          displayMode(widget_mode);
-          if(!download_press){
-            download_press = true;
-            $("#download_press").addClass("intro_task_done");
-          }
-          //open the download options menu
-          downloadOptions();
-          break;
-          case "menu_mode":
-          //alert("menu mode pressed");
-          //update the intro tasks
-          if(!menu_press){
-            menu_press = true;
-            $("#menu_press").addClass("intro_task_done");
-          }
-
-          //$("#menu_press").css("color", "white");
-          //reset intro mode if this is the case
-          //introHint();
-          displayMode(widget_mode);
-
-          if(!intro_mode){
-            //alert("reset intro mode pls");
-            reset_intro_mode();
-            introHint();
-          }
-
-          break;
-          default:
-
-          //make widget draggable
-
-          displayMode("home_mode");
-
-          draggable = true;
-          clearInterval(hinterval);
-          $("#hinticator").hide();
-
-          $("#hint_content").html("Drag Me");
-          //fade out widget function
-          $("#widget_function").fadeOut();
-
-          //could be cool to spin widget throughout move
-
-          //dragMouseDown();
-
-        var dragElmnt = document.getElementById("widget_boi");
-
-
-
-            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-          // if (document.getElementById(elmnt.id + "header")) {
-          //   // if present, the header is where you move the DIV from:
-          //   document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-          // } else {
-            // otherwise, move the DIV from anywhere inside the DIV:
-
-            //dragElmnt.onmousedown = dragMouseDown;
-            //dragElmnt.ontouchstart = dragMouseDown;
-
-          //}
-
-          //function dragMouseDown() {
-
-
-              //alert(ev.type);
-              //e = e || window.event;
-              //e.preventDefault();
-
-              // get the mouse cursor position at startup:
-              pos3 = ev.center.x;
-              pos4 = ev.center.y;
-              //alert(pos3);
-              //pos3 = ev.clientX;
-              //pos4 = ev.clientY;
-
-              document.onmouseup = closeDragElement;
-              document.ontouchend = closeDragElement;
-              // call a function whenever the cursor moves:
-              //document.onmousemove = elementDrag;
-
-              $(document).on("mousemove touchmove", function(e){
-
-                  e = e || window.event;
-                  e.preventDefault();
-
-                  touch = undefined;
-                  if(e.originalEvent.touches){
-                    touch = e.originalEvent.touches[0];
-                    var scrollTop = $(document).scrollTop();
-                    pos1 = pos3 - touch.clientX;
-                    pos2 = pos4 - touch.clientY;
-                    pos3 = touch.clientX;
-                    pos4 = touch.clientY;
-                  }
-                  else{
-                    // calculate the new cursor position:
-                    //alert(e);
-
-                    pos1 = pos3 - e.clientX;
-                    pos2 = pos4 - e.clientY;
-                    pos3 = e.clientX;
-                    pos4 = e.clientY;
-                  }
-
-                  //alert(e.type);
-
-                  //alert(pos4);
-                  //$(".intro_done").html(pos3);
-
-                  // set the element's new position:
-
-                    dragElmnt.style.top = (dragElmnt.offsetTop - pos2) + "px";
-                    dragElmnt.style.left = (dragElmnt.offsetLeft - pos1) + "px";
-
-
-                  //alert(dragElmnt.offsetTop - pos2);
-
-              });
-
-
-              //document.ontouchmove = elementDrag;
-
-
-          function closeDragElement() {
-            //alert("called");
-            // stop moving when mouse button is released:
-            document.onmouseup = null;
-            document.onmousemove = null;
-
-            document.ontouchend = null;
-            document.ontouchmove = null;
-            $(document).off("mousemove touchmove");
-            draggable = false;
-            $("#hint_content").html("Nice");
-            $("#widget_function").fadeIn();
-            if(intro_mode){
-              $("#widget_boi").delay(500).animate({
-                "top" : "50%",
-                "left" : "50%"
-              }, 700, "swing");
-              if(!home_press){
-                home_press = true;
-                $("#home_press").addClass("intro_task_done");
-              }
-            }
-
-          }
-
-
-
-
-
-
-          /*
-          //home mode has no press function atm
-          //just let it reopen tutorial for now
-          displayMode(widget_mode);
-
-          if(!intro_mode){
-            //alert("reset intro mode pls");
-            reset_intro_mode();
-            introHint();
-          }
-          */
-
-        }
-
-      }
-    }
-
-  });
-
-
-
-  //need a function to take mode and direct behavior when box clicked
-
-   //Determines current modes and calls for appropriate widget adjustments
-  var displayMode = function(widget_mode, callback){
-
-    tipCurrentMode();
-
-    //this function should become responsible for animating the rotation of the widget images to indicate the current mode
-    //can combine with existing switch for widget mode
-
-    //hate to clutter this up more with intro bs but yolo
-
-    if(intro_mode){
-      if(!widget_press){
-        $(".intro_info").stop().animate({
-          "opacity": "0"
-        }, 1000, function(){
-          $("#init_intro_info").hide();
-        });
-      }
-
-
-    }
-
-    //if it is the intro we need to stop the spinning and establish a valid value for prev_widget_mode
-    if(firstSwipe){
-      intro_swipe();
+        }, 200, callback);
+      });
     }
     else{
-      $("#widget_mode").html(widget_mode);
-      switch(widget_mode){
-        case "audio_mode":
+      //take it off widget boi!
+      $(".widget_stick").animate({
+        "opacity" : "0"
+      }, 3000);
 
-        rotateDeg = 0;
-        // spinning = true;
-        if(intro_mode){
-          var callback = audio_demo;
-          if(!audio_mode_explored){
-            audio_mode_explored = true;
-            //can I use introHint here somehow? or remove it entirely?
-            //alert("you found audio mode");
-            $(".audio_intro_dot").addClass("bright_dot");
-
-            intro_index++;
-          }
-        }
-        navRotate(rotateDeg, callback);
-        break;
-        case "home_mode":
-        rotateDeg = 270;
-        // spinning = true;
-        if(intro_mode){
-          var callback = home_demo;
-          if(!home_mode_explored){
-            home_mode_explored = true;
-            //alert("you found home mode");
-            $(".home_intro_dot").addClass("bright_dot");
-            intro_index++;
-          }
-        }
-        navRotate(rotateDeg, callback);
-        break;
-        case "menu_mode":
-        rotateDeg = 180;
-        if(intro_mode){
-
-
-          var callback = menu_demo;
-
-
-
-          //var callback = menu_demo;
-          if(!menu_mode_explored){
-            menu_mode_explored = true;
-            //alert("you found menu mode");
-            $(".menu_intro_dot").addClass("bright_dot");
-            intro_index++;
-          }
-        }
-        navRotate(rotateDeg, callback);
-        break;
-        case "download_mode":
-        rotateDeg = 90;
-        // spinning = true;
-        if(intro_mode){
-          var callback = download_demo;
-          if(!download_mode_explored){
-            download_mode_explored = true;
-            //alert("you found download mode");
-            $(".download_intro_dot").addClass("bright_dot");
-            intro_index++;
-          }
-        }
-        navRotate(rotateDeg, callback);
-        break;
-        default:
-        rotateDeg = 0;
-        navRotate(rotateDeg, callback)
-        alert("displayMode default");
-      }
-      if(intro_mode){
-
-        introLoadBar();
-
-      }
+      $("#nav_options_img").animate({
+        "opacity" : "0"
+      }, 1500, function(){
+        $("#nav_options_dark").animate({
+          "opacity" : "1"
+        }, 200, callback);
+      });
     }
+  }
 
-
-  };
-
-  var widgetAction = function(widget_mode){
-    switch(widget_mode){
-      case "menu_mode":
-        displayMenu(true);
-        if(!menu_tap){
-          menu_tap = true;
-          $("#menu_tap").addClass("intro_task_done");
-        }
-        break;
-      case "home_mode":
-      if(!home_tap){
-        home_tap = true;
-        $("#home_tap").addClass("intro_task_done");
-      }
-        if(intro_mode){
-          //alert("scroll_animation");
-          //$(".widget_intro").css("position", "absolute");
-
-          var originalInfo = $(".intro_info").offset();
-          var infoTop = originalInfo.top;
-          var originalDone = $(".intro_done").offset();
-          var doneTop = originalDone.top;
-
-          //only run the animation if it is not already running
-          if(!scroll_fx){
-            scroll_fx = true;
-
-            $(".intro_done").animate({
-              "top" : "+=100%"
-            }, 200, "swing");
-
-            $(".intro_info").animate({
-              "top" : "+=100%"
-            }, 200, "swing", function(){
-              //position to bring in from top
-              $(".intro_info").css("top", "-=300%");
-              $(".intro_done").css("top", "-=300%");
-              $(".intro_info").animate({
-                "top" : infoTop
-              }, 300);
-              $(".intro_done").animate({
-                "top" : doneTop
-              }, 300, function(){
-                scroll_fx = false;
-              });
-            });
-          }
-
-        }
-        scrollHome();
-        break;
-      case "audio_mode":
-      if(!audio_tap){
-        audio_tap = true;
-        $("#audio_tap").addClass("intro_task_done");
-      }
-        if(!firstSwipe){
-          audioControl();
-        }
-        // playing = !playing;
-        // clickOnPlayOrPause(playing);
-        break;
-      default:
-        // alert("running switch default");
-          //downloadOptions();
-          //find a way to trigger default download of full project when clicked
-          if(!download_tap){
-            download_tap = true;
-            $("#download_tap").addClass("intro_task_done");
-          }
-          downloadOptions(true);
-          buildDownloadLink(true);
-
-    }
-  };
-
-
-  ///////////////////////CALL WIDGET
+  //////////////////////////////////////////////////////////////////////// MOVE WIDGET //////////////////////////////////////////////////////////
 
   //call widget to dbl click location
 
@@ -1903,22 +1139,7 @@ $(document).ready(function() {
     //alert(isWidgetLength);
     if(isWidgetLength == 1){
       widgetDblClick = true;
-      //alert("you dbl clicked the widget");
-      //make it draggable
-      /*
-      if(draggable){
-        draggable = false;
-        //fade in widget function
-        $("#widget_function").fadeIn();
-      }
-      else{
-        draggable = true;
-        //fade out widget function
-        $("#widget_function").fadeOut();
-      }
-      */
     }
-
     else {
       if(!intro_mode){
         var widgetCallX = ev.pageX;
@@ -1940,77 +1161,330 @@ $(document).ready(function() {
         }, 700, "swing");
       }
     }
-    //alert(isWidget);
+  });
 
 
-  })
-  /*
+  //////////////////////////////////////////////////////////////////////// 3. WIDGET MODE FUNCTIONS ///////////////////////////////////////////////////////
 
-  //make widget draggable
+  //////// AUDIO MODE ///////
 
-dragElement(document.getElementById("widget_boi"));
+  /////// audio tap //////
 
-function dragElement(elmnt) {
+  var audioControl = function(){
 
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  // if (document.getElementById(elmnt.id + "header")) {
-  //   // if present, the header is where you move the DIV from:
-  //   document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  // } else {
-    // otherwise, move the DIV from anywhere inside the DIV:
+    if(playing){
+        audioFile.pause();
+        playing = false;
 
-    elmnt.onmousedown = dragMouseDown;
-    elmnt.ontouchstart = dragMouseDown;
+        //change icon to play
+        spinRate = 15;
+        moveSticks(true, false, false);
+        iconSpin(0, 90, 15);
+      }
+      else{
+        audioFile.play();
+        playing = true;
 
-  //}
+        //change icon to pause
+        spinRate = 15;
+        moveSticks(false, false, false);
+        iconSpin(90, 0, 15);
+      }
 
-  function dragMouseDown(e) {
-    if(draggable){
-      e = e || window.event;
-      e.preventDefault();
-      // get the mouse cursor position at startup:
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      document.onmouseup = closeDragElement;
-      document.ontouchend = closeDragElement;
-      // call a function whenever the cursor moves:
-      document.onmousemove = elementDrag;
-      document.ontouchmove = elementDrag;
     }
 
+    ///// audio press ////////
+
+
+  //////////// HOME MODE //////////////////
+
+  ///////// home tap //////////////
+
+  var scrollHome = function(){
+    $("html, body").animate({
+      scrollTop: 0
+    }, "slow");
+    return false;
+  };
+
+  ////////// home press ///////////
+
+  var pos1, pos2, pos3, pos4, dragElmnt;
+
+  var dragWidget = function(ev){
+    displayMode("home_mode");
+
+    draggable = true;
+    clearInterval(hinterval);
+    $("#hinticator").hide();
+
+    $("#hint_content").html("Drag Me");
+    //fade out widget function
+    $("#widget_function").fadeOut();
+
+    //could be cool to spin widget throughout move
+
+    //dragMouseDown();
+
+    dragElmnt = document.getElementById("widget_boi");
+
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    // get the mouse cursor position at startup:
+    pos3 = ev.center.x;
+    pos4 = ev.center.y;
+    //alert(pos3);
+
+    document.onmouseup = closeDragElement;
+    document.ontouchend = closeDragElement;
+    // call a function whenever the cursor moves:
+    //alert(pos3 + " " + pos4);
+
+    $(document).on("mousemove touchmove", widgetMove);
   }
 
-  function elementDrag(e) {
+  var widgetMove = function(e){
+    //alert(e.type);
     e = e || window.event;
     e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
 
-  function closeDragElement() {
-    // stop moving when mouse button is released:
+    touch = undefined;
+    if(e.originalEvent.touches){
+      touch = e.originalEvent.touches[0];
+      var scrollTop = $(document).scrollTop();
+      pos1 = pos3 - touch.clientX;
+      pos2 = pos4 - touch.clientY;
+      pos3 = touch.clientX;
+      pos4 = touch.clientY;
+    }
+    else{
+      // calculate the new cursor position:
+      //alert(e);
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+    }
+
+    dragElmnt.style.top = (dragElmnt.offsetTop - pos2) + "px";
+    dragElmnt.style.left = (dragElmnt.offsetLeft - pos1) + "px";
+    //alert()
+
+  };
+
+  var closeDragElement = function(){
+    //alert("called");
+    // stop moving when mouse button is released
     document.onmouseup = null;
     document.onmousemove = null;
 
     document.ontouchend = null;
     document.ontouchmove = null;
+    $(document).off("mousemove touchmove");
     draggable = false;
+    $("#hint_content").html("Nice");
     $("#widget_function").fadeIn();
+    if(intro_mode){
+      $("#widget_boi").delay(500).animate({
+        "top" : "50%",
+        "left" : "50%"
+      }, 700, "swing");
+      if(!home_press){
+        home_press = true;
+        $("#home_press").addClass("intro_task_done");
+      }
+    }
   }
-}
 
-*/
+  ////// MENU MODE /////////
 
-  /////////////DOWNLOAD MENU
+  ////// menu tap //////////
+
+    var prevWidgetTop, prevWidgetLeft;
+
+    var displayMenu = function(show){
+
+      //alert(show);
+      if(show){
+
+        menuOpen = true;
+        $(".toolTip").fadeOut();
+
+        //use this to send widget back to where it was when the menu opened
+        //need to account for the transform
+
+        var widgetHeight = $("#widget_boi").height();
+        var widgetWidth = $("#widget_boi").width();
+
+        var widgetOffset = $("#widget_boi").offset();
+        prevWidgetLeft = widgetOffset.left + (widgetWidth / 2);
+        prevWidgetTop = widgetOffset.top - $(document).scrollTop() +(widgetHeight / 2);
+
+        //send widget to center
+
+        $("#widget_boi").animate({
+          "top" : "50%",
+          "left" : "50%"
+        }, 800, "swing");
+
+        //spinny
+
+        displayMode(widget_mode);
+
+        $(".menu").show();
+        var slideDest = "0%";
+        var about_delay = 0;
+        var lyrics_delay = 100;
+        var credits_delay = 200;
+        var support_delay = 300;
+        // menuOpen = true;
+        //alert(slideDest);
+      }
+      else{
+
+        menuOpen = false;
+
+        //send widget back
+        //should widget be sent back if user clicks on a new widget mode?
+        //this would make it jump out from under mouse when presumably they are about to do something with it
+        $("#widget_boi").animate({
+          "top" : prevWidgetTop,
+          "left" : prevWidgetLeft
+        }, 700, "swing");
+
+        var slideDest = "100%";
+        var about_delay = 300;
+        var lyrics_delay = 200;
+        var credits_delay = 100;
+        var support_delay = 0;
+        // menuOpen = false;
+        //hide the menu after
+      }
+
+      $("#about_nav").delay(about_delay).animate({
+        "right" : slideDest
+      }, 800, function(){
+        if(!show){
+          // alert("hide menu");
+          $(".menu").hide();
+        }
+      });
+
+      $("#lyrics_nav").delay(lyrics_delay).animate({
+        "left" : slideDest
+      }, 800);
+
+      $("#credits_nav").delay(credits_delay).animate({
+        "right" : slideDest
+      }, 800);
+
+      $("#support_nav").delay(support_delay).animate({
+        "left" : slideDest
+      }, 800);
+    };
+
+    var menu_select = function(nav_selection){
+
+      var msg;
+
+      switch(nav_selection){
+        case "about":
+        msg = "The key question is whether such a system has braking mechanisms at its disposal...";
+        break;
+        case "lyrics":
+        msg = "6. Death is a choice. Life is indecision.";
+        break;
+        case "credits":
+        msg = "Death, if that is what we want to call this non-entity, is of all things the most dreadful.";
+        break;
+        case "support":
+        msg = "Please help me buy a farm and move out of my parents' basement.";
+        break;
+        default:
+        alert("YOLO");
+      }
+
+      $("#content_head_msg").html(msg);
+
+      //dont' slide up or down if already open
+
+      var selector = "." + nav_selection;
+      if($(selector).is(":hidden")){
+        $(".content").slideUp("slow");
+        $(selector).slideDown("slow");
+      }
+    }
+
+    $(".menu_nav").click(function(){
+      var item_id = $(this).attr("id");
+      //alert (item_id);
+      var nav_selection = item_id.substring(0, item_id.indexOf("_"));
+      //alert(nav_selection);
+      if(!intro_mode){
+        menu_select(nav_selection);
+      }
+
+      // $(".menu").fadeOut("slow");
+      displayMenu(false);
+      //scroll to top of content
+      $("html, body").animate({
+        scrollTop: $("#real_body").offset().top
+      }, 1000);
+    });
+
+    $(".menu").click(function(){
+      $target = $(event.target);
+      //alert($target.closest(".menu").length);
+      if ($($target).hasClass("menu_nav") == false){
+        //alert("empty");
+        displayMenu(false);
+      }
+    });
+
+    $("html").click(function(event){
+      //alert("hi");
+      $target = $(event.target);
+
+      //only close it if it is open
+      var menu_pos = $("#about_nav").css("right");
+      //alert(menu_pos);
+      //alert($target.closest(".menu").length);
+      if(!$target.closest(".menu").length && menu_pos == "0px" && !$target.hasClass("nav_box")){
+        //alert("close the menu I think");
+        displayMenu(false);
+      }
+      //alert(menu_pos);
+    });
+
+
+  /////// menu press ///////
+
+  var reset_intro_mode = function(){
+
+    intro_mode = true;
+
+    //return widget to center
+
+    $("#widget_boi").animate({
+      "top" : "50%",
+      "left" : "50%"
+    }, 700, "swing");
+
+    $(".widget_intro, .intro_dots").show().animate({
+      "opacity" : "1"
+    }, 1500, function(){
+      $("#real_body, #album_art").css("opacity" , "0");
+    });
+    $("html").css("overflow", "hidden");
+
+  }
+
+  ////// DOWNLOAD MODE //////
+
+  ///tap and press contained within same function
+
   var downloadConfirmHeight;
   var movVal;
-var downloadOptions = function(simple){
+  var downloadOptions = function(simple){
 
   $(".download_options").show();
   if(!simple){
@@ -2019,24 +1493,14 @@ var downloadOptions = function(simple){
 
   //set this when it exists
 
-
-
   downloadConfirmHeight = $("#download_confirm").height();
   movVal = "-" + downloadConfirmHeight;
   var docHeight = $(window).height();
   var difHeight = docHeight - downloadConfirmHeight;
-  //var downloadConfirmHeightPercent = (downloadConfirmHeight / docHeight) * 100;
-  //var downloadOptionsHeight = 100 - downloadConfirmHeightPercent + "%";
-  //alert(difHeight);
-
-
-  //alert(downloadConfirmHeight);
 
   if(downloadSimpleOpen){
     movVal = 0;
   }
-
-
 
   $("#download_confirm").animate({
     "bottom" : movVal
@@ -2087,10 +1551,6 @@ var downloadOptions = function(simple){
 
     //height of download confirm will vary based on device
 
-    //var downloadConfirmHeight = $("#download_confirm").height();
-
-    //alert(movVal);
-
     $("#download_confirm").animate({
       "bottom" : movVal
     }, 1000, "swing", function(){
@@ -2098,14 +1558,6 @@ var downloadOptions = function(simple){
       downloadSimpleOpen = false;
     });
 
-    /*
-    $(".download_options").animate({
-      "height" : "0",
-      "width" : "0"
-    }, 1000, function(){
-      $(".download_options").hide();
-    });
-    */
   });
 
   //the height of download options needs to change if user scrolls on mobile, hiding the search bar
@@ -2137,10 +1589,8 @@ var downloadOptions = function(simple){
   var downloadMenu = document.getElementById("download_menu");
   downloadMenu.ontouchend = setDownloadMenuHeight;
 
-
-
-//need to generate correct download link based on what is included
-//use id to determine which track selected
+  //need to generate correct download link based on what is included
+  //use id to determine which track selected
   var downloadTracks = [];
   var downloadLink;
 
@@ -2152,9 +1602,6 @@ var downloadOptions = function(simple){
 
     var downloadId = $(this).attr("id");
     var downloadTrack = downloadId.substring(0, downloadId.indexOf("_"));
-    //alert(downloadTrack);
-    //var arrow_type = arrow_class.substring(0, arrow_class.indexOf("_"));
-
 
     //add to array
     if(downloadTrack !== "download"){
@@ -2164,11 +1611,6 @@ var downloadOptions = function(simple){
         downloadTracks.push(downloadTrack);
         $(this).find(".download_song_title").hide();
         $(this).find(".download_symbol").show();
-        //$(this).addClass("download_option_selected");
-        //$(this).css("box-shadow", "0px 0px 10px #444 inset");
-        //need to mkae existing shadows show up on it
-        //do this by reducing the z-index of each to something lower than the one above it
-        //need to knwo which number it is
 
         var optionLayer = "-" + $(this).prevAll().length;
         //alert(optionNum);
@@ -2225,18 +1667,12 @@ var downloadOptions = function(simple){
         }
 
         $(this).css({"background-color" : "white", "border" : "none", "z-index" : "0"});
-        //$(this).next().css("box-shadow", "0px 3px 5px #444");
-        //$(this).css("border", "none");
+
         //remove the track from array
         var aryIndex = downloadTracks.indexOf(downloadTrack);
         downloadTracks.splice(aryIndex, 1);
-        //alert(downloadTracks);
-        //buildDownloadLink();
-        //$(this).removeClass("download_option_selected");
       }
 
-      //alert(downloadTracks);
-      //buildDownloadLink();
     }
     else{
       //they clicked all tracks or one of the buttons
@@ -2272,10 +1708,6 @@ var downloadOptions = function(simple){
           //download GRAD and something else
           if(downloadTracks.indexOf("glass") > -1){
             downloadLink = "GRAD_GLASS.zip";
-            //need to remove bottom shadow from grad and top from glass
-            //alert("update shadow");
-            //$("#graduate_download").css("box-shadow", "0px 0px 10px #444 inset, none, 0px 0px 10px #444 inset");
-            //$("#graduate_download").css("box-shadow", "none");
           }
           else if(downloadTracks.indexOf("broken") > -1){
             downloadLink = "GRAD_BROKEN.zip";
@@ -2331,8 +1763,6 @@ var downloadOptions = function(simple){
       }
     }
 
-
-
     //put the link in the anchor element
     //alert(downloadLink);
     $("#download_button").html("<a id='audio_download_link' href='audio/" + downloadLink + "' download>Download </a>")
@@ -2347,28 +1777,249 @@ var downloadOptions = function(simple){
     }, 1500);
   });
 
-  $("#widget_function").click(function(){
+  /////////////////////////////////////////////////////////////////////// TOOL TIPS /////////////////////////////////////////////////////////////////////////
 
-    // alert(widget_mode);
-    if(widget_press){
-      //alert("ur pressed");
+  var tipsOn = false;
+  var contextHint;
+
+  $(".toolTip").click(function(){
+    tipsOn = true;
+  });
+
+  $("#widget_boi").hover(function(){
+    if(!draggable && !intro_mode && !menuOpen){
+      $(".toolTip").fadeIn();
     }
-    //prevent click while spinning if audio mode
-    else if(widget_mode == "audio_mode"){
-      if(!spinning){
-        widgetAction(widget_mode);
+
+  }, function(){
+    if(!draggable && !intro_mode && !menuOpen){
+      $(".toolTip").stop().fadeOut();
+    }
+
+  });
+
+  var hinterval;
+
+  $("#widget_function").hover(function(){
+    if(!draggable && !intro_mode && !menuOpen){
+      //$(".tool_dot").first().addClass("selected_tool_dot");
+
+      //alert(widget_mode);
+
+      var hintA, hintB;
+      var hintDex = 2;
+
+      //put dots to show that another hint is coming
+      $("#hinticator").html("<svg class='tool_dot_container'><circle class='tool_dot selected_tool_dot' cx='50%' cy='50%' r='0.2em'></svg><svg class='tool_dot_container'><circle class='tool_dot' cx='50%' cy='50%' r='0.2em'></svg>");
+      $("#hinticator").show();
+
+      if(widget_mode == "audio_mode"){
+        if(playing){
+          hintA = "Tap to pause";
+        }
+        else{
+          hintA = "Tap to play";
+        }
+        hintB = "Press for audio controls";
+
+
       }
+      else if(widget_mode == "home_mode"){
+        hintA = "Tap to scroll home";
+        hintB = "Press to move widget";
+        //contextHint = "Tap: Scroll to top. Press: <br> Drag widget.";
+      }
+      else if(widget_mode == "menu_mode"){
+        hintA = "Tap for menu";
+        hintB = "Press for widget help";
+        //contextHint = "Tap: Display menu. <br> Press: Widget help.";
+      }
+      else if(widget_mode == "download_mode"){
+        hintA = "Tap to download";
+        hintB = "Press for options";
+        //contextHint = "Tap: Download audio. Press: Download options.";
+      }
+      else{
+        hintA = "Yeeeet";
+        hintB = "Yolo";
+      }
+
+      $("#hint_content").html(hintA);
+
+      var swapHint = function(){
+        $("#hint_content").animate({
+          "opacity" : "0"
+        }, 600, function(){
+          if(hintDex % 2 == 0){
+            $("#hint_content").html(hintB);
+            //hilight hinticator #2
+          }
+          else{
+            $("#hint_content").html(hintA);
+          }
+          $(".tool_dot").toggleClass("selected_tool_dot");
+          hintDex++;
+          $(this).animate({
+            "opacity" : "1"
+          }, 600)
+        });
+        hinterval = setTimeout(swapHint, 3000);
+      }
+
+      setTimeout(swapHint, 1000);
+
+
+
     }
-    //otherwise knock yourself out
-    else{
-      widgetAction(widget_mode);
+  }, function(){
+    if(!draggable && !intro_mode){
+      //alert("interval cleared!");
+      clearInterval(hinterval);
+      $("#hinticator").hide();
+      //alert(hinterval);
+      $("#hint_content").html("Hi there.");
+    }
+  });
+
+  var tipCurrentMode = function(){
+    var current_mode = widget_mode.replace("_", " ");
+    $("#mode_content").html(current_mode);
+  }
+
+  tipCurrentMode();
+
+  //show tooltip on hover over certain mode
+  //using nav box as hover target means if you smoothly hover from one to next the tip doesn't chnage
+
+  $("#select_home_mode").hover(function(){
+    if(!draggable && !intro_mode){
+      var contextHint = "Home Mode";
+      $("#hint_content").html(contextHint);
+      //$("#hint_content").fadeIn();
     }
 
+  });
+  $("#select_audio_mode").hover(function(){
+    if(!draggable && !intro_mode){
+      var contextHint = "Audio Mode";
+      $("#hint_content").html(contextHint);
+    }
+
+  });
+  $("#select_menu_mode").hover(function(){
+    if(!draggable && !intro_mode){
+      var contextHint = "Menu Mode";
+      $("#hint_content").html(contextHint);
+    }
+
+  });
+  $("#select_download_mode").hover(function(){
+    if(!draggable && !intro_mode){
+      var contextHint = "Download Mode";
+      $("#hint_content").html(contextHint);
+    }
 
   });
 
 
+
   ///////////////////INTRO animation
+
+    /////////////////////////////////////////////////////////////////////// INTRO TUTORIAL ////////////////////////////////////////////////////////////////
+
+    $("#widget_boi").fadeIn(3000);
+
+    var introAnimation = function(){
+      intro_mode = true;
+      //could move this to css as well
+      $("html").css("overflow-y", "hidden");
+      //$("#nav_options_img").css("opacity", "0");
+      //$(".widget_stick").css("opacity", "0");
+      $("#widget_boi").fadeIn("slow");
+      $(".intro_item").fadeIn(2000);
+
+
+        //$(".intro_msg").css("opacity", "1");
+
+        $(".intro_msg").delay(3000).animate({
+          "opacity" : "1"
+        }, 2500);
+
+      //intro msg sequence
+      var intro_msgs = ["mi", "nam", "is", "wdgt", "boi", "hi"];
+      var msg = 0;
+      set_intro_msg = setInterval(function(){
+        //alert(msg);
+        if(msg == intro_msgs.length){
+          //alert("reset");
+          msg = 0;
+        }
+        //alert(intro_msgs[msg]);
+
+        $(".intro_msg").stop().animate({
+          "opacity" : "0"
+        }, 2500, function(){
+          $(".intro_msg").html(intro_msgs[msg]);
+          $(".intro_msg").animate({
+            "opacity" : "1"
+          }, 2500);
+          msg++;
+        });
+      }, 9000);
+
+
+      //spin tings for intro
+
+      introTimer = setInterval(function(){
+        if(darkNavSpin == 360){
+          darkNavSpin = 0;
+        }
+        if(introBezelSpin == 0){
+          introBezelSpin = 360;
+        }
+        dark_nav.style.transform = "rotate(" + darkNavSpin + "deg)";
+        intro_bezel.style.transform = "rotate(" + introBezelSpin + "deg)";
+        introBezelSpin--;
+        darkNavSpin++;
+      }, 5);
+
+    }
+
+    introAnimation();
+
+    var introScrollFx = function(){
+      var originalInfo = $(".intro_info").offset();
+      var infoTop = originalInfo.top;
+      var originalDone = $(".intro_done").offset();
+      var doneTop = originalDone.top;
+
+      //only run the animation if it is not already running
+
+      if(!scroll_fx){
+
+        scroll_fx = true;
+
+        $(".intro_done").animate({
+          "top" : "+=100%"
+        }, 200, "swing");
+
+        $(".intro_info").animate({
+          "top" : "+=100%"
+        }, 200, "swing", function(){
+          //position to bring in from top
+          $(".intro_info").css("top", "-=300%");
+          $(".intro_done").css("top", "-=300%");
+          $(".intro_info").animate({
+            "top" : infoTop
+          }, 300);
+          $(".intro_done").animate({
+            "top" : doneTop
+          }, 300, function(){
+            scroll_fx = false;
+          });
+        });
+      }
+    }
 
   var introHint = function(){
     switch(widget_mode){
@@ -2410,86 +2061,42 @@ var downloadOptions = function(simple){
 
 
   var audio_demo = function(){
-    //$(".intro_info").html("<span class='intro_mode_title'>Audio Mode</span> <br><span class='intro_function' id='audio_tap'>Tap: Play/Pause.</span> <br> <span class='intro_function' id='audio_press'>Press: Audio controls.</span>");
     $(".mode_intro_info, #init_intro_info").hide();
     $("#audio_intro_info").show();
-
     $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
-
-    //adjustIcon(prev_widget_mode, widget_mode);
   }
 
   var download_demo = function(){
-    //alert("Download Mode. Download the audio file.");
-    //$(".intro_info").html("<span class='intro_mode_title'>Download Mode</span> <br><span class='intro_function' id='download_tap'>Tap: Download project.</span> <br> <span class='intro_function' id='download_press'>Press: Download options.</span>");
     $(".mode_intro_info, #init_intro_info").hide();
     $("#download_intro_info").show();
     $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
-    //prev_widget_mode = widget_mode;
-    //widget_mode = "download_mode";
-    //displayMode(widget_mode);
-    //adjustIcon(prev_widget_mode, widget_mode);
   }
+
   var menu_demo = function(){
-    //alert("Menu Mode. Display the full menu.");
-    //$(".intro_info").html("<span class='intro_mode_title'>Menu Mode</span> <br><span class='intro_function' id='menu_tap'>Tap: Display full menu.</span> <br> <span class='intro_function' id='menu_press'>Press: Reopen this tutorial.</span>");
     $(".mode_intro_info, #init_intro_info").hide();
     $("#menu_intro_info").show();
     $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
   }
+
   var home_demo = function(){
-    //alert("Home Mode. Return to top of site from anywhere.");
     $(".mode_intro_info, #init_intro_info").hide();
     $("#home_intro_info").show();
-    //$(".intro_info").html("<span class='intro_mode_title'>Home Mode</span> <br><span class='intro_function' id='home_tap'>Tap: Return to top.</span>");
     $(".intro_info").stop().animate({
       "opacity": "1"
     }, 2000);
   }
 
-  var widgetDress = function(don, callback){
-    if(don){
-      //show some respect for yourself!
-      //alert("show some respect for yourself!");
-      $(".widget_stick").animate({
-        "opacity" : "1"
-      }, 3000);
-
-      $("#nav_options_img").animate({
-        "opacity" : "1"
-      }, 1500, function(){
-        $("#nav_options_dark").animate({
-          "opacity" : "0"
-        }, 200, callback);
-      });
-    }
-    else{
-      //take it off widget boi!
-      //show some respect for yourself!
-      //alert("show some respect for yourself!");
-      $(".widget_stick").animate({
-        "opacity" : "0"
-      }, 3000);
-
-      $("#nav_options_img").animate({
-        "opacity" : "0"
-      }, 1500, function(){
-        $("#nav_options_dark").animate({
-          "opacity" : "1"
-        }, 200, callback);
-      });
-    }
-
-  }
-
   var validBezelSet;
   var introStarted = false;
+
+  /////////// function to handle first swipe that occurs during intro
+
   var intro_swipe = function(){
     firstSwipe = false;
     introStarted = true;
@@ -2610,29 +2217,9 @@ var downloadOptions = function(simple){
       $(".widget_intro, .intro_dots").hide();
     });
 
-    /*
-    $(".widget_stick").animate({
-      "opacity" : "1"
-    }, 2000);
-    */
-
-    //$("#album_art").fadeIn(3000);
-
     $("#album_art").animate({
       "opacity" : "1"
     }, 3000);
-
-
-
-    /*
-    $(".widget_intro").fadeOut("fast", function(){
-      $("#album_art").fadeIn(3000);
-      //$("#widget_function").css("transform", "rotate(90deg)");
-      $(".widget_stick").animate({
-        "opacity" : "1"
-      }, 3000);
-    });
-    */
 
     $("#nav_options_img").animate({
       "opacity" : "1"
@@ -2640,8 +2227,6 @@ var downloadOptions = function(simple){
       $("#nav_options_dark").animate({
         "opacity" : "0"
       }, 200, function (){
-
-
         $("html").css("overflow-y", "scroll");
       });
     });
@@ -2659,19 +2244,6 @@ var downloadOptions = function(simple){
       //$(".intro_msg").html("");
       finishIntro();
       //clearInterval(fadeIntroMsg);
-
-
-
-      /*
-
-      if(firstSwipe){
-        firstSwipe = false;
-      }
-      if(navRotateInit){
-        navRotateInit = false;
-      }
-
-      */
 
       if(introTimer){
         finishSpin();
@@ -2741,40 +2313,6 @@ var downloadOptions = function(simple){
     });
   }
 
-  var reset_intro_mode = function(){
-    //intro_mode = true;
-    intro_mode = true;
-    //widget_mode = "audio_mode";
-    //introStarted = false;
-    //preventFullSpin = true;
-    // intro_index = 0;
-    // audio_mode_explored = false;
-    // home_mode_explored = false;
-    // menu_mode_explored = false;
-    // download_mode_explored = false;
-    // gotcha = false;
-    // var darkNavSpin = 0;
-    // var introBezelSpin = 360;
-    // firstSwipe = true;
-    //intro_mode = true;
-    //$(".intro_info").html("Swipe in any direction from the center of the widget.");
 
-    //return widget to center
-
-    $("#widget_boi").animate({
-      "top" : "50%",
-      "left" : "50%"
-    }, 700, "swing");
-
-    $(".widget_intro, .intro_dots").show().animate({
-      "opacity" : "1"
-    }, 1500, function(){
-      $("#real_body, #album_art").css("opacity" , "0");
-    });
-    $("html").css("overflow", "hidden");
-    //$(".intro_done").html("Done");
-    //widgetDress(false);
-    //introAnimation();
-  }
 
 });

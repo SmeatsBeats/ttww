@@ -4,266 +4,23 @@
 
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
     <title>To Those Who Wait</title>
+    <link rel="icon" href="imgs/WAIT.svg">
+
     <link rel="stylesheet" href="css/ttww.css?v=4" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
 
-
-    <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css"> -->
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
-
-
-
-    <script type="text/javascript" src="js/ttww.js?v=1.4"></script>
-
-
-
-
+    <script type="text/javascript" src="js/ttww.js?v=1.3"></script>
   </head>
 
   <body>
-
-
-
-
-    <div class="tip_top">
-      <!-- this div will be used as a reference as the top of the page -->
-    </div>
-
-
-    <div class="audio_control">
-
-      <!-- allow audio to be played and downloaded -->
-      <audio controls id="ttwwAudioFile" src="audio/TO_THOSE_WHO_W8.wav"></audio>
-
-    </div>
-
-
-    <!--download page -->
-
-
-
-
-    <div class="download_options" id="download_menu">
-
-
-
-
-
-      <div class="download_option" id="download_instructions">
-        <span class="download_instructions">
-          Select tracks to download.
-        </span>
-        <!-- Select All
-
-        <span class="download_symbol">Full Circle</span>
-        <span class="download_song_title">W8</span> -->
-
-      </div>
-
-
-
-
-
-      <div class="download_option" id="graduate_download">
-        <!-- Graduate -->
-
-
-        <img class="download_symbol" src="imgs/WAIT.svg" alt="Sacred semiotics"/>
-        <img class="download_song_title" src="imgs/GRADUATE.svg" alt="Gradu-wait. Mysterious message.">
-
-      </div>
-      <div class="download_option" id="glass_download">
-        <!-- 8lass -->
-
-        <img class="download_symbol" src="imgs/HATE.svg" alt="Sacred semiotics" />
-        <img class="download_song_title" src="imgs/GLASS.svg" alt="Glass. Occult code.">
-
-      </div>
-      <div class="download_option" id="broken_download">
-        <!-- >roken -->
-
-        <img class="download_symbol" src="imgs/LATE.svg" alt="Sacred semiotics" />
-        <img class="download_song_title" src="imgs/BROKEN.svg" alt="Broken. Esocteric artifacts.">
-
-
-      </div>
-      <div class="download_option" id="home_download">
-        <!-- home -->
-
-        <img class="download_symbol" src="imgs/FATE.svg" alt="Sacred semiotics">
-        <img class="download_song_title" src="imgs/HOME.svg" alt="HOME. Homecoming.">
-
-      </div>
-
-      <div class="download_option" id="download_confirm">
-
-        <span id="download_button">
-          <a id="audio_download_link" href="audio/TO_THOSE_WHO_W8.wav" download>Download </a>
-        </span>
-        <span id="download_done_button">Done</span>
-        <span id="download_cancel_button">Cancel</span>
-      </div>
-
-
-
-    </div>
-
-    <!-- widget section -->
-
-    <div class="widget_intro">
-      <div class="intro_info intro_item">
-        <span id="init_intro_info">
-          Swipe in any direction from the center of the widget.
-        </span>
-
-        <span class="mode_intro_info" id="audio_intro_info">
-          <span class='intro_mode_title'>Audio Mode</span> <br>
-          <span class='intro_function' id='audio_tap'>Tap: Play/Pause.</span> <br>
-          <span class='intro_function' id='audio_press'>Press: Audio controls.</span>
-        </span>
-
-        <span class="mode_intro_info" id="download_intro_info">
-          <span class='intro_mode_title'>Download Mode</span> <br>
-          <span class='intro_function' id='download_tap'>Tap: Download project.</span> <br>
-          <span class='intro_function' id='download_press'>Press: Download options.</span>
-        </span>
-
-        <span class="mode_intro_info" id="menu_intro_info">
-          <span class='intro_mode_title'>Menu Mode</span> <br>
-          <span class='intro_function' id='menu_tap'>Tap: Display full menu.</span> <br>
-          <span class='intro_function' id='menu_press'>Press: Open this tutorial.</span>
-        </span>
-
-        <span class="mode_intro_info" id="home_intro_info">
-          <span class='intro_mode_title'>Home Mode</span> <br>
-          <span class='intro_function' id='home_tap'>Tap: Return to top.</span> <br>
-          <span class='intro_function' id='home_press'>Press: Position widget.</span>
-        </span>
-
-      </div>
-      <div class="intro_done intro_item">
-
-        <!-- <span id="intro_done_button">Skip Intro</span> -->
-        <span id="intro_done_button">Skip</span>
-        <span id="got_it_button">Got It</span>
-
-        <div class="intro_load_bar">
-
-        </div>
-        <div class="intro_done_bar">
-          Done
-        </div>
-      </div>
-    </div>
-
-    <div id="widget_boi" class="no_select widget_swipe">
-
-
-
-      <div class="widget_nav_container">
-
-        <div class="nav_options">
-          <div class="nav_row">
-            <div class="widget_home nav_box" id="select_home_mode" title="Home"></div>
-            <div class="widget_audio nav_box" id="select_audio_mode" title="Audio"></div>
-          </div>
-          <div class="nav_row">
-            <div class="widget_menu nav_box" id="select_menu_mode" title="Menu"></div>
-            <div class="widget_download nav_box" id="select_download_mode" title="Download"></div>
-          </div>
-        </div>
-
-        <div class="nav_img_container">
-
-          <img class="audio_timeline" src="imgs/WIDGET_TIMELINE.svg" alt="Audio timeline indicator">
-
-          <!-- research svg tag to create and animate timeline -->
-
-          <img class="widget_nav" id="nav_options_img" src="imgs/WIDGET_NAV.svg" alt="Widget navigation">
-
-
-          <img class="widget_nav" id="nav_options_dark" src="imgs/WIDGET_NAV_DARK.svg" alt="Widget navigation">
-          <img class="widget_bezel" id="widget_bezel_img" src="imgs/WIDGET_BEZEL_SMALL.svg" alt="Model watch bezel">
-        </div>
-
-        <div class="widget_function_container" id="widget_function_container">
-          <div class="intro_msg">
-            hi
-          </div>
-          <div class="intro_dots">
-
-            <div class="dot_row">
-              <svg class='intro_dot'><circle class='home_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
-            </div>
-
-            <div class="dot_row">
-
-              <svg class='intro_dot'><circle class='menu_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
-
-              <svg class='intro_dot'><circle class='audio_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
-            </div>
-
-            <div class="dot_row">
-              <svg class='intro_dot'><circle class='download_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
-
-            </div>
-
-
-          </div>
-          <div class="toolTip" id="current_mode">
-            <span id="mode_content">Hi there.</span>
-          </div>
-          <div class="toolTip" id="context_hint">
-            <span id="hint_content">Hi there.</span>
-            <span id="hinticator"></span>
-          </div>
-
-          <div id="widget_function">
-
-
-            <!--
-            <span class="widget_swipe" id="audio_download" href="audio/TTWW_TEST_MASTER_10.wav" download>
-              <div class="download_circle widget_swipe">
-              </div>
-            </span>
-          -->
-
-              <svg style="width:5%; height:50%;" class="widget_stick no_select" id="a_stick">
-                <rect width="100%" height="100%">
-              </svg>
-
-              <svg style="width:5%; height:50%;" class="widget_stick no_select" id="b_stick">
-                <rect width="100%" height="100%">
-              </svg>
-
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- widget menu -->
-
-    <div class="menu no_select">
-      <div class="menu_top">
-        <h2 class="menu_nav cl-effect-1" id="about_nav">ABOUT</h2>
-        <h2 class="menu_nav cl-effect-1" id="lyrics_nav">SONGS</h2>
-      </div>
-      <div class="menu_bottom">
-        <h2 class="menu_nav cl-effect-1" id="credits_nav">CREDITS</h2>
-        <h2 class="menu_nav cl-effect-1" id="support_nav">SUPPORT</h2>
-      </div>
-
-
-    </div>
 
     <section id="home">
 
@@ -979,6 +736,205 @@
       </footer>
 
     </div>
+
+    <!-- /////////////////////////////////////////////////////////////////////// CONSTANTS //////////////////////////////////////////////////////////////// -->
+
+        <div class="tip_top">
+          <!-- this div will be used as a reference as the top of the page -->
+        </div>
+
+        <div class="audio_control">
+
+          <!-- allow audio to be played and downloaded -->
+          <audio controls id="ttwwAudioFile" src="audio/TO_THOSE_WHO_W8.wav"></audio>
+
+        </div>
+
+        <!--download page -->
+
+        <div class="download_options" id="download_menu">
+
+          <div class="download_option" id="download_instructions">
+            <span class="download_instructions">
+              Select tracks to download.
+            </span>
+          </div>
+
+          <div class="download_option" id="graduate_download">
+            <!-- Graduate -->
+
+
+            <img class="download_symbol" src="imgs/WAIT.svg" alt="Sacred semiotics"/>
+            <img class="download_song_title" src="imgs/GRADUATE.svg" alt="Gradu-wait. Mysterious message.">
+
+          </div>
+          <div class="download_option" id="glass_download">
+            <!-- 8lass -->
+
+            <img class="download_symbol" src="imgs/HATE.svg" alt="Sacred semiotics" />
+            <img class="download_song_title" src="imgs/GLASS.svg" alt="Glass. Occult code.">
+
+          </div>
+          <div class="download_option" id="broken_download">
+            <!-- >roken -->
+
+            <img class="download_symbol" src="imgs/LATE.svg" alt="Sacred semiotics" />
+            <img class="download_song_title" src="imgs/BROKEN.svg" alt="Broken. Esocteric artifacts.">
+
+
+          </div>
+          <div class="download_option" id="home_download">
+            <!-- home -->
+
+            <img class="download_symbol" src="imgs/FATE.svg" alt="Sacred semiotics">
+            <img class="download_song_title" src="imgs/HOME.svg" alt="HOME. Homecoming.">
+
+          </div>
+
+          <div class="download_option" id="download_confirm">
+
+            <span id="download_button">
+              <a id="audio_download_link" href="audio/TO_THOSE_WHO_W8.wav" download>Download </a>
+            </span>
+            <span id="download_done_button">Done</span>
+            <span id="download_cancel_button">Cancel</span>
+          </div>
+        </div>
+
+        <!-- widget section -->
+
+        <div class="widget_intro">
+          <div class="intro_info intro_item">
+            <span id="init_intro_info">
+              Swipe in any direction from the center of the widget.
+            </span>
+
+            <span class="mode_intro_info" id="audio_intro_info">
+              <span class='intro_mode_title'>Audio Mode</span> <br>
+              <span class='intro_function' id='audio_tap'>Tap: Play/Pause.</span> <br>
+              <span class='intro_function' id='audio_press'>Press: Audio controls.</span>
+            </span>
+
+            <span class="mode_intro_info" id="download_intro_info">
+              <span class='intro_mode_title'>Download Mode</span> <br>
+              <span class='intro_function' id='download_tap'>Tap: Download project.</span> <br>
+              <span class='intro_function' id='download_press'>Press: Download options.</span>
+            </span>
+
+            <span class="mode_intro_info" id="menu_intro_info">
+              <span class='intro_mode_title'>Menu Mode</span> <br>
+              <span class='intro_function' id='menu_tap'>Tap: Display full menu.</span> <br>
+              <span class='intro_function' id='menu_press'>Press: Open this tutorial.</span>
+            </span>
+
+            <span class="mode_intro_info" id="home_intro_info">
+              <span class='intro_mode_title'>Home Mode</span> <br>
+              <span class='intro_function' id='home_tap'>Tap: Return to top.</span> <br>
+              <span class='intro_function' id='home_press'>Press: Position widget.</span>
+            </span>
+
+          </div>
+          <div class="intro_done intro_item">
+
+            <span id="intro_done_button">Skip</span>
+            <span id="got_it_button">Got It</span>
+
+            <div class="intro_load_bar">
+
+            </div>
+            <div class="intro_done_bar">
+              Done
+            </div>
+          </div>
+        </div>
+
+        <div id="widget_boi" class="no_select widget_swipe">
+
+          <div class="widget_nav_container">
+
+            <div class="nav_options">
+              <div class="nav_row">
+                <div class="widget_home nav_box" id="select_home_mode" title="Home"></div>
+                <div class="widget_audio nav_box" id="select_audio_mode" title="Audio"></div>
+              </div>
+              <div class="nav_row">
+                <div class="widget_menu nav_box" id="select_menu_mode" title="Menu"></div>
+                <div class="widget_download nav_box" id="select_download_mode" title="Download"></div>
+              </div>
+            </div>
+
+            <div class="nav_img_container">
+
+              <img class="audio_timeline" src="imgs/WIDGET_TIMELINE.svg" alt="Audio timeline indicator">
+
+              <!-- research svg tag to create and animate timeline -->
+
+              <img class="widget_nav" id="nav_options_img" src="imgs/WIDGET_NAV.svg" alt="Widget navigation">
+
+
+              <img class="widget_nav" id="nav_options_dark" src="imgs/WIDGET_NAV_DARK.svg" alt="Widget navigation">
+              <img class="widget_bezel" id="widget_bezel_img" src="imgs/WIDGET_BEZEL_SMALL.svg" alt="Model watch bezel">
+            </div>
+
+            <div class="widget_function_container" id="widget_function_container">
+              <div class="intro_msg">
+                hi
+              </div>
+              <div class="intro_dots">
+
+                <div class="dot_row">
+                  <svg class='intro_dot'><circle class='home_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
+                </div>
+
+                <div class="dot_row">
+
+                  <svg class='intro_dot'><circle class='menu_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
+
+                  <svg class='intro_dot'><circle class='audio_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
+                </div>
+
+                <div class="dot_row">
+                  <svg class='intro_dot'><circle class='download_intro_dot' cx='50%' cy='50%' r='0.5em'></svg>
+
+                </div>
+
+
+              </div>
+
+              <div class="toolTip" id="context_hint">
+                <span id="hint_content">Hi there.</span>
+                <span id="hinticator"></span>
+              </div>
+
+              <div id="widget_function">
+
+                  <svg style="width:5%; height:50%;" class="widget_stick no_select" id="a_stick">
+                    <rect width="100%" height="100%">
+                  </svg>
+
+                  <svg style="width:5%; height:50%;" class="widget_stick no_select" id="b_stick">
+                    <rect width="100%" height="100%">
+                  </svg>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- widget menu -->
+
+        <div class="menu no_select">
+          <div class="menu_top">
+            <h2 class="menu_nav cl-effect-1" id="about_nav">ABOUT</h2>
+            <h2 class="menu_nav cl-effect-1" id="lyrics_nav">SONGS</h2>
+          </div>
+          <div class="menu_bottom">
+            <h2 class="menu_nav cl-effect-1" id="credits_nav">CREDITS</h2>
+            <h2 class="menu_nav cl-effect-1" id="support_nav">SUPPORT</h2>
+          </div>
+        </div>
 
   </body>
 
