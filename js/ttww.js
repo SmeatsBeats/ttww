@@ -719,23 +719,18 @@ $(document).ready(function() {
       var ib = -35;
     }
 
-    var stickRotate = setInterval(function(){
+    var runStickRotate = function(){
 
       if(open){
         if(ia == 35){
           clearInterval(stickRotate);
-          //for some modes we rotate from bottom i.e. pause to download
-          //when this is complete make sure we reset transform origin
-          // $(".widget_stick").css("transform-origin", "center top");
         }
         else{
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
-
           ia = ia + 1.25;
           ib = ib - 1.25;
-
-
+          var stickRotate = setTimeout(runStickRotate, moveRate);
         }
       }
       else{
@@ -752,13 +747,13 @@ $(document).ready(function() {
           //alert("ia: " + ia + " ib: " + ib);
           $("#a_stick").css("transform", "rotate(" + ia + "deg)");
           $("#b_stick").css("transform", "rotate(" + ib + "deg)");
-
-            ia= ia - 1.25;
-            ib= ib + 1.25;
-
+          ia= ia - 1.25;
+          ib= ib + 1.25;
+          var stickRotate = setTimeout(runStickRotate, moveRate);
         }
       }
-    }, moveRate);
+    }
+    runStickRotate();
   };
 
   var iconSpin = function(start, end, rate, callback){
@@ -768,12 +763,13 @@ $(document).ready(function() {
     var end = end;
     spinRate = rate;
     //must update to account for rate
-    var spinWidgetFunction = setInterval(function(){
+
+    var runSpinWidget = function(){
       if(start == end){
         if(end == 360){
           $("#widget_function").css("transform", "rotate(0deg)");
         }
-        clearInterval(spinWidgetFunction);
+        clearInterval(spinWidget);
         $("#widget_function").css("transform", "rotate(" + end + "deg)");
         callback();
       }
@@ -787,9 +783,10 @@ $(document).ready(function() {
           //alert("backwards");
           start = start - 3;
         }
+        var spinWidget = setTimeout(runSpinWidget, spinRate);
       }
-
-    }, spinRate);
+    }
+    runSpinWidget();
   };
 
 
@@ -911,6 +908,7 @@ $(document).ready(function() {
 
 
   ///////////////////////////////////////////////////////////////////////  WIDGET NAV ///////////////////////////////////////////////////////////////////////////////////////
+
   //Determine rotation parameters for widget
   var rotateDeg, spinTimer, rotateDist;
   var deg = 0;
@@ -921,8 +919,9 @@ $(document).ready(function() {
   var bezelSpinCounter = 0;
   var bezelRotateDist;
   var bezelSpinRate;
+  var bezelImg = document.getElementById('widget_bezel_img');
+  var navOptionsImg = document.getElementById('nav_options_img');
   var previousDeg;
-
   var initial_swipe = true;
   var navRotateInit = true;
 
@@ -1015,14 +1014,8 @@ $(document).ready(function() {
       spinRate = 30;
     }
 
-
-    //spin the nav
-    var spinTimer = setInterval(function(){
-      //alert("called: " + rotateDeg + " " + deg + " " + rotateDist + " " + spinCounter);
-      // need to account for over 360
-
+    var runSpinTimer = function(){
       if(spinCounter == rotateDist){
-        var navOptionsImg = document.getElementById('nav_options_img');
         navOptionsImg.style.transform = "rotate(" + deg + "deg)";
         clearInterval(spinTimer);
         spinCounter = 0;
@@ -1030,7 +1023,6 @@ $(document).ready(function() {
       }
       else{
         //alert("deg: " + deg);
-        var navOptionsImg = document.getElementById('nav_options_img');
         navOptionsImg.style.transform = "rotate(" + deg + "deg)";
         if(rotateDist >= 0){
           spinCounter = spinCounter + 3;
@@ -1044,9 +1036,13 @@ $(document).ready(function() {
         }
         //alert(deg);
         //need to account for trying to go above or below 360 / 0
-
+        var spinTimer = setTimeout(runSpinTimer, spinRate);
       }
-    }, spinRate);
+    }
+
+    //spin the nav
+    runSpinTimer();
+
 
     //set bezel spin rate so bezel and nav meet at same time
     if (bezelRotateDist == 180 || bezelRotateDist == -180){
@@ -1057,12 +1053,9 @@ $(document).ready(function() {
     }
 
     //spin the bezel
-    var bezelSpinTimer = setInterval(function(){
-
-
+    var runBezelSpinTimer = function(){
       if(bezelSpinCounter == bezelRotateDist){
         spinning = false;
-        var bezelImg = document.getElementById('widget_bezel_img');
         bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
         clearInterval(bezelSpinTimer);
         if(widget_press){
@@ -1079,7 +1072,6 @@ $(document).ready(function() {
         bezelSpinCounter = 0;
       }
       else{
-        var bezelImg = document.getElementById('widget_bezel_img');
         bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
         if(bezelRotateDist >= 0){
           bezelSpinCounter = bezelSpinCounter + 3;
@@ -1089,9 +1081,12 @@ $(document).ready(function() {
           bezelSpinCounter = bezelSpinCounter - 3;
           bezelDeg = bezelDeg - 3;
         }
+        var bezelSpinTimer = setTimeout(runBezelSpinTimer, bezelSpinRate);
       }
 
-    }, bezelSpinRate);
+    }
+    runBezelSpinTimer();
+
   };
 
   ///////////////////////////////// transition widget between intro setup and normal use
@@ -1164,6 +1159,56 @@ $(document).ready(function() {
   });
 
 
+  ////////////////////// quick spin /////////////////////////
+
+  //purely aesthetic
+  //spin nav and bezel 360 degrees in opposite directions
+
+  var quickSpin = function(){
+    //alert("called");
+    var deg;
+    var endDeg;
+    //needs to account for starting position
+    //needs to end with original rotation deg
+
+    switch(widget_mode){
+      case "audio_mode":
+      endDeg = 0;
+      deg = 0;
+      break;
+      case "home_mode":
+      endDeg = 270;
+      deg = 270;
+      break;
+      case "menu_mode":
+      endDeg = 180;
+      deg = 180;
+      break;
+      default:
+      //download mode
+      endDeg = 90;
+      deg = 90;
+    }
+    //alert(deg + " " + endDeg);
+    var quickSpinTime = function(){
+      if(deg == endDeg + 360){
+        clearInterval(keepSpinning);
+        navOptionsImg.style.transform = "rotate(" + endDeg + "deg)";
+        bezelImg.style.transform = "rotate(" + endDeg + ")";
+      }
+      else{
+        navOptionsImg.style.transform = "rotate(" + deg + "deg)";
+        bezelImg.style.transform = "rotate(" + "-" + deg + "deg)";
+        deg += 2;
+        var keepSpinning = setTimeout(quickSpinTime, 5);
+      }
+    }
+
+    quickSpinTime();
+
+  }
+
+
   //////////////////////////////////////////////////////////////////////// 3. WIDGET MODE FUNCTIONS ///////////////////////////////////////////////////////
 
   //////// AUDIO MODE ///////
@@ -1212,7 +1257,11 @@ $(document).ready(function() {
   var pos1, pos2, pos3, pos4, dragElmnt;
 
   var dragWidget = function(ev){
+
+    //this seems to be necessary
     displayMode("home_mode");
+
+    //quickSpin();
 
     draggable = true;
     clearInterval(hinterval);
@@ -1281,6 +1330,7 @@ $(document).ready(function() {
     document.ontouchmove = null;
     $(document).off("mousemove touchmove");
     draggable = false;
+    //quickSpin();
     $("#hint_content").html("Nice");
     $("#widget_function").fadeIn();
     if(intro_mode){
@@ -1327,8 +1377,14 @@ $(document).ready(function() {
         }, 800, "swing");
 
         //spinny
+        //this spin can cause glitch if user opens menu before it finishes
+        //can either block user from opening during spin
+        //find a different way to spin it
+        //or remove the spin
 
-        displayMode(widget_mode);
+        //displayMode(widget_mode);
+
+        quickSpin();
 
         $(".menu").show();
         var slideDest = "0%";
@@ -1350,6 +1406,8 @@ $(document).ready(function() {
           "top" : prevWidgetTop,
           "left" : prevWidgetLeft
         }, 700, "swing");
+
+        quickSpin();
 
         var slideDest = "100%";
         var about_delay = 300;
@@ -1948,8 +2006,8 @@ $(document).ready(function() {
       //intro msg sequence
       var intro_msgs = ["mi", "nam", "is", "wdgt", "boi", "hi"];
       var msg = 0;
-      set_intro_msg = setInterval(function(){
-        //alert(msg);
+
+      var displayIntroMsg = function(){
         if(msg == intro_msgs.length){
           //alert("reset");
           msg = 0;
@@ -1965,12 +2023,14 @@ $(document).ready(function() {
           }, 2500);
           msg++;
         });
-      }, 9000);
+        set_intro_msg = setTimeout(displayIntroMsg, 9000);
+      }
 
+      displayIntroMsg();
 
       //spin tings for intro
 
-      introTimer = setInterval(function(){
+      var constantSpin = function(){
         if(darkNavSpin == 360){
           darkNavSpin = 0;
         }
@@ -1981,7 +2041,11 @@ $(document).ready(function() {
         intro_bezel.style.transform = "rotate(" + introBezelSpin + "deg)";
         introBezelSpin--;
         darkNavSpin++;
-      }, 5);
+        introTimer = setTimeout(constantSpin, 5);
+      }
+
+      constantSpin();
+
 
     }
 
@@ -2131,7 +2195,7 @@ $(document).ready(function() {
       //alert("audio_mode");
     }
 
-    var validBezelSpin = setInterval(function(){
+    var getValidBezel = function(){
 
       initial_swipe = false;
       //if(introBezelSpin % 90 == 0){
@@ -2158,20 +2222,26 @@ $(document).ready(function() {
         }
         intro_bezel.style.transform = "rotate(" + introBezelSpin + "deg)";
         introBezelSpin--;
+        var validBezelSpin = setTimeout(getValidBezel, 5);
       }
-    }, 5);
+
+    }
+    getValidBezel();
   }
 
   var introNavSpinEnd = function(){
-    completeNavSpin = setInterval(function(){
+
+    var runCompleteNavSpin = function(){
       if(darkNavSpin % 90 == 0){
         clearInterval(completeNavSpin);
       }
       else{
         dark_nav.style.transform = "rotate(" + darkNavSpin + "deg)";
         darkNavSpin++;
+        completeNavSpin = setTimeout(runCompleteNavSpin, 5);
       }
-    }, 5);
+    }
+    runCompleteNavSpin();
   }
 
   var finishSpin = function(){
@@ -2184,7 +2254,7 @@ $(document).ready(function() {
 
     introNavSpinEnd();
 
-    var completeBezelSpin = setInterval(function(){
+    var getCompleteBezelSpin = function(){
       if(introBezelSpin == 0){
         clearInterval(completeBezelSpin);
         intro_bezel.style.transform = "rotate(0deg)";
@@ -2198,8 +2268,12 @@ $(document).ready(function() {
       else{
         intro_bezel.style.transform = "rotate(" + introBezelSpin + "deg)";
         introBezelSpin--;
+        var completeBezelSpin = setTimeout(getCompleteBezelSpin, 5);
       }
-    }, 5);
+    }
+
+    getCompleteBezelSpin();
+
   }
   var finishIntro = function(){
     intro_mode = false;
@@ -2267,15 +2341,20 @@ $(document).ready(function() {
 
   //wookie engineered "listener"
   //don't want to destroy widget so wait until it finishes spinning to end intro
-  else{
-    var spinListener = setInterval(function(){
-      if(!spinning){
-        //if it was spinning and now it isn't
-        clearInterval(spinListener);
-        introCleanUp();
+    else{
+
+      var checkSpin = function(){
+        if(!spinning){
+          //if it was spinning and now it isn't
+          clearInterval(spinListener);
+          introCleanUp();
+        }
+        else{
+          var spinListener = setTimeout(checkSpin, 5);
+        }
       }
-    }, 5);
-  }
+      checkSpin();
+    }
   };
 
   var introLoadBar = function(){
