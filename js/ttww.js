@@ -96,6 +96,7 @@ $(document).ready(function() {
   var contextHint;
   var noSelection;
   var hinterval;
+  var hintDelay;
   var hintLoop;
 
   //INTRO TUTORIAL
@@ -2112,6 +2113,8 @@ $(document).ready(function() {
       tipSwitch = "ON";
     }
     $("#hint_content").html("Turn tooltips " + tipSwitch);
+  }, function(){
+    $(".toolTip").delay(1500).fadeOut();
   });
 
   $(".toolTip").click(function(){
@@ -2197,33 +2200,30 @@ $(document).ready(function() {
         }
 
       }
-      swapHint();
+      if(hintLoop){
+        hintDelay = setTimeout(swapHint, 3000);
+      }
+
     }
   }, function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
       //alert("interval cleared!");
-      $("#hint_content").clearQueue().show();
+      $("#hint_content").clearQueue().show().html("yeet");
       hintLoop = false;
       clearInterval(hinterval);
+      clearInterval(hintDelay);
       $("#hinticator").hide();
       //alert(hinterval);
-      $(".toolTip").delay(1500).fadeOut();
+      //$(".toolTip").delay(1500).fadeOut();
     }
   });
 
   //clear interval when switching from hover over function to navbox but not leaving widget_boi
 
   $(".nav_box").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
-      hintLoop = false;
-      clearInterval(hinterval);
-      $(".toolTip").clearQueue().show();
-      //$(".toolTip").clearQueue().fadeIn();
-    }
+    $(".toolTip").fadeIn();
   }, function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
-      $(".toolTip").delay(1500).fadeOut();
-    }
+    $(".toolTip").delay(1500).fadeOut();
   });
 
   $("#select_home_mode").hover(function(){
@@ -2231,7 +2231,6 @@ $(document).ready(function() {
       $("#hint_content").html("Home Mode");
       //$("#hint_content").fadeIn();
     }
-
   });
   $("#select_audio_mode").hover(function(){
     if(!draggable && !intro_mode && tipsOn){
