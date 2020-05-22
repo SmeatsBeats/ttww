@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=9" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=5" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=1.7"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
   </head>
 
   <body>
@@ -869,9 +869,21 @@
 
               <!-- research svg tag to create and animate timeline -->
 
-              <!-- <svg class="audio_progress">
-                <circle id="timeline_hilight" cx="50%" cy="50%" r="100%">
-              </svg> -->
+              <!-- AUDIO TIMELINE -->
+
+              <svg class="audio_progress">
+                <circle id="timeline_hilight" cx="50%" cy="50%" r="48%">
+              </svg>
+
+              <svg class="audio_indicator">
+                <circle id="timeline_progress" cx="50%" cy="50%" r="48%">
+              </svg>
+
+              <!-- FF RW -->
+              <div class="ffrw">
+                <span id="rw"><<</span>
+                <span id="ff">>></span>
+              </div>
 
               <img class="widget_nav" id="nav_options_img" src="imgs/WIDGET_NAV.svg" alt="Widget navigation">
 

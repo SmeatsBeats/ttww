@@ -41,7 +41,66 @@ $(document).ready(function() {
   var audioFile = document.getElementById("ttwwAudioFile");
   var spinning = false;
   var widget_mode = "audio_mode";
+  var runningHover;
+  var flip;
 
+
+  ///WIDGET NAV
+  //Determine rotation parameters for widget
+  var rotateDeg, spinTimer, rotateDist;
+  var deg = 0;
+  var bezelDeg = 0;
+  var spinTimer;
+  var spinCounter = 0;
+  var spinRate = 15;
+  var bezelSpinCounter = 0;
+  var bezelRotateDist;
+  var bezelSpinRate;
+  var bezelImg = document.getElementById('widget_bezel_img');
+  var navOptionsImg = document.getElementById('nav_options_img');
+  var previousDeg;
+  var initial_swipe = true;
+  var navRotateInit = true;
+
+
+  //MOBILE GESTURES
+  //feel weird with these at top...
+  var getWidget = document.getElementById("widget_boi");
+  //var getWidget = document.getElementsByClassName("widget_swipe");
+
+  var mc = new Hammer(getWidget);
+
+
+  //AUDIO TIMELINE
+  var timelinePercent = 100;
+  var spinTimeline = true;
+  var loadTimeline;
+  var setTime;
+
+  //home press
+  var pos1, pos2, pos3, pos4, dragElmnt;
+
+  //menu tap
+  var prevWidgetTop, prevWidgetLeft;
+
+  //DOWNLOAD MODE
+  var downloadConfirmHeight;
+  var movVal;
+  var offsetDif;
+  var downloadMenu = document.getElementById("download_menu");
+  var downloadTracks = [];
+  var downloadLink;
+
+  //TOOL TIPS
+  var tipsOn = false;
+  var contextHint;
+  var noSelection;
+  var hinterval;
+  var hintLoop;
+
+  //INTRO TUTORIAL
+  var validBezelSet;
+  var introStarted = false;
 
   ///////////////////////////////////////////////////////////////////////////////// PAGE SETUP //////////////////////////////////////////
   //call functions that will set the page up how it needs to be initially
@@ -63,7 +122,7 @@ $(document).ready(function() {
   ///////////////////////////////////////////////////////////////////////////////////////// SLIDER /////////////////////////////////////////////////
 
 
-  var getSliderIndex = function($currentSlider){
+  function getSliderIndex($currentSlider){
     //alert("getting index");
     var $get_current_img = $($currentSlider).find(".current_img");
     //alert($get_current_img);
@@ -73,7 +132,7 @@ $(document).ready(function() {
     return slider_index;
   }
 
-  var sliderUpdate = function(next, $currentSlider, slider_index, jumpTo){
+  function sliderUpdate(next, $currentSlider, slider_index, jumpTo){
     //getSliderIndex($currentSlider);
     //alert("howdy");
     //$($currentSlider).hide();
@@ -386,7 +445,7 @@ $(document).ready(function() {
     }
   });
 
-  var runningHover;
+
 
   $(".support_img_slider").hover(function(event){
     //alert("you hovered");
@@ -428,9 +487,11 @@ $(document).ready(function() {
 
   //////////////////////////////////////////// MOBILE GESTURES //////////////////////////////////////////////
 
+
   $(".nav_box").mousedown(function(){
 
     if(!spinning && !draggable){
+
       var nav_box_id = $(this).attr("id");
       // alert(nav_box_id);
       var prev_widget_mode = widget_mode;
@@ -439,14 +500,12 @@ $(document).ready(function() {
       spinning = true;
       displayMode(widget_mode);
       adjustIcon(prev_widget_mode, widget_mode);
+
     }
     // alert(widget_mode);
   });
 
-  var getWidget = document.getElementById("widget_boi");
-  //var getWidget = document.getElementsByClassName("widget_swipe");
 
-  var mc = new Hammer(getWidget);
 
   mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
@@ -541,9 +600,8 @@ $(document).ready(function() {
   //need a function to take mode and direct behavior when box clicked
 
    //Determines current modes and calls for appropriate widget adjustments
-  var displayMode = function(widget_mode, callback){
+  function displayMode(widget_mode, callback){
 
-    tipCurrentMode();
 
     //this function should become responsible for animating the rotation of the widget images to indicate the current mode
     //can combine with existing switch for widget mode
@@ -636,7 +694,7 @@ $(document).ready(function() {
     }
   };
 
-  var widgetAction = function(widget_mode){
+  function widgetAction(widget_mode){
     switch(widget_mode){
       case "menu_mode":
         displayMenu(true);
@@ -695,8 +753,8 @@ $(document).ready(function() {
 
   //////////////////////////////////////////////////////////////////// WIDGET ICON ////////////////////////////////////////////////////////////////////////
 
-  var flip;
-  var moveSticks = function(open, flip, doubleRate){
+
+  function moveSticks(open, flip, doubleRate){
 
     var moveRate;
     var dr = doubleRate
@@ -719,7 +777,7 @@ $(document).ready(function() {
       var ib = -35;
     }
 
-    var runStickRotate = function(){
+    function runStickRotate(){
 
       if(open){
         if(ia == 35){
@@ -756,7 +814,7 @@ $(document).ready(function() {
     runStickRotate();
   };
 
-  var iconSpin = function(start, end, rate, callback){
+  function iconSpin(start, end, rate, callback){
 
     // previousDeg = 270;
     var start = start;
@@ -764,7 +822,7 @@ $(document).ready(function() {
     spinRate = rate;
     //must update to account for rate
 
-    var runSpinWidget = function(){
+    function runSpinWidget(){
       if(start == end){
         if(end == 360){
           $("#widget_function").css("transform", "rotate(0deg)");
@@ -790,7 +848,7 @@ $(document).ready(function() {
   };
 
 
-  var fullFlip= function(){
+  function fullFlip(){
     $(".widget_stick").css("transform", "rotate(180deg)");
   };
 
@@ -798,7 +856,7 @@ $(document).ready(function() {
 
 
 
-  var adjustIcon = function (prev_widget_mode, widget_mode, callback) {
+  function adjustIcon(prev_widget_mode, widget_mode, callback) {
 
 
     //////////////////////////////// from audio //////////////////////////////////
@@ -909,24 +967,10 @@ $(document).ready(function() {
 
   ///////////////////////////////////////////////////////////////////////  WIDGET NAV ///////////////////////////////////////////////////////////////////////////////////////
 
-  //Determine rotation parameters for widget
-  var rotateDeg, spinTimer, rotateDist;
-  var deg = 0;
-  var bezelDeg = 0;
-  var spinTimer;
-  var spinCounter = 0;
-  var spinRate = 15;
-  var bezelSpinCounter = 0;
-  var bezelRotateDist;
-  var bezelSpinRate;
-  var bezelImg = document.getElementById('widget_bezel_img');
-  var navOptionsImg = document.getElementById('nav_options_img');
-  var previousDeg;
-  var initial_swipe = true;
-  var navRotateInit = true;
 
 
-  var navRotate = function(rotateDeg, callback){
+
+  function navRotate(rotateDeg, callback){
 
 
     // for intro, bezel might have different start position
@@ -1014,7 +1058,7 @@ $(document).ready(function() {
       spinRate = 30;
     }
 
-    var runSpinTimer = function(){
+    function runSpinTimer(){
       if(spinCounter == rotateDist){
         navOptionsImg.style.transform = "rotate(" + deg + "deg)";
         clearInterval(spinTimer);
@@ -1053,7 +1097,7 @@ $(document).ready(function() {
     }
 
     //spin the bezel
-    var runBezelSpinTimer = function(){
+    function runBezelSpinTimer(){
       if(bezelSpinCounter == bezelRotateDist){
         spinning = false;
         bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
@@ -1091,7 +1135,7 @@ $(document).ready(function() {
 
   ///////////////////////////////// transition widget between intro setup and normal use
 
-  var widgetDress = function(don, callback){
+  function widgetDress(don, callback){
     if(don){
       //show some respect for yourself!
       $(".widget_stick").animate({
@@ -1164,7 +1208,7 @@ $(document).ready(function() {
   //purely aesthetic
   //spin nav and bezel 360 degrees in opposite directions
 
-  var quickSpin = function(){
+  function quickSpin(){
     //alert("called");
     var deg;
     var endDeg;
@@ -1190,7 +1234,7 @@ $(document).ready(function() {
       deg = 90;
     }
     //alert(deg + " " + endDeg);
-    var quickSpinTime = function(){
+    function quickSpinTime(){
       if(deg == endDeg + 360){
         clearInterval(keepSpinning);
         navOptionsImg.style.transform = "rotate(" + endDeg + "deg)";
@@ -1208,6 +1252,114 @@ $(document).ready(function() {
 
   }
 
+  /////////////////////////////////////////////////////////////////////////// AUDIO TIMELINE /////////////////////////////////////////////////////////////
+
+  /////////////////// outter audio progress bar //////////
+  const circle = document.querySelector('#timeline_progress');
+  const radius = circle.r.baseVal.value;
+  const circumference = radius * 2 * Math.PI;
+
+  circle.style.strokeDasharray = `${circumference} ${circumference}`;
+  circle.style.strokeDashoffset = circumference;
+  // circle.style.strokeDashoffset = circumference * 0.1;
+
+  function setAudioProgress(percent) {
+    const offset = circumference - percent / 100 * circumference;
+    circle.style.strokeDashoffset = offset;
+  }
+
+  //setAudioProgress(60);
+
+  //update audio progress to reflect location in audio file
+
+  var homeComing = false;
+  function wait(){
+    setTimeout(function(){
+      homeComing = false;
+      //must match duration to css transition on #timeline_progress
+    }, 1000);
+  }
+
+  function moveProgressBar(){
+    var currentTime = audioFile.currentTime;
+    var duration = audioFile.duration;
+
+    if(currentTime == duration){
+      //use this variable to prevent setAudioProgress from being called while bar is returning to start
+      homeComing = true;
+      //replay the audio file and animate the progressBar
+      audioFile.currentTime = 0;
+      setAudioProgress(0);
+      audioFile.play();
+      wait();
+      // //must match duration to css transition on #timeline_progress
+      // wait = setTimeout(function(){
+      //   homeComing = false;
+      // }, 1000)
+    }
+    else{
+      //not multiplying by 100 because there is a gap in the circle
+      var audioPercent = (currentTime / duration) * 90;
+      if(!homeComing){
+        setAudioProgress(audioPercent);
+      }
+    }
+  }
+
+  audioFile.ontimeupdate = moveProgressBar;
+
+
+  ////////////// grey base timeline ///////////////
+
+  const innerCircle = document.querySelector('#timeline_hilight');
+  const innerRadius = innerCircle.r.baseVal.value;
+  const innerCircumference = innerRadius * 2 * Math.PI;
+
+  innerCircle.style.strokeDasharray = `${innerCircumference} ${innerCircumference}`;
+  innerCircle.style.strokeDashoffset = innerCircumference;
+  // circle.style.strokeDashoffset = circumference * 0.1;
+
+  function setTimelineProgress(percent) {
+    const innerOffset = innerCircumference - percent / 100 * innerCircumference;
+    innerCircle.style.strokeDashoffset = innerOffset;
+  }
+
+
+
+  function timelineIntro(){
+    //alert(timelinePercent);
+    $("#timeline_hilight").css("transform", "rotate(90deg)");
+    $("#timeline_hilight").css("transition", "all 1s");
+    // this goes up forever theoretically
+    if(timelinePercent == 300){
+      //reset it to beginning stage
+      $("#timeline_hilight").css("transition", "none");
+      setTimelineProgress(0);
+      timelinePercent = 100;
+
+    }
+    else{
+      setTimelineProgress(timelinePercent);
+      timelinePercent += 100;
+
+    }
+    if(spinTimeline){
+      loadTimeline = setTimeout(timelineIntro, 1000);
+    }
+
+  }
+
+  function stopTimelineIntro(){
+    $("#timeline_hilight").css("transition", "all 1s");
+    clearInterval(loadTimeline);
+    spinTimeline = false;
+    setTimelineProgress(90);
+    $("#timeline_hilight").css("transform", "rotate(108deg)");
+  }
+
+  timelineIntro();
+
+
 
   //////////////////////////////////////////////////////////////////////// 3. WIDGET MODE FUNCTIONS ///////////////////////////////////////////////////////
 
@@ -1215,7 +1367,7 @@ $(document).ready(function() {
 
   /////// audio tap //////
 
-  var audioControl = function(){
+  function audioControl(){
 
     if(playing){
         audioFile.pause();
@@ -1241,11 +1393,113 @@ $(document).ready(function() {
     ///// audio press ////////
 
 
+    //ff and rw
+
+
+
+    $(".ffrw").click(function(e){
+      //alert("clicked");
+
+
+      var target = e.target;
+      var skip;
+      if($(target).attr("id") == "ff"){
+        //skip to next track
+        skip = true;
+      }
+      else{
+        //back to start of this track
+        //how do you go back to prev track?
+        //click rw again within 5 seconds
+        skip = false;
+      }
+      //alert(skip);
+      var currentTime = audioFile.currentTime;
+      //alert(currentTime);
+      //track timestamps:
+      //0:00-1:41 Graduate
+      //1:41-3:26 8lass
+      //3:26-6:29 >roken
+      //6:29-8:00 Home
+
+      //in seconds now
+      //0-101
+      //101-206
+      //206-389
+      //389-480
+
+
+
+        if(currentTime < 101){
+
+          if(skip){
+            //alert("skip to track 2");
+            setTime = 101;
+          }
+          else{
+            //back to start
+            setTime = 0;
+          }
+        }
+        else if(currentTime >= 101 && currentTime < 206){
+
+          if(skip){
+            //alert("skip to track 3");
+            setTime = 206;
+          }
+          else{
+            if(currentTime < 106){
+              setTime = 0;
+            }
+            else{
+              setTime = 101;
+            }
+          }
+        }
+        else if(currentTime >= 206 && currentTime < 389){
+
+          if(skip){
+            //alert("skip to track 4");
+            setTime = 389;
+          }
+          else{
+            if(currentTime < 211){
+              setTime = 101;
+            }
+            else{
+                setTime = 206;
+            }
+          }
+        }
+        else if(currentTime >= 389 && currentTime < 480){
+
+          if(skip){
+            //alert("skip to track 1");
+            setTime = 0;
+          }
+          else{
+            if(currentTime < 394){
+              setTime = 206;
+            }
+            else{
+              setTime = 389;
+            }
+          }
+        }
+        //prevent jerky animation during big jump whlie audio playing
+        skipPercent = (setTime / audioFile.duration) * 90;
+        wait();
+        homeComing = true;
+        setAudioProgress(skipPercent);
+        audioFile.currentTime = setTime;
+    })
+
+
   //////////// HOME MODE //////////////////
 
   ///////// home tap //////////////
 
-  var scrollHome = function(){
+  function scrollHome(){
     $("html, body").animate({
       scrollTop: 0
     }, "slow");
@@ -1254,9 +1508,9 @@ $(document).ready(function() {
 
   ////////// home press ///////////
 
-  var pos1, pos2, pos3, pos4, dragElmnt;
 
-  var dragWidget = function(ev){
+
+  function dragWidget(ev){
 
     //this seems to be necessary
     displayMode("home_mode");
@@ -1291,7 +1545,7 @@ $(document).ready(function() {
     $(document).on("mousemove touchmove", widgetMove);
   }
 
-  var widgetMove = function(e){
+  function widgetMove(e){
     //alert(e.type);
     e = e || window.event;
     e.preventDefault();
@@ -1320,7 +1574,7 @@ $(document).ready(function() {
 
   };
 
-  var closeDragElement = function(){
+  function closeDragElement(){
     //alert("called");
     // stop moving when mouse button is released
     document.onmouseup = null;
@@ -1349,9 +1603,9 @@ $(document).ready(function() {
 
   ////// menu tap //////////
 
-    var prevWidgetTop, prevWidgetLeft;
 
-    var displayMenu = function(show){
+
+    function displayMenu(show){
 
       //alert(show);
       if(show){
@@ -1440,7 +1694,7 @@ $(document).ready(function() {
       }, 800);
     };
 
-    var menu_select = function(nav_selection){
+    function menu_select(nav_selection){
 
       var msg;
 
@@ -1516,7 +1770,7 @@ $(document).ready(function() {
 
   /////// menu press ///////
 
-  var reset_intro_mode = function(){
+  function reset_intro_mode(){
 
     intro_mode = true;
 
@@ -1540,60 +1794,59 @@ $(document).ready(function() {
 
   ///tap and press contained within same function
 
-  var downloadConfirmHeight;
-  var movVal;
-  var downloadOptions = function(simple){
 
-  $(".download_options").show();
-  if(!simple){
-    $("html").css("overflow", "hidden");
-  }
+  function downloadOptions(simple){
 
-  //set this when it exists
-
-  downloadConfirmHeight = $("#download_confirm").height();
-  movVal = "-" + downloadConfirmHeight;
-  var docHeight = $(window).height();
-  var difHeight = docHeight - downloadConfirmHeight;
-
-  if(downloadSimpleOpen){
-    movVal = 0;
-  }
-
-  $("#download_confirm").animate({
-    "bottom" : movVal
-  }, 0, function(){
-
-    var downloadConfirmOffset = $("#download_confirm").offset();
-    var tipTopOffset = $(".tip_top").offset();
-    var offsetDif = downloadConfirmOffset.top - tipTopOffset.top;
-    //alert(downloadConfirmOffset.top);
-    if(downloadSimpleOpen){
-      var downloadOptionsHeight = offsetDif;
-    }
-    else{
-      var downloadOptionsHeight = offsetDif - downloadConfirmHeight;
-    }
-
-
-    $(".download_options").css("height", downloadOptionsHeight);
-
-
-    //setDownloadMenuHeight();
-    if(!downloadSimpleOpen){
-      $("#download_confirm").animate({
-        "bottom" : "0"
-      }, 1000, "swing");
-      downloadSimpleOpen = true;
-    }
-
+    $(".download_options").show();
     if(!simple){
-      $(".download_options").animate({
-        "top" : "0"
-      }, 1000, "swing");
+      $("html").css("overflow", "hidden");
     }
-  });
-}
+
+    //set this when it exists
+
+    downloadConfirmHeight = $("#download_confirm").height();
+    movVal = "-" + downloadConfirmHeight;
+    var docHeight = $(window).height();
+    var difHeight = docHeight - downloadConfirmHeight;
+
+    if(downloadSimpleOpen){
+      movVal = 0;
+    }
+
+    $("#download_confirm").animate({
+      "bottom" : movVal
+    }, 0, function(){
+
+      var downloadConfirmOffset = $("#download_confirm").offset();
+      var tipTopOffset = $(".tip_top").offset();
+      var offsetDif = downloadConfirmOffset.top - tipTopOffset.top;
+      //alert(downloadConfirmOffset.top);
+      if(downloadSimpleOpen){
+        var downloadOptionsHeight = offsetDif;
+      }
+      else{
+      var downloadOptionsHeight = offsetDif - downloadConfirmHeight;
+      }
+
+
+      $(".download_options").css("height", downloadOptionsHeight);
+
+
+      //setDownloadMenuHeight();
+      if(!downloadSimpleOpen){
+        $("#download_confirm").animate({
+          "bottom" : "0"
+        }, 1000, "swing");
+        downloadSimpleOpen = true;
+      }
+
+      if(!simple){
+        $(".download_options").animate({
+          "top" : "0"
+        }, 1000, "swing");
+      }
+    });
+  }
 
 
 
@@ -1620,7 +1873,7 @@ $(document).ready(function() {
 
   //the height of download options needs to change if user scrolls on mobile, hiding the search bar
 
-  var getDownloadOffsets = function(){
+  function getDownloadOffsets(){
     var downloadConfirmOffset = $("#download_confirm").offset();
     //var distance = downloadConfirmOffset - scrollTop;
     //alert("top of download " + downloadConfirmOffset.top);
@@ -1629,7 +1882,7 @@ $(document).ready(function() {
     var offsetDif = downloadConfirmOffset.top - tipTopOffset.top;
     return offsetDif;
   }
-  var offsetDif;
+
   function setDownloadMenuHeight(ev) {
     //alert("pls set the height of the download menu");
     var delayHeight = setTimeout(function(){
@@ -1644,13 +1897,12 @@ $(document).ready(function() {
 
   }
 
-  var downloadMenu = document.getElementById("download_menu");
+
   downloadMenu.ontouchend = setDownloadMenuHeight;
 
   //need to generate correct download link based on what is included
   //use id to determine which track selected
-  var downloadTracks = [];
-  var downloadLink;
+
 
   $(".download_option").not("#download_instructions, #download_confirm").click(function(){
 
@@ -1745,7 +1997,7 @@ $(document).ready(function() {
 
   });
 
-  var buildDownloadLink = function(simple){
+  function buildDownloadLink(simple){
 
     if(simple){
       downloadLink = "ALL.zip";
@@ -1837,35 +2089,54 @@ $(document).ready(function() {
 
   /////////////////////////////////////////////////////////////////////// TOOL TIPS /////////////////////////////////////////////////////////////////////////
 
-  var tipsOn = false;
-  var contextHint;
+
+  //setTimeout(offerHint, 5000);
+  //offer hints after intro complete
+
+  function offerHint(){
+    $("#hint_content").html("Turn tooltips ON");
+    $(".toolTip").fadeIn()
+    noSelection = setTimeout(function(){
+      $(".toolTip").fadeOut();
+    }, 5000);
+  }
+
+  $(".toolTip").hover(function(){
+    clearInterval(noSelection);
+    $(".toolTip").clearQueue().show();
+    var tipSwitch;
+    if(tipsOn){
+      tipSwitch = "OFF";
+    }
+    else{
+      tipSwitch = "ON";
+    }
+    $("#hint_content").html("Turn tooltips " + tipSwitch);
+  });
 
   $(".toolTip").click(function(){
-    tipsOn = true;
-  });
-
-  $("#widget_boi").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen){
-      $(".toolTip").fadeIn();
+    clearInterval(noSelection);
+    if(tipsOn){
+      tipsOn = false;
+      $("#hint_content").html("Turn tooltips ON");
+      //alert("tips are off");
     }
-
-  }, function(){
-    if(!draggable && !intro_mode && !menuOpen){
-      $(".toolTip").stop().fadeOut();
+    else{
+      tipsOn = true;
+      //alert("tips on");
+      $("#hint_content").html("Turn tooltips OFF");
     }
-
   });
-
-  var hinterval;
 
   $("#widget_function").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
       //$(".tool_dot").first().addClass("selected_tool_dot");
-
+      $(".toolTip").clearQueue().fadeIn();
       //alert(widget_mode);
 
       var hintA, hintB;
       var hintDex = 2;
+      hintLoop = true;
 
       //put dots to show that another hint is coming
       $("#hinticator").html("<svg class='tool_dot_container'><circle class='tool_dot selected_tool_dot' cx='50%' cy='50%' r='0.2em'></svg><svg class='tool_dot_container'><circle class='tool_dot' cx='50%' cy='50%' r='0.2em'></svg>");
@@ -1904,7 +2175,7 @@ $(document).ready(function() {
 
       $("#hint_content").html(hintA);
 
-      var swapHint = function(){
+      function swapHint(){
         $("#hint_content").animate({
           "opacity" : "0"
         }, 600, function(){
@@ -1921,171 +2192,175 @@ $(document).ready(function() {
             "opacity" : "1"
           }, 600)
         });
-        hinterval = setTimeout(swapHint, 3000);
+        if(hintLoop){
+          hinterval = setTimeout(swapHint, 3000);
+        }
+
       }
-
-      setTimeout(swapHint, 1000);
-
-
-
+      swapHint();
     }
   }, function(){
-    if(!draggable && !intro_mode){
+    if(!draggable && !intro_mode && tipsOn){
       //alert("interval cleared!");
+      $("#hint_content").clearQueue().show();
+      hintLoop = false;
       clearInterval(hinterval);
       $("#hinticator").hide();
       //alert(hinterval);
-      $("#hint_content").html("Hi there.");
+      $(".toolTip").delay(1500).fadeOut();
     }
   });
 
-  var tipCurrentMode = function(){
-    var current_mode = widget_mode.replace("_", " ");
-    $("#mode_content").html(current_mode);
-  }
+  //clear interval when switching from hover over function to navbox but not leaving widget_boi
 
-  tipCurrentMode();
-
-  //show tooltip on hover over certain mode
-  //using nav box as hover target means if you smoothly hover from one to next the tip doesn't chnage
+  $(".nav_box").hover(function(){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+      hintLoop = false;
+      clearInterval(hinterval);
+      $(".toolTip").clearQueue().show();
+      //$(".toolTip").clearQueue().fadeIn();
+    }
+  }, function(){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+      $(".toolTip").delay(1500).fadeOut();
+    }
+  });
 
   $("#select_home_mode").hover(function(){
-    if(!draggable && !intro_mode){
-      var contextHint = "Home Mode";
-      $("#hint_content").html(contextHint);
+    if(!draggable && !intro_mode && tipsOn){
+      $("#hint_content").html("Home Mode");
       //$("#hint_content").fadeIn();
     }
 
   });
   $("#select_audio_mode").hover(function(){
-    if(!draggable && !intro_mode){
-      var contextHint = "Audio Mode";
-      $("#hint_content").html(contextHint);
+    if(!draggable && !intro_mode && tipsOn){
+      $("#hint_content").html("Audio Mode");
     }
 
   });
   $("#select_menu_mode").hover(function(){
-    if(!draggable && !intro_mode){
-      var contextHint = "Menu Mode";
-      $("#hint_content").html(contextHint);
+    if(!draggable && !intro_mode && tipsOn){
+      $("#hint_content").html("Menu Mode");
     }
 
   });
   $("#select_download_mode").hover(function(){
-    if(!draggable && !intro_mode){
-      var contextHint = "Download Mode";
-      $("#hint_content").html(contextHint);
+    if(!draggable && !intro_mode && tipsOn){
+      $("#hint_content").html("Download Mode");
     }
 
   });
 
 
 
-  ///////////////////INTRO animation
-
     /////////////////////////////////////////////////////////////////////// INTRO TUTORIAL ////////////////////////////////////////////////////////////////
 
-    $("#widget_boi").fadeIn(3000);
+  $("#widget_boi").fadeIn(3000, function(){
+    //setTimelineProgress(90);
+    //var strokeWidth = $("#timeline_hilight").attr("stroke-width");
+    //alert(strokeWidth);
+  });
 
-    var introAnimation = function(){
-      intro_mode = true;
-      //could move this to css as well
-      $("html").css("overflow-y", "hidden");
-      //$("#nav_options_img").css("opacity", "0");
-      //$(".widget_stick").css("opacity", "0");
-      $("#widget_boi").fadeIn("slow");
-      $(".intro_item").fadeIn(2000);
+  function introAnimation(){
+    intro_mode = true;
+    //could move this to css as well
+    $("html").css("overflow-y", "hidden");
+    //$("#nav_options_img").css("opacity", "0");
+    //$(".widget_stick").css("opacity", "0");
+    $("#widget_boi").fadeIn("slow");
+    $(".intro_item").fadeIn(2000);
 
 
-        //$(".intro_msg").css("opacity", "1");
+      //$(".intro_msg").css("opacity", "1");
 
-        $(".intro_msg").delay(3000).animate({
+      $(".intro_msg").delay(3000).animate({
+        "opacity" : "1"
+      }, 2500);
+
+    //intro msg sequence
+    var intro_msgs = ["mi", "nam", "is", "wdgt", "boi", "hi"];
+    var msg = 0;
+
+    function displayIntroMsg(){
+      if(msg == intro_msgs.length){
+        //alert("reset");
+        msg = 0;
+      }
+      //alert(intro_msgs[msg]);
+
+      $(".intro_msg").stop().animate({
+        "opacity" : "0"
+      }, 2500, function(){
+        $(".intro_msg").html(intro_msgs[msg]);
+        $(".intro_msg").animate({
           "opacity" : "1"
         }, 2500);
-
-      //intro msg sequence
-      var intro_msgs = ["mi", "nam", "is", "wdgt", "boi", "hi"];
-      var msg = 0;
-
-      var displayIntroMsg = function(){
-        if(msg == intro_msgs.length){
-          //alert("reset");
-          msg = 0;
-        }
-        //alert(intro_msgs[msg]);
-
-        $(".intro_msg").stop().animate({
-          "opacity" : "0"
-        }, 2500, function(){
-          $(".intro_msg").html(intro_msgs[msg]);
-          $(".intro_msg").animate({
-            "opacity" : "1"
-          }, 2500);
-          msg++;
-        });
-        set_intro_msg = setTimeout(displayIntroMsg, 9000);
-      }
-
-      displayIntroMsg();
-
-      //spin tings for intro
-
-      var constantSpin = function(){
-        if(darkNavSpin == 360){
-          darkNavSpin = 0;
-        }
-        if(introBezelSpin == 0){
-          introBezelSpin = 360;
-        }
-        dark_nav.style.transform = "rotate(" + darkNavSpin + "deg)";
-        intro_bezel.style.transform = "rotate(" + introBezelSpin + "deg)";
-        introBezelSpin--;
-        darkNavSpin++;
-        introTimer = setTimeout(constantSpin, 5);
-      }
-
-      constantSpin();
-
-
+        msg++;
+      });
+      set_intro_msg = setTimeout(displayIntroMsg, 9000);
     }
 
-    introAnimation();
+    displayIntroMsg();
 
-    var introScrollFx = function(){
-      var originalInfo = $(".intro_info").offset();
-      var infoTop = originalInfo.top;
-      var originalDone = $(".intro_done").offset();
-      var doneTop = originalDone.top;
+    //spin tings for intro
 
-      //only run the animation if it is not already running
+    function constantSpin(){
+      if(darkNavSpin == 360){
+        darkNavSpin = 0;
+      }
+      if(introBezelSpin == 0){
+        introBezelSpin = 360;
+      }
+      dark_nav.style.transform = "rotate(" + darkNavSpin + "deg)";
+      intro_bezel.style.transform = "rotate(" + introBezelSpin + "deg)";
+      introBezelSpin--;
+      darkNavSpin++;
+      introTimer = setTimeout(constantSpin, 5);
+    }
 
-      if(!scroll_fx){
+    constantSpin();
 
-        scroll_fx = true;
 
-        $(".intro_done").animate({
-          "top" : "+=100%"
-        }, 200, "swing");
+  }
 
+  introAnimation();
+
+  function introScrollFx(){
+    var originalInfo = $(".intro_info").offset();
+    var infoTop = originalInfo.top;
+    var originalDone = $(".intro_done").offset();
+    var doneTop = originalDone.top;
+
+    //only run the animation if it is not already running
+
+    if(!scroll_fx){
+
+      scroll_fx = true;
+
+      $(".intro_done").animate({
+        "top" : "+=100%"
+      }, 200, "swing");
+
+      $(".intro_info").animate({
+        "top" : "+=100%"
+      }, 200, "swing", function(){
+        //position to bring in from top
+        $(".intro_info").css("top", "-=300%");
+        $(".intro_done").css("top", "-=300%");
         $(".intro_info").animate({
-          "top" : "+=100%"
-        }, 200, "swing", function(){
-          //position to bring in from top
-          $(".intro_info").css("top", "-=300%");
-          $(".intro_done").css("top", "-=300%");
-          $(".intro_info").animate({
-            "top" : infoTop
-          }, 300);
-          $(".intro_done").animate({
-            "top" : doneTop
-          }, 300, function(){
-            scroll_fx = false;
-          });
+          "top" : infoTop
+        }, 300);
+        $(".intro_done").animate({
+          "top" : doneTop
+        }, 300, function(){
+          scroll_fx = false;
         });
-      }
+      });
     }
+  }
 
-  var introHint = function(){
+  function introHint(){
     switch(widget_mode){
       case "audio_mode":
       audio_demo();
@@ -2124,7 +2399,7 @@ $(document).ready(function() {
 
 
 
-  var audio_demo = function(){
+  function audio_demo(){
     $(".mode_intro_info, #init_intro_info").hide();
     $("#audio_intro_info").show();
     $(".intro_info").stop().animate({
@@ -2132,7 +2407,7 @@ $(document).ready(function() {
     }, 2000);
   }
 
-  var download_demo = function(){
+  function download_demo(){
     $(".mode_intro_info, #init_intro_info").hide();
     $("#download_intro_info").show();
     $(".intro_info").stop().animate({
@@ -2140,7 +2415,7 @@ $(document).ready(function() {
     }, 2000);
   }
 
-  var menu_demo = function(){
+  function menu_demo(){
     $(".mode_intro_info, #init_intro_info").hide();
     $("#menu_intro_info").show();
     $(".intro_info").stop().animate({
@@ -2148,7 +2423,7 @@ $(document).ready(function() {
     }, 2000);
   }
 
-  var home_demo = function(){
+  function home_demo(){
     $(".mode_intro_info, #init_intro_info").hide();
     $("#home_intro_info").show();
     $(".intro_info").stop().animate({
@@ -2156,16 +2431,16 @@ $(document).ready(function() {
     }, 2000);
   }
 
-  var validBezelSet;
-  var introStarted = false;
+
 
   /////////// function to handle first swipe that occurs during intro
 
-  var intro_swipe = function(){
+  function intro_swipe(){
     firstSwipe = false;
     introStarted = true;
     //clearInterval(fadeIntroMsg);
     $(".intro_msg").stop().clearQueue();
+    stopTimelineIntro();
 
     clearInterval(set_intro_msg);
     clearInterval(introTimer);
@@ -2195,7 +2470,7 @@ $(document).ready(function() {
       //alert("audio_mode");
     }
 
-    var getValidBezel = function(){
+    function getValidBezel(){
 
       initial_swipe = false;
       //if(introBezelSpin % 90 == 0){
@@ -2229,9 +2504,9 @@ $(document).ready(function() {
     getValidBezel();
   }
 
-  var introNavSpinEnd = function(){
+  function introNavSpinEnd(){
 
-    var runCompleteNavSpin = function(){
+    function runCompleteNavSpin(){
       if(darkNavSpin % 90 == 0){
         clearInterval(completeNavSpin);
       }
@@ -2244,7 +2519,7 @@ $(document).ready(function() {
     runCompleteNavSpin();
   }
 
-  var finishSpin = function(){
+  function finishSpin(){
     //need to rotate dark nav to nearest multiple of 90 before clearing interval
     //or start new interval to move it the remainder
 
@@ -2254,7 +2529,7 @@ $(document).ready(function() {
 
     introNavSpinEnd();
 
-    var getCompleteBezelSpin = function(){
+    function getCompleteBezelSpin(){
       if(introBezelSpin == 0){
         clearInterval(completeBezelSpin);
         intro_bezel.style.transform = "rotate(0deg)";
@@ -2275,7 +2550,7 @@ $(document).ready(function() {
     getCompleteBezelSpin();
 
   }
-  var finishIntro = function(){
+  function finishIntro(){
     intro_mode = false;
     //if you close between widget msg it can't fadeout
     //animate opacity instead to guarantee invisibilty
@@ -2310,7 +2585,10 @@ $(document).ready(function() {
     introCleanUp();
   });
 
-  var introCleanUp = function(){
+  function introCleanUp(){
+
+    stopTimelineIntro();
+    setTimeout(offerHint, 5000);
 
     if(!spinning){
 
@@ -2343,7 +2621,7 @@ $(document).ready(function() {
   //don't want to destroy widget so wait until it finishes spinning to end intro
     else{
 
-      var checkSpin = function(){
+      function checkSpin(){
         if(!spinning){
           //if it was spinning and now it isn't
           clearInterval(spinListener);
@@ -2357,7 +2635,7 @@ $(document).ready(function() {
     }
   };
 
-  var introLoadBar = function(){
+  function introLoadBar(){
     var loadVal;
     var introDoneBar = false;
     switch(intro_index){
@@ -2391,7 +2669,4 @@ $(document).ready(function() {
       }
     });
   }
-
-
-
 });
