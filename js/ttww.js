@@ -77,6 +77,9 @@ $(document).ready(function() {
   var loadTimeline;
   var setTime;
 
+  //AUDIO CONTROLS
+  var controlsOpen = false;
+
   //home press
   var pos1, pos2, pos3, pos4, dragElmnt;
 
@@ -563,6 +566,12 @@ $(document).ready(function() {
             //alert("open audio controls");
             $(".audio_control").show();
             $(".audio_control").animate({"top": "0px"}, 700);
+            if(controlsOpen){
+              showSkip(false);
+            }
+            else{
+              showSkip(true);
+            }
           break;
           case "download_mode":
             displayMode(widget_mode);
@@ -698,7 +707,12 @@ $(document).ready(function() {
   function widgetAction(widget_mode){
     switch(widget_mode){
       case "menu_mode":
-        displayMenu(true);
+        if(!menuOpen){
+          displayMenu(true);
+        }
+        else{
+          displayMenu(false);
+        }
         if(!menu_tap){
           menu_tap = true;
           $("#menu_tap").addClass("intro_task_done");
@@ -1388,13 +1402,31 @@ $(document).ready(function() {
         moveSticks(false, false, false);
         iconSpin(90, 0, 15);
       }
-
+      $("#hint_content").stop(true, true);
+      $("#hinticator").stop(true, true);
+      hintLoop = false;
+      clearInterval(hintDelay);
+      clearInterval(hinterval);
+      widgetFunctionHint();
     }
 
     ///// audio press ////////
 
 
     //ff and rw
+
+    //first show the arrows
+
+    function showSkip(show){
+      if(show){
+        $(".ffrw").css({"width" : "170%", "opacity" : "1"});
+        controlsOpen = true;
+      }
+      else{
+        $(".ffrw").css({"width" : "20%", "opacity" : "0"});
+        controlsOpen = false;
+      }
+    }
 
 
 
@@ -1408,7 +1440,8 @@ $(document).ready(function() {
         //skip to next track
         skip = true;
       }
-      else{
+      //if you miss ff by an inch, this rewinds. not ideal 
+      else if($(target).attr("id") == "rw"){
         //back to start of this track
         //how do you go back to prev track?
         //click rw again within 5 seconds
@@ -1520,7 +1553,9 @@ $(document).ready(function() {
 
     draggable = true;
     clearInterval(hinterval);
+    clearInterval(hintDelay);
     $("#hinticator").hide();
+    hintLoop = false;
 
     $("#hint_content").html("Drag Me");
     //fade out widget function
@@ -1774,6 +1809,8 @@ $(document).ready(function() {
   function reset_intro_mode(){
 
     intro_mode = true;
+
+    $(".toolTip").stop(true, true).fadeOut();
 
     //return widget to center
 
@@ -2095,11 +2132,13 @@ $(document).ready(function() {
   //offer hints after intro complete
 
   function offerHint(){
-    $("#hint_content").html("Turn tooltips ON");
-    $(".toolTip").fadeIn()
-    noSelection = setTimeout(function(){
-      $(".toolTip").fadeOut();
-    }, 5000);
+    if(!tipsOn){
+      $("#hint_content").html("Turn tooltips ON");
+      $(".toolTip").fadeIn()
+      noSelection = setTimeout(function(){
+        $(".toolTip").fadeOut();
+      }, 5000);
+    }
   }
 
   $(".toolTip").hover(function(){
@@ -2131,10 +2170,10 @@ $(document).ready(function() {
     }
   });
 
-  $("#widget_function").hover(function(){
+  function widgetFunctionHint(){
     if(!draggable && !intro_mode && !menuOpen && tipsOn){
       //$(".tool_dot").first().addClass("selected_tool_dot");
-      $(".toolTip").clearQueue().fadeIn();
+      //$(".toolTip").clearQueue().fadeIn();
       //alert(widget_mode);
 
       var hintA, hintB;
@@ -2203,8 +2242,11 @@ $(document).ready(function() {
       if(hintLoop){
         hintDelay = setTimeout(swapHint, 3000);
       }
-
     }
+  }
+
+  $("#widget_function").hover(function(){
+    widgetFunctionHint();
   }, function(){
     if(!draggable && !intro_mode && !menuOpen && tipsOn){
       //alert("interval cleared!");
@@ -2219,36 +2261,49 @@ $(document).ready(function() {
   });
 
   //clear interval when switching from hover over function to navbox but not leaving widget_boi
+/*
 
   $(".nav_box").hover(function(){
-    $(".toolTip").fadeIn();
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+      $(".toolTip").fadeIn();
+    }
   }, function(){
-    $(".toolTip").delay(1500).fadeOut();
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+      $(".toolTip").delay(1500).fadeOut();
+    }
   });
 
+*/
+
+$("#widget_boi").hover(function(){
+  if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    $(".toolTip").stop(true, true).fadeIn();
+  }
+}, function(){
+  if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    $(".toolTip").stop(true, true).delay(1500).fadeOut();
+  }
+});
+
   $("#select_home_mode").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
       $("#hint_content").html("Home Mode");
-      //$("#hint_content").fadeIn();
     }
   });
   $("#select_audio_mode").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
       $("#hint_content").html("Audio Mode");
     }
-
   });
   $("#select_menu_mode").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
       $("#hint_content").html("Menu Mode");
     }
-
   });
   $("#select_download_mode").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
       $("#hint_content").html("Download Mode");
     }
-
   });
 
 
@@ -2438,7 +2493,8 @@ $(document).ready(function() {
     firstSwipe = false;
     introStarted = true;
     //clearInterval(fadeIntroMsg);
-    $(".intro_msg").stop().clearQueue();
+    //$(".intro_msg").stop().clearQueue();
+    $(".intro_msg").stop(true, true);
     stopTimelineIntro();
 
     clearInterval(set_intro_msg);
@@ -2588,10 +2644,11 @@ $(document).ready(function() {
 
     stopTimelineIntro();
     setTimeout(offerHint, 5000);
+    $(".intro_msg").stop(true, true);
 
     if(!spinning){
 
-      $(".intro_msg").clearQueue();
+      //$(".intro_msg").clearQueue();
       //$(".intro_msg").html("");
       finishIntro();
       //clearInterval(fadeIntroMsg);

@@ -17,7 +17,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=1.1"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.4"></script>
   </head>
 
   <body>

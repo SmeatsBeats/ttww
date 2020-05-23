@@ -687,12 +687,15 @@ body {
 .ffrw {
   cursor: pointer;
   position: absolute;
-  width: 170%;
+  opacity: 0;
+  width: 20%;
+  /* width: 170%; */
   display: flex;
   align-items: center;
   justify-content: space-between;
   color: #999;
   font-size: 200%;
+  transition: opacity 0.5s, width 0.8s;
 }
 
 /***************** DOWNLOAD MENU ****************/
