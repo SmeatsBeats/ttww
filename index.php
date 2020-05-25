@@ -17,7 +17,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=1.3"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.4"></script>
   </head>
 
   <body>
@@ -885,6 +885,12 @@
                 <span id="ff">>></span>
               </div>
 
+              <!-- current time -->
+
+              <div class="time_box">
+                <span class="current_time"></span>
+              </div>
+
               <img class="widget_nav" id="nav_options_img" src="imgs/WIDGET_NAV.svg" alt="Widget navigation">
 
 
@@ -918,7 +924,7 @@
               </div>
 
               <div class="toolTip" id="context_hint">
-                <span id="hint_content">Hi there.</span>
+                <span id="hint_content">Hi There</span>
                 <span id="hinticator"></span>
               </div>
 
@@ -949,6 +955,16 @@
           <div class="menu_bottom">
             <h2 class="menu_nav cl-effect-1" id="credits_nav">CREDITS</h2>
             <h2 class="menu_nav cl-effect-1" id="support_nav">SUPPORT</h2>
+          </div>
+        </div>
+
+        <!-- HELP -->
+        <div class="help">
+          <span class="help_me">?</span>
+          <div class="help_content_container">
+            <div class="help_content">
+              <span id="help_text">Turn ON tooltips</span>
+            </div>
           </div>
         </div>
 

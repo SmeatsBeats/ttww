@@ -682,6 +682,23 @@ body {
   z-index: -1;
 }
 
+.time_box {
+  position: absolute;
+  color: #999;
+  height: 105%;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+}
+.current_time {
+  /* position: relative;
+  bottom: 5%; */
+  /* border: 1px solid red; */
+  /* double check this */
+  transition: opacity 0.4s, bottom 0.7s;
+}
+
+
 /******************** FF RW ***************/
 
 .ffrw {
@@ -1051,6 +1068,56 @@ body {
 }
 
 /******************* TOOLTIPS ***********************/
+.help {
+  position: fixed;
+  bottom: 3vh;
+  left: 3vh;
+  color: #999;
+  overflow: hidden;
+  width: 12%;
+  height: 4%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  /* border: 1px solid blue; */
+}
+.help span {
+  height: 100%;
+  cursor: pointer;
+}
+.help_me {
+  background-color: rgba(25, 25, 25, 0.8);
+  width: 10%;
+  z-index: 2;
+  border-radius: 3px;
+}
+.help_content_container {
+  position: absolute;
+  right: 0;
+  width: 90%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.help_content {
+  position: relative;
+  width: 100%;
+  flex: 1 1 100%;
+  right: 100%;
+  background-color: rgba(25, 25, 25, 1);
+  transition: right 0.6s;
+  border-radius: 0px 3px 3px 0px;
+}
+.help_content_on {
+  right: 0%;
+  /* transition: right 0.6s; */
+}
+#help_text {
+  transition: opacity 0.6s;
+}
+
 .toolTip {
   background: #242424;
   color: #999;

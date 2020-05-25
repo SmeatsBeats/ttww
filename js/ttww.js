@@ -103,6 +103,8 @@ $(document).ready(function() {
   var hinterval;
   var hintDelay;
   var hintLoop;
+  var fadeWait;
+  var showMsg;
 
   //INTRO TUTORIAL
   var validBezelSet;
@@ -1153,6 +1155,7 @@ $(document).ready(function() {
 
   function widgetDress(don, callback){
     if(don){
+      //alert("get dressed");
       //show some respect for yourself!
       $(".widget_stick").animate({
         "opacity" : "1"
@@ -1164,6 +1167,7 @@ $(document).ready(function() {
         $("#nav_options_dark").animate({
           "opacity" : "0"
         }, 200, callback);
+        //$(".help_me").addClass("help_me_on");
       });
     }
     else{
@@ -1171,6 +1175,8 @@ $(document).ready(function() {
       $(".widget_stick").animate({
         "opacity" : "0"
       }, 3000);
+
+      //$(".help_me").removeClass("help_me_on");
 
       $("#nav_options_img").animate({
         "opacity" : "0"
@@ -1300,6 +1306,11 @@ $(document).ready(function() {
   function moveProgressBar(){
     var currentTime = audioFile.currentTime;
     var duration = audioFile.duration;
+
+    //display time in coherent fashion
+
+    //put current time at bottom
+    //$(".current_time").html(currentTime);
 
     if(currentTime == duration){
       //use this variable to prevent setAudioProgress from being called while bar is returning to start
@@ -1826,6 +1837,7 @@ $(document).ready(function() {
     intro_mode = true;
 
     $(".toolTip").stop(true, true).fadeOut();
+    //$(".help_me").removeClass("help_me_on");
 
     //return widget to center
 
@@ -2146,6 +2158,76 @@ $(document).ready(function() {
   //setTimeout(offerHint, 5000);
   //offer hints after intro complete
 
+$(".help_content, .help_me").hover(function(){
+  clearInterval(showMsg);
+  if(tipsOn){
+    $("#help_text").html("Turn OFF Tooltips");
+  }
+  else{
+    $("#help_text").html("Turn ON Tooltips");
+  }
+
+  //$(".help").css("width", "12%");
+  $(".help_content").addClass("help_content_on");
+}, function(){
+  $(".help_content").removeClass("help_content_on");
+  //var smallWidth = $(".help_me").width();
+  //$(".help").css("width", smallWidth);
+
+});
+
+$(".help_content").click(function(){
+  $(".help_content").removeClass("help_content_on");
+  if(tipsOn){
+    $(".toolTip").stop(true, true).fadeOut();
+    tipsOn = false;
+  }
+  else{
+    $(".toolTip").stop(true, true).fadeIn();
+    tipsOn = true;
+  }
+});
+
+document.body.onkeyup = function(e){
+  var tipMsg = "";
+    if(e.keyCode == 84){
+        //your code
+        if(tipsOn){
+          tipsOn = false;
+          $(".toolTip").stop(true, true).fadeOut();
+          tipMsg = "Tooltips OFF";
+        }
+        else{
+          tipsOn = true;
+          $(".toolTip").stop(true, true).fadeIn();
+          tipMsg = "Tooltips ON";
+        }
+        infoMsg(tipMsg);
+    }
+}
+
+  function infoMsg(tipMsg){
+    if($(".help_content").hasClass("help_content_on")){
+      clearInterval(showMsg);
+      //already open
+      //maybe fadeout current msg and add new one
+      //this fades out background as well as text
+      $("#help_text").css("opacity", "0");
+      fadeWait = setTimeout(function(){
+        $("#help_text").html(tipMsg);
+        $("#help_text").css("opacity", "1");
+      }, 600);
+    }
+    else{
+      $("#help_text").html(tipMsg);
+      $(".help_content").addClass("help_content_on");
+    }
+    showMsg = setTimeout(function(){
+      $(".help_content").removeClass("help_content_on");
+    }, 3000);
+  }
+  /*
+
   function offerHint(){
     if(!tipsOn){
       $("#hint_content").html("Turn tooltips ON");
@@ -2155,9 +2237,13 @@ $(document).ready(function() {
       }, 5000);
     }
   }
+  */
+
+/*
 
   $(".toolTip").hover(function(){
-    clearInterval(noSelection);
+    //clearInterval(noSelection);
+    clearInterval(hintLoop);
     $(".toolTip").clearQueue().show();
     var tipSwitch;
     if(tipsOn){
@@ -2166,22 +2252,27 @@ $(document).ready(function() {
     else{
       tipSwitch = "ON";
     }
-    $("#hint_content").html("Turn tooltips " + tipSwitch);
+    $("#hint_content").html("Turn tips " + tipSwitch);
   }, function(){
     $(".toolTip").delay(1500).fadeOut();
   });
-
+  */
   $(".toolTip").click(function(){
     clearInterval(noSelection);
     if(tipsOn){
       tipsOn = false;
-      $("#hint_content").html("Turn tooltips ON");
+      //$("#hint_content").html("Turn tips ON");
+      $(".toolTip").stop(true, true).fadeOut(function(){
+        $("#hint_content").html("Hi There");
+      });
       //alert("tips are off");
     }
     else{
+      //shouldn't be possible;
       tipsOn = true;
       //alert("tips on");
       $("#hint_content").html("Turn tooltips OFF");
+      $(".toolTip").stop(true, true).fadeOut();
     }
   });
 
@@ -2263,16 +2354,16 @@ $(document).ready(function() {
   $("#widget_function").hover(function(){
     widgetFunctionHint();
   }, function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    //if(!draggable && !intro_mode && !menuOpen && tipsOn){
       //alert("interval cleared!");
-      $("#hint_content").clearQueue().show().html("yeet");
+      $("#hint_content").clearQueue().show().html("Hi There");
       hintLoop = false;
       clearInterval(hinterval);
       clearInterval(hintDelay);
       $("#hinticator").hide();
       //alert(hinterval);
       //$(".toolTip").delay(1500).fadeOut();
-    }
+    //}
   });
 
   //clear interval when switching from hover over function to navbox but not leaving widget_boi
@@ -2296,7 +2387,7 @@ $("#widget_boi").hover(function(){
   }
 }, function(){
   if(!draggable && !intro_mode && !menuOpen && tipsOn){
-    $(".toolTip").stop(true, true).delay(1500).fadeOut();
+    $(".toolTip").stop(true, true).fadeOut();
   }
 });
 
@@ -2634,6 +2725,7 @@ $("#widget_boi").hover(function(){
         "opacity" : "1"
       }, 1500);
       $(".widget_intro, .intro_dots").hide();
+      //$(".help_me").addClass("help_me_on");
     });
 
     $("#album_art").animate({
@@ -2658,7 +2750,11 @@ $("#widget_boi").hover(function(){
   function introCleanUp(){
 
     stopTimelineIntro();
-    setTimeout(offerHint, 5000);
+    //setTimeout(offerHint, 5000);
+
+    //show option for tooltips
+    //$(".help_me").addClass("help_me_on");
+
     $(".intro_msg").stop(true, true);
 
     if(!spinning){
