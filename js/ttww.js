@@ -76,6 +76,8 @@ $(document).ready(function() {
   var spinTimeline = true;
   var loadTimeline;
   var setTime;
+  var homeComing = false;
+  var waitTimer;
 
   //AUDIO CONTROLS
   var controlsOpen = false;
@@ -105,6 +107,9 @@ $(document).ready(function() {
   //INTRO TUTORIAL
   var validBezelSet;
   var introStarted = false;
+
+  //MENU MODE
+  var controlsWereOpen = false;
 
   ///////////////////////////////////////////////////////////////////////////////// PAGE SETUP //////////////////////////////////////////
   //call functions that will set the page up how it needs to be initially
@@ -257,9 +262,6 @@ $(document).ready(function() {
 
       //alert(slider_index + " " + num_imgs);
 
-
-
-
       if(num_imgs > 2){
         if(slider_index > 0 && slider_index <= num_imgs - 2){
           //show the next arrow
@@ -312,7 +314,11 @@ $(document).ready(function() {
         $(current_img).animate({
           "left" : "0%"
         }, 800);
-        if(jumpTo){
+
+        //alert(jumpTo);
+
+        if(typeof jumpTo !== "undefined"){
+          //alert("hide these dudes");
           var i;
           for(i = prev_index - 1; i > slider_index; i--){
             $(slide_imgs[i]).animate({
@@ -564,14 +570,9 @@ $(document).ready(function() {
             }
             //open audio controls
             //alert("open audio controls");
-            $(".audio_control").show();
-            $(".audio_control").animate({"top": "0px"}, 700);
-            if(controlsOpen){
-              showSkip(false);
-            }
-            else{
-              showSkip(true);
-            }
+            //$(".audio_control").show();
+            //$(".audio_control").animate({"top": "0px"}, 700);
+            showSkip();
           break;
           case "download_mode":
             displayMode(widget_mode);
@@ -711,7 +712,7 @@ $(document).ready(function() {
           displayMenu(true);
         }
         else{
-          displayMenu(false);
+          //displayMenu(false);
         }
         if(!menu_tap){
           menu_tap = true;
@@ -1287,9 +1288,10 @@ $(document).ready(function() {
 
   //update audio progress to reflect location in audio file
 
-  var homeComing = false;
+
   function wait(){
-    setTimeout(function(){
+    clearInterval(waitTimer);
+    waitTimer = setTimeout(function(){
       homeComing = false;
       //must match duration to css transition on #timeline_progress
     }, 1000);
@@ -1417,14 +1419,14 @@ $(document).ready(function() {
 
     //first show the arrows
 
-    function showSkip(show){
-      if(show){
-        $(".ffrw").css({"width" : "170%", "opacity" : "1"});
-        controlsOpen = true;
+    function showSkip(){
+      $(".ffrw").toggleClass("showSkip");
+
+      if(controlsOpen){
+        controlsOpen = false;
       }
       else{
-        $(".ffrw").css({"width" : "20%", "opacity" : "0"});
-        controlsOpen = false;
+        controlsOpen = true;
       }
     }
 
@@ -1440,7 +1442,7 @@ $(document).ready(function() {
         //skip to next track
         skip = true;
       }
-      //if you miss ff by an inch, this rewinds. not ideal 
+      //if you miss ff by an inch, this rewinds. not ideal
       else if($(target).attr("id") == "rw"){
         //back to start of this track
         //how do you go back to prev track?
@@ -1646,6 +1648,13 @@ $(document).ready(function() {
       //alert(show);
       if(show){
 
+        if(controlsOpen){
+          controlsWereOpen = true;
+          showSkip();
+        }
+        else{
+          controlsWereOpen = false;
+        }
         menuOpen = true;
         $(".toolTip").fadeOut();
 
@@ -1686,6 +1695,12 @@ $(document).ready(function() {
         //alert(slideDest);
       }
       else{
+
+        //alert(controlsWereOpen);
+        if(controlsWereOpen){
+          //alert("open controls");
+          showSkip();
+        }
 
         menuOpen = false;
 
