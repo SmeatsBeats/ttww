@@ -501,6 +501,7 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
+
 .widget_nav_container {
   position: relative;
   width: 100%;
@@ -539,6 +540,8 @@ body {
 #nav_options_img{
   /*hide the img with selection for intro */
   opacity: 0;
+  /*want to try spinning with css */
+  /* transition: transform 0.8s; */
 }
 #nav_options_dark{
   z-index: -1;

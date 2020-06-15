@@ -986,169 +986,191 @@ $(document).ready(function() {
 
   ///////////////////////////////////////////////////////////////////////  WIDGET NAV ///////////////////////////////////////////////////////////////////////////////////////
 
+  //Calum attempting to update widget spins to use css transition property
 
+  function simpleNavRotate(destDeg, endSet, callback){
+    //callback will need to be callled with setTimeout
+    //might have to set degrees to an equivalent value
+    alert(destDeg);
+
+    $("#nav_options_img").css("transform", "rotate(" + destDeg + "deg)");
+
+  }
+
+  var testingSimple = false;
+  //to turn this off you must also remove transition from #nav_options_img css
 
 
   function navRotate(rotateDeg, callback){
 
 
-    // for intro, bezel might have different start position
-
-      //alert(prev_widget_mode);
-      if(navRotateInit){
-
-
-        switch(prev_widget_mode){
-
-          case "download_mode":
-          bezelDeg = 90;
-          deg = 90;
-          break;
-          case "menu_mode":
-          bezelDeg = 180;
-          deg = 180;
-          break;
-          case "home_mode":
-          bezelDeg = 270;
-          deg = 270;
-          break;
-          default:
-          bezelDeg = 0;
-          deg = 0;
-          //alert("audio_mode");
-        }
-        navRotateInit = false;
-        //alert(deg);
-
-      }
-
-
-
-
-    if(deg == 360 || deg == -360){
-      deg = 0;
-    };
-    if(deg == -270 || deg == 450){
-      deg = 90;
-    };
-    if(deg == -90){
-      deg = 270;
-    };
-    if(deg == -180){
-      deg = 180;
-    };
-
-
-    // alert("deg: " + deg);
-    // alert("rotateDeg: " + rotateDeg);
-    //need to rotate the widget_nav img by specified angle
-
-    var rotateDist = rotateDeg - deg;
-    //alert(rotateDist);
-    if(rotateDist > 180){
-      rotateDist = -90;
-    }
-    else if (rotateDist < -180) {
-      rotateDist = 90;
+    ///redirect to simplified version while testing
+    if(testingSimple){
+      simpleNavRotate(rotateDeg);
     }
     else{
-      rotateDist = rotateDist;
-    }
+      // for intro, bezel might have different start position
 
-    //check
-    if(Math.abs(rotateDist) == 180) {
-      rotateDist = 180;
-    }
-
-    //bezel
-    if(rotateDist >= 0){
-      bezelRotateDist = rotateDist - 360;
-    }
-    else{
-      bezelRotateDist = rotateDist + 360;
-    }
+        //alert(prev_widget_mode);
+        if(navRotateInit){
 
 
-    //set nav spin rate so bezel and nav meet at same time
-    if (bezelRotateDist == 180 || bezelRotateDist == -180){
-      spinRate = 15;
-    }
-    else{
-      spinRate = 30;
-    }
+          switch(prev_widget_mode){
 
-    function runSpinTimer(){
-      if(spinCounter == rotateDist){
-        navOptionsImg.style.transform = "rotate(" + deg + "deg)";
-        clearInterval(spinTimer);
-        spinCounter = 0;
-        //alert("timer done");
-      }
-      else{
-        //alert("deg: " + deg);
-        navOptionsImg.style.transform = "rotate(" + deg + "deg)";
-        if(rotateDist >= 0){
-          spinCounter = spinCounter + 3;
-          deg = deg + 3;
-          //alert("positive: " + spinCounter);
-        }
-        else{
-          spinCounter = spinCounter - 3;
-          deg = deg - 3;
-          //alert("negative: " + spinCounter);
-        }
-        //alert(deg);
-        //need to account for trying to go above or below 360 / 0
-        var spinTimer = setTimeout(runSpinTimer, spinRate);
-      }
-    }
-
-    //spin the nav
-    runSpinTimer();
-
-
-    //set bezel spin rate so bezel and nav meet at same time
-    if (bezelRotateDist == 180 || bezelRotateDist == -180){
-      bezelSpinRate = 15;
-    }
-    else{
-      bezelSpinRate = 10;
-    }
-
-    //spin the bezel
-    function runBezelSpinTimer(){
-      if(bezelSpinCounter == bezelRotateDist){
-        spinning = false;
-        bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
-        clearInterval(bezelSpinTimer);
-        if(widget_press){
-          widget_press = false;
-        }
-        if(typeof callback !== "undefined"){
-
-          callback();
-          if(intro_mode){
-            widgetDress(true);
+            case "download_mode":
+            bezelDeg = 90;
+            deg = 90;
+            break;
+            case "menu_mode":
+            bezelDeg = 180;
+            deg = 180;
+            break;
+            case "home_mode":
+            bezelDeg = 270;
+            deg = 270;
+            break;
+            default:
+            bezelDeg = 0;
+            deg = 0;
+            //alert("audio_mode");
           }
+          navRotateInit = false;
+          //alert(deg);
+
         }
 
-        bezelSpinCounter = 0;
+
+
+
+      if(deg == 360 || deg == -360){
+        deg = 0;
+      };
+      if(deg == -270 || deg == 450){
+        deg = 90;
+      };
+      if(deg == -90){
+        deg = 270;
+      };
+      if(deg == -180){
+        deg = 180;
+      };
+
+
+      // alert("deg: " + deg);
+      // alert("rotateDeg: " + rotateDeg);
+      //need to rotate the widget_nav img by specified angle
+
+      var rotateDist = rotateDeg - deg;
+      //alert(rotateDist);
+      if(rotateDist > 180){
+        rotateDist = -90;
+      }
+      else if (rotateDist < -180) {
+        rotateDist = 90;
       }
       else{
-        bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
-        if(bezelRotateDist >= 0){
-          bezelSpinCounter = bezelSpinCounter + 3;
-          bezelDeg = bezelDeg + 3;
-        }
-        else{
-          bezelSpinCounter = bezelSpinCounter - 3;
-          bezelDeg = bezelDeg - 3;
-        }
-        var bezelSpinTimer = setTimeout(runBezelSpinTimer, bezelSpinRate);
+        rotateDist = rotateDist;
       }
 
+      //check
+      if(Math.abs(rotateDist) == 180) {
+        rotateDist = 180;
+      }
+
+      //bezel
+      if(rotateDist >= 0){
+        bezelRotateDist = rotateDist - 360;
+      }
+      else{
+        bezelRotateDist = rotateDist + 360;
+      }
+
+
+      //set nav spin rate so bezel and nav meet at same time
+      if (bezelRotateDist == 180 || bezelRotateDist == -180){
+        spinRate = 15;
+      }
+      else{
+        spinRate = 30;
+      }
+
+      function runSpinTimer(){
+        if(spinCounter == rotateDist){
+          navOptionsImg.style.transform = "rotate(" + deg + "deg)";
+          clearInterval(spinTimer);
+          spinCounter = 0;
+          //alert("timer done");
+        }
+        else{
+          //alert("deg: " + deg);
+          navOptionsImg.style.transform = "rotate(" + deg + "deg)";
+          if(rotateDist >= 0){
+            spinCounter = spinCounter + 3;
+            deg = deg + 3;
+            //alert("positive: " + spinCounter);
+          }
+          else{
+            spinCounter = spinCounter - 3;
+            deg = deg - 3;
+            //alert("negative: " + spinCounter);
+          }
+          //alert(deg);
+          //need to account for trying to go above or below 360 / 0
+          var spinTimer = setTimeout(runSpinTimer, spinRate);
+        }
+      }
+
+      //spin the nav
+      runSpinTimer();
+
+
+      //set bezel spin rate so bezel and nav meet at same time
+      if (bezelRotateDist == 180 || bezelRotateDist == -180){
+        bezelSpinRate = 15;
+      }
+      else{
+        bezelSpinRate = 10;
+      }
+
+      //spin the bezel
+      function runBezelSpinTimer(){
+        if(bezelSpinCounter == bezelRotateDist){
+          spinning = false;
+          bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
+          clearInterval(bezelSpinTimer);
+          if(widget_press){
+            widget_press = false;
+          }
+          if(typeof callback !== "undefined"){
+
+            callback();
+            if(intro_mode){
+              widgetDress(true);
+            }
+          }
+
+          bezelSpinCounter = 0;
+        }
+        else{
+          bezelImg.style.transform = "rotate(" + bezelDeg + "deg)";
+          if(bezelRotateDist >= 0){
+            bezelSpinCounter = bezelSpinCounter + 3;
+            bezelDeg = bezelDeg + 3;
+          }
+          else{
+            bezelSpinCounter = bezelSpinCounter - 3;
+            bezelDeg = bezelDeg - 3;
+          }
+          var bezelSpinTimer = setTimeout(runBezelSpinTimer, bezelSpinRate);
+        }
+
+      }
+      runBezelSpinTimer();
     }
-    runBezelSpinTimer();
+
+
+
+
 
   };
 
