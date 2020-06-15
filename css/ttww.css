@@ -960,10 +960,12 @@ body {
 .intro_function {
   color: #999;
 }
+.intro_mode_title{
+  border-bottom: 1px solid #fff;
+}
 .intro_mode_title, .intro_task_done {
   color: white;
   transition: color 1s ease;
-  /* text-decoration: underline; */
 }
 .intro_done {
   position: absolute;
@@ -1068,39 +1070,52 @@ body {
 }
 
 /******************* TOOLTIPS ***********************/
-.help {
+.big_help {
+  border: 1px solid red;
+}
+.help_container {
   position: fixed;
   bottom: 3vh;
-  left: 3vh;
   color: #999;
   overflow: hidden;
-  width: 12%;
-  height: 4%;
+  /*you want a set width for fades*/
+  /* if you want width to respond to content, remove fades and have msg close and reopen with new size */
+  width: 10%;
+  /* height: 4%; */
   display: flex;
   align-items: center;
   justify-content: flex-start;
   text-align: center;
   /* border: 1px solid blue; */
 }
-.help span {
+.help_container span {
   height: 100%;
   cursor: pointer;
 }
-.help_me {
+.help_icon {
+  position: fixed;
+  /* padding: 0.25em 0.5em; */
+  width: 3vh;
+  height: 4vh;
+  bottom: 3vh;
+  left: 3vh;
   background-color: rgba(25, 25, 25, 0.8);
-  width: 10%;
-  z-index: 2;
   border-radius: 3px;
+  color: #999;
+  text-align: center;
+  cursor: pointer;
+
 }
-.help_content_container {
+/* .help_content_container {
   position: absolute;
   right: 0;
-  width: 90%;
+  width: 100%;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-}
+  border: 1px solid red;
+} */
 .help_content {
   position: relative;
   width: 100%;
@@ -1109,6 +1124,7 @@ body {
   background-color: rgba(25, 25, 25, 1);
   transition: right 0.6s;
   border-radius: 0px 3px 3px 0px;
+  /* border: 1px solid green; */
 }
 .help_content_on {
   right: 0%;
@@ -1116,6 +1132,9 @@ body {
 }
 #help_text {
   transition: opacity 0.6s;
+}
+#tipPower{
+  transition: color 0.6s;
 }
 
 .toolTip {
@@ -1125,11 +1144,10 @@ body {
   padding: 1% 5%;
   position: absolute;
   text-align: center;
-  cursor: pointer;
 }
-.toolTip:hover {
+/* .toolTip:hover {
   color: #777;
-}
+} */
 #hint_content > span {
   color: blue;
   cursor: pointer;

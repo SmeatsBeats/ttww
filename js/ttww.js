@@ -104,7 +104,7 @@ $(document).ready(function() {
   var hintDelay;
   var hintLoop;
   var fadeWait;
-  var showMsg;
+  var hideMsg;
 
   //INTRO TUTORIAL
   var validBezelSet;
@@ -625,6 +625,7 @@ $(document).ready(function() {
       if(!widget_press){
         $(".intro_info").stop().animate({
           "opacity": "0"
+          //this determines how fast intro info fades out
         }, 1000, function(){
           $("#init_intro_info").hide();
         });
@@ -1167,7 +1168,7 @@ $(document).ready(function() {
         $("#nav_options_dark").animate({
           "opacity" : "0"
         }, 200, callback);
-        //$(".help_me").addClass("help_me_on");
+        //$(".help_icon").addClass("help_icon_on");
       });
     }
     else{
@@ -1176,7 +1177,7 @@ $(document).ready(function() {
         "opacity" : "0"
       }, 3000);
 
-      //$(".help_me").removeClass("help_me_on");
+      //$(".help_icon").removeClass("help_icon_on");
 
       $("#nav_options_img").animate({
         "opacity" : "0"
@@ -1189,6 +1190,8 @@ $(document).ready(function() {
   }
 
   //////////////////////////////////////////////////////////////////////// MOVE WIDGET //////////////////////////////////////////////////////////
+
+  //this section involves moving the whole widget as a unit
 
   //call widget to dbl click location
 
@@ -1837,7 +1840,7 @@ $(document).ready(function() {
     intro_mode = true;
 
     $(".toolTip").stop(true, true).fadeOut();
-    //$(".help_me").removeClass("help_me_on");
+    //$(".help_icon").removeClass("help_icon_on");
 
     //return widget to center
 
@@ -2158,105 +2161,191 @@ $(document).ready(function() {
   //setTimeout(offerHint, 5000);
   //offer hints after intro complete
 
-$(".help_content, .help_me").hover(function(){
-  clearInterval(showMsg);
-  if(tipsOn){
-    $("#help_text").html("Turn OFF Tooltips");
-  }
-  else{
-    $("#help_text").html("Turn ON Tooltips");
-  }
+  //set left pos of help
+  //and height
+  var helpHeight = $(".help_icon").outerHeight();
+  var helpOffset = $(".help_icon").offset();
+  var helpOffsetRight = helpOffset.left + $(".help_icon").outerWidth();
+  //alert(helpHeight);
+  $(".help_container").css({"left" : helpOffsetRight, "height" : helpHeight});
 
-  //$(".help").css("width", "12%");
-  $(".help_content").addClass("help_content_on");
-}, function(){
-  $(".help_content").removeClass("help_content_on");
-  //var smallWidth = $(".help_me").width();
-  //$(".help").css("width", smallWidth);
+  var helpContent = false;
 
-});
-
-$(".help_content").click(function(){
-  $(".help_content").removeClass("help_content_on");
-  if(tipsOn){
-    $(".toolTip").stop(true, true).fadeOut();
-    tipsOn = false;
-  }
-  else{
-    $(".toolTip").stop(true, true).fadeIn();
-    tipsOn = true;
-  }
-});
-
-document.body.onkeyup = function(e){
-  var tipMsg = "";
-    if(e.keyCode == 84){
-        //your code
-        if(tipsOn){
-          tipsOn = false;
-          $(".toolTip").stop(true, true).fadeOut();
-          tipMsg = "Tooltips OFF";
-        }
-        else{
-          tipsOn = true;
-          $(".toolTip").stop(true, true).fadeIn();
-          tipMsg = "Tooltips ON";
-        }
-        infoMsg(tipMsg);
+  $(".big_help").hover(function(){
+    clearInterval(hideMsg);
+    //set hint text to default
+    if(tipsOn){
+      var msg = "Turn <span id='tipPower'>OFF</span> (T)ooltips";
     }
-}
+    else{
+      var msg = "Turn <span id='tipPower'>ON</span> (T)ooltips";
+    }
+    if(helpContent){
+      //it is already open and saying something
+      //fadeout what it is saying which should be different from default
+      switchMsg(msg);
+    }
+    else{
+      //hint bar is closed so it is safe to switch hint with no fade
+      $("#help_text").html(msg);
+    }
+    $(".help_container").stop(true, true).show();
+    $(".help_content").addClass("help_content_on");
+    helpContent = true;
+
+  }, function(){
+      $(".help_content").removeClass("help_content_on");
+      helpContent = false;
+      $(".help_container").stop(true, true).delay(600).hide(0);
+  });
+
+  $("#help_text").hover(function(){
+    $("#tipPower").css("color", "white");
+  }, function(){
+    $("#tipPower").css("color", "#999");
+  });
+
+  var closeNow = false;
+
+  $(".help_content").click(function(){
+    closeNow = true;
+    //$(".help_content").removeClass("help_content_on");
+    if(tipsOn){
+      infoMsg("Turn <span id='tipPower'>ON</span> (T)ooltips");
+      $(".toolTip").stop(true, true).fadeOut();
+      tipsOn = false;
+      //$("#help_text").html("Turn ON Tooltips");
+    }
+    else{
+      infoMsg("Turn <span id='tipPower'>OFF</span> (T)ooltips");
+      $(".toolTip").stop(true, true).fadeIn();
+      tipsOn = true;
+      //$("#help_text").html("Turn OFF Tooltips");
+    }
+    //$(".help_container").delay(600).hide(0);
+  });
+
+  document.body.onkeyup = function(e){
+    var tipMsg = "";
+      if(e.keyCode == 84){
+          //your code
+          if(tipsOn){
+            tipsOn = false;
+            $(".toolTip").stop(true, true).fadeOut();
+            tipMsg = "Tooltips OFF";
+          }
+          else{
+            tipsOn = true;
+            $(".toolTip").stop(true, true).fadeIn();
+            tipMsg = "Tooltips ON";
+          }
+          infoMsg(tipMsg);
+      }
+  }
+
+
+  function switchMsg(tipMsg){
+    //a msg is already displayed in hint bar
+    clearInterval(hideMsg);
+    //already open
+    //maybe fadeout current msg and add new one
+    //this fades out background as well as text
+    $("#help_text").css("opacity", "0");
+    fadeWait = setTimeout(function(){
+      $("#help_text").html(tipMsg);
+      //for some reason this isn't transitioning in smoothly
+      $("#help_text").css("opacity", "1");
+      //although the css transition is set to 0.6 or 600 ms
+      //this valuse needs to be a bit more or css not happy
+    }, 650);
+  }
 
   function infoMsg(tipMsg){
-    if($(".help_content").hasClass("help_content_on")){
-      clearInterval(showMsg);
-      //already open
-      //maybe fadeout current msg and add new one
-      //this fades out background as well as text
-      $("#help_text").css("opacity", "0");
-      fadeWait = setTimeout(function(){
-        $("#help_text").html(tipMsg);
-        $("#help_text").css("opacity", "1");
-      }, 600);
+    if(helpContent){
+      //alert("its true");
+      switchMsg(tipMsg);
     }
     else{
+      //alert("its false");
       $("#help_text").html(tipMsg);
+      $(".help_container").show();
       $(".help_content").addClass("help_content_on");
+      helpContent = true;
     }
-    showMsg = setTimeout(function(){
-      $(".help_content").removeClass("help_content_on");
-    }, 3000);
-  }
-  /*
-
-  function offerHint(){
-    if(!tipsOn){
-      $("#hint_content").html("Turn tooltips ON");
-      $(".toolTip").fadeIn()
-      noSelection = setTimeout(function(){
-        $(".toolTip").fadeOut();
-      }, 5000);
-    }
-  }
-  */
-
-/*
-
-  $(".toolTip").hover(function(){
-    //clearInterval(noSelection);
-    clearInterval(hintLoop);
-    $(".toolTip").clearQueue().show();
-    var tipSwitch;
-    if(tipsOn){
-      tipSwitch = "OFF";
+    if(closeNow){
+      var when = 0;
     }
     else{
-      tipSwitch = "ON";
+      var when = 3000;
     }
-    $("#hint_content").html("Turn tips " + tipSwitch);
-  }, function(){
-    $(".toolTip").delay(1500).fadeOut();
+    hideMsg = setTimeout(function(){
+      //alert("running hideMsg");
+      $(".help_content").removeClass("help_content_on");
+      helpContent = false;
+      $(".help_container").delay(600).hide(0);
+      closeNow = false;
+    }, when);
+  }
+
+  var idleTimer;
+  var beenIdle = false;
+  function trackIdle(){
+    idleTimer = setTimeout(function(){
+      beenIdle = true;
+      if(!menuOpen && !intro_mode){
+        idleHint();
+      }
+
+    }, 10000);
+  }
+  $(document).on("mousemove scroll keypress", function(){
+    //you're here!
+    clearInterval(idleTimer);
+    trackIdle();
+    beenIdle = false;
   });
-  */
+
+
+  function idleHint(){
+    //loop through some key hints if user is idle
+    //alert("where you be?");
+
+    //// tip #1 msg ////
+
+    if(tipsOn){
+      var msg = "T: close tooltips";
+    }
+    else{
+      var msg = "T: open tooltips";
+    }
+    //// tip #2 msg ////
+    if(playing){
+      var playMsg = "Spacebar: pause";
+    }
+    else{
+      var playMsg = "Spacebar: play";
+    }
+
+    //////////// tip #1 //////////
+
+    if(beenIdle){
+      infoMsg(msg);
+    }
+
+    ///////////// tip #2 ////////////
+    //should play when first tip finishes
+    //a bit before hideMsg runs out so it doesn't close then reopen with another hint
+    //hints should just cycle smoothly
+
+    setTimeout(function(){
+      if(beenIdle){
+        infoMsg(playMsg);
+        setTimeout(idleHint, 2800);
+      }
+    }, 2800);
+  }
+
+
   $(".toolTip").click(function(){
     clearInterval(noSelection);
     if(tipsOn){
@@ -2271,7 +2360,7 @@ document.body.onkeyup = function(e){
       //shouldn't be possible;
       tipsOn = true;
       //alert("tips on");
-      $("#hint_content").html("Turn tooltips OFF");
+      $("#hint_content").html("Turn <span id='tipPower'>OFF</span> (T)ooltips");
       $(".toolTip").stop(true, true).fadeOut();
     }
   });
@@ -2366,25 +2455,18 @@ document.body.onkeyup = function(e){
     //}
   });
 
-  //clear interval when switching from hover over function to navbox but not leaving widget_boi
-/*
 
-  $(".nav_box").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
-      $(".toolTip").fadeIn();
-    }
-  }, function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
-      $(".toolTip").delay(1500).fadeOut();
-    }
-  });
-
-*/
-
-$("#widget_boi").hover(function(){
-  if(!draggable && !intro_mode && !menuOpen && tipsOn){
-    $(".toolTip").stop(true, true).fadeIn();
+$("#widget_boi").hover(function(e){
+  var $target = e.target;
+  if($($target).attr("id") == "hint_content" || $($target).attr("id") == "context_hint" || $($target).attr("id") == "hinticator"){
+    //hovered over tooltip which is inside widget_boi
   }
+  else{
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+      $(".toolTip").stop(true, true).fadeIn();
+    }
+  }
+
 }, function(){
   if(!draggable && !intro_mode && !menuOpen && tipsOn){
     $(".toolTip").stop(true, true).fadeOut();
@@ -2409,6 +2491,16 @@ $("#widget_boi").hover(function(){
   $("#select_download_mode").hover(function(){
     if(!draggable && !intro_mode && !menuOpen && tipsOn){
       $("#hint_content").html("Download Mode");
+    }
+  });
+  $("#rw").hover(function(){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+      $("#hint_content").html("Previous");
+    }
+  });
+  $("#ff").hover(function(){
+    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+      $("#hint_content").html("Next");
     }
   });
 
@@ -2564,7 +2656,7 @@ $("#widget_boi").hover(function(){
     $("#audio_intro_info").show();
     $(".intro_info").stop().animate({
       "opacity": "1"
-    }, 2000);
+    }, 1300);
   }
 
   function download_demo(){
@@ -2572,7 +2664,7 @@ $("#widget_boi").hover(function(){
     $("#download_intro_info").show();
     $(".intro_info").stop().animate({
       "opacity": "1"
-    }, 2000);
+    }, 1300);
   }
 
   function menu_demo(){
@@ -2580,7 +2672,7 @@ $("#widget_boi").hover(function(){
     $("#menu_intro_info").show();
     $(".intro_info").stop().animate({
       "opacity": "1"
-    }, 2000);
+    }, 1300);
   }
 
   function home_demo(){
@@ -2588,7 +2680,7 @@ $("#widget_boi").hover(function(){
     $("#home_intro_info").show();
     $(".intro_info").stop().animate({
       "opacity": "1"
-    }, 2000);
+    }, 1300);
   }
 
 
@@ -2725,7 +2817,7 @@ $("#widget_boi").hover(function(){
         "opacity" : "1"
       }, 1500);
       $(".widget_intro, .intro_dots").hide();
-      //$(".help_me").addClass("help_me_on");
+      //$(".help_icon").addClass("help_icon_on");
     });
 
     $("#album_art").animate({
@@ -2753,7 +2845,7 @@ $("#widget_boi").hover(function(){
     //setTimeout(offerHint, 5000);
 
     //show option for tooltips
-    //$(".help_me").addClass("help_me_on");
+    //$(".help_icon").addClass("help_icon_on");
 
     $(".intro_msg").stop(true, true);
 
