@@ -502,6 +502,8 @@ $(document).ready(function() {
 
   $(".nav_box").mousedown(function(){
 
+    //alert(spinning);
+
     if(!spinning && !draggable){
 
       var nav_box_id = $(this).attr("id");
@@ -510,7 +512,7 @@ $(document).ready(function() {
       widget_mode = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
       //this guy is prime suspect for widget bug where input is still recognized by icon during spin
       spinning = true;
-      displayMode(widget_mode);
+      displayMode(widget_mode, prev_widget_mode);
       adjustIcon(prev_widget_mode, widget_mode);
 
     }
@@ -613,7 +615,7 @@ $(document).ready(function() {
   //need a function to take mode and direct behavior when box clicked
 
    //Determines current modes and calls for appropriate widget adjustments
-  function displayMode(widget_mode, callback){
+  function displayMode(widget_mode, prev_widget_mode, callback){
 
 
     //this function should become responsible for animating the rotation of the widget images to indicate the current mode
@@ -639,8 +641,15 @@ $(document).ready(function() {
       $("#widget_mode").html(widget_mode);
       switch(widget_mode){
         case "audio_mode":
+        //alert(prev_widget_mode);
+        if(prev_widget_mode == "home_mode"){
+          rotateDeg = 360;
+          var endSet = 0;
+        }
+        else{
+          rotateDeg = 0;
+        }
 
-        rotateDeg = 0;
         // spinning = true;
         if(intro_mode){
           var callback = audio_demo;
@@ -653,10 +662,16 @@ $(document).ready(function() {
             intro_index++;
           }
         }
-        navRotate(rotateDeg, callback);
+        navRotate(rotateDeg, endSet);
         break;
         case "home_mode":
-        rotateDeg = 270;
+        if(prev_widget_mode == "audio_mode"){
+          rotateDeg = -90;
+          var endSet = 270;
+        }
+        else{
+          rotateDeg = 270;
+        }
         // spinning = true;
         if(intro_mode){
           var callback = home_demo;
@@ -667,7 +682,7 @@ $(document).ready(function() {
             intro_index++;
           }
         }
-        navRotate(rotateDeg, callback);
+        navRotate(rotateDeg, endSet);
         break;
         case "menu_mode":
         rotateDeg = 180;
@@ -987,26 +1002,81 @@ $(document).ready(function() {
   ///////////////////////////////////////////////////////////////////////  WIDGET NAV ///////////////////////////////////////////////////////////////////////////////////////
 
   //Calum attempting to update widget spins to use css transition property
-
-  function simpleNavRotate(destDeg, endSet, callback){
+  var endPos = 0;
+  function simpleNavRotate(destDeg, endSet){
     //callback will need to be callled with setTimeout
     //might have to set degrees to an equivalent value
-    alert(destDeg);
+
+    //if transition is off turn it back on
+    $("#nav_options_img").css("transition", "transform 0.8s");
+    $("#widget_bezel_img").css("transition", "transform 0.8s");
+
+    //take shortest route
+    //if you are going from home to audio should go 270 to 360 then reset to 0
+    //if going from audio to home should be 0 to - 90 then reset 270
+
+    //figure out which way it is turning
+    //alert(endPos + " " + destDeg);
+    if(endPos > destDeg){
+      //alert("counterclockwise");
+      //if we are going this way..
+      //false is counterclockwise
+      var bezelDeg = destDeg + 360;
+
+    }
+    else{
+      //alert("clockwise");
+      var bezelDeg = destDeg - 360;
+    }
 
     $("#nav_options_img").css("transform", "rotate(" + destDeg + "deg)");
+    endPos = destDeg;
+    //send bezel other way
+
+
+    //var bezelDeg = destDeg - 360;
+
+    if(typeof endSet!== "undefined"){
+      endPos = endSet;
+      //use endset instead of destDeg
+      //if this is the case don't subtract 360
+      destDeg = endSet;
+      var bezelDeg = destDeg;
+    }
+
+    $("#widget_bezel_img").css("transform", "rotate(" + bezelDeg + "deg)");
+    //need to reset bezel each time
+    setTimeout(function(){
+      $("#widget_bezel_img").css("transition", "initial");
+      $("#widget_bezel_img").css("transform", "rotate(" + destDeg + "deg)");
+      //alert("bezel done at " + destDeg);
+    }, 800);
+
+    //not sure I still need spinning variable
+    //I guess we stil don't widget sticks to get fd mid-rotation
+    //if we do, use setimeout
+    setTimeout(function(){
+      if(typeof endSet !== "undefined"){
+        //alert(endSet);
+        //need to disable css transition temporarily so value adjustment is invisible
+        $("#nav_options_img").css("transition", "initial");
+        $("#nav_options_img").css("transform", "rotate(" + endSet + "deg)");
+      }
+      spinning = false;
+    }, 800)
 
   }
 
-  var testingSimple = false;
+  var testingSimple = true;
   //to turn this off you must also remove transition from #nav_options_img css
 
+  function navRotate(rotateDeg, endSet){
 
-  function navRotate(rotateDeg, callback){
-
+    //alert("nav rotate called");
 
     ///redirect to simplified version while testing
     if(testingSimple){
-      simpleNavRotate(rotateDeg);
+      simpleNavRotate(rotateDeg, endSet);
     }
     else{
       // for intro, bezel might have different start position

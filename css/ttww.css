@@ -540,8 +540,11 @@ body {
 #nav_options_img{
   /*hide the img with selection for intro */
   opacity: 0;
+
+}
+#widget_bezel_img, #nav_options_img{
   /*want to try spinning with css */
-  /* transition: transform 0.8s; */
+  transition: transform 0.8s;
 }
 #nav_options_dark{
   z-index: -1;
