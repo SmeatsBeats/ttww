@@ -585,6 +585,10 @@ body {
   cursor: pointer;
   /* border: 1px solid red; */
 }
+#widget_function{
+  /*attempt to switch to css transitions for widget*/
+  transition: transform 0.8s;
+}
 .intro_msg{
   z-index: -1;
   position: absolute;
@@ -603,6 +607,9 @@ body {
 }
 #b_stick {
   transform: rotate(-35deg);
+}
+#a_stick, #b_stick{
+  transition: transform 0.8s;
 }
 
 /* .audio_timeline {
@@ -631,6 +638,7 @@ body {
 .widget_stick{
   position: relative;
   transform-origin: center top;
+  transition: transform 0.8s;
   font-size: 260%;
   padding: 0;
   margin: 3%;

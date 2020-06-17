@@ -534,7 +534,7 @@ $(document).ready(function() {
         case "swipeup":
         if(!draggable){
           widget_mode = "home_mode";
-          displayMode(widget_mode);
+          displayMode(widget_mode, prev_widget_mode);
           adjustIcon(prev_widget_mode, widget_mode);
         }
         break;
@@ -542,21 +542,21 @@ $(document).ready(function() {
         if(!draggable){
           widget_mode = "menu_mode";
           //alert("calling displayMode with WM: " + widget_mode);
-          displayMode(widget_mode);
+          displayMode(widget_mode, prev_widget_mode);
           adjustIcon(prev_widget_mode, widget_mode);
         }
         break;
         case "swipedown":
         if(!draggable){
           widget_mode = "download_mode";
-          displayMode(widget_mode);
+          displayMode(widget_mode, prev_widget_mode);
           adjustIcon(prev_widget_mode, widget_mode);
         }
         break;
         case "swiperight":
         if(!draggable){
           widget_mode = "audio_mode";
-          displayMode(widget_mode);
+          displayMode(widget_mode, prev_widget_mode);
           adjustIcon(prev_widget_mode, widget_mode);
         }
         break;
@@ -566,7 +566,7 @@ $(document).ready(function() {
         switch(widget_mode){
 
           case "audio_mode":
-            displayMode(widget_mode);
+            displayMode(widget_mode, prev_widget_mode);
             //hilight intro task
             if(!audio_press){
               audio_press = true;
@@ -579,7 +579,7 @@ $(document).ready(function() {
             showSkip();
           break;
           case "download_mode":
-            displayMode(widget_mode);
+            displayMode(widget_mode, prev_widget_mode);
             if(!download_press){
               download_press = true;
               $("#download_press").addClass("intro_task_done");
@@ -595,7 +595,7 @@ $(document).ready(function() {
               $("#menu_press").addClass("intro_task_done");
             }
 
-            displayMode(widget_mode);
+            displayMode(widget_mode, prev_widget_mode);
 
             if(!intro_mode){
               //alert("reset intro mode pls");
@@ -615,6 +615,7 @@ $(document).ready(function() {
   //need a function to take mode and direct behavior when box clicked
 
    //Determines current modes and calls for appropriate widget adjustments
+  var upsideDown = false;
   function displayMode(widget_mode, prev_widget_mode, callback){
 
 
@@ -644,11 +645,17 @@ $(document).ready(function() {
         //alert(prev_widget_mode);
         if(prev_widget_mode == "home_mode"){
           rotateDeg = 360;
-          var endSet = 0;
         }
+        //else if(prev_widget_mode == "menu_mode" && playing){
+          //from menu to pause
+          //this is messing with the bezel and nav options img as well as the icon
+          //rotateDeg = 360;
+          //var endSet = 90;
+      //  }
         else{
           rotateDeg = 0;
         }
+        var endSet = 0;
 
         // spinning = true;
         if(intro_mode){
@@ -666,8 +673,16 @@ $(document).ready(function() {
         break;
         case "home_mode":
         if(prev_widget_mode == "audio_mode"){
-          rotateDeg = -90;
-          var endSet = 270;
+          if(playing){
+            //pause to home
+            rotateDeg = -90;
+            var endSet = 270;
+          }
+          else{
+            rotateDeg = -90;
+            var endSet = 270;
+          }
+
         }
         else{
           rotateDeg = 270;
@@ -685,6 +700,15 @@ $(document).ready(function() {
         navRotate(rotateDeg, endSet);
         break;
         case "menu_mode":
+        if(playing){
+          //if you are in pause mode and have been to menu mode
+          //if you try going to to any other mode then to home
+          //it will be upside down
+          //upsideDown = true;
+          endSet = 180;
+          //alert("you've been to menu");
+          //but if they go straight to home from menu it can be reset
+        }
         rotateDeg = 180;
         if(intro_mode){
           var callback = menu_demo;
@@ -696,9 +720,14 @@ $(document).ready(function() {
             intro_index++;
           }
         }
-        navRotate(rotateDeg, callback);
+        navRotate(rotateDeg, endSet);
         break;
         case "download_mode":
+        if(playing){
+          //upsideDown = true;
+          var endSet = 90;
+        }
+
         rotateDeg = 90;
         // spinning = true;
         if(intro_mode){
@@ -710,7 +739,7 @@ $(document).ready(function() {
             intro_index++;
           }
         }
-        navRotate(rotateDeg, callback);
+        navRotate(rotateDeg, endSet);
         break;
         default:
         rotateDeg = 0;
@@ -787,98 +816,189 @@ $(document).ready(function() {
 
   //////////////////////////////////////////////////////////////////// WIDGET ICON ////////////////////////////////////////////////////////////////////////
 
+  //me again trying to switch animations over to css
+
+  function simpleMoveSticks(open){
+    //alert(open);
+    $("#a_stick, #b_stick").css("transition", "transform 0.8s");
+    if(open){
+      //alert("opening");
+      if(originTop){
+        $("#a_stick").css("transform", "rotate(35deg)");
+        $("#b_stick").css("transform", "rotate(-35deg)");
+      }
+      else{
+        //alert("inverted");
+        $("#a_stick").css("transform", "rotate(-35deg)");
+        $("#b_stick").css("transform", "rotate(35deg)");
+
+        setTimeout(function(){
+          //clean up after inversion
+          //flip whole icon to 90 deg
+          //flip transform origin back to top
+          //need to temporarily disable transition
+          $("#widget_function").css("transition", "initial");
+          ///one for audio mode
+          if(homeFlip){
+            //alert("home flip");
+
+            $("#widget_function").css("transform", "rotate(360deg)");
+            homeFlip = false;
+          }
+          //else if(upsideDown){
+          //  alert("reorient widget");
+            //why am I not doing this with functionSet?
+          //  $("#widget_function").css("transform", "rotate(0deg)");
+          //}
+          else{
+            //alert("not home flip?");
+            if(!playing){
+              //alert("meep");
+              $("#widget_function").css("transform", "rotate(90deg)");
+            }
+            else{
+              if(upsideDown){
+                //don't need to do any cleaning up of whole icon orientation
+                //alert("hmmm");
+                //set this to false now that it has been used
+                upsideDown = false;
+              }
+            }
+
+          }
+
+          //do need to clean up the sticks to account for origin reset
+
+          $(".widget_stick").css("transform-origin", "center top");
+          originTop = true;
+          //alert("origin reset");
+          $("#a_stick, #b_stick").css("transition", "initial");
+          //$("#widget_function").css("transition", "initial");
+          $("#a_stick").css("transform", "rotate(35deg)");
+          $("#b_stick").css("transform", "rotate(-35deg)");
+
+        }, 800);
+      }
+
+    }
+    else{
+      //alert("closing");
+      $("#a_stick").css("transform", "rotate(0deg)");
+      $("#b_stick").css("transform", "rotate(0deg)");
+    }
+
+  }
+
 
   function moveSticks(open, flip, doubleRate){
 
-    var moveRate;
-    var dr = doubleRate
-    if(dr){
-      moveRate = (2 * spinRate);
+    if(testingSimple){
+      simpleMoveSticks(open);
     }
     else{
-      moveRate = spinRate;
-    }
-
-    if(open){
-      //start at 0
-      //counter for stick a
-      var ia = 0;
-      //counter for stick b -- might be unnecessary
-      var ib = 0;
-    }
-    else{
-      var ia = 35;
-      var ib = -35;
-    }
-
-    function runStickRotate(){
-
-      if(open){
-        if(ia == 35){
-          clearInterval(stickRotate);
-        }
-        else{
-          $("#a_stick").css("transform", "rotate(" + ia + "deg)");
-          $("#b_stick").css("transform", "rotate(" + ib + "deg)");
-          ia = ia + 1.25;
-          ib = ib - 1.25;
-          var stickRotate = setTimeout(runStickRotate, moveRate);
-        }
+      var moveRate;
+      var dr = doubleRate
+      if(dr){
+        moveRate = (2 * spinRate);
       }
       else{
-        if(ia == 0){
-          //doesn't seem to close all the way currently
-          //can just tac on css property setting to 0 for now
-          clearInterval(stickRotate);
-          $(".widget_stick").css("transform", "rotate(0deg)");
-          if(flip){
-            $("#widget_function").css("transform", "rotate(0deg)");
+        moveRate = spinRate;
+      }
+
+      if(open){
+        //start at 0
+        //counter for stick a
+        var ia = 0;
+        //counter for stick b -- might be unnecessary
+        var ib = 0;
+      }
+      else{
+        var ia = 35;
+        var ib = -35;
+      }
+
+      function runStickRotate(){
+
+        if(open){
+          if(ia == 35){
+            clearInterval(stickRotate);
+          }
+          else{
+            $("#a_stick").css("transform", "rotate(" + ia + "deg)");
+            $("#b_stick").css("transform", "rotate(" + ib + "deg)");
+            ia = ia + 1.25;
+            ib = ib - 1.25;
+            var stickRotate = setTimeout(runStickRotate, moveRate);
           }
         }
         else{
-          //alert("ia: " + ia + " ib: " + ib);
-          $("#a_stick").css("transform", "rotate(" + ia + "deg)");
-          $("#b_stick").css("transform", "rotate(" + ib + "deg)");
-          ia= ia - 1.25;
-          ib= ib + 1.25;
-          var stickRotate = setTimeout(runStickRotate, moveRate);
+          if(ia == 0){
+            //doesn't seem to close all the way currently
+            //can just tac on css property setting to 0 for now
+            clearInterval(stickRotate);
+            $(".widget_stick").css("transform", "rotate(0deg)");
+            if(flip){
+              $("#widget_function").css("transform", "rotate(0deg)");
+            }
+          }
+          else{
+            //alert("ia: " + ia + " ib: " + ib);
+            $("#a_stick").css("transform", "rotate(" + ia + "deg)");
+            $("#b_stick").css("transform", "rotate(" + ib + "deg)");
+            ia= ia - 1.25;
+            ib= ib + 1.25;
+            var stickRotate = setTimeout(runStickRotate, moveRate);
+          }
         }
       }
+      runStickRotate();
     }
-    runStickRotate();
   };
+
+  //calum attempt to transition to css animations
+  function simpleIconSpin(destDeg){
+    //alert("icon spin oops");
+    //alert("called");
+    //$("#widget_function").css("transform", "rotate(" + destDeg + "deg)");
+  }
+
 
   function iconSpin(start, end, rate, callback){
 
-    // previousDeg = 270;
-    var start = start;
-    var end = end;
-    spinRate = rate;
-    //must update to account for rate
+    if(testingSimple){
+      simpleIconSpin(end);
+    }
+    else{
+      // previousDeg = 270;
+      var start = start;
+      var end = end;
+      spinRate = rate;
+      //must update to account for rate
 
-    function runSpinWidget(){
-      if(start == end){
-        if(end == 360){
-          $("#widget_function").css("transform", "rotate(0deg)");
-        }
-        clearInterval(spinWidget);
-        $("#widget_function").css("transform", "rotate(" + end + "deg)");
-        callback();
-      }
-      else{
-
-        $("#widget_function").css("transform", "rotate(" + start + "deg)");
-        if(end > start){
-          start = start + 3;
+      function runSpinWidget(){
+        if(start == end){
+          if(end == 360){
+            //$("#widget_function").css("transform", "rotate(0deg)");
+          }
+          clearInterval(spinWidget);
+          //$("#widget_function").css("transform", "rotate(" + end + "deg)");
+          callback();
         }
         else{
-          //alert("backwards");
-          start = start - 3;
+
+          //$("#widget_function").css("transform", "rotate(" + start + "deg)");
+          if(end > start){
+            start = start + 3;
+          }
+          else{
+            //alert("backwards");
+            start = start - 3;
+          }
+          var spinWidget = setTimeout(runSpinWidget, spinRate);
         }
-        var spinWidget = setTimeout(runSpinWidget, spinRate);
       }
+      runSpinWidget();
     }
-    runSpinWidget();
   };
 
 
@@ -899,7 +1019,7 @@ $(document).ready(function() {
     if(prev_widget_mode == "audio_mode" && widget_mode == "menu_mode"){
       if(playing){
         //did I only put callback here for a reason?
-        iconSpin(0, 90, 2 * spinRate, callback);
+        //iconSpin(0, 90, 2 * spinRate, callback);
       }
       else{
         moveSticks(false, false, true);
@@ -908,12 +1028,12 @@ $(document).ready(function() {
 
     else if(prev_widget_mode == "audio_mode" && widget_mode == "home_mode"){
       if(playing){
-        $(".widget_stick").css("transform-origin", "center top");
+        //$(".widget_stick").css("transform-origin", "center top");
         moveSticks(true, false, false);
       }
       else{
 
-        iconSpin(90, 0, spinRate);
+        //iconSpin(90, 0, spinRate);
       }
 
     }
@@ -922,12 +1042,13 @@ $(document).ready(function() {
       //$("#audio_download").show();
 
       if(playing){
-        $("#widget_function").css("transform", "rotate(180deg)");
+        //alert("twas I");
+        //$("#widget_function").css("transform", "rotate(180deg)");
         moveSticks(true, false, false);
 
       }
       else {
-        iconSpin(90, 180, spinRate);
+        //iconSpin(90, 180, spinRate);
       }
 
     }
@@ -935,22 +1056,22 @@ $(document).ready(function() {
 
     else if(prev_widget_mode == "menu_mode" && widget_mode == "audio_mode"){
       if(playing){
-        iconSpin(270, 360, 2 * spinRate);
+        //iconSpin(270, 360, 2 * spinRate);
       }
       else{
         moveSticks(true, false, true);
-        iconSpin(270, 450, spinRate);
+        //iconSpin(270, 450, spinRate);
       }
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
       moveSticks(true, false, false);
-      iconSpin(270, 360, spinRate);
+      //iconSpin(270, 360, spinRate);
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
       //menu to download
       //$("#audio_download").show();
       moveSticks(true, false, false);
-      iconSpin(270, 180, spinRate);
+      //iconSpin(270, 180, spinRate);
     }
 
     //////////////////////////////////// from home /////////////////////////////////////
@@ -960,20 +1081,20 @@ $(document).ready(function() {
         moveSticks(false, false, false);
       }
       else{
-        iconSpin(0, 90, spinRate);
+        //iconSpin(0, 90, spinRate);
       }
     }
     else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
       // alert("home to menu animation");
       moveSticks(false, false, false);
-      iconSpin(0, -90, spinRate);
+      //iconSpin(0, -90, spinRate);
     }
 
     //NEED TO MAKE AND REMOVE DOWNLOAD LINK ACCORDINGLY
 
     else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
       //$("#audio_download").show();
-      iconSpin(0, 180, spinRate);
+      //iconSpin(0, 180, spinRate);
     }
       ////////////////////////////////// from download ///////////////////////////////
 
@@ -983,17 +1104,17 @@ $(document).ready(function() {
         moveSticks(false, true, false);
       }
       else{
-        iconSpin(180, 90, spinRate);
+        //iconSpin(180, 90, spinRate);
       }
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
       //$("#audio_download").hide();
-      iconSpin(180, 360, spinRate);
+      //iconSpin(180, 360, spinRate);
     }
     else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
       //$("#audio_download").hide();
       moveSticks(false, false, false);
-      iconSpin(180, 270, spinRate);
+      //iconSpin(180, 270, spinRate);
     }
   };
 
@@ -1003,6 +1124,11 @@ $(document).ready(function() {
 
   //Calum attempting to update widget spins to use css transition property
   var endPos = 0;
+  var flipIcon;
+  var flipBack;
+  var skipFlip = false;
+  var originTop = true;
+  var homeFlip = false;
   function simpleNavRotate(destDeg, endSet){
     //callback will need to be callled with setTimeout
     //might have to set degrees to an equivalent value
@@ -1010,6 +1136,10 @@ $(document).ready(function() {
     //if transition is off turn it back on
     $("#nav_options_img").css("transition", "transform 0.8s");
     $("#widget_bezel_img").css("transition", "transform 0.8s");
+    $("#widget_function").css("transition", "transform 0.8s");
+
+    //$(".widget_stick").css("transform-origin", "center top");
+    //originTop = true;
 
     //take shortest route
     //if you are going from home to audio should go 270 to 360 then reset to 0
@@ -1028,6 +1158,133 @@ $(document).ready(function() {
       //alert("clockwise");
       var bezelDeg = destDeg - 360;
     }
+
+    //spin widget function
+    //this one starts off at 90 degree rotation
+    var functionDeg = destDeg + 90;
+    var functionSet = endSet + 90;
+
+    //alert("destDeg " + destDeg + "endPos " + endPos);
+
+    //sometimes it don't rly need to spin
+    ////////////// DONT SPIN ///////////////////
+    if(!playing && destDeg == 180 && endPos == 0){
+      skipFlip = true;
+      //from play to menu
+      //don't spin it
+      //but flip it after
+      ///flipIcon = true;
+      //$(".widget_stick").css("transform-origin", "center bottom");
+      //originTop = false;
+      //maybe better to deal with flips in movesticks?
+    }
+    else if(!playing && destDeg == 0 && endPos == 180){
+      //go from menu to audio
+
+
+        //menu to play
+        //dont need to flip origin if you went from play to menu
+        if(skipFlip){
+          //dont flip origin
+
+        }
+        else{
+          $(".widget_stick").css("transform-origin", "center bottom");
+          originTop = false;
+          //flipIcon = true;
+        }
+
+    }
+    else if(playing && destDeg == -90){
+      //we only go to -90 if coming from audio mode
+      //from pause to home
+      //I know there is nothing here and it feels weird
+      //And is probably wrong
+      //but the actually rotation is in the else clause
+      //so this just means do nothing... don't rotate
+      //alert("pause to home");
+      if(upsideDown){
+        //alert("gotta flip");
+        $(".widget_stick").css("transform-origin", "center bottom");
+        originTop = false;
+        functionSet = 0;
+      }
+
+      //alert(endSet + " " + functionSet);
+
+    }
+    else if(playing && destDeg == 360 && endPos == 270){
+      //home to pause
+      //alert("home to pause");
+      functionSet = 0;
+    }
+    else if(playing && destDeg == 90 && endPos == 0){
+      //pause to download
+      //alert("pause to download");
+      //should need to flip origin here
+      $(".widget_stick").css("transform-origin", "center bottom");
+      originTop = false;
+      functionSet = 180;
+    }
+    else if(playing && destDeg == 0 && endPos == 90){
+      //download to pause
+      //alert("download to pause");
+      functionSet = 0;
+    }
+    /////////////// SPIN ///////////////
+    else{
+      if(destDeg == 270 && endPos == 180 && skipFlip){
+        //going from audio to menu then home
+        //$(".widget_stick").css("transform-origin", "center top");
+        //alert("womp");
+        functionDeg = 180;
+        $(".widget_stick").css("transform-origin", "center bottom");
+        originTop = false;
+        homeFlip = true;
+      }
+      else if(playing && destDeg == 0 && endPos == 180){
+        //menu to pause
+        //alert("nice");
+        functionDeg = 180;
+        functionSet = 0;
+      }
+      else if(playing && destDeg == 180){
+        //alert("going to menu");
+        functionSet = 270;
+        if(endPos == 0){
+          //pause to menu
+          functionDeg = 90;
+          //functionSet = 180;
+        }
+      }
+      else if(playing && destDeg == 0 && endPos == 90){
+        //download to pause
+        functionDeg = 0;
+      }
+      else if(playing && destDeg == 270){
+
+        if(endPos == 180){
+          //from menu to home
+          //$(".widget_stick").css("transform-origin", "center bottom");
+          //originTop = false;
+          functionDeg = 360;
+          //homeFlip = true;
+          //upsideDown = true;
+        }
+        else{
+          //going to home from NOT audio
+          upsideDown = false;
+          //alert("not upside down");
+        }
+
+      }
+      //alert("moving function " + functionDeg);
+      $("#widget_function").css("transform", "rotate(" + functionDeg + "deg)");
+      if(skipFlip){
+        skipFlip = false;
+      }
+    }
+
 
     $("#nav_options_img").css("transform", "rotate(" + destDeg + "deg)");
     endPos = destDeg;
@@ -1050,6 +1307,14 @@ $(document).ready(function() {
       $("#widget_bezel_img").css("transition", "initial");
       $("#widget_bezel_img").css("transform", "rotate(" + destDeg + "deg)");
       //alert("bezel done at " + destDeg);
+
+      if(flipIcon){
+       $("#widget_function").css("transition", "initial");
+       $("#widget_function").css("transform", "rotate(90deg)");
+       flipIcon = false;
+       //alert("flipping whole icon");
+      }
+
     }, 800);
 
     //not sure I still need spinning variable
@@ -1057,10 +1322,20 @@ $(document).ready(function() {
     //if we do, use setimeout
     setTimeout(function(){
       if(typeof endSet !== "undefined"){
-        //alert(endSet);
+        //alert("endSet " + endSet);
         //need to disable css transition temporarily so value adjustment is invisible
         $("#nav_options_img").css("transition", "initial");
         $("#nav_options_img").css("transform", "rotate(" + endSet + "deg)");
+
+
+        //reset icon
+          if(functionSet >= 0){
+            //alert("resetting icon " + functionSet);
+            $("#widget_function").css("transition", "initial");
+            $("#widget_function").css("transform", "rotate(" + functionSet + "deg)");
+          }
+
+
       }
       spinning = false;
     }, 800)
@@ -1491,6 +1766,7 @@ $(document).ready(function() {
   /////// audio tap //////
 
   function audioControl(){
+    $("#a_stick, #b_stick, #widget_function").css("transition", "transform 0.8s");
 
     if(playing){
         audioFile.pause();
@@ -1499,7 +1775,11 @@ $(document).ready(function() {
         //change icon to play
         spinRate = 15;
         moveSticks(true, false, false);
-        iconSpin(0, 90, 15);
+        //iconSpin(0, 90, 15);
+        //alert("audio control moving widget function");
+        $("#widget_function").css("transform", "rotate(90deg)");
+        //reset play icon
+        //simpleIconSpin(1);
       }
       else{
         audioFile.play();
@@ -1508,7 +1788,11 @@ $(document).ready(function() {
         //change icon to pause
         spinRate = 15;
         moveSticks(false, false, false);
-        iconSpin(90, 0, 15);
+        //iconSpin(90, 0, 15);
+        //alert("audio control moving widget function");
+        $("#widget_function").css("transform", "rotate(0deg)");
+        //reset pause icon
+        //simpleIconSpin(2);
       }
       $("#hint_content").stop(true, true);
       $("#hinticator").stop(true, true);
