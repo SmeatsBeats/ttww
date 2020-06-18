@@ -512,7 +512,7 @@ $(document).ready(function() {
       widget_mode = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
       //this guy is prime suspect for widget bug where input is still recognized by icon during spin
       spinning = true;
-      displayMode(widget_mode, prev_widget_mode);
+      //displayMode(widget_mode, prev_widget_mode);
       adjustIcon(prev_widget_mode, widget_mode);
 
     }
@@ -616,6 +616,10 @@ $(document).ready(function() {
 
    //Determines current modes and calls for appropriate widget adjustments
   var upsideDown = false;
+
+  //as of my updates converting animations to css, this function is pretty useless.
+  //all it does now is deal with some intro stuff i think
+
   function displayMode(widget_mode, prev_widget_mode, callback){
 
 
@@ -669,7 +673,7 @@ $(document).ready(function() {
             intro_index++;
           }
         }
-        navRotate(rotateDeg, endSet);
+        //navRotate(rotateDeg, endSet);
         break;
         case "home_mode":
         if(prev_widget_mode == "audio_mode"){
@@ -697,9 +701,10 @@ $(document).ready(function() {
             intro_index++;
           }
         }
-        navRotate(rotateDeg, endSet);
+        //navRotate(rotateDeg, endSet);
         break;
         case "menu_mode":
+        /*
         if(playing){
           //if you are in pause mode and have been to menu mode
           //if you try going to to any other mode then to home
@@ -710,6 +715,7 @@ $(document).ready(function() {
           //but if they go straight to home from menu it can be reset
         }
         rotateDeg = 180;
+        */
         if(intro_mode){
           var callback = menu_demo;
           //var callback = menu_demo;
@@ -720,7 +726,8 @@ $(document).ready(function() {
             intro_index++;
           }
         }
-        navRotate(rotateDeg, endSet);
+        //navRotate(rotateDeg, endSet);
+        //adjustIcon(prev_widget_mode, widget_mode);
         break;
         case "download_mode":
         if(playing){
@@ -739,7 +746,7 @@ $(document).ready(function() {
             intro_index++;
           }
         }
-        navRotate(rotateDeg, endSet);
+        //navRotate(rotateDeg, endSet);
         break;
         default:
         rotateDeg = 0;
@@ -818,6 +825,28 @@ $(document).ready(function() {
 
   //me again trying to switch animations over to css
 
+  function superSimpleMoveSticks(open, flip){
+    ////// 0. Turn on transition if it is off //////////
+    $("#a_stick, #b_stick").css("transition", "transform 0.8s");
+
+    if(open){
+      //open the sticks
+      if(flip){
+        var openDeg = -35;
+      }
+      else{
+        var openDeg = 35;
+      }
+    $("#a_stick").css("transform", "rotate(" + openDeg + "deg)");
+    $("#b_stick").css("transform", "rotate(" + -openDeg + "deg)");
+    }
+    else{
+      //close the sticks
+      $("#a_stick, #b_stick").css("transform", "rotate(0deg)");
+    }
+
+  }
+
   function simpleMoveSticks(open){
     //alert(open);
     $("#a_stick, #b_stick").css("transition", "transform 0.8s");
@@ -893,7 +922,7 @@ $(document).ready(function() {
   function moveSticks(open, flip, doubleRate){
 
     if(testingSimple){
-      simpleMoveSticks(open);
+      superSimpleMoveSticks(open, flip);
     }
     else{
       var moveRate;
@@ -1009,113 +1038,245 @@ $(document).ready(function() {
 
 
 
+  var navDeg, iconDeg, navSet, iconSet, sticks, open, flip;
+  function adjustIcon(prev_widget_mode, widget_mode) {
 
-  function adjustIcon(prev_widget_mode, widget_mode, callback) {
-
+    //clear data in relevant variable from last run
+    navDeg = iconDeg = navSet = iconSet = sticks = open = flip = undefined;
+    ///going to try to use this one function to facilitate all updates to widget appearance
+    //when mode is switched
 
     //////////////////////////////// from audio //////////////////////////////////
 
     //prev = audio_mode
+    //audio to menu
     if(prev_widget_mode == "audio_mode" && widget_mode == "menu_mode"){
+      navDeg = 180;
+      iconSet = 270;
       if(playing){
-        //did I only put callback here for a reason?
-        //iconSpin(0, 90, 2 * spinRate, callback);
+        //pause to menu
+        iconDeg = 90;
       }
       else{
-        moveSticks(false, false, true);
+        //play to menu
+        //no spin of icon just close and reset
+        open = false;
+        flip = false;
+        //moveSticks(false, false, true);
       }
+      //superSimpleNavRotate(navDeg, iconDeg);
+      //both require a reset
+      //should only need to reset nav when switching over the 360 mark
+      //ie audio to home and vice versa
+      //simpleEndSet(undefined, iconSet);
     }
-
+    //// audio to home
     else if(prev_widget_mode == "audio_mode" && widget_mode == "home_mode"){
+      //in both cases the nav wheel goes cc to top left
+      navDeg = -90;
+      navSet = 270;
+      iconSet = 360;
       if(playing){
+        //pause to home
+        //doesn't need to rotate icon, just nav wheel
+        iconDeg = undefined;
+        //do need to reset, but only nav
+
         //$(".widget_stick").css("transform-origin", "center top");
-        moveSticks(true, false, false);
+        open = true;
+        flip = false;
+        //moveSticks(true, false, false);
       }
       else{
-
+        //play to home
+        iconDeg = 0;
         //iconSpin(90, 0, spinRate);
       }
+      //superSimpleNavRotate(navDeg, iconDeg);
+      //simpleEndSet(navSet, iconSet);
 
     }
+    //audio to download
     else if(prev_widget_mode == "audio_mode" && widget_mode == "download_mode"){
-
-      //$("#audio_download").show();
-
+      navDeg = 90;
       if(playing){
-        //alert("twas I");
-        //$("#widget_function").css("transform", "rotate(180deg)");
-        moveSticks(true, false, false);
+        //pause to download
+        //don't spin icon just open sticks
+        //from bottom
 
+        $(".widget_stick").css("transform-origin", "center bottom");
+        iconDeg = undefined;
+        iconSet = 180;
+        //will need to fix z stix
+        sticks = true;
+        //alert("twas I");
+        open = true;
+        flip = true;
+        //moveSticks(true, true, false);
       }
       else {
+        //play to download
+        //spin icon to 180
+        iconDeg = 180;
+        iconSet = undefined;
         //iconSpin(90, 180, spinRate);
       }
-
+      //superSimpleNavRotate(navDeg, iconDeg);
+      //simpleEndSet(undefined, iconSet, sticks);
     }
     ////////////////////////////////// from menu ///////////////////////////////////////
-
+    //menu to audio
     else if(prev_widget_mode == "menu_mode" && widget_mode == "audio_mode"){
+      navDeg = 0;
       if(playing){
+        //menu to pause
+        //need to rotate cc 90 deg
+        //should be at 270
+        iconDeg = 180;
+        iconSet = 0;
         //iconSpin(270, 360, 2 * spinRate);
       }
       else{
-        moveSticks(true, false, true);
+        //menu to play
+        //don't spin icon just open sticks
+        //from bottom?
+        iconDeg = undefined;
+        iconSet = 90;
+        $(".widget_stick").css("transform-origin", "center bottom");
+        sticks = true;
+        open = true;
+        flip = true;
+        //moveSticks(true, true, true);
         //iconSpin(270, 450, spinRate);
       }
+      //superSimpleNavRotate(navDeg, iconDeg);
+      //simpleEndSet(undefined, iconSet, sticks);
     }
+    //menu to home
     else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
-      moveSticks(true, false, false);
+      navDeg = 270;
+      //icon should be at 270
+      iconDeg = 360;
+      //do I leave this here? or set to 0?
+      //iconSet =
+      //I guess I just pick and base following math on choice
+      //superSimpleNavRotate(navDeg, iconDeg);
+      //don't need to reset anything but i need this function to set spinning to false
+      //at appropriate time
+      //simpleEndSet();
+      open = true;
+      flip = false;
+      //moveSticks(true, false, false);
       //iconSpin(270, 360, spinRate);
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
       //menu to download
-      //$("#audio_download").show();
-      moveSticks(true, false, false);
-      //iconSpin(270, 180, spinRate);
+      navDeg = 90;
+      iconDeg = 180;
+      //superSimpleNavRotate(navDeg, iconDeg);
+      //don't need to reset anything but i need this function to set spinning to false
+      //at appropriate time
+      //simpleEndSet();
+      open = true;
+      flip = false;
+      //moveSticks(true, false, false);
     }
 
     //////////////////////////////////// from home /////////////////////////////////////
-
+    //home to audio
     else if(prev_widget_mode == "home_mode" && widget_mode == "audio_mode"){
+      navDeg = 360;
+      //do I need to set this back to 0?
+      //yes because other functions from audio mode anticipate 0
+      //ex: audio to home would go 360 to -90 lol
+      navSet = 0;
       if(playing){
-        moveSticks(false, false, false);
+        //home to pause
+        //don't spin icon
+        //just close sticks
+        open = false;
+        flip = false;
+        //moveSticks(false, false, false);
+        //and set icon to 0
+        iconSet = 0;
       }
       else{
-        //iconSpin(0, 90, spinRate);
+        //home to play
+        //icon is at 360 right now
+        iconDeg = 450;
+        iconSet = 90;
       }
+      //superSimpleNavRotate(navDeg, iconDeg);
+      //simpleEndSet(navSet, iconSet, sticks);
     }
+    //home to menu
     else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
+      navDeg = 180;
+      iconDeg = 270;
+      //superSimpleNavRotate(navDeg, iconDeg);
+      //simpleEndSet();
       // alert("home to menu animation");
-      moveSticks(false, false, false);
+      open = false;
+      flip = false;
+      //moveSticks(false, false, false);
       //iconSpin(0, -90, spinRate);
     }
 
     //NEED TO MAKE AND REMOVE DOWNLOAD LINK ACCORDINGLY
-
+    //home to download
     else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
       //$("#audio_download").show();
       //iconSpin(0, 180, spinRate);
+      navDeg = 90;
+      iconDeg = 180;
     }
       ////////////////////////////////// from download ///////////////////////////////
-
+    //download to audio
     else if(prev_widget_mode == "download_mode" && widget_mode == "audio_mode"){
       //$("#audio_download").hide();
+      navDeg = 0;
       if(playing){
-        moveSticks(false, true, false);
+        //download to pause
+        //don't spin
+        iconSet = 0;
+        //moveSticks(false, true, false);
+        open = false;
+        flip = true;
       }
       else{
+        //download to play
+        iconDeg = 90;
         //iconSpin(180, 90, spinRate);
       }
     }
+    //download to home
     else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
+      navDeg = 270;
+      iconDeg = 360;
       //$("#audio_download").hide();
       //iconSpin(180, 360, spinRate);
     }
+    //download to menu
     else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
       //$("#audio_download").hide();
-      moveSticks(false, false, false);
+      //moveSticks(false, false, false);
+      navDeg = 180;
+      iconDeg = 270;
+      open = false;
+      flip = false;
       //iconSpin(180, 270, spinRate);
     }
+    else{
+      //alert("same mode?");
+    }
+
+    navRotate(navDeg, iconDeg);
+    endSet(navSet, iconSet, sticks);
+    //only need to call movesticks when necessary
+    if(typeof open !== 'undefined'){
+      moveSticks(open, flip);
+    }
+    //alert("endPos: " + endPos);
   };
 
 
@@ -1123,12 +1284,119 @@ $(document).ready(function() {
   ///////////////////////////////////////////////////////////////////////  WIDGET NAV ///////////////////////////////////////////////////////////////////////////////////////
 
   //Calum attempting to update widget spins to use css transition property
+
+  var bezelDeg;
   var endPos = 0;
-  var flipIcon;
-  var flipBack;
-  var skipFlip = false;
-  var originTop = true;
-  var homeFlip = false;
+  function navRotate(navDeg, iconDeg){
+    //alert("keep it simple");
+
+    //////////////////////// 0. Make sure transitions are on ////////////////
+    $("#nav_options_img, #widget_bezel_img, #widget_function").css("transition", "transform 0.8s");
+
+
+    //////////////////////// 1. send nav_options to end location /////////////
+
+    $("#nav_options_img").css("transform", "rotate(" + navDeg + "deg)");
+    //this is not really the end position since endSet function might change these numbers
+    //endPos = navDeg;
+
+    //////////////////////// 2. Send bezel opposite direction /////////////
+
+    if(endPos > navDeg){
+      //alert("cc " + endPos + " " + navDeg);
+      //this means it is going counterclockwise
+      bezelDeg = navDeg + 360;
+    }
+    else{
+      //alert("c " + endPos + " " + navDeg);
+      //this means it is going clockwise
+      bezelDeg = navDeg - 360;
+    }
+
+    $("#widget_bezel_img").css("transform", "rotate(" + bezelDeg + "deg)");
+
+    ////////////////////// 3. Send icon to end position ///////////////////
+    $("#widget_function").css("transform", "rotate(" + iconDeg + "deg)");
+
+  }
+
+  function endSet(navSet, iconSet, sticks){
+    //arguments represent values to set components to after spin
+    //sticks:
+    //undefined: do nothing
+    //true: need to flip the values of rotate for a_stick and b_stick
+    //alert("simply resetting");
+    /////////////////////////// 1. Wait until transition done //////////////
+    setTimeout(function(){
+      /////// 1.5 //////////
+      //set spinning to false since it should be done spinning by now
+      spinning = false;
+      ///////////////////////// 2. If reset values provided, do it //////////
+
+      //////// 2A. navSet for nav_options_img ///////////////
+      if(typeof navSet !== 'undefined'){
+        //if a reset value for the nav ring has been defined,
+        //use it for the bezel and nav options
+
+        //cancel the transition so it is imperceptible for user
+        $("#nav_options_img, #widget_bezel_img").css("transition", "initial");
+
+        //set the rotation values
+        $("#nav_options_img").css("transform", "rotate(" + navSet + "deg)");
+        $("#widget_bezel_img").css("transform", "rotate(" + navSet + "deg)");
+        endPos = navSet;
+      }
+      else{
+        //no reset required of nav bar, but
+        ////since bezel spins like mad, should probably reset it each time
+        //navDeg should still be defined globally
+        endPos = navDeg;
+        $("#widget_bezel_img").css("transition", "initial");
+        //alert("reset bezel only " + navDeg);
+        $("#widget_bezel_img").css("transform", "rotate(" + navDeg + "deg)");
+      }
+      ////// 2B. iconSet for #widget_function /////////////
+      if(!typeof iconSet !== 'undefined'){
+        //if a reset value for the icon has been defined,
+        //use it for the icon
+
+        //cancel the transition so it is imperceptible for user
+        $("#widget_function").css("transition", "initial");
+
+        //set the rotation values
+        $("#widget_function").css("transform", "rotate(" + iconSet + "deg)");
+      }
+
+      ////////// 3. Reset sticks if necessary /////////
+      if(typeof sticks !== "undefined"){
+        //alert("fix z sticks");
+        if(sticks){
+          //cancel transition so imperceptible
+          $("#a_stick, #b_stick").css("transition", "initial");
+          //reset origin to top
+          $(".widget_stick").css("transform-origin", "center top");
+          //swap values of a and b stick
+          //what are these values?
+          //do i need to know?
+          //alert("swapping stix");
+          var bDeg = $("#b_stick").css("transform");
+          var aDeg = $("#a_stick").css("transform");
+          $("#a_stick").css("transform", bDeg);
+          $("#b_stick").css("transform", aDeg);
+        }
+        else{
+
+
+        }
+      }
+
+    }, 800);
+  }
+
+
+
+  /*
+
   function simpleNavRotate(destDeg, endSet){
     //callback will need to be callled with setTimeout
     //might have to set degrees to an equivalent value
@@ -1341,17 +1609,18 @@ $(document).ready(function() {
     }, 800)
 
   }
+  */
 
   var testingSimple = true;
   //to turn this off you must also remove transition from #nav_options_img css
-
+  /*
   function navRotate(rotateDeg, endSet){
 
     //alert("nav rotate called");
 
     ///redirect to simplified version while testing
     if(testingSimple){
-      simpleNavRotate(rotateDeg, endSet);
+      //superSimpleNavRotate(rotateDeg);
     }
     else{
       // for intro, bezel might have different start position
@@ -1518,6 +1787,7 @@ $(document).ready(function() {
 
 
   };
+  */
 
   ///////////////////////////////// transition widget between intro setup and normal use
 
