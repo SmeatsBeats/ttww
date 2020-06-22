@@ -2740,4 +2740,20 @@ $("#widget_boi").hover(function(){
       }
     });
   }
+
+
+  window.addEventListener('keydown', function(e) {
+  if(e.keyCode == 32 && e.target == document.body) {
+    e.preventDefault();
+  }
+  });
+
+
+  document.body.onkeyup = function(e){
+    if(e.keyCode == 32){
+        audioControl()
+      }
+}
+
+
 });
