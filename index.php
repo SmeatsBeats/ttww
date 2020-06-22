@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=1" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=9" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
-    <script type="text/javascript" src="js/ttww.js?v=1.2"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
   </head>
 
   <body>
@@ -880,7 +880,7 @@
               </svg>
 
               <!-- FF RW -->
-              <div class="ffrw">
+              <div class="ffrw" id="ffrw_container">
                 <span id="rw"><<</span>
                 <span id="ff">>></span>
               </div>
@@ -891,8 +891,18 @@
                 <span class="current_time"></span>
               </div>
 
+              <!--
               <img class="widget_nav" id="nav_options_img" src="imgs/WIDGET_NAV.svg" alt="Widget navigation">
+            -->
+              <svg class="widget_nav" id="nav_options_img" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="52.12" height="51.85" viewBox="0 0 52.12 51.85">
 
+                <g id="new_nav" data-name="new nav">
+                  <path class="widget_nav_path" id="widget_nav_1" d="M25.56,7.48V3.33A22.85,22.85,0,0,0,3.24,25.67H7.39A18.68,18.68,0,0,1,25.56,7.48Z"/>
+                  <path class="widget_nav_path" id="widget_nav_2" d="M25.56,49V44.87A18.7,18.7,0,0,1,7.39,26.67H3.24A22.84,22.84,0,0,0,25.56,49Z"/>
+                  <path class="widget_nav_path" id="widget_nav_3" d="M26.56,44.87V49A22.86,22.86,0,0,0,48.93,26.67H44.78A18.69,18.69,0,0,1,26.56,44.87Z"/>
+                  <path class="widget_nav_path" id="widget_nav_selected" d="M26.56,3.33V7.47a18.7,18.7,0,0,1,18.22,18.2h4.15A22.86,22.86,0,0,0,26.56,3.33Z"/>
+                </g>
+              </svg>
 
               <img class="widget_nav" id="nav_options_dark" src="imgs/WIDGET_NAV_DARK.svg" alt="Widget navigation">
               <img class="widget_bezel" id="widget_bezel_img" src="imgs/WIDGET_BEZEL_SMALL.svg" alt="Model watch bezel">

@@ -507,13 +507,25 @@ body {
   width: 100%;
   height: 100%;
 }
-.nav_img_container img {
+.nav_img_container img, .nav_img_container svg {
   position: absolute;
   width: 100%;
   height: 100%;
   /* top: 0;
   left: 0;
   width: 100%; */
+}
+.widget_nav_path {
+  fill: #282828;
+  transition: fill 0.5s;
+}
+
+#widget_nav_selected {
+  fill: #b3b3b3;
+}
+.widget_nav_hover {
+  fill: #383838;
+  transition: fill 0.5s;
 }
 .nav_img_container {
   position: absolute;
@@ -611,16 +623,6 @@ body {
 #a_stick, #b_stick{
   transition: transform 0.8s;
 }
-
-/* .audio_timeline {
-
-} */
-/* .widget_nav {
-  z-index: 3;
-}
-.widget_bezel {
-  z-index: 4;
-} */
 .download_circle{
   position: absolute;
   top: 0;
@@ -941,6 +943,19 @@ body {
 }
 /********END WIDGET BOI ****/
 /********WIDGET INTRO ********/
+@keyframes infiniteSpin{
+  to {transform: rotate(360deg);}
+}
+@keyframes infiniteBackSpin{
+  to {transform: rotate(-360deg);}
+}
+/* #widget_function{
+  background: rgba(200, 200, 200, 0.6);
+} */
+
+#nav_options_dark{
+  transition: transform 0.8s;
+}
 .widget_intro {
   position: fixed;
   /* bumped up to 4 to prevent dots on support page lil_dots from lingering when this fades in */
