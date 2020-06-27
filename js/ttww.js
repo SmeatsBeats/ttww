@@ -25,6 +25,7 @@ $(document).ready(function() {
   var download_tap = false;
   var download_press = false;
   var downloadSimpleOpen = false;
+  var downloadOptionsOpen = false;
   var menu_tap = false;
   var mennu_press = false;
   var menuOpen = false;
@@ -44,6 +45,18 @@ $(document).ready(function() {
   var prev_widget_mode;
   var runningHover;
   var flip;
+  var isMobile;
+  //check if mobile
+
+  if($(".test_mobile").css("color") == "rgb(255, 0, 0)"){
+    isMobile = true;
+  }
+  else{
+    isMobile = false;
+    //desktop or tablet
+  }
+
+  //alert("mobile: " + isMobile + " " + $(".test_mobile").css("color"));
 
 
   ///WIDGET NAV
@@ -69,7 +82,7 @@ $(document).ready(function() {
   var getWidget = document.getElementById("widget_boi");
   //var getWidget = document.getElementsByClassName("widget_swipe");
 
-  var mc = new Hammer(getWidget);
+  //var mc = new Hammer(getWidget);
 
 
   //AUDIO TIMELINE
@@ -129,6 +142,9 @@ $(document).ready(function() {
   $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator").hide();
   $(".intro_msg, #album_art, #real_body").css("opacity", "0");
   $(".prev_arrow").addClass("no_arrow");
+  if(isMobile){
+    $(".help").hide();
+  }
 
 
   ///////////////////////////////////////////////////////////////////////////////////////// SLIDER /////////////////////////////////////////////////
@@ -144,6 +160,8 @@ $(document).ready(function() {
     return slider_index;
   }
 
+  var $currentSlider;
+
   function sliderUpdate(next, $currentSlider, slider_index, jumpTo){
     //getSliderIndex($currentSlider);
     //alert("howdy");
@@ -156,15 +174,7 @@ $(document).ready(function() {
     var prev_dot_class = ".dot_boi_" + slider_index;
     //alert(prev_dot_class);
     var prev_dot = $($currentSlider).find(prev_dot_class);
-/*
-    var setImgDot = function(slider_index){
-      alert("setting img and dot");
-      var current_img = slide_imgs[img_index];
-      var current_dot_class = ".dot_boi_" + slider_index;
-      var current_dot = $($currentSlider).find(current_dot_class);
-      return current_img, current_dot;
-    }
-*/
+
     if(next){
       //go right
       if(typeof jumpTo !== "undefined"){
@@ -333,11 +343,15 @@ $(document).ready(function() {
     }
   }
 
-  $(".support_img_slider").each(function(){
-    var img_index = 0;
+  var img_index;
+  var slide_imgs;
 
+  $(".support_img_slider").each(function(){
+    //var img_index = 0;
+    img_index = 0;
     var dots = "";
-    var slide_imgs = $(this).children(".support_img");
+    //var slide_imgs = $(this).children(".support_img");
+    slide_imgs = $(this).children(".support_img");
     var num_imgs = slide_imgs.length;
 
     if(num_imgs == 1){
@@ -371,17 +385,19 @@ $(document).ready(function() {
 
     //slideright when arrow clicked for desktop version
 
-    var $currentSlider = $(this);
+    //var $currentSlider = $(this);
+
+
     //var slider_class = $(thisSlider).attr("class");
     //alert(slider_class);
 
-    var hammertime = new Hammer(this);
+    //var hammertime = new Hammer(this);
 
-    hammertime.on("swipeleft swiperight press", function(event){
+    //hammertime.on("swipeleft swiperight press", function(event){
 
       //alert(slider_class);
 
-
+      /*
       var eventType = event.type;
       // alert(eventType);
 
@@ -390,6 +406,8 @@ $(document).ready(function() {
       var prev_dot = $($currentSlider).find(prev_dot_class);
 
       var slider_index = getSliderIndex($currentSlider);
+
+
 
       if(eventType == "tap" || eventType == "swipeleft"){
 
@@ -400,10 +418,55 @@ $(document).ready(function() {
       else{
         sliderUpdate(false, $currentSlider, slider_index);
       }
-
-      return false;
-    });
+      */
+      //return false;
+    //});
   });
+
+  function sliderGestureControl(e){
+    //var $currentSlider = e.target;
+    //alert($currentSlider);
+    //$($currentSlider).fadeOut();
+    ////these variables are local and not available here
+    var prev_img = slide_imgs[img_index];
+    var prev_dot_class = ".dot_boi_" + img_index;
+    var prev_dot = $($currentSlider).find(prev_dot_class);
+
+    var slider_index = getSliderIndex($currentSlider);
+    //alert(slider_index);
+    switch(widgetGesture){
+      case "swipeleft":
+      sliderUpdate(true, $currentSlider, slider_index);
+      break;
+      case "swiperight":
+      sliderUpdate(false, $currentSlider, slider_index);
+      break;
+      case "tap":
+      //alert("tapped");
+      if(!runningHover){
+        //alert("img: " + $(this).hasClass("img_indicator_container") + "no_arrow: " + $(this).hasClass("no_arrow"));
+        $target = e.target;
+        //target will be slider
+        //alert($($target).attr("class"));
+        //this makes sure it doesn't fadeout if you tap arrow
+        if($($target).hasClass("img_indicator_container")){
+          //container was clicked
+          if($($target).closest(".support_img_slider").find(".support_img_info").is(":visible")){
+          //  alert("be gone");
+            $($target).closest(".support_img_slider").find(".support_img_info").fadeOut("slow");
+            //alert("fading out");
+          }
+          else{
+            $($target).closest(".support_img_slider").find(".support_img_info").fadeIn("fast");
+          }
+        }
+      }
+      default:
+      //alert("other gesture");
+      break;
+    }
+  }
+
 
   $(".slider_arrow").click(function(){
 
@@ -474,6 +537,7 @@ $(document).ready(function() {
   });
 
   //can improve this by preventing fadeOut on last and first imgs
+  /*
   $(".img_indicator_container").click(function(event){
       if(!runningHover){
         //alert("img: " + $(this).hasClass("img_indicator_container") + "no_arrow: " + $(this).hasClass("no_arrow"));
@@ -491,7 +555,34 @@ $(document).ready(function() {
           }
         }
       }
-  })
+  });
+  */
+  function imgInfoGestureControl(e){
+    alert("called");
+    switch(widgetGesture){
+      case "tap":
+      if(!runningHover){
+        //alert("img: " + $(this).hasClass("img_indicator_container") + "no_arrow: " + $(this).hasClass("no_arrow"));
+        $target = e.target;
+        //alert($($target).attr("class"));
+        if($($target).hasClass("img_indicator_container")){
+          //container was clicked
+          if($($target).closest(".support_img_slider").find(".support_img_info").is(":visible")){
+          //  alert("be gone");
+            $($target).closest(".support_img_slider").find(".support_img_info").fadeOut("slow");
+            //alert("fading out");
+          }
+          else{
+            $($target).closest(".support_img_slider").find(".support_img_info").fadeIn("fast");
+          }
+        }
+      }
+      break;
+      default:
+      //nothing?
+      break;
+    }
+  }
 
 
   //////////////////////////////////////////////////////////////////// WIDGET BOIIIIIIIIII /////////////////////////////////////////////////////////////////////
@@ -535,7 +626,21 @@ $(document).ready(function() {
   });
 
 
+  ///gonna try to get rid of hammer since I still need to use my own mobile eventlisteners...
+  ///WIDGET FUNCTION
 
+  //touchstart:
+    //get touchstart position
+    //start timer and if it is not cancelled in time, set press true
+  //touchmove
+    //set swipe to true. is this necessary?
+    //set press false and clear timer
+  //touchend
+    //get end position and calculate swipe direction
+    //execute relevent function
+
+
+  /*
   mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
   mc.on("swipeleft swiperight swipeup swipedown press", function(ev){
@@ -637,6 +742,7 @@ $(document).ready(function() {
 
       }
       if(widgetGesture !== "press"){
+
         //since widget not initially in a mode set prev_widget_mode to first widget_mode
         if(firstSwipe){
           prev_widget_mode = widget_mode;
@@ -655,104 +761,6 @@ $(document).ready(function() {
       }
     }
   });
-
-  //need a function to take mode and direct behavior when box clicked
-
-   //Determines current modes and calls for appropriate widget adjustments
-  //var upsideDown = false;
-
-  //as of my updates converting animations to css, this function is pretty useless.
-  //all it does now is deal with some intro stuff i think
-
-  /*
-
-  function displayMode(widget_mode, prev_widget_mode, callback){
-
-
-    //this function should become responsible for animating the rotation of the widget images to indicate the current mode
-    //can combine with existing switch for widget mode
-
-    //hate to clutter this up more with intro bs but yolo
-    /*
-    if(intro_mode){
-      if(!widget_press){
-        $(".intro_info").stop().animate({
-          "opacity": "0"
-          //this determines how fast intro info fades out
-        }, 1000, function(){
-          $("#init_intro_info").hide();
-        });
-      }
-    }
-    */
-    //if it is the intro we need to stop the spinning and establish a valid value for prev_widget_mode
-    /*
-    if(firstSwipe){
-      intro_swipe();
-    }
-    else{
-      $("#widget_mode").html(widget_mode);
-      switch(widget_mode){
-        case "audio_mode":
-        if(intro_mode){
-          var callback = audio_demo;
-          callback();
-          if(!audio_mode_explored){
-            audio_mode_explored = true;
-            //can I use introHint here somehow? or remove it entirely?
-            //alert("you found audio mode");
-            $(".audio_intro_dot").addClass("bright_dot");
-            intro_index++;
-          }
-        }
-        //navRotate(rotateDeg, endSet);
-        break;
-        case "home_mode":
-        if(intro_mode){
-          var callback = home_demo;
-          callback();
-          if(!home_mode_explored){
-            home_mode_explored = true;
-            //alert("you found home mode");
-            $(".home_intro_dot").addClass("bright_dot");
-            intro_index++;
-          }
-        }
-        //navRotate(rotateDeg, endSet);
-        break;
-        case "menu_mode":
-        if(intro_mode){
-          var callback = menu_demo;
-          callback();
-          //var callback = menu_demo;
-          if(!menu_mode_explored){
-            menu_mode_explored = true;
-            //alert("you found menu mode");
-            $(".menu_intro_dot").addClass("bright_dot");
-            intro_index++;
-          }
-        }
-        break;
-        case "download_mode":
-        if(intro_mode){
-          var callback = download_demo;
-          callback();
-          if(!download_mode_explored){
-            download_mode_explored = true;
-            //alert("you found download mode");
-            $(".download_intro_dot").addClass("bright_dot");
-            intro_index++;
-          }
-        }
-        break;
-        default:
-        alert("displayMode default");
-      }
-      if(intro_mode){
-        introLoadBar();
-      }
-    }
-  };
   */
 
   function widgetAction(widget_mode){
@@ -760,9 +768,14 @@ $(document).ready(function() {
       case "menu_mode":
         if(!menuOpen){
           displayMenu(true);
+          menuMoving = true;
         }
         else{
-          //displayMenu(false);
+          if(isMobile){
+            //somehow mobile does not fire html click event when widget is clicked
+            displayMenu(false);
+            menuMoving = true;
+          }
         }
         if(!menu_tap){
           menu_tap = true;
@@ -777,7 +790,10 @@ $(document).ready(function() {
         if(intro_mode){
           introScrollFx();
         }
-      scrollHome();
+        else{
+          scrollHome();
+        }
+
       break;
       case "audio_mode":
         if(!audio_tap){
@@ -798,41 +814,347 @@ $(document).ready(function() {
     }
   };
 
-  $("#widget_function").mouseup(function(){
-    // alert(widget_mode);
-    clearInterval(nav_hover_1);
-    clearInterval(nav_hover_2);
-    clearInterval(nav_hover_3);
-    $(".widget_nav_path").removeClass("widget_nav_hover");
-    if(widget_press){
-      //alert("ur pressed");
-      //widget_press = false;
-    }
-    //prevent click while spinning if audio mode
-    else if(widget_mode == "audio_mode"){
-      if(!spinning){
-        widgetAction(widget_mode);
+  var widgetGesture;
+  var firstTouchX, firstTouchY;
+  var pressTime;
+
+  function gestureControl(e){
+
+    // if(widget_mode !== "home_mode"){
+    //   endPress();
+    // }
+
+    if(!quickSpinning){
+      if(widgetGesture !== "press" && widgetGesture !== "tap"){
+        //if it is a swipe, we will be changing modes
+        prev_widget_mode = widget_mode;
+        spinning = true;
+      }
+      switch(widgetGesture){
+        case "swipeup":
+        //if(!draggable){
+          widget_mode = "home_mode";
+          //displayMode(widget_mode, prev_widget_mode);
+          //adjustIcon(prev_widget_mode, widget_mode);
+        //}
+        break;
+        case "swipeleft":
+        //if(!draggable){
+          widget_mode = "menu_mode";
+          //alert("calling displayMode with WM: " + widget_mode);
+          //displayMode(widget_mode, prev_widget_mode);
+          //adjustIcon(prev_widget_mode, widget_mode);
+        //}
+        break;
+        case "swipedown":
+        //if(!draggable){
+          widget_mode = "download_mode";
+          //displayMode(widget_mode, prev_widget_mode);
+          //adjustIcon(prev_widget_mode, widget_mode);
+        //}
+        break;
+        case "swiperight":
+        //if(!draggable){
+          widget_mode = "audio_mode";
+          //displayMode(widget_mode, prev_widget_mode);
+          //adjustIcon(prev_widget_mode, widget_mode);
+        //}
+        break;
+        case "press":
+        ///////////////////this is a press////////////////////
+        widget_press = true;
+        //alert(widget_mode);
+        switch(widget_mode){
+
+          case "audio_mode":
+            //displayMode(widget_mode, prev_widget_mode);
+            //adjustIcon(prev_widget_mode, widget_mode);
+            //hilight intro task
+            if(!audio_press){
+              audio_press = true;
+              $("#audio_press").addClass("intro_task_done");
+            }
+            //open audio controls
+            //alert("open audio controls");
+            //$(".audio_control").show();
+            //$(".audio_control").animate({"top": "0px"}, 700);
+            quickSpin();
+            showSkip();
+          break;
+          case "download_mode":
+          //alert("download_mode_pressed");
+          quickSpin();
+            //displayMode(widget_mode, prev_widget_mode);
+            //adjustIcon(prev_widget_mode, widget_mode);
+            if(!download_press){
+              download_press = true;
+              $("#download_press").addClass("intro_task_done");
+            }
+            //open the download options menu
+            downloadOptions();
+          break;
+          case "menu_mode":
+            //alert("menu mode pressed");
+            //update the intro tasks
+            if(!menu_press){
+              menu_press = true;
+              $("#menu_press").addClass("intro_task_done");
+            }
+
+            //displayMode(widget_mode, prev_widget_mode);
+            //adjustIcon(prev_widget_mode, widget_mode);
+
+            if(!intro_mode){
+              //alert("reset intro mode pls");
+              reset_intro_mode();
+              introHint();
+            }
+          break;
+          default:
+          //make widget draggable
+          //set home_press true when drag done
+            //adjustIcon(prev_widget_mode, widget_mode);
+          //alert(e);
+          //need to remove handlers or movement of widget will be read as swipe
+          //removeGestureHandler();
+          dragWidget(e);
+          break;
+        }
+        break;
+        default:
+        //this is a TAP
+        //TAP
+        //close menu on tap if it is open
+        if(menuOpen && widget_mode !== "menu_mode"){
+          displayMenu(false);
+          menuMoving = true;
+        }
+        //alert("tap");
+        //prevent click while spinning if audio mode
+        if(widget_mode == "audio_mode"){
+          if(!spinning){
+            widgetAction(widget_mode);
+          }
+        }
+        //otherwise knock yourself out
+        else{
+          if(!firstSwipe){
+            //adding this if because clicking the widget before setting mode opens download
+            widgetAction(widget_mode);
+          }
+        }
+      }
+      if(widgetGesture !== "press" && widgetGesture !== "tap"){
+
+        //since widget not initially in a mode set prev_widget_mode to first widget_mode
+        if(firstSwipe){
+          prev_widget_mode = widget_mode;
+        }
+        if(intro_mode){
+          if(firstSwipe){
+            intro_swipe();
+            introHint();
+          }
+          else if(prev_widget_mode !== widget_mode){
+            introHint();
+          }
+        }
+        //alert(prev_widget_mode + " " + widget_mode);
+        adjustIcon(prev_widget_mode, widget_mode);
       }
     }
-    //otherwise knock yourself out
+  }
+
+  function initiateGesture(e){
+    //alert("initiate");
+    //e.preventDefault();
+    //widgetFunctionDown = true;
+    widgetGesture = "tap";
+    if(isMobile){
+      firstTouchX = e.changedTouches[0].clientX;
+      firstTouchY = e.changedTouches[0].clientY;
+    }
     else{
-      if(!firstSwipe){
-        //adding this if because clicking the widget before setting mode opens download
-        widgetAction(widget_mode);
+      firstTouchX = e.clientX;
+      firstTouchY = e.clientY;
+    }
+    //startPress();
+    pressTime = setTimeout(function(){
+      widgetGesture = "press";
+      clearInterval(pressTime);
+      //removeGestureHandler();
+      //code specific to press on widget_function
+
+      //gestureControl(e);
+      gestureTargetControl(e);
+
+    }, 500);
+  }
+
+  function swipeCheck(e){
+    //alert("check swipe");
+    //don't want to calculate swipe during drag
+    if(!draggable){
+      if(isMobile){
+        var swipeEndX = e.changedTouches[0].clientX;
+        var swipeEndY = e.changedTouches[0].clientY;
+      }
+      else{
+        var swipeEndX = e.clientX;
+        var swipeEndY = e.clientY;
+      }
+
+      var swipeDistX = Math.abs(swipeEndX - firstTouchX);
+      var swipeDistY = Math.abs(swipeEndY - firstTouchY);
+      //if you want to set minimum threshold for swipe
+      if(swipeDistX > 20 || swipeDistY > 20){
+        widgetGesture = "swipe";
+        clearInterval(pressTime);
+
+        //calculate difference in x and y planes
+
+        //this needs to be absolute value
+
+        var diffX = swipeEndX - firstTouchX;
+        var diffY = swipeEndY - firstTouchY;
+
+        if(Math.abs(diffX) > Math.abs(diffY)){
+          //side swipe
+          //left or right
+          if(diffX > 0){
+            //swiperight
+            //alert("swiperight");
+            widgetGesture = "swiperight";
+          }
+          else{
+            //alert("swipeleft");
+            widgetGesture = "swipeleft";
+          }
+        }
+        else{
+          //vertical swipe
+          if(diffY > 0){
+            //swipedown
+            //alert("swipedown");
+            widgetGesture = "swipedown";
+          }
+          else{
+            //swipeup
+            //alert("swipeup");
+            widgetGesture = "swipeup";
+          }
+        }
       }
     }
-    widget_press = false;
-  });
+  }
+
+  function endGesture(e){
+
+    clearInterval(pressTime);
+    //if it is a press, this has already been called
+    if(widgetGesture !== "press"){
+      // need to call correct function depending on what was clicked
+      gestureTargetControl(e);
+      //gestureControl(e);
+    }
+    removeGestureHandler();
+  }
+
+  var gestureTarget;
+
+  function gestureTargetControl(e){
+    //the idea is that this function will step in to run any
+    //object specific functions required
+    switch(gestureTarget){
+      case "widget_function":
+      if(widget_mode == "home_mode" && widgetGesture == "press"){
+        //want it to stay lit up until end of dragWidget
+        //add endPress there
+        //alert("endPress");
+        //endPress();
+      }
+      else{
+        endPress();
+      }
+      gestureControl(e);
+      $(".widget_nav_path").removeClass("widget_nav_hover");
+      break;
+      case "slider":
+      //alert("slider " + widgetGesture);
+      sliderGestureControl(e);
+      break;
+      default:
+      break;
+    }
+  }
+
+  if(isMobile){
+    /////////////// WIDGET FUNCTION ///////////////////
+    $("#widget_function").on("touchstart", function(e){
+      e.preventDefault();
+      gestureTarget = "widget_function";
+      startPress();
+      initiateGesture(e);
+      $(document).on("touchmove", swipeCheck);
+      $(document).on("touchend", endGesture);
+    });
+    //////////////// SLIDER //////////////////////
+    $(".support_img_slider").on("touchstart", function(e){
+      gestureTarget = "slider";
+      $currentSlider = $(this);
+      initiateGesture(e);
+      $(document).on("touchmove", swipeCheck)
+      $(document).on("touchend", endGesture);
+    });
+  }
+  /// not mobile
+  else{
+    /////////////WIDGET FUNCTION //////////////////
+    $("#widget_function").mousedown(function(e){
+      e.preventDefault();
+      gestureTarget = "widget_function";
+      startPress();
+      initiateGesture(e);
+      $(document).on("mousemove", swipeCheck);
+      $(document).on("mouseup", endGesture);
+    });
+
+    //////////////// SLIDER //////////////////////
+    $(".support_img_slider").mousedown(function(e){
+      gestureTarget = "slider";
+      $currentSlider = $(this);
+      initiateGesture(e);
+      $(document).on("mousemove", swipeCheck)
+      $(document).on("mouseup", endGesture);
+    });
+
+    /* cant have both of these because you click both at once
+    result is that you are trying to set target to 2 different things at once
+    ///////////// IMG INFO ///////////////////
+    $(".img_indicator_container").mousedown(function(e){
+      gestureTarget = "imgInfo";
+      initiateGesture(e);
+      $(document).on("mousemove", swipeCheck)
+      $(document).on("mouseup", endGesture);
+    });
+    */
+  }
+
+  function removeGestureHandler(){
+    if(isMobile){
+      $(document).off("touchmove", swipeCheck);
+      $(document).off("touchend", endGesture);
+    }
+    else{
+      $(document).off("mousemove", swipeCheck);
+      $(document).off("mouseup", endGesture);
+    }
+  }
 
   /////////////////////////////////////////////////////////////////// 2. WIDGET DISPLAY //////////////////////////////////////////////////////////////////////
 
-  //playing with widget feedback
-  //hover over nav options
-  $(".nav_box").hover(function(ev){
-    var whichBox = ev.target.id;
-    //$whichBox = $($whichBox).attr("id"));
-    //alert(ev.target.id);
-    //audio mode
+
+  function getNavHover(whichBox){
     var select_widget_modes = [];
 
     switch(widget_mode){
@@ -851,41 +1173,99 @@ $(document).ready(function() {
       default:
       //
     }
-    switch(whichBox){
-      case select_widget_modes[0]:
-      $("#widget_nav_1").toggleClass("widget_nav_hover");
-      break;
-      case select_widget_modes[1]:
-      $("#widget_nav_2").toggleClass("widget_nav_hover");
-      break;
-      case select_widget_modes[2]:
-      $("#widget_nav_3").toggleClass("widget_nav_hover");
-      break;
-      default:
-      //do nothing on audio mode bc it is selected
-    }
+    return select_widget_modes;
+  }
+
+  function navHover(whichBox, select_widget_modes){
+    //if(!spinning){
+      switch(whichBox){
+        case select_widget_modes[0]:
+        $("#widget_nav_1").addClass("widget_nav_hover");
+        break;
+        case select_widget_modes[1]:
+        $("#widget_nav_2").addClass("widget_nav_hover");
+        break;
+        case select_widget_modes[2]:
+        $("#widget_nav_3").addClass("widget_nav_hover");
+        break;
+        default:
+        //do nothing on audio mode bc it is selected
+      }
+    //}
+  }
+
+  function navHoverOff(whichBox, select_widget_modes){
+    //if(!spinning){
+      switch(whichBox){
+        case select_widget_modes[0]:
+        $("#widget_nav_1").removeClass("widget_nav_hover");
+        break;
+        case select_widget_modes[1]:
+        $("#widget_nav_2").removeClass("widget_nav_hover");
+        break;
+        case select_widget_modes[2]:
+        $("#widget_nav_3").removeClass("widget_nav_hover");
+        break;
+        default:
+        //do nothing on audio mode bc it is selected
+      }
+    //}
+  }
+
+  //playing with widget feedback
+  //hover over nav options
+  $(".nav_box").hover(function(ev){
+    var whichBox = ev.target.id;
+    var select_widget_modes = getNavHover(whichBox);
+    navHover(whichBox, select_widget_modes);
+    //$whichBox = $($whichBox).attr("id"));
+    //alert(ev.target.id);
+    //audio mode
+
+  }, function(ev){
+    var whichBox = ev.target.id;
+    var select_widget_modes = getNavHover(whichBox);
+    navHoverOff(whichBox, select_widget_modes);
   });
 
+
+  //var function_down = false;
   //feedback for press
   var nav_hover_1, nav_hover_2, nav_hover_3;
-  $("#widget_function").mousedown(function(){
+  function startPress(){
+    //function_down = true;
     // ex: $("#nav_options_dark").css("animation", "infiniteSpin 2s linear infinite");
     nav_hover_1 = setTimeout(function(){
-      $("#widget_nav_1").toggleClass("widget_nav_hover");
-    }, 100);
+      //$("#widget_nav_1").toggleClass("widget_nav_hover");
+      $("#widget_nav_1").toggleClass("widget_press_bright");
+    }, 150);
     nav_hover_2 = setTimeout(function(){
-      $("#widget_nav_2").toggleClass("widget_nav_hover");
-    }, 200);
+      //$("#widget_nav_2").toggleClass("widget_nav_hover");
+      $("#widget_nav_2").toggleClass("widget_press_bright");
+    }, 250);
     nav_hover_3 = setTimeout(function(){
-      $("#widget_nav_3").toggleClass("widget_nav_hover");
-    }, 300);
-  });
-    /*
-  $("#widget_function").mouseup(function(){
-    // ex: $("#nav_options_dark").css("animation", "infiniteSpin 2s linear infinite");
-    $(".widget_nav_path").not("#widget_nav_selected").css("animation", "noGlow 0.9s");
-  });
-  */
+      //$("#widget_nav_3").toggleClass("widget_nav_hover");
+      $("#widget_nav_3").toggleClass("widget_press_bright");
+    }, 350);
+  }
+
+  function endPress(){
+    clearInterval(nav_hover_1);
+    clearInterval(nav_hover_2);
+    clearInterval(nav_hover_3);
+    //$(".widget_nav_path").removeClass("widget_nav_hover");
+    //alert("remove: " + e.type);
+    $("#widget_nav_3").removeClass("widget_press_bright");
+
+    setTimeout(function(){
+      //$("#widget_nav_2").toggleClass("widget_nav_hover");
+      $("#widget_nav_2").removeClass("widget_press_bright");
+    }, 75);
+    setTimeout(function(){
+      //$("#widget_nav_3").toggleClass("widget_nav_hover");
+      $("#widget_nav_1").removeClass("widget_press_bright");
+    }, 150);
+  }
 
   //////////////////////////////////////////////////////////////////// WIDGET ICON ////////////////////////////////////////////////////////////////////////
 
@@ -1332,7 +1712,7 @@ $(document).ready(function() {
       widgetDblClick = true;
     }
     else {
-      if(!intro_mode){
+      if(!intro_mode && !downloadOptionsOpen){
         var widgetCallX = ev.pageX;
         var dblClickY = ev.pageY;
         var scrollTop = $(document).scrollTop();
@@ -1349,7 +1729,7 @@ $(document).ready(function() {
         }
 
 
-        $("#widget_boi").animate({
+        $("#widget_boi").stop().animate({
           "top" : widgetCallY,
           "left" : widgetCallX
         }, 700, "swing");
@@ -1363,7 +1743,10 @@ $(document).ready(function() {
   //purely aesthetic
   //spin nav and bezel 360 degrees in opposite directions
 
+  var quickSpinning = false;
+
   function quickSpin(){
+
     //alert("quick spin " + endPos);
     //var endPos should provide the resting location of bezel and nav
     //nav and bezel should be same
@@ -1375,64 +1758,16 @@ $(document).ready(function() {
       $("#nav_options_img, #widget_bezel_img").css("transition", "transform 0.8s");
       $("#nav_options_img").css("transform", "rotate(" + navSpin + "deg)");
       $("#widget_bezel_img").css("transform", "rotate(" + bezelSpin + "deg)");
+      quickSpinning = true;
       //need to undo the spin once it is complete and reset transform values to original
       function unSpin(){
         endSet(endPos);
         intro_bezel.removeEventListener("webkitTransitionEnd", unSpin);
+        quickSpinning = false;
       }
       intro_bezel.addEventListener("webkitTransitionEnd", unSpin);
     }
   }
-
-
-
-  /*
-
-  function quickSpin(){
-    //alert("called");
-    var deg;
-    var endDeg;
-    //needs to account for starting position
-    //needs to end with original rotation deg
-
-    switch(widget_mode){
-      case "audio_mode":
-      endDeg = 0;
-      deg = 0;
-      break;
-      case "home_mode":
-      endDeg = 270;
-      deg = 270;
-      break;
-      case "menu_mode":
-      endDeg = 180;
-      deg = 180;
-      break;
-      default:
-      //download mode
-      endDeg = 90;
-      deg = 90;
-    }
-    //alert(deg + " " + endDeg);
-    function quickSpinTime(){
-      if(deg == endDeg + 360){
-        clearInterval(keepSpinning);
-        navOptionsImg.style.transform = "rotate(" + endDeg + "deg)";
-        bezelImg.style.transform = "rotate(" + endDeg + ")";
-      }
-      else{
-        navOptionsImg.style.transform = "rotate(" + deg + "deg)";
-        bezelImg.style.transform = "rotate(" + "-" + deg + "deg)";
-        deg += 2;
-        var keepSpinning = setTimeout(quickSpinTime, 5);
-      }
-    }
-
-    quickSpinTime();
-
-  }
-
-  */
 
   /////////////////////////////////////////////////////////////////////////// AUDIO TIMELINE /////////////////////////////////////////////////////////////
 
@@ -1733,9 +2068,10 @@ $(document).ready(function() {
 
   ////////// home press ///////////
 
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-
-  function dragWidget(ev){
+  function dragWidget(e){
+    //alert(e);
 
     //this seems to be necessary
     //displayMode("home_mode");
@@ -1759,18 +2095,33 @@ $(document).ready(function() {
 
     dragElmnt = document.getElementById("widget_boi");
 
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     // get the mouse cursor position at startup:
-    pos3 = ev.center.x;
-    pos4 = ev.center.y;
+    if(isMobile){
+      pos3 = e.changedTouches[0].clientX;
+      pos4 = e.changedTouches[0].clientY;
+    }
+    else{
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+    }
+    //pos3 = e.center.x;
+    //pos4 = e.center.y;
     //alert(pos3);
+    if(isMobile){
+      document.ontouchend = closeDragElement;
+      $(document).on("touchmove", widgetMove);
+    }
+    else{
+      document.onmouseup = closeDragElement;
+      $(document).on("mousemove", widgetMove);
+    }
 
-    document.onmouseup = closeDragElement;
-    document.ontouchend = closeDragElement;
+
     // call a function whenever the cursor moves:
     //alert(pos3 + " " + pos4);
 
-    $(document).on("mousemove touchmove", widgetMove);
+    //$(document).on("mousemove touchmove", widgetMove);
   }
 
   function widgetMove(e){
@@ -1805,7 +2156,7 @@ $(document).ready(function() {
   function closeDragElement(){
     //alert("called");
     //set widget press to false
-    //widget_press = false;
+    widget_press = false;
     //alert(widget_press);
     // stop moving when mouse button is released
     document.onmouseup = null;
@@ -1816,6 +2167,7 @@ $(document).ready(function() {
     $(document).off("mousemove touchmove");
     draggable = false;
     quickSpin();
+    endPress();
     //adjustIcon(prev_widget_mode, widget_mode);
     $("#hint_content").html("Nice");
     $("#widget_function").fadeIn();
@@ -1835,10 +2187,18 @@ $(document).ready(function() {
 
   ////// menu tap //////////
 
+  var menuMoving = false;
 
+  function sendWidget(widgetTop, widgetLeft){
+    $("#widget_boi").stop().animate({
+      "top" : widgetTop,
+      "left" : widgetLeft
+    }, 700, "swing");
+  }
 
-    function displayMenu(show){
+  function displayMenu(show){
 
+    if(!menuMoving){
       //alert(show);
       if(show){
 
@@ -1849,7 +2209,7 @@ $(document).ready(function() {
         else{
           controlsWereOpen = false;
         }
-        menuOpen = true;
+        //menuOpen = true;
         $(".toolTip").fadeOut();
 
         //use this to send widget back to where it was when the menu opened
@@ -1863,22 +2223,9 @@ $(document).ready(function() {
         prevWidgetTop = widgetOffset.top - $(document).scrollTop() +(widgetHeight / 2);
 
         //send widget to center
-
-        $("#widget_boi").animate({
-          "top" : "50%",
-          "left" : "50%"
-        }, 800, "swing");
-
-        //spinny
-        //this spin can cause glitch if user opens menu before it finishes
-        //can either block user from opening during spin
-        //find a different way to spin it
-        //or remove the spin
-
-        //displayMode(widget_mode);
-
+        sendWidget("50%", "50%");
         quickSpin();
-        //adjustIcon(prev_widget_mode, widget_mode);
+
 
         $(".menu").show();
         var slideDest = "0%";
@@ -1897,18 +2244,18 @@ $(document).ready(function() {
           showSkip();
         }
 
-        menuOpen = false;
+        //menuOpen = false;
 
         //send widget back
         //should widget be sent back if user clicks on a new widget mode?
         //this would make it jump out from under mouse when presumably they are about to do something with it
-        $("#widget_boi").animate({
-          "top" : prevWidgetTop,
-          "left" : prevWidgetLeft
-        }, 700, "swing");
+        if(!intro_mode){
+          sendWidget(prevWidgetTop, prevWidgetLeft);
+        }
+
 
         quickSpin();
-        //adjustIcon(prev_widget_mode, widget_mode);
+
 
         var slideDest = "100%";
         var about_delay = 300;
@@ -1925,6 +2272,8 @@ $(document).ready(function() {
         if(!show){
           // alert("hide menu");
           $(".menu").hide();
+          menuMoving = false;
+          menuOpen = false;
         }
       });
 
@@ -1938,88 +2287,105 @@ $(document).ready(function() {
 
       $("#support_nav").delay(support_delay).animate({
         "left" : slideDest
-      }, 800);
-    };
+      }, 800, function(){
+        if(show){
+          menuOpen = true;
+          menuMoving = false;
+        }
+      });
+    }
+  };
 
-    function menu_select(nav_selection){
+  function menu_select(nav_selection){
 
-      var msg;
+    var msg;
 
-      switch(nav_selection){
-        case "about":
-        msg = "The key question is whether such a system has braking mechanisms at its disposal...";
-        break;
-        case "lyrics":
-        msg = "6. Death is a choice. Life is indecision.";
-        break;
-        case "credits":
-        msg = "Death, if that is what we want to call this non-entity, is of all things the most dreadful.";
-        break;
-        case "support":
-        msg = "Please help me buy a farm and move out of my parents' basement.";
-        break;
-        default:
-        alert("YOLO");
-      }
-
-      $("#content_head_msg").html(msg);
-
-      //dont' slide up or down if already open
-
-      var selector = "." + nav_selection;
-      if($(selector).is(":hidden")){
-        $(".content").slideUp("slow");
-        $(selector).slideDown("slow");
-      }
+    switch(nav_selection){
+      case "about":
+      msg = "The key question is whether such a system has braking mechanisms at its disposal...";
+      break;
+      case "lyrics":
+      msg = "6. Death is a choice. Life is indecision.";
+      break;
+      case "credits":
+      msg = "Death, if that is what we want to call this non-entity, is of all things the most dreadful.";
+      break;
+      case "support":
+      msg = "Please help me buy a farm and move out of my parents' basement.";
+      break;
+      default:
+      alert("YOLO");
     }
 
-    $(".menu_nav").click(function(){
-      var item_id = $(this).attr("id");
-      //alert (item_id);
-      var nav_selection = item_id.substring(0, item_id.indexOf("_"));
-      //alert(nav_selection);
-      if(!intro_mode){
-        menu_select(nav_selection);
-      }
+    $("#content_head_msg").html(msg);
 
-      // $(".menu").fadeOut("slow");
+    //dont' slide up or down if already open
+
+    var selector = "." + nav_selection;
+    if($(selector).is(":hidden")){
+      $(".content").slideUp("slow");
+      $(selector).slideDown("slow");
+    }
+  }
+
+  $(".menu_nav").click(function(){
+    var item_id = $(this).attr("id");
+    //alert (item_id);
+    var nav_selection = item_id.substring(0, item_id.indexOf("_"));
+    //alert(nav_selection);
+    if(!intro_mode){
+      menu_select(nav_selection);
+    }
+
+    // $(".menu").fadeOut("slow");
+    displayMenu(false);
+    menuMoving = true;
+    //scroll to top of content
+    $("html, body").animate({
+      scrollTop: $("#real_body").offset().top
+    }, 1000);
+  });
+
+  $(".menu").click(function(){
+    $target = $(event.target);
+    //alert($target.closest(".menu").length);
+    if ($($target).hasClass("menu_nav") == false){
+      //alert("empty");
       displayMenu(false);
-      //scroll to top of content
-      $("html, body").animate({
-        scrollTop: $("#real_body").offset().top
-      }, 1000);
-    });
+      menuMoving = true;
+    }
+  });
 
-    $(".menu").click(function(){
-      $target = $(event.target);
-      //alert($target.closest(".menu").length);
-      if ($($target).hasClass("menu_nav") == false){
-        //alert("empty");
-        displayMenu(false);
-      }
-    });
+  $("html").click(function(event){
+    //alert("hi");
+    $target = $(event.target);
 
-    $("html").click(function(event){
-      //alert("hi");
-      $target = $(event.target);
-
-      //only close it if it is open
-      var menu_pos = $("#about_nav").css("right");
-      //alert(menu_pos);
-      //alert($target.closest(".menu").length);
-      if(!$target.closest(".menu").length && menu_pos == "0px" && !$target.hasClass("nav_box")){
-        //alert("close the menu I think");
-        displayMenu(false);
-      }
-      //alert(menu_pos);
-    });
+    //only close it if it is open
+    //var menu_pos = $("#about_nav").css("right");
+    //alert(menu_pos);
+    //alert($target.closest(".menu").length);
+    if(!$target.closest(".menu").length && menuOpen && !$target.hasClass("nav_box")){
+      //alert("close the menu I think");
+      displayMenu(false);
+      menuMoving = true;
+    }
+    //alert(menu_pos);
+  });
 
 
   /////// menu press ///////
 
+
   function reset_intro_mode(){
 
+    //endPress();
+
     intro_mode = true;
+
+    if(menuOpen){
+      displayMenu(false);
+      menuMoving = true;
+    }
 
     $(".toolTip").stop(true, true).fadeOut();
     //$(".help_icon").removeClass("help_icon_on");
@@ -2037,6 +2403,7 @@ $(document).ready(function() {
       $("#real_body, #album_art").css("opacity" , "0");
       //set widget_press to false
       //widget_press = false;
+      //endPress();
     });
     $("html").css("overflow", "hidden");
 
@@ -2088,7 +2455,7 @@ $(document).ready(function() {
       if(!downloadSimpleOpen){
         $("#download_confirm").animate({
           "bottom" : "0"
-        }, 1000, "swing", function(){
+        }, 600, "swing", function(){
           //alert("set widget_press to false");
           //widget_press = false;
         });
@@ -2098,12 +2465,12 @@ $(document).ready(function() {
       if(!simple){
         $(".download_options").animate({
           "top" : "0"
-        }, 1000, "swing");
+        }, 600, "swing", function(){
+          downloadOptionsOpen = true;
+        });
       }
     });
   }
-
-
 
   $("#download_cancel_button, #download_done_button").click(function(){
     movVal = "-" + downloadConfirmHeight;
@@ -2113,16 +2480,17 @@ $(document).ready(function() {
 
     $(".download_options").animate({
       "top" : "-100%"
-    }, 1000, "swing", function(){
+    }, 800, "swing", function(){
       $("#download_button").css("right", "30%");
       $(".download_options").hide();
+      downloadOptionsOpen = false;
     });
 
     //height of download confirm will vary based on device
 
     $("#download_confirm").animate({
       "bottom" : movVal
-    }, 1000, "swing", function(){
+    }, 800, "swing", function(){
       //$(this).hide();
       downloadSimpleOpen = false;
     });
@@ -2488,7 +2856,7 @@ $(document).ready(function() {
 
     }, 10000);
   }
-  $(document).on("mousemove scroll keypress", function(){
+  $(window).on("mousemove scroll keypress", function(){
     //you're here!
     clearInterval(idleTimer);
     trackIdle();
@@ -2779,10 +3147,11 @@ $("#widget_boi").hover(function(e){
   introAnimation();
 
   function introScrollFx(){
+    var scrollTop = $(window).scrollTop();
     var originalInfo = $(".intro_info").offset();
-    var infoTop = originalInfo.top;
+    var infoTop = originalInfo.top - scrollTop;
     var originalDone = $(".intro_done").offset();
-    var doneTop = originalDone.top;
+    var doneTop = originalDone.top - scrollTop;
 
     //only run the animation if it is not already running
 
@@ -2806,6 +3175,7 @@ $("#widget_boi").hover(function(e){
         $(".intro_done").animate({
           "top" : doneTop
         }, 300, function(){
+
           scroll_fx = false;
         });
       });
@@ -2866,41 +3236,6 @@ $("#widget_boi").hover(function(e){
     });
   }
 
-  /*
-
-  function audio_demo(){
-    $(".mode_intro_info, #init_intro_info").hide();
-    $("#audio_intro_info").show();
-    $(".intro_info").stop().animate({
-      "opacity": "1"
-    }, 1300);
-  }
-
-  function download_demo(){
-    $(".mode_intro_info, #init_intro_info").hide();
-    $("#download_intro_info").show();
-    $(".intro_info").stop().animate({
-      "opacity": "1"
-    }, 1300);
-  }
-
-  function menu_demo(){
-    $(".mode_intro_info, #init_intro_info").hide();
-    $("#menu_intro_info").show();
-    $(".intro_info").stop().animate({
-      "opacity": "1"
-    }, 1300);
-  }
-
-  function home_demo(){
-    $(".mode_intro_info, #init_intro_info").hide();
-    $("#home_intro_info").show();
-    $(".intro_info").stop().animate({
-      "opacity": "1"
-    }, 1300);
-  }
-
-  */
 
   /////////// function to handle first swipe that occurs during intro
 
@@ -2928,115 +3263,8 @@ $("#widget_boi").hover(function(e){
     $(".intro_msg").stop().fadeOut("fast", function(){
       $(".intro_msg").html("");
     });
-
-    /*
-
-    //need to get bezel to nearest stop
-    validBezelSet = true;
-    var endDeg;
-    var navDeg;
-    //alert(introBezelSpin);
-    switch(widget_mode){
-      case "download_mode":
-      endDeg = 90;
-      break;
-      case "menu_mode":
-      endDeg = 180;
-      break;
-      case "home_mode":
-      endDeg = 270;
-      break;
-      default:
-      endDeg = 0;
-      //alert("audio_mode");
-    }
-
-
-    /*
-    function getValidBezel(){
-
-      initial_swipe = false;
-      //if(introBezelSpin % 90 == 0){
-      if(introBezelSpin == endDeg){
-        clearInterval(validBezelSpin);
-        //intro_bezel.style.transform = "rotate(" + endDeg + "deg)";
-        //alert(introBezelSpin);
-        validBezelSet = false;
-        //alert(validBezelSet);
-        prev_widget_mode = widget_mode;
-        //alert("calling fns with prev mode: " + prev_widget_mode);
-        firstSwipe = false;
-        spinning = false;
-        //need to position selector bar
-        $("#nav_options_img").css("transform", "rotate(" + endDeg + "deg)")
-        widgetDress(true);
-        introHint();
-        introLoadBar();
-        //adjustIcon(prev_widget_mode, widget_mode, widgetDress);
-      }
-      else{
-        if(introBezelSpin == 0){
-          introBezelSpin = 360;
-        }
-        //intro_bezel.style.transform = "rotate(" + introBezelSpin + "deg)";
-        introBezelSpin--;
-        var validBezelSpin = setTimeout(getValidBezel, 5);
-      }
-
-    }
-    */
-    //getValidBezel();
-  }
-  /*
-
-  function introNavSpinEnd(){
-
-    function runCompleteNavSpin(){
-      if(darkNavSpin % 90 == 0){
-        clearInterval(completeNavSpin);
-      }
-      else{
-        //dark_nav.style.transform = "rotate(" + darkNavSpin + "deg)";
-        darkNavSpin++;
-        completeNavSpin = setTimeout(runCompleteNavSpin, 5);
-      }
-    }
-    runCompleteNavSpin();
   }
 
-
-  function finishSpin(){
-    //need to rotate dark nav to nearest multiple of 90 before clearing interval
-    //or start new interval to move it the remainder
-
-    clearInterval(set_intro_msg);
-    clearInterval(introTimer);
-    introTimer = false;
-
-    introNavSpinEnd();
-
-    function getCompleteBezelSpin(){
-      if(introBezelSpin == 0){
-        clearInterval(completeBezelSpin);
-        //intro_bezel.style.transform = "rotate(0deg)";
-        if(introStarted){
-          prev_widget_mode = widget_mode;
-          widget_mode = "audio_mode";
-          displayMode(widget_mode);
-          adjustIcon(prev_widget_mode, widget_mode);
-        }
-      }
-      else{
-        //intro_bezel.style.transform = "rotate(" + introBezelSpin + "deg)";
-        introBezelSpin--;
-        var completeBezelSpin = setTimeout(getCompleteBezelSpin, 5);
-      }
-    }
-
-    getCompleteBezelSpin();
-
-  }
-  */
   function finishIntro(){
 
     //if you close between widget msg it can't fadeout
@@ -3101,49 +3329,13 @@ $("#widget_boi").hover(function(e){
       //$(".intro_msg").html("");
       //alert("end it");
       finishIntro();
-
-      /*
-      if(introTimer){
-        finishSpin();
-        navRotateInit = false;
-        //firstSwipe = false;
-      }
-      else{
-        if(introStarted){
-          prev_widget_mode = widget_mode;
-          if(intro_first_open){
-            widget_mode = "audio_mode";
-            intro_first_open = false;
-          }
-
-          displayMode(widget_mode);
-          adjustIcon(prev_widget_mode, widget_mode);
-        }
-
-      }
-      */
   }
 
-  //wookie engineered "listener"
   //don't want to destroy widget so wait until it finishes spinning to end intro
     else{
       //it is spinning
       //alert("wait for spin end");
       intro_bezel.addEventListener("webkitTransitionEnd", introCleanUp);
-
-      /*
-      function checkSpin(){
-        if(!spinning){
-          //if it was spinning and now it isn't
-          clearInterval(spinListener);
-          introCleanUp();
-        }
-        else{
-          var spinListener = setTimeout(checkSpin, 5);
-        }
-      }
-      */
-      //checkSpin();
     }
   };
 

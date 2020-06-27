@@ -9,14 +9,16 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=9" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=4" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Reenie+Beanie&display=swap" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
+  -->
     <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
   </head>
 
@@ -677,7 +679,7 @@
                 <span><</span>
               </div>
               <div class="support_img_title_container">
-                <h2 class="support_img_title">Corner Bookmark</h2>
+                <h2 class="support_img_title">Bookmark</h2>
               </div>
               <div class="next_arrow slider_arrow">
                 <span>></span>
@@ -741,6 +743,10 @@
 
         <div class="tip_top">
           <!-- this div will be used as a reference as the top of the page -->
+        </div>
+
+        <div class="test_mobile">
+          <!-- use css media queries on this div then check result in jquery to test for mobile device -->
         </div>
 
         <div class="audio_control">

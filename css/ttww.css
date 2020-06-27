@@ -471,8 +471,8 @@ body {
 
 /***** WIDGET BOI ***/
 #widget_boi {
-  width: 38vw;
-  height: 38vw;
+  width: 45vw;
+  height: 45vw;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -526,6 +526,10 @@ body {
 .widget_nav_hover {
   fill: #383838;
   transition: fill 0.5s;
+}
+.widget_press_bright {
+  fill: #b3b3b3;
+  transition: fill 0.3s;
 }
 .nav_img_container {
   position: absolute;
@@ -1229,8 +1233,19 @@ body {
   transition: fill 1s ease;
 }
 
+.test_mobile {
+  color: red;
+  display: none;
+}
+
+
 /*adjust for desktop*/
-@media only screen and (min-device-width:600px) {
+@media only screen and (min-device-width:760px) {
+
+  /*test mobile */
+  .test_mobile{
+    color: blue;
+  }
 
 /**** ABOUT ****/
   .about_item > div, .about_item > img, .about_item p {
@@ -1333,6 +1348,10 @@ body {
     left: 0;
     right: 0;
     margin: auto; */
+  }
+  .widget_press_bright {
+    fill: #484848;
+    transition: fill 0.3s;
   }
   .support_img_slider {
     flex: 1 1 auto;
