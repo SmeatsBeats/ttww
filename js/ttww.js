@@ -1910,12 +1910,18 @@ $(document).ready(function() {
         usrPos = true;
         controlsBump = false;
 
+        blockHints = true;
+
         $("#widget_boi").stop().animate({
           "top" : widgetPosTopPercent,
           "left" : widgetPosLeftPercent
         }, 700, "swing", function(){
           widgetPosLeft = widgetCallX;
           widgetPosTop = widgetCallY;
+          blockHints = false;
+          if(cursorOnWidgetBoi && tipsOn && !intro_mode && !draggable){
+            $(".toolTip").fadeIn();
+          }
           //moveHelp();
           //posHint();
         });
@@ -3359,7 +3365,7 @@ $(document).ready(function() {
   */
 
   function widgetFunctionHint(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode){
       //$(".tool_dot").first().addClass("selected_tool_dot");
       //$(".toolTip").clearQueue().fadeIn();
       //alert(widget_mode);
@@ -3470,32 +3476,32 @@ $("#widget_boi").hover(function(e){
 });
 
   $("#select_home_mode").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode){
       $("#hint_content").html("Home Mode");
     }
   });
   $("#select_audio_mode").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode){
       $("#hint_content").html("Audio Mode");
     }
   });
   $("#select_menu_mode").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode){
       $("#hint_content").html("Menu Mode");
     }
   });
   $("#select_download_mode").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode){
       $("#hint_content").html("Download Mode");
     }
   });
   $("#rw").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode){
       $("#hint_content").html("Previous");
     }
   });
   $("#ff").hover(function(){
-    if(!draggable && !intro_mode && tipsOn){
+    if(!draggable && !intro_mode){
       $("#hint_content").html("Next");
     }
   });
