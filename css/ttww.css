@@ -8,6 +8,10 @@ html, body {
   justify-content: flex-start;
 }
 body {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   flex: 1 1 100%;
   justify-content: flex-start;
   /*this keeps the right edge of the poster picture visible */
@@ -27,6 +31,7 @@ body {
   position: fixed;
   z-index: -1;
   height: 100vh;
+  min-width: 100%;
   flex: 1 1 100%;
   flex-flow: row nowrap;
   justify-content: flex-end;
@@ -35,7 +40,7 @@ body {
 #album_art {
   flex: 0 0 100%;
   height: 100vh;
-  width: 100%;
+  min-width: 100%;
 }
 .audio_control {
   top: -100px;
@@ -556,7 +561,6 @@ body {
 #nav_options_img{
   /*hide the img with selection for intro */
   opacity: 0;
-
 }
 #widget_bezel_img, #nav_options_img{
   /*want to try spinning with css */
@@ -722,13 +726,16 @@ body {
 /******************** FF RW ***************/
 
 .ffrw {
+  /* border: 1px solid blue; */
   cursor: pointer;
   position: absolute;
   opacity: 0;
   width: 90%;
+  height: 100%;
   /* width: 170%; */
   display: flex;
-  align-items: center;
+  flex-flow: row nowrap;
+  /* align-items: center; */
   justify-content: space-between;
   color: #999;
   font-size: 200%;
@@ -739,6 +746,23 @@ body {
   opacity: 1;
   width: 170%;
   /* transition: opacity 0.5s, width 0.8s; */
+}
+
+#ffrw_container > div {
+  position: relative;
+  width: 20%;
+  /* border: 1px solid red; */
+}
+
+#ff, #rw {
+  /* position: relative; */
+  /* height: 100%;
+  opacity: 1; */
+  /* border: 1px solid green; */
+}
+
+#rw {
+  transform: rotate(180deg);
 }
 
 /***************** DOWNLOAD MENU ****************/
@@ -953,6 +977,7 @@ body {
 @keyframes infiniteBackSpin{
   to {transform: rotate(-360deg);}
 }
+
 /* #widget_function{
   background: rgba(200, 200, 200, 0.6);
 } */
@@ -1104,7 +1129,7 @@ body {
 
 /******************* TOOLTIPS ***********************/
 .big_help {
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 .help_container {
   position: fixed;
@@ -1127,6 +1152,9 @@ body {
 }
 .help_icon {
   position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* padding: 0.25em 0.5em; */
   width: 3vh;
   height: 4vh;
@@ -1137,6 +1165,7 @@ body {
   color: #999;
   text-align: center;
   cursor: pointer;
+  font-size: 1.2vw;
 
 }
 /* .help_content_container {
@@ -1151,6 +1180,9 @@ body {
 } */
 .help_content {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   flex: 1 1 100%;
   right: 100%;
@@ -1165,6 +1197,7 @@ body {
 }
 #help_text {
   transition: opacity 0.6s;
+  font-size: 1.2vw;
 }
 #tipPower{
   transition: color 0.6s;
@@ -1197,6 +1230,7 @@ body {
   width: 130%;
   height: 25%;
   padding: 0;
+  font-size: 1.2vw;
 }
 #hint_content {
   /* border: 1px solid green; */
@@ -1206,6 +1240,7 @@ body {
   width: 90%;
   min-height: 100%;
   flex-grow: 9;
+  /* font-size: 1.2vw; */
 }
 #hinticator {
   /* border: 1px solid blue; */
@@ -1370,6 +1405,15 @@ body {
   #download_confirm {
     height: 15%;
   }
+  /*
+  #nav_options_img{
+    opacity: 1;
+  }
+  #nav_options_dark{
+    display: none;
+  }
+  */
+
 }
 /** hide content section to start work on credits **/
 /* .content {

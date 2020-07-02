@@ -4,12 +4,12 @@
 
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1">
 
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=4" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=3" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.8"></script>
   </head>
 
   <body>
@@ -887,8 +887,14 @@
 
               <!-- FF RW -->
               <div class="ffrw" id="ffrw_container">
-                <span id="rw"><<</span>
-                <span id="ff">>></span>
+                <!-- <span id="rw"><<</span>
+                <span id="ff">>></span> -->
+                <div>
+                  <img id="rw" src="imgs/FF_RW_ICON_3.svg" alt="Next Track">
+                </div>
+                <div>
+                  <img id="ff" src="imgs/FF_RW_ICON_3.svg" alt="Previous Track">
+                </div>
               </div>
 
               <!-- current time -->

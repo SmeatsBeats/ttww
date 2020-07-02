@@ -3,7 +3,9 @@ $(document).ready(function() {
 
   ////////////////////////////////////////////////////////////////////////////////////// INITIALIZE GLOBALS //////////////////////////////////////////////
 
-  var intro_mode = true;
+  //var intro_mode = true;
+  var widgetCenter = true;
+  var intro_mode;
   var draggable = false;
   var widgetDblClick = false;
   var widget_press = false;
@@ -46,6 +48,8 @@ $(document).ready(function() {
   var runningHover;
   var flip;
   var isMobile;
+  var cursorOnWidgetBoi = false;
+  var blockHints = false;
   //check if mobile
 
   if($(".test_mobile").css("color") == "rgb(255, 0, 0)"){
@@ -100,7 +104,7 @@ $(document).ready(function() {
   var pos1, pos2, pos3, pos4, dragElmnt;
 
   //menu tap
-  var prevWidgetTop, prevWidgetLeft;
+  var prevWidgetTop, prevWidgetLeft, prevWidgetTopPercent, prevWidgetLeftPercent;
 
   //DOWNLOAD MODE
   var downloadConfirmHeight;
@@ -1698,11 +1702,178 @@ $(document).ready(function() {
 
   //////////////////////////////////////////////////////////////////////// MOVE WIDGET //////////////////////////////////////////////////////////
 
+
   //this section involves moving the whole widget as a unit
+  var prevScrollTop = 0;
+  //they have to scroll down first
+  var prevScrollDirection = true;
+  var scrollDirection;
+  var widgetPosTop, widgetPosLeft;
+  var helpMoved = false;
+  var helpTop, helpOffset, helpRight;
+  helpOffset = $(".help_icon").offset();
+  helpTop = helpOffset.top - $(document).scrollTop();
+  //10% is currently the css width of the help_container
+  //giving it a little margin with .12
+  helpRight = helpOffset.left + ($(window).width() * .12);
+
+  //position the actual hint either above or below Widget
+  var hintMoved = false;
+  function posHint(){
+    var widgetOffset = $("#widget_boi").offset();
+    var widgetTop = widgetOffset.top - $(document).scrollTop();
+    //alert(widgetLeft + " " + widgetTop);
+    var widgetBottom = widgetTop + $("#widget_boi").outerHeight();
+    var windowHeight = $(window).height();
+    //1.05 is arbitrary. Adding 5 percent
+    if(widgetBottom * 1.05 + $("#context_hint").outerHeight() > windowHeight && !hintMoved){
+      //alert("move hint");
+      //$("#context_hint").css("top", "-30%");
+    //  hintMoved = true;
+    }
+    else if(widgetBottom * 1.05 + $("#context_hint").outerHeight() < windowHeight && hintMoved){
+      //$("#context_hint").css("top", "110%");
+      //hintMoved = false;
+    }
+  }
+
+  function moveHelp(ev){
+
+    //alert("called");
+    // var widgetPos = getWidgetPos();
+    // var widgetLeft = widgetPos['left'];
+    // var widgetTop = widgetPos['top'];
+    //this function uses percents which I don't really want
+    var windowHeight = $(window).height();
+    var scrollTop = $(document).scrollTop();
+    var widgetWidth = $("#widget_boi").outerWidth();
+    var halfWidget = widgetWidth / 2;
+    if(typeof ev !== 'undefined'){
+      //if(isMobile){
+        //var widgetLeft = ev.changedTouches[0].clientX - ($("#widget_boi").outerWidth() / 2);
+        //var widgetBottom = ev.changedTouches[0].clientY + ($("#widget_boi").outerHeight() / 2);
+      //}
+      //else{
+
+        var widgetLeft = ev.clientX - halfWidget;
+        var widgetBottom = ev.clientY + halfWidget;
+        //alert(widgetLeft + " " + widgetBottom);
+      //}
+    }
+    else{
+      var widgetOffset = $("#widget_boi").offset();
+      var widgetLeft = widgetOffset.left;
+      var widgetTop = widgetOffset.top - scrollTop;
+      //alert(widgetLeft + " " + widgetTop);
+      var widgetBottom = widgetTop + $("#widget_boi").outerHeight();
+    }
+
+    if(tipsOn){
+      //need to switch widget bottom to account for tips
+      widgetBottom = widgetBottom * 1.05 + $("#context_hint").outerHeight();
+    }
+
+    //alert( "WL: " + widgetLeft + " WB: " + widgetBottom  + " HR: " + helpRight  + " HT: " + helpTop);
+    if(widgetLeft < helpRight && widgetBottom > helpTop){
+      //alert("overlap");
+      //alert( "WL: " + widgetLeft + " WB: " + widgetBottom  + " HR: " + helpRight  + " HT: " + helpTop);
+      if(!helpMoved){
+        $(".help_container, .help_icon").fadeOut().animate({
+          "bottom" : "94vh"
+        }, 0).fadeIn();
+        $(".help_icon")
+        helpMoved = true;
+      }
+    }
+    else if(widgetLeft > helpRight || widgetBottom < helpTop){
+      if(helpMoved){
+        $(".help_container, .help_icon").fadeOut().animate({
+          "bottom" : "3vh"
+        }, 0).fadeIn();
+        helpMoved = false;
+      }
+    }
+
+    if(widgetBottom > windowHeight && !hintMoved && tipsOn){
+      //alert("move hint");
+
+      $("#context_hint").stop(true, true).animate({
+        "opacity" : 0
+      }, 300, function(){
+        $("#context_hint").css("top", "-30%");
+      }).animate({
+        "opacity" : 1
+      }, 300);
+
+      //$("#context_hint").css("top", "-30%");
+      hintMoved = true;
+    }
+    else if(widgetBottom < windowHeight && hintMoved && tipsOn){
+
+      $("#context_hint").stop(true, true).animate({
+        "opacity" : 0
+      }, 300, function(){
+        $("#context_hint").css("top", "110%");
+      }).animate({
+        "opacity" : 1
+      }, 300);
+
+      //$("#context_hint").css("top", "110%");
+      hintMoved = false;
+    }
+
+  }
+
+  var usrPos = false;
+
+  $(document).scroll(function(){
+    //when widget reaches top of title img
+    var headerOffset = $("#content_header").offset();
+    var headerTop = headerOffset.top;
+    var scrollTop = $(this).scrollTop();
+    var refOffset = $(".tip_top").offset();
+    var refTop = refOffset.top;
+    headerTop -= refTop;
+    //alert(scrollTop + " " + headerTop);
+    if(scrollTop > headerTop){
+      if(widgetCenter && !intro_mode && !usrPos && !headedHome){
+        quickSpin();
+        var sendTop, sendLeft;
+        if(isMobile){
+          sendTop = "85%";
+          sendLeft = "25%";
+        }
+        else{
+          sendTop = "85%";
+          sendLeft = "90%";
+        }
+        sendWidget(sendTop, sendLeft);
+        widgetCenter = false;
+        usrPos = false;
+      }
+    }
+    else if(scrollTop < headerTop && !widgetCenter && !intro_mode && !usrPos && !headedHome){
+      if(isMobile){
+        sendTop = "85%";
+        sendLeft = "25%";
+      }
+      else{
+        sendTop = "50%";
+        sendLeft = "50%";
+      }
+      quickSpin();
+      sendWidget(sendTop, sendLeft);
+      //well not exactly centered on mobile
+      widgetCenter = true;
+    }
+
+  });
 
   //call widget to dbl click location
 
   $("html").dblclick(function(ev){
+    //trying to stop hlighting on widget call
+    ev.preventDefault();
     //don't move him during the intro probably
     var isWidget = false;
     var $target = ev.target;
@@ -1713,11 +1884,18 @@ $(document).ready(function() {
     }
     else {
       if(!intro_mode && !downloadOptionsOpen){
+        moveHelp(ev);
+        posHint(ev);
         var widgetCallX = ev.pageX;
         var dblClickY = ev.pageY;
         var scrollTop = $(document).scrollTop();
         //var widgetCallX = dblClickX - scrollTop;
         var widgetCallY = dblClickY - scrollTop;
+        //convert these to percentages
+        var windowWidth = $(window).width();
+        var windowHeight = $(window).innerHeight();
+        var widgetPosLeftPercent = (widgetCallX / windowWidth) * 100 + "%";
+        var widgetPosTopPercent = (widgetCallY / windowHeight) * 100 + "%";
         //alert(dblClickX + " " + dblClickY);
         //move widget to this location
         //will need to make sure it stays within the page
@@ -1728,11 +1906,19 @@ $(document).ready(function() {
           quickSpin();
         }
 
+        widgetCenter = false;
+        usrPos = true;
+        controlsBump = false;
 
         $("#widget_boi").stop().animate({
-          "top" : widgetCallY,
-          "left" : widgetCallX
-        }, 700, "swing");
+          "top" : widgetPosTopPercent,
+          "left" : widgetPosLeftPercent
+        }, 700, "swing", function(){
+          widgetPosLeft = widgetCallX;
+          widgetPosTop = widgetCallY;
+          //moveHelp();
+          //posHint();
+        });
       }
     }
   });
@@ -1933,13 +2119,21 @@ $(document).ready(function() {
     //ff and rw
 
     //first show the arrows
-
+    var controlsBump;
+    //did the controls need to bump the widget?
     function showSkip(){
 
       $(".ffrw").toggleClass("showSkip");
+      //$("#ff, #rw").fadeIn();
 
       if(controlsOpen){
         controlsOpen = false;
+
+        //do you need to scoot widget back?
+        if(controlsBump){
+          sendWidget(prevWidgetTopPercent, prevWidgetLeftPercent);
+        }
+
       }
       else{
         controlsOpen = true;
@@ -1947,11 +2141,68 @@ $(document).ready(function() {
       //need to set press to false
       //has to happen after this function or will block next widget_function click
       document.getElementById("ffrw_container").addEventListener("webkitTransitionEnd", pressDone);
+      //need to check if the buttons are visible and if not bumo widget to better location
+
+
+      //keep widget on screen
+      if(controlsOpen){
+        //need to calculate width of widget with controls open
+
+        //currently it is 170% the width of container: nav_img_container
+
+        var navWidth = $(".nav_img_container").width() * 1.7;
+
+        // it is 35 percent bigger than nav_img_container on either side
+        var offScreen;
+        var ffrwOffset = $(".nav_img_container").offset();
+        var ffrwLeft = ffrwOffset.left - ($(".nav_img_container").outerWidth() * 0.35);
+        //alert(ffrwLeft);
+        var ffrwRight = ffrwOffset.left + $(".nav_img_container").outerWidth() * 1.35;
+        var docWidth = $(window).width();
+        //alert(ffrwLeft + " " + ffrwRight);
+        if(ffrwLeft < 0){
+          offScreen = true;
+          //alert("off screen");
+          //you are moving widget_boi to this position not the leftmost side
+          var diff = 0 - ffrwLeft;
+          var widgetLeft = "+=" + (diff / docWidth) * 100 + "%";
+        }
+        else if(ffrwRight > docWidth){
+          offScreen = true;
+          var diff = ffrwRight - docWidth;
+          var widgetLeft = "-=" + (diff / docWidth) * 100 + "%";
+        }
+
+        //set distance and convert to percent
+        //var widgetLeft = "+=" + (diff / docWidth) * 100 + "%";
+
+        //scoot widget back into view
+        if(offScreen){
+          //get previous values
+          var widgetPos = getWidgetPos();
+          prevWidgetLeftPercent = widgetPos['left'];
+          prevWidgetTopPercent = widgetPos['top'];
+          $("#widget_boi").animate({
+            "left" : widgetLeft
+          }, 400, function(){
+            offScreen = false;
+            controlsBump = true;
+          });
+        }
+      }
+
     }
 
     function pressDone(){
       //called twice because 2 transitions
       document.getElementById("ffrw_container").removeEventListener("webkitTransitionEnd", pressDone);
+      //alert("pressDone");
+
+      if(controlsOpen){
+
+      }
+
+
       //widget_press = false;
       //alert("press done");
     }
@@ -2058,11 +2309,18 @@ $(document).ready(function() {
   //////////// HOME MODE //////////////////
 
   ///////// home tap //////////////
-
+  var headedHome = false;
   function scrollHome(){
+    sendWidget("50%", "50%");
+    quickSpin();
+    headedHome = true;
     $("html, body").animate({
       scrollTop: 0
-    }, "slow");
+    }, "slow", function(){
+      widgetCenter = true;
+      usrPos = false;
+      headedHome = false;
+    });
     return false;
   };
 
@@ -2095,8 +2353,10 @@ $(document).ready(function() {
 
     dragElmnt = document.getElementById("widget_boi");
 
-    pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    //pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     // get the mouse cursor position at startup:
+    //why?
+    /*
     if(isMobile){
       pos3 = e.changedTouches[0].clientX;
       pos4 = e.changedTouches[0].clientY;
@@ -2108,6 +2368,8 @@ $(document).ready(function() {
     //pos3 = e.center.x;
     //pos4 = e.center.y;
     //alert(pos3);
+    */
+
     if(isMobile){
       document.ontouchend = closeDragElement;
       $(document).on("touchmove", widgetMove);
@@ -2129,6 +2391,15 @@ $(document).ready(function() {
     e = e || window.event;
     e.preventDefault();
 
+    widgetCenter = false;
+    usrPos = true;
+    controlsBump = false;
+
+    moveHelp();
+    posHint();
+
+    /*
+
     touch = undefined;
     if(e.originalEvent.touches){
       touch = e.originalEvent.touches[0];
@@ -2138,18 +2409,50 @@ $(document).ready(function() {
       pos3 = touch.clientX;
       pos4 = touch.clientY;
     }
+    */
+    if(isMobile){
+      var touch = e.changedTouches[0];
+      //var scrollTop = $(document).scrollTop();
+      /*
+      pos1 = pos3 - touch.clientX;
+      pos2 = pos4 - touch.clientY;
+      pos3 = touch.clientX;
+      pos4 = touch.clientY;
+      */
+      var cursorY = touch.clientY;
+      var cursorX = touch.clientX;
+    }
     else{
       // calculate the new cursor position:
       //alert(e);
+      /*
       pos1 = pos3 - e.clientX;
       pos2 = pos4 - e.clientY;
       pos3 = e.clientX;
       pos4 = e.clientY;
+      */
+      var cursorY = e.clientY;
+      var cursorX = e.clientX;
     }
 
-    dragElmnt.style.top = (dragElmnt.offsetTop - pos2) + "px";
-    dragElmnt.style.left = (dragElmnt.offsetLeft - pos1) + "px";
-    //alert()
+    // dragElmnt.style.top = ((dragElmnt.offsetTop - pos2) / $(window).innerHeight()) * 100 + "%";
+    // dragElmnt.style.left = ((dragElmnt.offsetLeft - pos1) / $(window).width()) * 100 + "%";
+
+    //var widgetOffset = dragElmnt.offset();
+    //var widgetTop = widgetOffset
+
+    //convert to percentage
+    //note THIS MUST BE WRITTEN IN PLAIN JS JQUERY .innerWidth() does not work
+    var windowHeight = window.innerHeight;
+    var windowWidth = $(window).width();
+    var widgetTopPercent = ((cursorY / windowHeight) * 100) + "%";
+    var widgetLeftPercent = ((cursorX / windowWidth) * 100) + "%";
+
+    $("#widget_boi").css({"top" : widgetTopPercent, "left": widgetLeftPercent});
+
+    //dragElmnt.style.top = (dragElmnt.offsetTop - pos2) + "px";
+    //dragElmnt.style.left = (dragElmnt.offsetLeft - pos1) + "px";
+
 
   };
 
@@ -2189,18 +2492,48 @@ $(document).ready(function() {
 
   var menuMoving = false;
 
+
   function sendWidget(widgetTop, widgetLeft){
+    //$(".toolTip").stop(true, true).fadeOut();
+
     $("#widget_boi").stop().animate({
       "top" : widgetTop,
       "left" : widgetLeft
-    }, 700, "swing");
+    }, 700, "swing", function(){
+      //blockHints = false;
+      /*
+      if(cursorOnWidgetBoi){
+        $(".toolTip").stop(true, true).fadeIn();
+      }
+      */
+      moveHelp();
+    });
+    widgetPosLeft = widgetLeft;
+    widgetPosTop = widgetTop;
   }
 
+  var prevWidgetLeftPercent, prevWidgetTopPercent;
+  //var blockHints = false;
+
   function displayMenu(show){
+
+    var originalOrigin, aDeg, bDeg;
 
     if(!menuMoving){
       //alert(show);
       if(show){
+
+        /*
+        originalOrigin = $(".widget_stick").css("transform-origin");
+        aDeg = $("#a_stick").css("transform");
+        bDeg = $("#b_stick").css("transform");
+        //animate icon to an x
+        /*
+        var xDeg = 45;
+        $(".widget_stick").css("transform-origin", "center center");
+        $("#a_stick").css("transform", "rotate(" + -xDeg + "deg)");
+        $("#b_stick").css("transform", "rotate(" + xDeg + "deg)");
+        */
 
         if(controlsOpen){
           controlsWereOpen = true;
@@ -2210,17 +2543,42 @@ $(document).ready(function() {
           controlsWereOpen = false;
         }
         //menuOpen = true;
-        $(".toolTip").fadeOut();
+
+        $(".toolTip").fadeOut(function(){
+          blockHints = true;
+        });
 
         //use this to send widget back to where it was when the menu opened
         //need to account for the transform
+
+        var widgetPos = getWidgetPos();
+        prevWidgetTopPercent = widgetPos['top'];
+        prevWidgetLeftPercent = widgetPos['left'];
+
+        /*
 
         var widgetHeight = $("#widget_boi").height();
         var widgetWidth = $("#widget_boi").width();
 
         var widgetOffset = $("#widget_boi").offset();
         prevWidgetLeft = widgetOffset.left + (widgetWidth / 2);
-        prevWidgetTop = widgetOffset.top - $(document).scrollTop() +(widgetHeight / 2);
+        //prevWidgetTop = widgetOffset.top - $(document).scrollTop() + (widgetHeight / 2);
+        prevWidgetTop = widgetOffset.top - $(document).scrollTop() + (widgetHeight / 2);
+        //need to convert these values to percentage
+        //fixed position, percentage based elements reposition to account for mobile search bar
+        var windowWidth = $(window).width();
+        var windowHeight = window.innerHeight;
+        var windowOuterHeight = $(window).height();
+
+        /*
+        if(isMobile){
+          if(windowHeight !== windowOuterHeight){
+            alert(windowHeight + " " + windowOuterHeight);
+          }
+        }
+        */
+        //prevWidgetLeftPercent = ((prevWidgetLeft / windowWidth) * 100) + "%";
+        //prevWidgetTopPercent = ((prevWidgetTop / windowHeight) * 100) + "%";
 
         //send widget to center
         sendWidget("50%", "50%");
@@ -2238,6 +2596,12 @@ $(document).ready(function() {
       }
       else{
 
+        /*
+        //reset the icon
+        $(".widget_stick").css("transform-origin", originalOrigin);
+        $("#a_stick").css("transform", aDeg);
+        $("#b_stick").css("transform", bDeg);
+        */
         //alert(controlsWereOpen);
         if(controlsWereOpen){
           //alert("open controls");
@@ -2245,12 +2609,19 @@ $(document).ready(function() {
         }
 
         //menuOpen = false;
+        blockHints = false;
+        if(cursorOnWidgetBoi && tipsOn){
+          $(".toolTip").stop(true, true).fadeIn(function(){
+            //blockHints = false;
+          });
+        }
 
         //send widget back
         //should widget be sent back if user clicks on a new widget mode?
         //this would make it jump out from under mouse when presumably they are about to do something with it
         if(!intro_mode){
-          sendWidget(prevWidgetTop, prevWidgetLeft);
+          //alert(prevWidgetLeftPercent + " " + prevWidgetTopPercent);
+          sendWidget(prevWidgetTopPercent, prevWidgetLeftPercent);
         }
 
 
@@ -2357,6 +2728,7 @@ $(document).ready(function() {
   });
 
   $("html").click(function(event){
+    event.preventDefault();
     //alert("hi");
     $target = $(event.target);
 
@@ -2374,9 +2746,42 @@ $(document).ready(function() {
 
 
   /////// menu press ///////
+  var prevWidgetLeftTutorial, prevWidgetTopTutorial;
 
+  function getWidgetPos(){
+    //use this to send widget back to where it was when the menu opened
+    //need to account for the transform
+
+    var widgetHeight = $("#widget_boi").height();
+    var widgetWidth = $("#widget_boi").width();
+
+    var widgetOffset = $("#widget_boi").offset();
+    var prevWidgetLeft = widgetOffset.left + (widgetWidth / 2);
+    //prevWidgetTop = widgetOffset.top - $(document).scrollTop() + (widgetHeight / 2);
+    var prevWidgetTop = widgetOffset.top - $(document).scrollTop() + (widgetHeight / 2);
+    //need to convert these values to percentage
+    //fixed position, percentage based elements reposition to account for mobile search bar
+    var windowWidth = $(window).width();
+    var windowHeight = window.innerHeight;
+
+    var prevWidgetLeftPercent = ((prevWidgetLeft / windowWidth) * 100) + "%";
+    var prevWidgetTopPercent = ((prevWidgetTop / windowHeight) * 100) + "%";
+
+    var widgetPos = [];
+    widgetPos['top'] = prevWidgetTopPercent;
+    widgetPos['left'] = prevWidgetLeftPercent;
+    //alert(widgetPos['left'] + " " + widgetPos['top']);
+    return widgetPos;
+
+  }
 
   function reset_intro_mode(){
+
+    if(!widgetCenter){
+      var widgetPos = getWidgetPos();
+      prevWidgetTopTutorial = widgetPos['top'];
+      prevWidgetLeftTutorial = widgetPos['left'];
+    }
 
     //endPress();
 
@@ -2395,7 +2800,10 @@ $(document).ready(function() {
     $("#widget_boi").animate({
       "top" : "50%",
       "left" : "50%"
-    }, 700, "swing");
+    }, 700, "swing", function(){
+      widgetPosLeft = widgetPosTop = "50%";
+      //widgetCenter = true;
+    });
 
     $(".widget_intro, .intro_dots").show().animate({
       "opacity" : "1"
@@ -2719,13 +3127,26 @@ $(document).ready(function() {
   //setTimeout(offerHint, 5000);
   //offer hints after intro complete
 
-  //set left pos of help
-  //and height
-  var helpHeight = $(".help_icon").outerHeight();
-  var helpOffset = $(".help_icon").offset();
-  var helpOffsetRight = helpOffset.left + $(".help_icon").outerWidth();
-  //alert(helpHeight);
-  $(".help_container").css({"left" : helpOffsetRight, "height" : helpHeight});
+
+  //keep help items correct size
+  function resizeHelp(){
+    //alert("called");
+    //set left pos of help
+    //and height
+    var helpHeight = $(".help_icon").outerHeight();
+    var helpOffset = $(".help_icon").offset();
+    var helpOffsetRight = helpOffset.left + $(".help_icon").outerWidth();
+    //alert(helpHeight);
+    $(".help_container").css({"left" : helpOffsetRight, "height" : helpHeight});
+    //could also resize tip indicator here
+    var hintHeight = $("#context_hint").height();
+    $("#hinticator").height(hintHeight);
+  }
+
+  resizeHelp();
+
+  $(window).on("resize", resizeHelp);
+
 
   var helpContent = false;
 
@@ -2770,14 +3191,17 @@ $(document).ready(function() {
     //$(".help_content").removeClass("help_content_on");
     if(tipsOn){
       infoMsg("Turn <span id='tipPower'>ON</span> (T)ooltips");
-      $(".toolTip").stop(true, true).fadeOut();
       tipsOn = false;
+      $(".toolTip").stop(true, true).fadeOut(moveHelp);
+
       //$("#help_text").html("Turn ON Tooltips");
     }
     else{
       infoMsg("Turn <span id='tipPower'>OFF</span> (T)ooltips");
-      $(".toolTip").stop(true, true).fadeIn();
       tipsOn = true;
+      moveHelp();
+      $(".toolTip").stop(true, true).fadeIn();
+
       //$("#help_text").html("Turn OFF Tooltips");
     }
     //$(".help_container").delay(600).hide(0);
@@ -2789,15 +3213,23 @@ $(document).ready(function() {
           //your code
           if(tipsOn){
             tipsOn = false;
-            $(".toolTip").stop(true, true).fadeOut();
+            $(".toolTip").stop(true, true).fadeOut(moveHelp);
             tipMsg = "Tooltips OFF";
           }
           else{
             tipsOn = true;
-            $(".toolTip").stop(true, true).fadeIn();
+            moveHelp();
+            if(!blockHints && !intro_mode){
+              if(!cursorOnWidgetBoi){
+                $("#hint_content").html("Hi There");
+              }
+              $(".toolTip").stop(true, true).fadeIn();
+            }
+
             tipMsg = "Tooltips ON";
           }
           infoMsg(tipMsg);
+          //moveHelp();
       }
   }
 
@@ -2903,6 +3335,7 @@ $(document).ready(function() {
     }, 2800);
   }
 
+  /*
 
   $(".toolTip").click(function(){
     clearInterval(noSelection);
@@ -2923,8 +3356,10 @@ $(document).ready(function() {
     }
   });
 
+  */
+
   function widgetFunctionHint(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    if(!draggable && !intro_mode && tipsOn){
       //$(".tool_dot").first().addClass("selected_tool_dot");
       //$(".toolTip").clearQueue().fadeIn();
       //alert(widget_mode);
@@ -3003,7 +3438,8 @@ $(document).ready(function() {
   }, function(){
     //if(!draggable && !intro_mode && !menuOpen && tipsOn){
       //alert("interval cleared!");
-      $("#hint_content").clearQueue().show().html("Hi There");
+      //$("#hint_content").clearQueue().show().html("Hi There");
+      $("#hint_content").clearQueue().show();
       hintLoop = false;
       clearInterval(hinterval);
       clearInterval(hintDelay);
@@ -3016,48 +3452,50 @@ $(document).ready(function() {
 
 $("#widget_boi").hover(function(e){
   var $target = e.target;
-  if($($target).attr("id") == "hint_content" || $($target).attr("id") == "context_hint" || $($target).attr("id") == "hinticator"){
+  cursorOnWidgetBoi = true;
+  //if($($target).attr("id") == "hint_content" || $($target).attr("id") == "context_hint" || $($target).attr("id") == "hinticator"){
     //hovered over tooltip which is inside widget_boi
-  }
-  else{
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+  //}
+  //else{
+    if(!draggable && !intro_mode && !blockHints && tipsOn){
       $(".toolTip").stop(true, true).fadeIn();
     }
-  }
+//  }
 
 }, function(){
-  if(!draggable && !intro_mode && !menuOpen && tipsOn){
+  cursorOnWidgetBoi = false;
+  if(!draggable && !intro_mode && tipsOn){
     $(".toolTip").stop(true, true).fadeOut();
   }
 });
 
   $("#select_home_mode").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    if(!draggable && !intro_mode && tipsOn){
       $("#hint_content").html("Home Mode");
     }
   });
   $("#select_audio_mode").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    if(!draggable && !intro_mode && tipsOn){
       $("#hint_content").html("Audio Mode");
     }
   });
   $("#select_menu_mode").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    if(!draggable && !intro_mode && tipsOn){
       $("#hint_content").html("Menu Mode");
     }
   });
   $("#select_download_mode").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    if(!draggable && !intro_mode && tipsOn){
       $("#hint_content").html("Download Mode");
     }
   });
   $("#rw").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    if(!draggable && !intro_mode && tipsOn){
       $("#hint_content").html("Previous");
     }
   });
   $("#ff").hover(function(){
-    if(!draggable && !intro_mode && !menuOpen && tipsOn){
+    if(!draggable && !intro_mode && tipsOn){
       $("#hint_content").html("Next");
     }
   });
@@ -3143,6 +3581,20 @@ $("#widget_boi").hover(function(e){
 
 
   }
+
+  /*
+  this is the right idea but I need to do some tweaking to get a good clean intro
+  on both platforms
+
+  if(isMobile){
+    introAnimation();
+  }
+  else{
+    finishIntro();
+    stopTimelineIntro();
+  }
+
+  */
 
   introAnimation();
 
@@ -3295,10 +3747,44 @@ $("#widget_boi").hover(function(e){
         $("html").css("overflow-y", "scroll");
       });
     });
-    widget_mode = "audio_mode";
-    //alert(prev_widget_mode);
-    adjustIcon(prev_widget_mode, widget_mode);
+
+    //this interferes with quickspin when sending widget to bottom corner on mobile
+    //try leaving the mode alone unless it hasn't been set
+    if(firstSwipe){
+      widget_mode = "audio_mode";
+      //alert(prev_widget_mode);
+      adjustIcon(prev_widget_mode, widget_mode);
+    }
+
     intro_mode = false;
+    //send widget to bottom left if mobile
+
+    if(typeof prevWidgetLeftTutorial !== 'undefined'){
+      sendWidget(prevWidgetTopTutorial, prevWidgetLeftTutorial);
+      if(!firstSwipe){
+        quickSpin();
+      }
+    }
+    else{
+      if(isMobile){
+        sendWidget("85%", "25%");
+        widgetCenter = false;
+        if(!firstSwipe){
+          //if dark nav hasn't faded out yet it will look weird when proper nav fades in while spinning
+          quickSpin();
+        }
+      }
+    }
+
+    /*
+    if(isMobile){
+      sendWidget("85%", "25%");
+      if(!firstSwipe){
+        //if dark nav hasn't faded out yet it will look weird when proper nav fades in while spinning
+        quickSpin();
+      }
+    }
+    */
   }
 
   $(".intro_done").click(function(){
