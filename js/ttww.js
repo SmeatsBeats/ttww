@@ -969,7 +969,10 @@ $(document).ready(function() {
     }
   }
 
+  var gestureComplete;
+
   function initiateGesture(e){
+    gestureComplete = false;
     //alert("initiate");
     //e.preventDefault();
     //widgetFunctionDown = true;
@@ -1053,6 +1056,7 @@ $(document).ready(function() {
   }
 
   function endGesture(e){
+    gestureComplete = true;
 
     clearInterval(pressTime);
     //if it is a press, this has already been called
@@ -1062,6 +1066,7 @@ $(document).ready(function() {
       //gestureControl(e);
     }
     removeGestureHandler();
+    endGestureTargetControl(e);
   }
 
   var gestureTarget;
@@ -1087,10 +1092,28 @@ $(document).ready(function() {
       //alert("slider " + widgetGesture);
       sliderGestureControl(e);
       break;
+      case "ffrw":
+      ffrwGestureControl(e);
       default:
       break;
     }
   }
+
+  function endGestureTargetControl(e){
+    switch(gestureTarget){
+      case "ffrw":
+        clearInterval(scrubbyTimer);
+        var $target = e.target;
+        $($target).closest(".ffrw_icon").find(".ffrw_icon_dark").removeClass("ffrw_icon_dark_hold");
+        scrubLoops = 0;
+        scrubbing = false;
+      break;
+      default:
+      break;
+    }
+  }
+
+  //ATTACH GESTURE HANDLERS TO OBJECTS
 
   if(isMobile){
     /////////////// WIDGET FUNCTION ///////////////////
@@ -1106,6 +1129,13 @@ $(document).ready(function() {
     $(".support_img_slider").on("touchstart", function(e){
       gestureTarget = "slider";
       $currentSlider = $(this);
+      initiateGesture(e);
+      $(document).on("touchmove", swipeCheck)
+      $(document).on("touchend", endGesture);
+    });
+    ////////////////// FFRW //////////////////////
+    $(".ffrw").on("touchstart", function(e){
+      gestureTarget = "ffrw";
       initiateGesture(e);
       $(document).on("touchmove", swipeCheck)
       $(document).on("touchend", endGesture);
@@ -1131,17 +1161,13 @@ $(document).ready(function() {
       $(document).on("mousemove", swipeCheck)
       $(document).on("mouseup", endGesture);
     });
-
-    /* cant have both of these because you click both at once
-    result is that you are trying to set target to 2 different things at once
-    ///////////// IMG INFO ///////////////////
-    $(".img_indicator_container").mousedown(function(e){
-      gestureTarget = "imgInfo";
+    ////////////////// FFRW //////////////////////
+    $(".ffrw").mousedown(function(e){
+      gestureTarget = "ffrw";
       initiateGesture(e);
       $(document).on("mousemove", swipeCheck)
       $(document).on("mouseup", endGesture);
     });
-    */
   }
 
   function removeGestureHandler(){
@@ -1738,90 +1764,90 @@ $(document).ready(function() {
   }
 
   function moveHelp(ev){
+    if(!isMobile){
+      //alert("called");
+      // var widgetPos = getWidgetPos();
+      // var widgetLeft = widgetPos['left'];
+      // var widgetTop = widgetPos['top'];
+      //this function uses percents which I don't really want
+      var windowHeight = $(window).height();
+      var scrollTop = $(document).scrollTop();
+      var widgetWidth = $("#widget_boi").outerWidth();
+      var halfWidget = widgetWidth / 2;
+      if(typeof ev !== 'undefined'){
+        //if(isMobile){
+          //var widgetLeft = ev.changedTouches[0].clientX - ($("#widget_boi").outerWidth() / 2);
+          //var widgetBottom = ev.changedTouches[0].clientY + ($("#widget_boi").outerHeight() / 2);
+        //}
+        //else{
 
-    //alert("called");
-    // var widgetPos = getWidgetPos();
-    // var widgetLeft = widgetPos['left'];
-    // var widgetTop = widgetPos['top'];
-    //this function uses percents which I don't really want
-    var windowHeight = $(window).height();
-    var scrollTop = $(document).scrollTop();
-    var widgetWidth = $("#widget_boi").outerWidth();
-    var halfWidget = widgetWidth / 2;
-    if(typeof ev !== 'undefined'){
-      //if(isMobile){
-        //var widgetLeft = ev.changedTouches[0].clientX - ($("#widget_boi").outerWidth() / 2);
-        //var widgetBottom = ev.changedTouches[0].clientY + ($("#widget_boi").outerHeight() / 2);
-      //}
-      //else{
+          var widgetLeft = ev.clientX - halfWidget;
+          var widgetBottom = ev.clientY + halfWidget;
+          //alert(widgetLeft + " " + widgetBottom);
+        //}
+      }
+      else{
+        var widgetOffset = $("#widget_boi").offset();
+        var widgetLeft = widgetOffset.left;
+        var widgetTop = widgetOffset.top - scrollTop;
+        //alert(widgetLeft + " " + widgetTop);
+        var widgetBottom = widgetTop + $("#widget_boi").outerHeight();
+      }
 
-        var widgetLeft = ev.clientX - halfWidget;
-        var widgetBottom = ev.clientY + halfWidget;
-        //alert(widgetLeft + " " + widgetBottom);
-      //}
-    }
-    else{
-      var widgetOffset = $("#widget_boi").offset();
-      var widgetLeft = widgetOffset.left;
-      var widgetTop = widgetOffset.top - scrollTop;
-      //alert(widgetLeft + " " + widgetTop);
-      var widgetBottom = widgetTop + $("#widget_boi").outerHeight();
-    }
+      if(tipsOn){
+        //need to switch widget bottom to account for tips
+        widgetBottom = widgetBottom * 1.05 + $("#context_hint").outerHeight();
+      }
 
-    if(tipsOn){
-      //need to switch widget bottom to account for tips
-      widgetBottom = widgetBottom * 1.05 + $("#context_hint").outerHeight();
-    }
-
-    //alert( "WL: " + widgetLeft + " WB: " + widgetBottom  + " HR: " + helpRight  + " HT: " + helpTop);
-    if(widgetLeft < helpRight && widgetBottom > helpTop){
-      //alert("overlap");
       //alert( "WL: " + widgetLeft + " WB: " + widgetBottom  + " HR: " + helpRight  + " HT: " + helpTop);
-      if(!helpMoved){
-        $(".help_container, .help_icon").fadeOut().animate({
-          "bottom" : "94vh"
-        }, 0).fadeIn();
-        $(".help_icon")
-        helpMoved = true;
+      if(widgetLeft < helpRight && widgetBottom > helpTop){
+        //alert("overlap");
+        //alert( "WL: " + widgetLeft + " WB: " + widgetBottom  + " HR: " + helpRight  + " HT: " + helpTop);
+        if(!helpMoved){
+          $(".help_container, .help_icon").fadeOut().animate({
+            "bottom" : "94vh"
+          }, 0).fadeIn();
+          $(".help_icon")
+          helpMoved = true;
+        }
+      }
+      else if(widgetLeft > helpRight || widgetBottom < helpTop){
+        if(helpMoved){
+          $(".help_container, .help_icon").fadeOut().animate({
+            "bottom" : "3vh"
+          }, 0).fadeIn();
+          helpMoved = false;
+        }
+      }
+
+      if(widgetBottom > windowHeight && !hintMoved && tipsOn){
+        //alert("move hint");
+
+        $("#context_hint").stop(true, true).animate({
+          "opacity" : 0
+        }, 300, function(){
+          $("#context_hint").css("top", "-30%");
+        }).animate({
+          "opacity" : 1
+        }, 300);
+
+        //$("#context_hint").css("top", "-30%");
+        hintMoved = true;
+      }
+      else if(widgetBottom < windowHeight && hintMoved && tipsOn){
+
+        $("#context_hint").stop(true, true).animate({
+          "opacity" : 0
+        }, 300, function(){
+          $("#context_hint").css("top", "110%");
+        }).animate({
+          "opacity" : 1
+        }, 300);
+
+        //$("#context_hint").css("top", "110%");
+        hintMoved = false;
       }
     }
-    else if(widgetLeft > helpRight || widgetBottom < helpTop){
-      if(helpMoved){
-        $(".help_container, .help_icon").fadeOut().animate({
-          "bottom" : "3vh"
-        }, 0).fadeIn();
-        helpMoved = false;
-      }
-    }
-
-    if(widgetBottom > windowHeight && !hintMoved && tipsOn){
-      //alert("move hint");
-
-      $("#context_hint").stop(true, true).animate({
-        "opacity" : 0
-      }, 300, function(){
-        $("#context_hint").css("top", "-30%");
-      }).animate({
-        "opacity" : 1
-      }, 300);
-
-      //$("#context_hint").css("top", "-30%");
-      hintMoved = true;
-    }
-    else if(widgetBottom < windowHeight && hintMoved && tipsOn){
-
-      $("#context_hint").stop(true, true).animate({
-        "opacity" : 0
-      }, 300, function(){
-        $("#context_hint").css("top", "110%");
-      }).animate({
-        "opacity" : 1
-      }, 300);
-
-      //$("#context_hint").css("top", "110%");
-      hintMoved = false;
-    }
-
   }
 
   var usrPos = false;
@@ -1963,7 +1989,7 @@ $(document).ready(function() {
 
   /////////////////////////////////////////////////////////////////////////// AUDIO TIMELINE /////////////////////////////////////////////////////////////
 
-  /////////////////// outter audio progress bar //////////
+  /////////////////// outer audio progress bar //////////
   const circle = document.querySelector('#timeline_progress');
   const radius = circle.r.baseVal.value;
   const circumference = radius * 2 * Math.PI;
@@ -2005,7 +2031,10 @@ $(document).ready(function() {
       //replay the audio file and animate the progressBar
       audioFile.currentTime = 0;
       setAudioProgress(0);
-      audioFile.play();
+      if(!scrubbing){
+        audioFile.play();
+      }
+      //audioFile.play();
       wait();
       // //must match duration to css transition on #timeline_progress
       // wait = setTimeout(function(){
@@ -2213,6 +2242,89 @@ $(document).ready(function() {
       //alert("press done");
     }
 
+    function skippy(skip){
+      var currentTime = audioFile.currentTime;
+      //alert(currentTime);
+      //track timestamps:
+      //0:00-1:41 Graduate
+      //1:41-3:26 8lass
+      //3:26-6:29 >roken
+      //6:29-8:00 Home
+
+      //in seconds now
+      //0-101
+      //101-206
+      //206-389
+      //389-480
+
+
+
+        if(currentTime < 101){
+
+          if(skip){
+            //alert("skip to track 2");
+            setTime = 101;
+          }
+          else{
+            //back to start
+            setTime = 0;
+          }
+        }
+        else if(currentTime >= 101 && currentTime < 206){
+
+          if(skip){
+            //alert("skip to track 3");
+            setTime = 206;
+          }
+          else{
+            if(currentTime < 106){
+              setTime = 0;
+            }
+            else{
+              setTime = 101;
+            }
+          }
+        }
+        else if(currentTime >= 206 && currentTime < 389){
+
+          if(skip){
+            //alert("skip to track 4");
+            setTime = 389;
+          }
+          else{
+            if(currentTime < 211){
+              setTime = 101;
+            }
+            else{
+                setTime = 206;
+            }
+          }
+        }
+        else if(currentTime >= 389 && currentTime < 480){
+
+          if(skip){
+            //alert("skip to track 1");
+            setTime = 0;
+          }
+          else{
+            if(currentTime < 394){
+              setTime = 206;
+            }
+            else{
+              setTime = 389;
+            }
+          }
+        }
+        //prevent jerky animation during big jump whlie audio playing
+        skipPercent = (setTime / audioFile.duration) * 90;
+        wait();
+        homeComing = true;
+        setAudioProgress(skipPercent);
+        audioFile.currentTime = setTime;
+    }
+
+    /*
+
     $(".ffrw").click(function(e){
       //alert("clicked");
 
@@ -2309,6 +2421,69 @@ $(document).ready(function() {
         homeComing = true;
         setAudioProgress(skipPercent);
         audioFile.currentTime = setTime;
+    });
+
+    */
+
+    function ffrwGestureControl(e){
+      var $target = e.target;
+      //alert($($target).attr("id"));
+      if($($target).hasClass("ff_component")){
+        //fast-forward
+        var skip = true;
+      }
+      else{
+        //rewind
+        var skip = false;
+      }
+      switch(widgetGesture){
+        case "tap":
+          skippy(skip);
+        break;
+        case "press":
+          //alert(skip);
+          scrubby(skip);
+          $($target).closest(".ffrw_icon").find(".ffrw_icon_dark").removeClass("ffrw_icon_hover").addClass("ffrw_icon_dark_hold");
+        break;
+        default:
+        break;
+      }
+    }
+    //true = ff
+    //false = rw
+    var scrubbyTimer;
+    var scrubLoops = 0;
+    var scrubbing;
+
+    function scrubby(skip){
+      scrubbing = true;
+      //alert(skip);
+      scrubLoops++;
+      var setTime;
+      if(skip){
+        //ff
+        if(audioFile.currentTime < 1){
+          setTime = 5;
+        }
+        else{
+          setTime = audioFile.currentTime + 5 * scrubLoops;
+        }
+      }
+      else{
+        //rw
+        setTime = audioFile.currentTime - 5 * scrubLoops;
+      }
+      audioFile.currentTime = setTime;
+      //call again if still holding
+      if(!gestureComplete){
+        scrubbyTimer = setTimeout(function(){
+          scrubby(skip);
+        }, 1000);
+      }
+    }
+
+    $("#ff, #rw").hover(function(){
+      $(this).find(".ffrw_icon_dark").toggleClass("ffrw_icon_dark_hover");
     })
 
 
@@ -3372,7 +3547,7 @@ $(document).ready(function() {
 
       var hintA, hintB;
       var hintDex = 2;
-      hintLoop = true;
+      //hintLoop = true;
 
       //put dots to show that another hint is coming
       $("#hinticator").html("<svg class='tool_dot_container'><circle class='tool_dot selected_tool_dot' cx='50%' cy='50%' r='0.2em'></svg><svg class='tool_dot_container'><circle class='tool_dot' cx='50%' cy='50%' r='0.2em'></svg>");
@@ -3412,6 +3587,7 @@ $(document).ready(function() {
       $("#hint_content").html(hintA);
 
       function swapHint(){
+        hintLoop = true;
         $("#hint_content").animate({
           "opacity" : "0"
         }, 600, function(){
@@ -3429,12 +3605,17 @@ $(document).ready(function() {
           }, 600)
         });
         if(hintLoop){
-          hinterval = setTimeout(swapHint, 3000);
+          hinterval = setTimeout(swapHint, 1800);
         }
 
       }
       if(hintLoop){
-        hintDelay = setTimeout(swapHint, 3000);
+        //hintDelay = setTimeout(swapHint, 2000);
+        swapHint();
+      }
+      else{
+        //swapHint();
+        hintDelay = setTimeout(swapHint, 900);
       }
     }
   }

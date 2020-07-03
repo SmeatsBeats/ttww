@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=3" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=8" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.1"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.3"></script>
   </head>
 
   <body>
@@ -870,18 +870,19 @@
             </div>
 
             <div class="nav_img_container">
-
+              <!--
               <img class="audio_timeline" src="imgs/WIDGET_TIMELINE.svg" alt="Audio timeline indicator">
+            -->
 
               <!-- research svg tag to create and animate timeline -->
 
               <!-- AUDIO TIMELINE -->
 
-              <svg class="audio_progress">
+              <svg class="audio_progress" xmlns="http://www.w3.org/2000/svg">
                 <circle id="timeline_hilight" cx="50%" cy="50%" r="48%">
               </svg>
 
-              <svg class="audio_indicator">
+              <svg class="audio_indicator" xmlns="http://www.w3.org/2000/svg">
                 <circle id="timeline_progress" cx="50%" cy="50%" r="48%">
               </svg>
 
@@ -890,10 +891,24 @@
                 <!-- <span id="rw"><<</span>
                 <span id="ff">>></span> -->
                 <div>
+                  <!--
                   <img id="rw" src="imgs/FF_RW_ICON_3.svg" alt="Next Track">
+                -->
+
+                  <svg id="rw" class="rw_component ffrw_icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="17" height="25.6" viewBox="0 0 17 25.6">
+                    <polygon class="ffrw_icon_dark rw_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/>
+                    <polygon class="ffrw_icon_light rw_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+                  </svg>
+
                 </div>
                 <div>
+                  <!--
                   <img id="ff" src="imgs/FF_RW_ICON_3.svg" alt="Previous Track">
+                -->
+                  <svg id="ff" class="ff_component ffrw_icon" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="17" height="25.6" viewBox="0 0 17 25.6">
+                    <polygon class="ffrw_icon_dark ff_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/>
+                    <polygon class="ffrw_icon_light ff_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+                  </svg>
                 </div>
               </div>
 

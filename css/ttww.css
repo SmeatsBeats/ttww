@@ -695,6 +695,13 @@ body {
 
 }
 
+.timeline-cls-1 {
+  fill: none;
+  stroke: gray;
+  stroke-miterlimit: 10;
+  stroke-width: 0.5px;
+}
+
 #timeline_progress {
   transition: all 1s;
   transform: rotate(108deg);
@@ -740,6 +747,26 @@ body {
   color: #999;
   font-size: 200%;
   transition: opacity 0.5s, width 0.8s;
+}
+
+.ffrw_icon_light {
+  fill: #b3b3b3;
+}
+
+.ffrw_icon_dark {
+  transform: translateX(-32%);
+  fill: #282828;
+  transition: transform 0.2s;
+}
+
+.ffrw_icon_dark_hover {
+  transform: translateX(-15%);
+  transition: transform 0.2s;
+}
+
+.ffrw_icon_dark_hold {
+  transform: translateX(0%);
+  transition: transform 0.2s;
 }
 
 .showSkip {
