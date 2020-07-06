@@ -716,17 +716,23 @@ body {
 .time_box {
   position: absolute;
   color: #999;
-  height: 105%;
+  height: 111%;
   display: flex;
   flex-flow: column;
   justify-content: flex-end;
+  align-items: center;
+
+  /* border: 1px solid blue; */
 }
 .current_time {
-  /* position: relative;
-  bottom: 5%; */
+  /* position: absolute;
+  bottom: 0; */
+  font-size: 4vw;
+  opacity: 0;
+  transition: opacity 0.3s;
   /* border: 1px solid red; */
   /* double check this */
-  transition: opacity 0.4s, bottom 0.7s;
+  /* transition: opacity 0.4s, bottom 0.7s; */
 }
 
 
@@ -1431,6 +1437,9 @@ body {
   }
   #download_confirm {
     height: 15%;
+  }
+  .current_time {
+    font-size: 0.95vw;
   }
   /*
   #nav_options_img{

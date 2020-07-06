@@ -50,6 +50,7 @@ $(document).ready(function() {
   var isMobile;
   var cursorOnWidgetBoi = false;
   var blockHints = false;
+  var helpOffset = $(".help_icon").offset();
   //check if mobile
 
   if($(".test_mobile").css("color") == "rgb(255, 0, 0)"){
@@ -1736,12 +1737,10 @@ $(document).ready(function() {
   var scrollDirection;
   var widgetPosTop, widgetPosLeft;
   var helpMoved = false;
-  var helpTop, helpOffset, helpRight;
-  helpOffset = $(".help_icon").offset();
-  helpTop = helpOffset.top - $(document).scrollTop();
-  //10% is currently the css width of the help_container
-  //giving it a little margin with .12
-  helpRight = helpOffset.left + ($(window).width() * .12);
+  //var helpTop, helpOffset, helpRight;
+  //var helpOffset = $(".help_icon").offset();
+  //this is happening at startup so scrolltop should be 0, what if they refresh page?
+
 
   //position the actual hint either above or below Widget
   var hintMoved = false;
@@ -1764,6 +1763,10 @@ $(document).ready(function() {
   }
 
   function moveHelp(ev){
+    var helpTop = helpOffset.top - $(document).scrollTop();
+    //10% is currently the css width of the help_container
+    //giving it a little margin with .12
+    var helpRight = helpOffset.left + ($(window).width() * .12);
     if(!isMobile){
       //alert("called");
       // var widgetPos = getWidgetPos();
@@ -1866,6 +1869,7 @@ $(document).ready(function() {
         quickSpin();
         var sendTop, sendLeft;
         if(isMobile){
+
           sendTop = "85%";
           sendLeft = "25%";
         }
@@ -1880,17 +1884,20 @@ $(document).ready(function() {
     }
     else if(scrollTop < headerTop && !widgetCenter && !intro_mode && !usrPos && !headedHome){
       if(isMobile){
-        sendTop = "85%";
-        sendLeft = "25%";
+        // sendTop = "85%";
+        // sendLeft = "25%";
       }
       else{
         sendTop = "50%";
         sendLeft = "50%";
+        quickSpin();
+        sendWidget(sendTop, sendLeft);
+        widgetCenter = true;
       }
-      quickSpin();
-      sendWidget(sendTop, sendLeft);
+      // quickSpin();
+      // sendWidget(sendTop, sendLeft);
       //well not exactly centered on mobile
-      widgetCenter = true;
+      //widgetCenter = true;
     }
 
   });
@@ -2022,8 +2029,32 @@ $(document).ready(function() {
 
     //display time in coherent fashion
 
-    //put current time at bottom
-    //$(".current_time").html(currentTime);
+    //put current time at bottom for desktop
+    //track #for mobile
+    /*
+    if(isMobile){
+      var newCurrentTrack = getTrack(currentTime);
+      //alert(newCurrentTrack + " " + currentTrack);
+      if(newCurrentTrack !== currentTrack){
+        $(".current_time").html(newCurrentTrack);
+      }
+      currentTrack = newCurrentTrack;
+    }
+    else{
+    */
+      var minutes = Math.floor(currentTime / 60);
+      var seconds = Math.floor((currentTime % 60));
+      if(seconds < 10){
+        var holder = 0;
+      }
+      else{
+        var holder = "";
+      }
+      $(".current_time").html(minutes + ":" + holder + seconds);
+      if($(".current_time").css("opacity") == "0"){
+        $(".current_time").css("opacity", "1");
+      }
+    //}
 
     if(currentTime == duration){
       //use this variable to prevent setAudioProgress from being called while bar is returning to start
@@ -2232,14 +2263,24 @@ $(document).ready(function() {
       //called twice because 2 transitions
       document.getElementById("ffrw_container").removeEventListener("webkitTransitionEnd", pressDone);
       //alert("pressDone");
+    }
 
-      if(controlsOpen){
+    var currentTrack;
 
+    function getTrack(currentTime){
+      if(currentTime < 101){
+        var currentTrack = 1;
       }
-
-
-      //widget_press = false;
-      //alert("press done");
+      else if(currentTime >= 101 && currentTime < 206){
+        var currentTrack = 2;
+      }
+      else if(currentTime >= 206 && currentTime < 389){
+        var currentTrack = 3;
+      }
+      else if(currentTime >= 389 && currentTime < 480){
+        var currentTrack = 4;
+      }
+      return currentTrack;
     }
 
     function skippy(skip){
@@ -2257,7 +2298,7 @@ $(document).ready(function() {
       //206-389
       //389-480
 
-
+        //could simplify this now using getTrack
 
         if(currentTime < 101){
 
@@ -2482,9 +2523,20 @@ $(document).ready(function() {
       }
     }
 
-    $("#ff, #rw").hover(function(){
-      $(this).find(".ffrw_icon_dark").toggleClass("ffrw_icon_dark_hover");
-    })
+    if(isMobile){
+      $("#ff, #rw").on("touchstart", function(){
+        $(this).find(".ffrw_icon_dark").addClass("ffrw_icon_dark_hover");
+      });
+      $("#ff, #rw").on("touchend", function(){
+        $(this).find(".ffrw_icon_dark").removeClass("ffrw_icon_dark_hover");
+      });
+    }
+    else{
+      $("#ff, #rw").hover(function(){
+        $(this).find(".ffrw_icon_dark").toggleClass("ffrw_icon_dark_hover");
+      });
+    }
+
 
 
   //////////// HOME MODE //////////////////
@@ -2492,13 +2544,27 @@ $(document).ready(function() {
   ///////// home tap //////////////
   var headedHome = false;
   function scrollHome(){
-    sendWidget("50%", "50%");
+    if(isMobile){
+      if(controlsOpen){
+        showSkip();
+      }
+      sendTop = "85%";
+      sendLeft = "25%";
+    }
+    else{
+      sendTop = "50%";
+      sendLeft = "50%";
+    }
+    sendWidget(sendTop, sendLeft);
     quickSpin();
     headedHome = true;
     $("html, body").animate({
       scrollTop: 0
     }, "slow", function(){
-      widgetCenter = true;
+      if(!isMobile){
+        widgetCenter = true;
+      }
+
       usrPos = false;
       headedHome = false;
     });
