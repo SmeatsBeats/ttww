@@ -596,7 +596,7 @@ $(document).ready(function() {
 
   //////////////////////////////////////////// MOBILE GESTURES //////////////////////////////////////////////
 
-
+/*
   $(".nav_box").mousedown(function(){
 
     //alert(spinning);
@@ -629,144 +629,73 @@ $(document).ready(function() {
     }
     // alert(widget_mode);
   });
-
-
-  ///gonna try to get rid of hammer since I still need to use my own mobile eventlisteners...
-  ///WIDGET FUNCTION
-
-  //touchstart:
-    //get touchstart position
-    //start timer and if it is not cancelled in time, set press true
-  //touchmove
-    //set swipe to true. is this necessary?
-    //set press false and clear timer
-  //touchend
-    //get end position and calculate swipe direction
-    //execute relevent function
-
-
-  /*
-  mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-
-  mc.on("swipeleft swiperight swipeup swipedown press", function(ev){
-    var widgetGesture = ev.type;
-    //widget is not initially in any mode
-    prev_widget_mode = widget_mode;
-    //alert(widget_mode);
-    //alert(spinning);
-    if(!spinning && !draggable){
-      if(widgetGesture !== "press"){
-        spinning = true;
-      }
-
-      switch(widgetGesture){
-        case "swipeup":
-        if(!draggable){
-          widget_mode = "home_mode";
-          //displayMode(widget_mode, prev_widget_mode);
-          //adjustIcon(prev_widget_mode, widget_mode);
-        }
-        break;
-        case "swipeleft":
-        if(!draggable){
-          widget_mode = "menu_mode";
-          //alert("calling displayMode with WM: " + widget_mode);
-          //displayMode(widget_mode, prev_widget_mode);
-          //adjustIcon(prev_widget_mode, widget_mode);
-        }
-        break;
-        case "swipedown":
-        if(!draggable){
-          widget_mode = "download_mode";
-          //displayMode(widget_mode, prev_widget_mode);
-          //adjustIcon(prev_widget_mode, widget_mode);
-        }
-        break;
-        case "swiperight":
-        if(!draggable){
-          widget_mode = "audio_mode";
-          //displayMode(widget_mode, prev_widget_mode);
-          //adjustIcon(prev_widget_mode, widget_mode);
-        }
-        break;
-        default:
-        ///////////////////this is a press////////////////////
-        widget_press = true;
-        //alert("widget_press true");
-        switch(widget_mode){
-
-          case "audio_mode":
-            //displayMode(widget_mode, prev_widget_mode);
-            //adjustIcon(prev_widget_mode, widget_mode);
-            //hilight intro task
-            if(!audio_press){
-              audio_press = true;
-              $("#audio_press").addClass("intro_task_done");
-            }
-            //open audio controls
-            //alert("open audio controls");
-            //$(".audio_control").show();
-            //$(".audio_control").animate({"top": "0px"}, 700);
-            quickSpin();
-            showSkip();
-          break;
-          case "download_mode":
-          quickSpin();
-            //displayMode(widget_mode, prev_widget_mode);
-            //adjustIcon(prev_widget_mode, widget_mode);
-            if(!download_press){
-              download_press = true;
-              $("#download_press").addClass("intro_task_done");
-            }
-            //open the download options menu
-            downloadOptions();
-          break;
-          case "menu_mode":
-            //alert("menu mode pressed");
-            //update the intro tasks
-            if(!menu_press){
-              menu_press = true;
-              $("#menu_press").addClass("intro_task_done");
-            }
-
-            //displayMode(widget_mode, prev_widget_mode);
-            //adjustIcon(prev_widget_mode, widget_mode);
-
-            if(!intro_mode){
-              //alert("reset intro mode pls");
-              reset_intro_mode();
-              introHint();
-            }
-          break;
-          default:
-          //make widget draggable
-          //set home_press true when drag done
-            //adjustIcon(prev_widget_mode, widget_mode);
-            dragWidget(ev);
-        }
-
-      }
-      if(widgetGesture !== "press"){
-
-        //since widget not initially in a mode set prev_widget_mode to first widget_mode
-        if(firstSwipe){
-          prev_widget_mode = widget_mode;
-        }
-        if(intro_mode){
-          if(firstSwipe){
-            intro_swipe();
-            introHint();
-          }
-          else if(prev_widget_mode !== widget_mode){
-            introHint();
-          }
-        }
-        //alert(prev_widget_mode + " " + widget_mode);
-        adjustIcon(prev_widget_mode, widget_mode);
-      }
-    }
-  });
   */
+
+  function navBoxTap(e){
+    var $target = e.target;
+    //alert(spinning);
+
+    if(!spinning && !draggable){
+      $(".widget_nav_path").removeClass("widget_nav_hover");
+      var nav_box_id = $($target).attr("id");
+      // alert(nav_box_id);
+      prev_widget_mode = widget_mode;
+      widget_mode = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
+      //this guy is prime suspect for widget bug where input is still recognized by icon during spin
+      spinning = true;
+      //displayMode(widget_mode, prev_widget_mode);
+      //issue if user clicks instead of swiping on first one
+
+      if(firstSwipe){
+        //no initial value for prev_widget_mode so set again below new value for widget_mode
+        prev_widget_mode = widget_mode;
+        //stopConstantSpin();
+        //alert("stop spin");
+        intro_swipe();
+      }
+
+      //alert(prev_widget_mode + " " + widget_mode);
+      if(intro_mode && prev_widget_mode !== widget_mode){
+        introHint();
+      }
+
+      adjustIcon(prev_widget_mode, widget_mode);
+    }
+    // alert(widget_mode);
+  };
+
+  function navBoxPress(e){
+    var $target = e.target;
+    cleanUpWindows();
+    //$(".widget_nav_path").removeClass("widget_nav_hover");
+    var nav_box_id = $($target).attr("id");
+    var pressedBox = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
+    widgetAction(pressedBox);
+  }
+
+  function cleanUpWindows(){
+    if(menuOpen){
+      displayMenu(false);
+    }
+    if(downloadSimpleOpen){
+      closeDownload();
+    }
+  }
+
+  function navBoxGestureControl(e){
+    switch(widgetGesture){
+      case "tap":
+      //run usual nav_box mousedown to switch modes
+      navBoxTap(e);
+      break;
+      case "press":
+      //shortcut to run primary function of mode that is held down
+      navBoxPress(e);
+      break;
+      default:
+      break;
+    }
+  }
 
   function widgetAction(widget_mode){
     switch(widget_mode){
@@ -1115,6 +1044,11 @@ $(document).ready(function() {
       break;
       case "ffrw":
       ffrwGestureControl(e);
+      break;
+      case "nav_box":
+      navBoxGestureControl(e);
+      $(".widget_nav_path").removeClass("nav_box_press");
+      break;
       default:
       break;
     }
@@ -1137,6 +1071,17 @@ $(document).ready(function() {
   //ATTACH GESTURE HANDLERS TO OBJECTS
 
   if(isMobile){
+    ///////////// NAV BOX ////////////////////////
+    $(".nav_box").on("touchstart", function(e){
+      e.preventDefault();
+      var whichBox = e.target.id;
+      var select_widget_modes = getNavHover(whichBox);
+      navHover(whichBox, select_widget_modes, true);
+      gestureTarget = "nav_box";
+      initiateGesture(e);
+      $(document).on("touchmove", swipeCheck);
+      $(document).on("touchend", endGesture);
+    })
     /////////////// WIDGET FUNCTION ///////////////////
     $("#widget_function").on("touchstart", function(e){
       e.preventDefault();
@@ -1164,10 +1109,22 @@ $(document).ready(function() {
   }
   /// not mobile
   else{
-    /////////////WIDGET FUNCTION //////////////////
+    ///////////// NAV BOX ////////////////////////
+    $(".nav_box").mousedown(function(e){
+      e.preventDefault();
+      var whichBox = e.target.id;
+      var select_widget_modes = getNavHover(whichBox);
+      navHover(whichBox, select_widget_modes, true);
+      gestureTarget = "nav_box";
+      initiateGesture(e);
+      $(document).on("mousemove", swipeCheck);
+      $(document).on("mouseup", endGesture);
+    })
+    ///////////// WIDGET FUNCTION //////////////////
     $("#widget_function").mousedown(function(e){
       e.preventDefault();
       gestureTarget = "widget_function";
+      //startPress lights up the other nav paths
       startPress();
       initiateGesture(e);
       $(document).on("mousemove", swipeCheck);
@@ -1227,17 +1184,26 @@ $(document).ready(function() {
     return select_widget_modes;
   }
 
-  function navHover(whichBox, select_widget_modes){
+  function navHover(whichBox, select_widget_modes, press){
     //if(!spinning){
       switch(whichBox){
         case select_widget_modes[0]:
         $("#widget_nav_1").addClass("widget_nav_hover");
+        if(press){
+          $("#widget_nav_1").addClass("nav_box_press");
+        }
         break;
         case select_widget_modes[1]:
         $("#widget_nav_2").addClass("widget_nav_hover");
+        if(press){
+          $("#widget_nav_2").addClass("nav_box_press");
+        }
         break;
         case select_widget_modes[2]:
         $("#widget_nav_3").addClass("widget_nav_hover");
+        if(press){
+          $("#widget_nav_3").addClass("nav_box_press");
+        }
         break;
         default:
         //do nothing on audio mode bc it is selected
@@ -1250,12 +1216,16 @@ $(document).ready(function() {
       switch(whichBox){
         case select_widget_modes[0]:
         $("#widget_nav_1").removeClass("widget_nav_hover");
+        //these may run unnecessarily atm
+        //$("#widget_nav_1").removeClass("nav_box_press");
         break;
         case select_widget_modes[1]:
         $("#widget_nav_2").removeClass("widget_nav_hover");
+        //$("#widget_nav_2").removeClass("nav_box_press");
         break;
         case select_widget_modes[2]:
         $("#widget_nav_3").removeClass("widget_nav_hover");
+        //$("#widget_nav_3").removeClass("nav_box_press");
         break;
         default:
         //do nothing on audio mode bc it is selected
@@ -1268,7 +1238,7 @@ $(document).ready(function() {
   $(".nav_box").hover(function(ev){
     var whichBox = ev.target.id;
     var select_widget_modes = getNavHover(whichBox);
-    navHover(whichBox, select_widget_modes);
+    navHover(whichBox, select_widget_modes, false);
     //$whichBox = $($whichBox).attr("id"));
     //alert(ev.target.id);
     //audio mode
@@ -2168,28 +2138,30 @@ $(document).ready(function() {
     if(playing){
         audioFile.pause();
         playing = false;
-
-        //change icon to play
-        spinRate = 15;
-        moveSticks(true, false, false);
-        //iconSpin(0, 90, 15);
-        //alert("audio control moving widget function");
-        $("#widget_function").css("transform", "rotate(90deg)");
-        //reset play icon
-        //simpleIconSpin(1);
+        if(widget_mode == "audio_mode"){
+          //change icon to play
+          spinRate = 15;
+          moveSticks(true, false, false);
+          //iconSpin(0, 90, 15);
+          //alert("audio control moving widget function");
+          $("#widget_function").css("transform", "rotate(90deg)");
+          //reset play icon
+          //simpleIconSpin(1);
+        }
       }
       else{
         audioFile.play();
         playing = true;
-
-        //change icon to pause
-        spinRate = 15;
-        moveSticks(false, false, false);
-        //iconSpin(90, 0, 15);
-        //alert("audio control moving widget function");
-        $("#widget_function").css("transform", "rotate(0deg)");
-        //reset pause icon
-        //simpleIconSpin(2);
+        if(widget_mode == "audio_mode"){
+          //change icon to pause
+          spinRate = 15;
+          moveSticks(false, false, false);
+          //iconSpin(90, 0, 15);
+          //alert("audio control moving widget function");
+          $("#widget_function").css("transform", "rotate(0deg)");
+          //reset pause icon
+          //simpleIconSpin(2);
+        }
       }
       $("#hint_content").stop(true, true);
       $("#hinticator").stop(true, true);
@@ -3148,6 +3120,8 @@ $(document).ready(function() {
   }
 
   $("#download_cancel_button, #download_done_button").click(function(){
+    closeDownload();
+    /*
     movVal = "-" + downloadConfirmHeight;
     if(!intro_mode){
       $("html").css("overflow", "auto");
@@ -3169,8 +3143,32 @@ $(document).ready(function() {
       //$(this).hide();
       downloadSimpleOpen = false;
     });
-
+    */
   });
+
+  function closeDownload(){
+    movVal = "-" + downloadConfirmHeight;
+    if(!intro_mode){
+      $("html").css("overflow", "auto");
+    }
+
+    $(".download_options").animate({
+      "top" : "-100%"
+    }, 800, "swing", function(){
+      $("#download_button").css("right", "30%");
+      $(".download_options").hide();
+      downloadOptionsOpen = false;
+    });
+
+    //height of download confirm will vary based on device
+
+    $("#download_confirm").animate({
+      "bottom" : movVal
+    }, 800, "swing", function(){
+      //$(this).hide();
+      downloadSimpleOpen = false;
+    });
+  }
 
   //the height of download options needs to change if user scrolls on mobile, hiding the search bar
 

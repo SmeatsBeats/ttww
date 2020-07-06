@@ -536,6 +536,12 @@ body {
   fill: #b3b3b3;
   transition: fill 0.3s;
 }
+
+.nav_box_press {
+  fill: white;
+  transition: fill 2s;
+}
+
 .nav_img_container {
   position: absolute;
   width: 100%;
