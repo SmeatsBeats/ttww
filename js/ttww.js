@@ -1063,8 +1063,19 @@ $(document).ready(function() {
     //if it is a press, this has already been called
     if(widgetGesture !== "press"){
       // need to call correct function depending on what was clicked
+      /*
+      if(widgetGesture !== "tap"){
+        //it is some sort of swipe so block if spinning
+        if(!spinning){
+          gestureTargetControl(e);
+        }
+      }
+      else{
+        gestureTargetControl(e);
+      }
+      */
       gestureTargetControl(e);
-      //gestureControl(e);
+
     }
     removeGestureHandler();
     endGestureTargetControl(e);
@@ -1086,7 +1097,16 @@ $(document).ready(function() {
       else{
         endPress();
       }
-      gestureControl(e);
+      if(widgetGesture !== "tap" && widgetGesture !== "press"){
+        if(!spinning){
+          gestureControl(e);
+        }
+      }
+      else{
+        gestureControl(e);
+      }
+
+      //gestureControl(e);
       $(".widget_nav_path").removeClass("widget_nav_hover");
       break;
       case "slider":
