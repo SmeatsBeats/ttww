@@ -83,6 +83,9 @@ body {
   /*align-items: center;*/
   justify-content: flex-start;
 }
+/* .content p {
+  font-size: 1.5vw;
+} */
 .credits {
   flex-flow: column;
   align-items: center;
@@ -1451,6 +1454,12 @@ body {
   }
   .current_time {
     font-size: 0.95vw;
+  }
+  .content p {
+    font-size: 1.5vw;
+  }
+  #content_head_msg{
+    font-size: 1.8vw;
   }
   /*
   #nav_options_img{
