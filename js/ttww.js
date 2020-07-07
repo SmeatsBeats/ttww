@@ -2182,6 +2182,7 @@ $(document).ready(function() {
     function showSkip(){
 
       $(".ffrw").toggleClass("showSkip");
+      $(".intro_dots").toggleClass("intro_dots_wide");
       //$("#ff, #rw").fadeIn();
 
       if(controlsOpen){
@@ -2192,14 +2193,24 @@ $(document).ready(function() {
           sendWidget(prevWidgetTopPercent, prevWidgetLeftPercent);
         }
 
+        //reset intro dots
+        // if($(".intro_dots").hasClass("intro_dots_wide")){
+        //   $(".intro_dots").removeClass
+        // }
+
       }
       else{
         controlsOpen = true;
+        //if intro mode need to move dots
+        // if(intro_mode){
+        //   $(".intro_dots").css("width", "190%");
+        // }
       }
       //need to set press to false
       //has to happen after this function or will block next widget_function click
       document.getElementById("ffrw_container").addEventListener("webkitTransitionEnd", pressDone);
       //need to check if the buttons are visible and if not bumo widget to better location
+
 
 
       //keep widget on screen

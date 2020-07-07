@@ -1121,6 +1121,11 @@ body {
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
+  transition: width 0.3s;
+}
+.intro_dots_wide {
+  width: 190%;
+  transition: width 0.3s;
 }
 .dot_row {
   /* border: 1px solid red; */
