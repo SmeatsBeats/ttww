@@ -144,12 +144,56 @@ $(document).ready(function() {
   //they should be moved to the css file to prevent appearing before page is fully loaded
   //good luck figure out which ones!
 
-  $(".lyrics, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator").hide();
+  $(".songs, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator").hide();
   $(".intro_msg, #album_art, #real_body").css("opacity", "0");
   $(".prev_arrow").addClass("no_arrow");
   if(isMobile){
     $(".help").hide();
   }
+
+
+  //////////////// PAGE DIRECT //////////////////////
+
+  function getQueryVariable(variable){
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+  }
+
+  var page = getQueryVariable("page");
+
+  if(page){
+    introCleanUp();
+    //finishIntro();
+    function callMenuSelect(){
+      menu_select(page);
+      $("#album_art").removeEventListener("webkitAnimationEnd", callMenuSelect);
+    }
+    $("#album_art").addEventListener("webkitAnimationEnd", callMenuSelect);
+
+
+    //menu_select(page);
+  }
+
+  //menu_select(page);
+
+  // switch(page){
+  //   case "about":
+  //   menu_select()
+  //   break;
+  //   case "credits":
+  //   break;
+  //   case "songs":
+  //   break;
+  //   case "support":
+  //   break;
+  //   default:
+  //   break;
+  // }
 
 
   ///////////////////////////////////////////////////////////////////////////////////////// SLIDER /////////////////////////////////////////////////
@@ -239,11 +283,11 @@ $(document).ready(function() {
 
         $(prev_img).animate({
           "left" : "-100%"
-        }, 800);
+        }, 500);
 
         $(current_img).animate({
           "left" : "0%"
-        }, 800);
+        }, 500);
         //add class to current img to detect it
 
         //if you are jumping to the right you must move all imgs in between
@@ -255,7 +299,7 @@ $(document).ready(function() {
             //alert(i);
             $(slide_imgs[i]).animate({
               "left" : "-100%"
-            }, 800);
+            }, 500);
           }
         }
 
@@ -327,11 +371,11 @@ $(document).ready(function() {
 
         $(prev_img).animate({
           "left" : "100%"
-        }, 800);
+        }, 500);
 
         $(current_img).animate({
           "left" : "0%"
-        }, 800);
+        }, 500);
 
         //alert(jumpTo);
 
@@ -341,7 +385,7 @@ $(document).ready(function() {
           for(i = prev_index - 1; i > slider_index; i--){
             $(slide_imgs[i]).animate({
               "left" : "100%"
-            }, 800);
+            }, 500);
           }
         }
       }
@@ -2587,6 +2631,8 @@ $(document).ready(function() {
     quickSpin();
     //adjustIcon(prev_widget_mode, widget_mode);
 
+
+
     draggable = true;
     clearInterval(hinterval);
     clearInterval(hintDelay);
@@ -2595,7 +2641,14 @@ $(document).ready(function() {
 
     $("#hint_content").html("Drag Me");
     //fade out widget function
-    $("#widget_function").fadeOut();
+    $("#widget_function").animate({
+      "opacity" : "0"
+    }, 400);
+
+    $("#widget_function").css("cursor", "move");
+
+    // $("#widget_boi").css("cursor", "move !important");
+    //ugh
 
     //could be cool to spin widget throughout move
 
@@ -2723,7 +2776,14 @@ $(document).ready(function() {
     endPress();
     //adjustIcon(prev_widget_mode, widget_mode);
     $("#hint_content").html("Nice");
-    $("#widget_function").fadeIn();
+    // $("#widget_function, .widget_function_container").css("cursor", "pointer");
+    //$("#widget_function").fadeIn();
+    $("#widget_function").animate({
+      "opacity" : "1"
+    }, 400);
+
+    $("#widget_function").css("cursor", "pointer");
+
     if(intro_mode){
       $("#widget_boi").delay(500).animate({
         "top" : "50%",
@@ -2838,7 +2898,7 @@ $(document).ready(function() {
         $(".menu").show();
         var slideDest = "0%";
         var about_delay = 0;
-        var lyrics_delay = 100;
+        var songs_delay = 100;
         var credits_delay = 200;
         var support_delay = 300;
         // menuOpen = true;
@@ -2880,7 +2940,7 @@ $(document).ready(function() {
 
         var slideDest = "100%";
         var about_delay = 300;
-        var lyrics_delay = 200;
+        var songs_delay = 200;
         var credits_delay = 100;
         var support_delay = 0;
         // menuOpen = false;
@@ -2898,7 +2958,7 @@ $(document).ready(function() {
         }
       });
 
-      $("#lyrics_nav").delay(lyrics_delay).animate({
+      $("#songs_nav").delay(songs_delay).animate({
         "left" : slideDest
       }, 800);
 
@@ -2925,7 +2985,7 @@ $(document).ready(function() {
       case "about":
       msg = "The key question is whether such a system has braking mechanisms at its disposal...";
       break;
-      case "lyrics":
+      case "songs":
       msg = "6. Death is a choice. Life is indecision.";
       break;
       case "credits":
@@ -3058,7 +3118,8 @@ $(document).ready(function() {
     $(".widget_intro, .intro_dots").show().animate({
       "opacity" : "1"
     }, 1500, function(){
-      $("#real_body, #album_art").css("opacity" , "0");
+      //$("#real_body, #album_art").css("opacity" , "0");
+      $("#album_art").css("opacity" , "0");
       //set widget_press to false
       //widget_press = false;
       //endPress();
@@ -3483,13 +3544,14 @@ $(document).ready(function() {
     //$(".help_container").delay(600).hide(0);
   });
 
-  document.body.onkeyup = function(e){
+  document.body.onkeydown = function(e){
     var tipMsg = "";
       if(e.keyCode == 84){
           //your code
           if(tipsOn){
             tipsOn = false;
             $(".toolTip").stop(true, true).fadeOut(moveHelp);
+            $("#hint_content").stop(true, true).clearQueue();
             tipMsg = "Tooltips OFF";
           }
           else{
@@ -3506,6 +3568,14 @@ $(document).ready(function() {
           }
           infoMsg(tipMsg);
           //moveHelp();
+      }
+      else if(e.keyCode == 32){
+        if(!firstSwipe){
+          e.preventDefault();
+          //play or pause
+          //alert("Spacebar");
+          audioControl();
+        }
       }
   }
 
@@ -3721,7 +3791,7 @@ $(document).ready(function() {
     //if(!draggable && !intro_mode && !menuOpen && tipsOn){
       //alert("interval cleared!");
       //$("#hint_content").clearQueue().show().html("Hi There");
-      $("#hint_content").clearQueue().show();
+      $("#hint_content").stop(true, true).clearQueue().show();
       hintLoop = false;
       clearInterval(hinterval);
       clearInterval(hintDelay);

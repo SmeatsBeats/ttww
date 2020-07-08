@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.8"></script>
   </head>
 
   <body>
@@ -320,7 +320,7 @@
 
       </section>
 
-      <section class="content lyrics">
+      <section class="content songs">
 
 
         <!--header title image -->
@@ -331,7 +331,7 @@
 
         </div> -->
 
-        <div class="lyrics_item" id="heratic">
+        <div class="songs_item" id="heratic">
 
           <!-- <img class="lyrics_item_img" id="heartic_img" src="imgs/CREEPY_HAND.png" alt="Creepy Hand"> -->
 
@@ -365,7 +365,7 @@
 
         </div>
 
-        <div class="lyrics_item" id="graduate">
+        <div class="songs_item" id="graduate">
 
           <div>
 
@@ -408,10 +408,10 @@
 
         </div>
 
-        <div class="lyrics_item" id="glass">
+        <div class="songs_item" id="glass">
 
-          <div class="lyrics_item_img_container" id="shards_small">
-            <img id="little_glass" class="lyrics_item_img" src="imgs/SHARDS_SMALL.svg" alt="Small glass shards">
+          <div class="songs_item_img_container" id="shards_small">
+            <img id="little_glass" class="songs_item_img" src="imgs/SHARDS_SMALL.svg" alt="Small glass shards">
           </div>
 
 
@@ -443,13 +443,13 @@
 
           </div>
 
-          <div class="lyrics_item_img_container" id="shards_large">
-            <img id="big_glass" class="lyrics_item_img" src="imgs/SHARDS_LARGE.svg" alt="Glass shards in curious pattern.">
+          <div class="songs_item_img_container" id="shards_large">
+            <img id="big_glass" class="songs_item_img" src="imgs/SHARDS_LARGE.svg" alt="Glass shards in curious pattern.">
           </div>
 
         </div>
 
-        <div class="lyrics_item" id="broken">
+        <div class="songs_item" id="broken">
           <div>
 
             <!-- <h2>>roken</h2> -->
@@ -505,18 +505,18 @@
 
         </div>
 
-        <div class="lyrics_item" id="home_song">
+        <div class="songs_item" id="home_song">
 
           <!-- <img class="about_item_img" id="defeat_img" src="imgs/OLD_PULL.JPG" alt="Older nerd pulling on door"> -->
 
-          <div id="home_song_lyrics">
+          <div id="home_song_songs">
 
             <!-- <h2>Home</h2> -->
             <div class="song_title_container">
                 <img class="song_title" src="imgs/HOME.svg" alt="HOME. Homecoming. ">
             </div>
 
-            <div class="sacred_symbol_container" id="lyrics_fate_container">
+            <div class="sacred_symbol_container" id="songs_fate_container">
                 <img class="sacred_symbol" src="imgs/FATE.svg" alt="Sacred semiotics">
             </div>
 
@@ -588,13 +588,21 @@
 
           <div class="support_img_info">
             <div class="prev_arrow slider_arrow">
-              <span><</span>
+              <!-- <span><</span> -->
+              <svg class="slider_arrow_flip arrow_svg" viewBox="0 0 17 25.6">
+                <!-- <polygon class="ffrw_icon_dark ff_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/> -->
+                <polygon class="ffrw_icon_light ff_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+              </svg>
             </div>
             <div class="support_img_title_container">
               <h2 class="support_img_title">Project CD</h2>
             </div>
             <div class="next_arrow slider_arrow">
-              <span>></span>
+              <!-- <span>></span> -->
+              <svg class="arrow_svg" data-name="Layer 1" viewBox="0 0 17 25.6">
+                <!-- <polygon class="ffrw_icon_dark ff_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/> -->
+                <polygon class="ffrw_icon_light ff_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+              </svg>
             </div>
             <!-- <div class="img_indicator"></div> -->
           </div>
@@ -621,13 +629,21 @@
 
             <div class="support_img_info">
               <div class="prev_arrow slider_arrow">
-                <span><</span>
+                <!-- <span><</span> -->
+                <svg class="slider_arrow_flip arrow_svg" viewBox="0 0 17 25.6">
+                  <!-- <polygon class="ffrw_icon_dark ff_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/> -->
+                  <polygon class="ffrw_icon_light ff_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+                </svg>
               </div>
               <div class="support_img_title_container">
                 <h2 class="support_img_title">Card Holder</h2>
               </div>
               <div class="next_arrow slider_arrow">
-                <span>></span>
+                <!-- <span>></span> -->
+                <svg class="arrow_svg"  viewBox="0 0 17 25.6">
+                  <!-- <polygon class="ffrw_icon_dark ff_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/> -->
+                  <polygon class="ffrw_icon_light ff_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+                </svg>
               </div>
               <!-- <div class="img_indicator"></div> -->
             </div>
@@ -676,13 +692,21 @@
 
             <div class="support_img_info">
               <div class="prev_arrow slider_arrow">
-                <span><</span>
+                <!-- <span><</span> -->
+                <svg class="slider_arrow_flip arrow_svg" viewBox="0 0 17 25.6">
+                  <!-- <polygon class="ffrw_icon_dark ff_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/> -->
+                  <polygon class="ffrw_icon_light ff_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+                </svg>
               </div>
               <div class="support_img_title_container">
                 <h2 class="support_img_title">Bookmark</h2>
               </div>
               <div class="next_arrow slider_arrow">
-                <span>></span>
+                <!-- <span>></span> -->
+                <svg class="arrow_svg" viewBox="0 0 17 25.6">
+                  <!-- <polygon class="ffrw_icon_dark ff_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/> -->
+                  <polygon class="ffrw_icon_light ff_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+                </svg>
               </div>
             </div>
             <div class="img_indicator_container">
@@ -711,13 +735,21 @@
 
             <div class="support_img_info">
               <div class="prev_arrow slider_arrow">
-                <span><</span>
+                <!-- <span><</span> -->
+                <svg class="slider_arrow_flip arrow_svg" viewBox="0 0 17 25.6">
+                  <!-- <polygon class="ffrw_icon_dark ff_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/> -->
+                  <polygon class="ffrw_icon_light ff_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+                </svg>
               </div>
               <div class="support_img_title_container">
                 <h2 class="support_img_title">Keychain</h2>
               </div>
               <div class="next_arrow slider_arrow">
-                <span>></span>
+                <!-- <span>></span> -->
+                <svg class="arrow_svg" viewBox="0 0 17 25.6">
+                  <!-- <polygon class="ffrw_icon_dark ff_component" points="6.85 2.84 6.86 3.46 14.57 12.29 7.09 21.72 7.1 22.68 17 12.41 6.85 2.84"/> -->
+                  <polygon class="ffrw_icon_light ff_component" points="0 0 0.01 0.79 9.97 12.2 0.31 24.37 0.32 25.6 13.11 12.36 0 0"/>
+                </svg>
               </div>
             </div>
             <div class="img_indicator_container">
@@ -987,7 +1019,7 @@
         <div class="menu no_select">
           <div class="menu_top">
             <h2 class="menu_nav cl-effect-1" id="about_nav">ABOUT</h2>
-            <h2 class="menu_nav cl-effect-1" id="lyrics_nav">SONGS</h2>
+            <h2 class="menu_nav cl-effect-1" id="songs_nav">SONGS</h2>
           </div>
           <div class="menu_bottom">
             <h2 class="menu_nav cl-effect-1" id="credits_nav">CREDITS</h2>

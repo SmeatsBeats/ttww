@@ -90,8 +90,8 @@ body {
   flex-flow: column;
   align-items: center;
 }
-.lyrics {
-  /*seams appear between lyrics_items on mobile */
+.songs {
+  /*seams appear between songs_items on mobile */
   background-color: white;
 }
 .about_item_img, .about_item {
@@ -107,7 +107,7 @@ body {
   font-size: x-large; */
   background-color: white;
 }
-.lyrics_item {
+.songs_item {
   background-color: white;
   text-align: center;
   /* align-self: center; */
@@ -127,13 +127,13 @@ body {
   flex: 1 1 auto;
   width: 100%;
 }
-.lyrics_item > div {
+.songs_item > div {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: flex-start;
 }
-.lyrics_item > div > p {
+.songs_item > div > p {
   /* width: 45%; */
   /* font-family: 'Raleway', sans-serif; */
   font-family: 'Reenie Beanie', cursive;
@@ -165,7 +165,7 @@ body {
   background-repeat: no-repeat;
   background-position: right top;
 }
-#home_song_lyrics {
+#home_song_songs {
   padding-top: 75%;
 }
 .song_title_container, .sacred_symbol_container {
@@ -190,7 +190,7 @@ body {
   /*apparent;y default here is stretch which is no bueno for images */
   align-self: center;
 }
-.lyrics_item > div > p:first-letter {
+.songs_item > div > p:first-letter {
   font-family: 'Reenie Beanie', cursive;
   /* float: left; */
   /* color: #903; */
@@ -199,11 +199,11 @@ body {
   font-size: 280%;
   font-weight: bold;
 }
-.lyrics_item {
+.songs_item {
   flex: 1 1 100%;
 }
 
-.lyrics_item_img {
+.songs_item_img {
   max-width: 60%;
 }
 #big_glass {
@@ -213,7 +213,7 @@ body {
   /* visibility: hidden; */
   margin-right: auto;
 }
-/* .lyrics_item_img {
+/* .songs_item_img {
   max-width: 40%;
 } */
 
@@ -429,18 +429,28 @@ body {
   /* border: 1px solid red; */
   z-index: 3;
   cursor: pointer;
-  color: #999;
   min-height: 100%;
+  width: 25%;
   display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  padding: 5%;
+  /* padding: 5%; */
   font-size: xx-large;
-  transition: color 1s ease;
+  transition: opacity 1s ease;
+}
+.slider_arrow_flip {
+  transform: rotate(180deg);
+}
+.arrow_svg {
+  /* border: 1px solid blue; */
+  width: 35%;
 }
 .no_arrow{
-  color: transparent;
-  transition: color 1s ease;
+  opacity: 0;
+  transition: opacity 1s ease;
+  /* color: transparent;
+  transition: color 1s ease; */
   cursor: default;
 }
 /* .support_img_slider .support_img_info:hover {
@@ -617,6 +627,7 @@ body {
 #widget_function{
   /*attempt to switch to css transitions for widget*/
   transition: transform 0.8s;
+  /* transition: opacity 0.4s; */
 }
 .intro_msg{
   z-index: -1;
@@ -730,12 +741,14 @@ body {
   flex-flow: column;
   justify-content: flex-end;
   align-items: center;
+  z-index: -1;
 
   /* border: 1px solid blue; */
 }
 .current_time {
   /* position: absolute;
   bottom: 0; */
+  z-index: -1;
   font-size: 4vw;
   opacity: 0;
   transition: opacity 0.3s;
@@ -951,7 +964,7 @@ body {
 #about_nav, #credits_nav {
   right: 100%;
 }
-#lyrics_nav, #support_nav {
+#songs_nav, #support_nav {
   left: 100%;
 }
 
@@ -1344,11 +1357,11 @@ body {
     order: 1;
   }
   /****** LYRICS *******/
-  .lyrics {
-    /*seams appear between lyrics_items on mobile */
+  .songs {
+    /*seams appear between songs_items on mobile */
     /* background-color: transparent; */
   }
-  .lyrics_item > div > p {
+  .songs_item > div > p {
     /* width: 45%; */
     /* font-family: 'Raleway', sans-serif; */
     flex: 0 0 auto;
@@ -1364,7 +1377,7 @@ body {
   #heratic > div > p {
     padding-left: 9%;
   }
-  .lyrics_item > div > p:first-letter {
+  .songs_item > div > p:first-letter {
     /* font-family: 'Reenie Beanie', cursive; */
     float: left;
     /* color: #903; */
@@ -1373,14 +1386,14 @@ body {
     font-size: 300%;
     /*font-weight: bold; */
   }
-  .lyrics_item_img_container {
+  .songs_item_img_container {
     display: flex;
     flex: 1 1 auto;
   }
-  .lyrics_item_img {
+  .songs_item_img {
     max-width: 100%;
   }
-  /** try to make background imgs on lyrics page mobile friendly -- code here is for desktop */
+  /** try to make background imgs on songs page mobile friendly -- code here is for desktop */
   #heratic > div {
     padding-bottom: 0;
     background-size: 40%;
@@ -1390,7 +1403,7 @@ body {
     background-size: auto 25%;
     background-repeat: repeat-y;
   }
-  #home_song_lyrics {
+  #home_song_songs {
     padding-top: 0;
   }
   #shards_small {
@@ -1475,6 +1488,6 @@ body {
 /* .content {
   display: none;
 } */
-/* .credits, .lyrics, .menu  {
+/* .credits, .songs, .menu  {
   display: none;
 } */
