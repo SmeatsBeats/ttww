@@ -499,8 +499,10 @@ body {
 
 /***** WIDGET BOI ***/
 #widget_boi {
-  width: 45vw;
-  height: 45vw;
+  /* width: 45vw;
+  height: 45vw; */
+  width: 150px;
+  height: 150px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -717,7 +719,7 @@ body {
   /* border: 1px solid green; */
 }
 #timeline_hilight {
-  /* 10 percent missing from circle 10 percent of 360 plus 90 = 108 */
+  /* 10 percent missing from circle 10 percent of 360 == 36 / 2 == 18 plus 90 = 108 */
   transition: all 1s;
   transform: rotate(108deg);
   transform-origin: 50% 50%;
@@ -1450,8 +1452,11 @@ body {
     flex: 0 0 10%;
   }
   #widget_boi {
-    width: 11vw;
-    height: 11vw;
+    /* width: 11vw;
+    height: 11vw; */
+    /*using px for widget boi ... gasp! */
+    width: 210px;
+    height: 210px;
     position: fixed;
     top: 50%;
     left: 50%;

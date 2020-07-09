@@ -98,6 +98,12 @@ $(document).ready(function() {
   var setTime;
   var homeComing = false;
   var waitTimer;
+  var circle;
+  var radius;
+  var circumference;
+  var innerCircle;
+  var innerRadius;
+  var innerCircumference;
 
   //AUDIO CONTROLS
   var controlsOpen = false;
@@ -143,6 +149,9 @@ $(document).ready(function() {
 
   //however, some of these I put here because I am a lazy shit
   //they should be moved to the css file to prevent appearing before page is fully loaded
+
+  sizeTimeline();
+  resizeHelp();
   //good luck figure out which ones!
 
   $(".songs, .credits, .support, .support_img_info, .menu, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator, .intro_dots").hide();
@@ -220,9 +229,9 @@ $(document).ready(function() {
 
   //simulate laod lol
 
-  setTimeout(function(){
+  //setTimeout(function(){
     if(visits > 500 || page){
-      //setTimeout(function(){
+      setTimeout(function(){
         //already been to the site
         //skip the intro
         // $(".nav_options, .audio_indicator, .widget_nav, .widget_bezel, #widget_function_container").not(".intro_dots").fadeIn();
@@ -238,7 +247,7 @@ $(document).ready(function() {
             scrollTop: $("#real_body").offset().top
           }, 1000);
         }
-      //}, 2000);
+      }, 2000);
     }
     else{
       //run standard intro
@@ -246,7 +255,7 @@ $(document).ready(function() {
       $(".widget_bezel").delay("1000").fadeIn("fast");
       introAnimation();
     }
-  }, 2500);
+  //}, 2500);
 
   ///////////////////////////////////////////////////////////////////////////////////////// SLIDER /////////////////////////////////////////////////
 
@@ -1980,11 +1989,11 @@ $(document).ready(function() {
           var sendTop, sendLeft;
           if(isMobile){
 
-            sendTop = "85%";
+            sendTop = "86%";
             sendLeft = "25%";
           }
           else{
-            sendTop = "85%";
+            sendTop = "86%";
             sendLeft = "90%";
           }
           sendWidget(sendTop, sendLeft);
@@ -2109,6 +2118,32 @@ $(document).ready(function() {
 
   /////////////////////////////////////////////////////////////////////////// AUDIO TIMELINE /////////////////////////////////////////////////////////////
 
+
+
+  function sizeTimeline(){
+    /////////////////// outer audio progress bar //////////
+    circle = document.querySelector('#timeline_progress');
+    radius = circle.r.baseVal.value;
+    circumference = radius * 2 * Math.PI;
+
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+    circle.style.strokeDashoffset = circumference;
+    // circle.style.strokeDashoffset = circumference * 0.1;
+
+    ////////////// grey base timeline ///////////////
+
+    innerCircle = document.querySelector('#timeline_hilight');
+    innerRadius = innerCircle.r.baseVal.value;
+    innerCircumference = innerRadius * 2 * Math.PI;
+
+    innerCircle.style.strokeDasharray = `${innerCircumference} ${innerCircumference}`;
+    innerCircle.style.strokeDashoffset = innerCircumference;
+    // circle.style.strokeDashoffset = circumference * 0.1;
+
+  }
+
+  /*
+
   /////////////////// outer audio progress bar //////////
   const circle = document.querySelector('#timeline_progress');
   const radius = circle.r.baseVal.value;
@@ -2118,10 +2153,13 @@ $(document).ready(function() {
   circle.style.strokeDashoffset = circumference;
   // circle.style.strokeDashoffset = circumference * 0.1;
 
+  */
+
   function setAudioProgress(percent) {
-    const offset = circumference - percent / 100 * circumference;
+    var offset = circumference - percent / 100 * circumference;
     circle.style.strokeDashoffset = offset;
   }
+
 
   //setAudioProgress(60);
 
@@ -2197,6 +2235,7 @@ $(document).ready(function() {
   audioFile.ontimeupdate = moveProgressBar;
 
 
+  /*
   ////////////// grey base timeline ///////////////
 
   const innerCircle = document.querySelector('#timeline_hilight');
@@ -2206,9 +2245,12 @@ $(document).ready(function() {
   innerCircle.style.strokeDasharray = `${innerCircumference} ${innerCircumference}`;
   innerCircle.style.strokeDashoffset = innerCircumference;
   // circle.style.strokeDashoffset = circumference * 0.1;
+  */
 
   function setTimelineProgress(percent) {
-    const innerOffset = innerCircumference - percent / 100 * innerCircumference;
+    innerRadius = innerCircle.r.baseVal.value;
+    innerCircumference = innerRadius * 2 * Math.PI;
+    var innerOffset = innerCircumference - percent / 100 * innerCircumference;
     innerCircle.style.strokeDashoffset = innerOffset;
   }
 
@@ -2674,7 +2716,7 @@ $(document).ready(function() {
       if(controlsOpen){
         showSkip();
       }
-      sendTop = "85%";
+      sendTop = "86%";
       sendLeft = "25%";
     }
     else{
@@ -3539,9 +3581,26 @@ $(document).ready(function() {
 
   /////////////////////////////////////////////////////////////////////// TOOL TIPS /////////////////////////////////////////////////////////////////////////
 
+  //block widget width from changing
+  // var widgetWidth = $("#widget_boi").width();
+  // $("#widget_boi").css({
+  //   "width" : widgetWidth,
+  //   "height" : widgetWidth
+  // });
+  //alert(widgetWidth);
 
   //setTimeout(offerHint, 5000);
   //offer hints after intro complete
+  function resizeAll(){
+    resizeHelp();
+
+    //sizeTimeline();
+    //innerCircle = document.querySelector('#timeline_hilight');
+    //innerRadius = innerCircle.r.baseVal.value;
+    //innerCircumference = innerRadius * 2 * Math.PI;
+    //setTimelineProgress(90);
+    //$("#timeline_hilight").css("transform", "rotate(108deg)");
+  }
 
 
   //keep help items correct size
@@ -3559,9 +3618,9 @@ $(document).ready(function() {
     $("#hinticator").height(hintHeight);
   }
 
-  resizeHelp();
 
-  $(window).on("resize", resizeHelp);
+
+  $(window).on("resize", resizeAll);
 
 
   var helpContent = false;
@@ -4242,7 +4301,7 @@ $("#widget_boi").hover(function(e){
     }
     else{
       if(isMobile){
-        sendWidget("85%", "25%");
+        sendWidget("86%", "25%");
         widgetCenter = false;
         if(!firstSwipe){
           //if dark nav hasn't faded out yet it will look weird when proper nav fades in while spinning
