@@ -4178,7 +4178,7 @@ $("#widget_boi").hover(function(e){
           //intro_index++;
         }
         break;
-        default:
+        case "download_mode":
         var $introEl = $("#download_intro_info");
         //download_demo();
         if(!download_mode_explored){
@@ -4190,6 +4190,10 @@ $("#widget_boi").hover(function(e){
           // $(".download_intro_dot").addClass("bright_dot");
           // intro_index++;
         }
+        break;
+
+        default:
+        //not sure
       }
       // if(!quitIntro){
       //   var dot_selector = "." + widget_mode.substring(0, widget_mode.indexOf("_")) + "_intro_dot";

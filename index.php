@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.3"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.4"></script>
   </head>
 
   <body>
