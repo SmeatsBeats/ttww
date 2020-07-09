@@ -230,7 +230,8 @@ $(document).ready(function() {
   //simulate laod lol
 
   //setTimeout(function(){
-    if(visits > 500 || page){
+  //change this back to 0
+    if(visits > 5000 || page){
       setTimeout(function(){
         //already been to the site
         //skip the intro
@@ -240,19 +241,22 @@ $(document).ready(function() {
         stopTimelineIntro();
 
         if(page){
+          //$("#album_art").css("opacity", "1");
+          $("#album_art").fadeIn("fast");
           //specific page provided in URL
           //go there
           menu_select(page);
           $("html, body").animate({
             scrollTop: $("#real_body").offset().top
           }, 1000);
+          //want to pass the album art on the way so fade it in early
         }
       }, 2000);
     }
     else{
       //run standard intro
-      $(".nav_options, .audio_indicator, .widget_nav, #widget_function_container").delay("1500").fadeIn("slow");
-      $(".widget_bezel").delay("1000").fadeIn("fast");
+      $(".nav_options, .audio_indicator, .widget_nav, #widget_function_container").delay("1800").fadeIn("slow");
+      $(".widget_bezel").delay("1000").fadeIn("slow");
       introAnimation();
     }
   //}, 2500);
@@ -4007,11 +4011,11 @@ $("#widget_boi").hover(function(e){
     //$("#nav_options_img").css("opacity", "0");
     //$(".widget_stick").css("opacity", "0");
     //$("#widget_boi").fadeIn("slow");
-    $(".intro_item").delay(2000).fadeIn(2000);
+    $(".intro_item").delay(2000).fadeIn(1000);
     $(".intro_dots").show();
     $(".intro_dots").delay(2000).animate({
       "opacity" : "1"
-    }, 3000);
+    }, 1500);
 
 
       //$(".intro_msg").css("opacity", "1");
@@ -4139,6 +4143,10 @@ $("#widget_boi").hover(function(e){
         var $introEl = $("#audio_intro_info");
         if(!audio_mode_explored){
           audio_mode_explored = true;
+          if(!quitIntro){
+            $(".audio_intro_dot").addClass("bright_dot");
+            intro_index++;
+          }
           //alert("audio");
           //$(".audio_intro_dot").addClass("bright_dot");
           //intro_index++;
@@ -4149,6 +4157,10 @@ $("#widget_boi").hover(function(e){
         //home_demo();
         if(!home_mode_explored){
           home_mode_explored = true;
+          if(!quitIntro){
+            $(".home_intro_dot").addClass("bright_dot");
+            intro_index++;
+          }
           //$(".home_intro_dot").addClass("bright_dot");
           //intro_index++;
         }
@@ -4158,6 +4170,10 @@ $("#widget_boi").hover(function(e){
         //menu_demo();
         if(!menu_mode_explored){
           menu_mode_explored = true;
+          if(!quitIntro){
+            $(".menu_intro_dot").addClass("bright_dot");
+            intro_index++;
+          }
           //$(".menu_intro_dot").addClass("bright_dot");
           //intro_index++;
         }
@@ -4167,15 +4183,19 @@ $("#widget_boi").hover(function(e){
         //download_demo();
         if(!download_mode_explored){
           download_mode_explored = true;
-          //$(".download_intro_dot").addClass("bright_dot");
-          //intro_index++;
+          if(!quitIntro){
+            $(".download_intro_dot").addClass("bright_dot");
+            intro_index++;
+          }
+          // $(".download_intro_dot").addClass("bright_dot");
+          // intro_index++;
         }
       }
-      if(!quitIntro){
-        var dot_selector = "." + widget_mode.substring(0, widget_mode.indexOf("_")) + "_intro_dot";
-        $(dot_selector).addClass("bright_dot");
-        intro_index++;
-      }
+      // if(!quitIntro){
+      //   var dot_selector = "." + widget_mode.substring(0, widget_mode.indexOf("_")) + "_intro_dot";
+      //   $(dot_selector).addClass("bright_dot");
+      //   intro_index++;
+      // }
 
 
       introLoadBar();
@@ -4241,7 +4261,30 @@ $("#widget_boi").hover(function(e){
     $("#real_body").css("opacity", "1");
     $(".widget_intro, .intro_msg, .intro_dots").animate({
       "opacity" : "0"
-    }, 1500, function(){
+    }, 400, function(){
+
+
+      //send widget to bottom left if mobile
+      /*
+      if(typeof prevWidgetLeftTutorial !== 'undefined'){
+        sendWidget(prevWidgetTopTutorial, prevWidgetLeftTutorial);
+        if(!firstSwipe){
+          quickSpin();
+        }
+      }
+      else{
+        if(isMobile){
+          sendWidget("86%", "25%");
+          widgetCenter = false;
+          if(!firstSwipe){
+            //if dark nav hasn't faded out yet it will look weird when proper nav fades in while spinning
+            quickSpin();
+          }
+        }
+      }
+      */
+
+
       $(".intro_msg").html("");
       //$("html").css("overflow", "auto");
       $("html").css("overflow-y", "scroll");
@@ -4293,6 +4336,8 @@ $("#widget_boi").hover(function(e){
 
     //send widget to bottom left if mobile
 
+
+
     if(typeof prevWidgetLeftTutorial !== 'undefined'){
       sendWidget(prevWidgetTopTutorial, prevWidgetLeftTutorial);
       if(!firstSwipe){
@@ -4303,12 +4348,16 @@ $("#widget_boi").hover(function(e){
       if(isMobile){
         sendWidget("86%", "25%");
         widgetCenter = false;
-        if(!firstSwipe){
+        //if(!firstSwipe){
           //if dark nav hasn't faded out yet it will look weird when proper nav fades in while spinning
+          //dark nav is no more
           quickSpin();
-        }
+        //}
       }
     }
+
+
+
 
     /*
     if(isMobile){
