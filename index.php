@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=3" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=1" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.8"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.6"></script>
   </head>
 
   <body>
@@ -777,6 +777,10 @@
           <!-- this div will be used as a reference as the top of the page -->
         </div>
 
+        <div class="acousmatic_curtain">
+
+        </div>
+
         <div class="test_mobile">
           <!-- use css media queries on this div then check result in jquery to test for mobile device -->
         </div>
@@ -963,7 +967,7 @@
                 </g>
               </svg>
 
-              <img class="widget_nav" id="nav_options_dark" src="imgs/WIDGET_NAV_DARK.svg" alt="Widget navigation">
+              <!-- <img class="widget_nav" id="nav_options_dark" src="imgs/WIDGET_NAV_DARK.svg" alt="Widget navigation"> -->
               <img class="widget_bezel" id="widget_bezel_img" src="imgs/WIDGET_BEZEL_SMALL.svg" alt="Model watch bezel">
             </div>
 

@@ -38,11 +38,12 @@ $(document).ready(function() {
   var completeNavSpin;
   var darkNavSpin = 0;
   var introBezelSpin = 360;
-  var dark_nav = document.getElementById("nav_options_dark");
+  //var dark_nav = document.getElementById("nav_options_dark");
   var intro_bezel = document.getElementById("widget_bezel_img");
   var playing = false;
   var audioFile = document.getElementById("ttwwAudioFile");
   var spinning = false;
+  var constantSpinning;
   var widget_mode;
   var prev_widget_mode;
   var runningHover;
@@ -144,12 +145,49 @@ $(document).ready(function() {
   //they should be moved to the css file to prevent appearing before page is fully loaded
   //good luck figure out which ones!
 
-  $(".songs, .credits, .support, .support_img_info, .support_img_swap_container, .menu, #widget_boi, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator").hide();
+  $(".songs, .credits, .support, .support_img_info, .menu, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator, .intro_dots").hide();
+  //hide everything but audio progress
+  //curtain gives site some privacy to get changed
+  $(".acousmatic_curtain").hide();
+  $(".nav_options, .audio_indicator, .widget_nav, .widget_bezel, #widget_function_container").hide();
   $(".intro_msg, #album_art, #real_body").css("opacity", "0");
   $(".prev_arrow").addClass("no_arrow");
   if(isMobile){
     $(".help").hide();
   }
+
+  //now determine what to display
+  //has site been visited before?
+    //yes - skip intro
+  //mobile or desktop
+    //skip into on desktop?
+    //at least change text not to say swipe and maybe don't spin dark nav
+  //was a specific page provided in the link?
+    //skip intro and call menu_select
+
+  var visits;
+  //detect repeat visit
+  if (typeof(Storage) !== "undefined") {
+  // Code for localStorage/sessionStorage.
+    //alert("storage is set");
+    if(localStorage.getItem("visits") !== null){
+      visits = localStorage.getItem("visits");
+      visits++;
+      localStorage.setItem("visits", visits);
+      //alert("visits: " + visits);
+    }
+    else{
+      localStorage.setItem("visits", 0);
+      //alert("setting visits to 0");
+    }
+  }
+  else {
+  // Sorry! No Web Storage support..
+  //alert("no support");
+  }
+
+
+
 
 
   //////////////// PAGE DIRECT //////////////////////
@@ -166,35 +204,49 @@ $(document).ready(function() {
 
   var page = getQueryVariable("page");
 
-  if(page){
-    introCleanUp();
-    //finishIntro();
-    function callMenuSelect(){
-      menu_select(page);
-      $("#album_art").removeEventListener("webkitAnimationEnd", callMenuSelect);
-    }
-    $("#album_art").addEventListener("webkitAnimationEnd", callMenuSelect);
-
-
-    //menu_select(page);
-  }
-
-  //menu_select(page);
-
-  // switch(page){
-  //   case "about":
-  //   menu_select()
-  //   break;
-  //   case "credits":
-  //   break;
-  //   case "songs":
-  //   break;
-  //   case "support":
-  //   break;
-  //   default:
-  //   break;
+  // if(page){
+  //   introCleanUp();
+  //   //finishIntro();
+  //   function callMenuSelect(){
+  //     menu_select(page);
+  //     $("#album_art").removeEventListener("webkitAnimationEnd", callMenuSelect);
+  //   }
+  //   $("#album_art").addEventListener("webkitAnimationEnd", callMenuSelect);
+  //
+  //
+  //   //menu_select(page);
   // }
 
+
+  //simulate laod lol
+
+  setTimeout(function(){
+    if(visits > 500 || page){
+      //setTimeout(function(){
+        //already been to the site
+        //skip the intro
+        // $(".nav_options, .audio_indicator, .widget_nav, .widget_bezel, #widget_function_container").not(".intro_dots").fadeIn();
+        $(".nav_options, .audio_indicator, .widget_nav, .widget_bezel, #widget_function_container").fadeIn();
+        finishIntro();
+        stopTimelineIntro();
+
+        if(page){
+          //specific page provided in URL
+          //go there
+          menu_select(page);
+          $("html, body").animate({
+            scrollTop: $("#real_body").offset().top
+          }, 1000);
+        }
+      //}, 2000);
+    }
+    else{
+      //run standard intro
+      $(".nav_options, .audio_indicator, .widget_nav, #widget_function_container").delay("1500").fadeIn("slow");
+      $(".widget_bezel").delay("1000").fadeIn("fast");
+      introAnimation();
+    }
+  }, 2500);
 
   ///////////////////////////////////////////////////////////////////////////////////////// SLIDER /////////////////////////////////////////////////
 
@@ -679,7 +731,7 @@ $(document).ready(function() {
     var $target = e.target;
     //alert(spinning);
 
-    if(!spinning && !draggable){
+    if(!spinning && !draggable && !quickSpinning){
       $(".widget_nav_path").removeClass("widget_nav_hover");
       var nav_box_id = $($target).attr("id");
       // alert(nav_box_id);
@@ -696,6 +748,7 @@ $(document).ready(function() {
         //stopConstantSpin();
         //alert("stop spin");
         intro_swipe();
+        introHint();
       }
 
       //alert(prev_widget_mode + " " + widget_mode);
@@ -885,7 +938,7 @@ $(document).ready(function() {
             if(!intro_mode){
               //alert("reset intro mode pls");
               reset_intro_mode();
-              introHint();
+              introHint(true);
             }
           break;
           default:
@@ -895,7 +948,11 @@ $(document).ready(function() {
           //alert(e);
           //need to remove handlers or movement of widget will be read as swipe
           //removeGestureHandler();
-          dragWidget(e);
+          //prevent drag before any mode set
+          if(!firstSwipe){
+            dragWidget(e);
+          }
+
           break;
         }
         break;
@@ -931,6 +988,8 @@ $(document).ready(function() {
         if(intro_mode){
           if(firstSwipe){
             intro_swipe();
+            //this is why first swipe is smooth if you swipe instead of click
+            //not sure how to explain it still...
             introHint();
           }
           else if(prev_widget_mode !== widget_mode){
@@ -1298,20 +1357,23 @@ $(document).ready(function() {
   //feedback for press
   var nav_hover_1, nav_hover_2, nav_hover_3;
   function startPress(){
-    //function_down = true;
-    // ex: $("#nav_options_dark").css("animation", "infiniteSpin 2s linear infinite");
-    nav_hover_1 = setTimeout(function(){
-      //$("#widget_nav_1").toggleClass("widget_nav_hover");
-      $("#widget_nav_1").toggleClass("widget_press_bright");
-    }, 150);
-    nav_hover_2 = setTimeout(function(){
-      //$("#widget_nav_2").toggleClass("widget_nav_hover");
-      $("#widget_nav_2").toggleClass("widget_press_bright");
-    }, 250);
-    nav_hover_3 = setTimeout(function(){
-      //$("#widget_nav_3").toggleClass("widget_nav_hover");
-      $("#widget_nav_3").toggleClass("widget_press_bright");
-    }, 350);
+    if(!firstSwipe){
+      //function_down = true;
+      // ex: $("#nav_options_dark").css("animation", "infiniteSpin 2s linear infinite");
+      nav_hover_1 = setTimeout(function(){
+        //$("#widget_nav_1").toggleClass("widget_nav_hover");
+        $("#widget_nav_1").toggleClass("widget_press_bright");
+      }, 150);
+      nav_hover_2 = setTimeout(function(){
+        //$("#widget_nav_2").toggleClass("widget_nav_hover");
+        $("#widget_nav_2").toggleClass("widget_press_bright");
+      }, 250);
+      nav_hover_3 = setTimeout(function(){
+        //$("#widget_nav_3").toggleClass("widget_nav_hover");
+        $("#widget_nav_3").toggleClass("widget_press_bright");
+      }, 350);
+    }
+
   }
 
   function endPress(){
@@ -1583,9 +1645,9 @@ $(document).ready(function() {
         }
       }
       //for intro
-      $("#nav_options_dark").css("transform", "rotate(" + navDeg + "deg)");
+      //$("#nav_options_dark").css("transform", "rotate(" + navDeg + "deg)");
     }
-
+    //alert(navDeg + " " + iconDeg);
     navRotate(navDeg, iconDeg);
     //would like to do this with event listener but no luck removing previous ones yet
     //callEndSet();
@@ -1627,6 +1689,10 @@ $(document).ready(function() {
     //////////////////////// 0. Make sure transitions are on ////////////////
     $("#nav_options_img, #widget_bezel_img, #widget_function").css("transition", "transform 0.8s");
 
+    if(firstSwipe){
+      intro_bezel.addEventListener("webkitTransitionEnd", widgetDress);
+    }
+
 
     //////////////////////// 1. send nav_options to end location /////////////
 
@@ -1664,6 +1730,7 @@ $(document).ready(function() {
     //setTimeout(function(){
       /////// 1.5 //////////
       firstSwipe = false;
+      //alert("first swipe false");
       //set spinning to false since it should be done spinning by now
       spinning = false;
 
@@ -1726,14 +1793,19 @@ $(document).ready(function() {
 
   ///////////////////////////////// transition widget between intro setup and normal use
 
-  function widgetDress(don, callback){
-    if(don){
+  function widgetDress(){
+    //if(don || don == 'undefined'){
       //alert("get dressed");
       //show some respect for yourself!
       $(".widget_stick").animate({
         "opacity" : "1"
-      }, 3000);
+      }, 1000);
 
+      $("#widget_nav_selected").addClass("widget_nav_selected");
+
+      intro_bezel.removeEventListener("webkitTransitionEnd", widgetDress);
+
+      /*
       $("#nav_options_img").animate({
         "opacity" : "1"
       }, 1500, function(){
@@ -1742,12 +1814,14 @@ $(document).ready(function() {
         }, 200, callback);
         //$(".help_icon").addClass("help_icon_on");
       });
-    }
-    else{
+      */
+    //}
+    //else{
       //take it off widget boi!
+      /*
       $(".widget_stick").animate({
         "opacity" : "0"
-      }, 3000);
+      }, 1000);
 
       //$(".help_icon").removeClass("help_icon_on");
 
@@ -1758,7 +1832,8 @@ $(document).ready(function() {
           "opacity" : "1"
         }, 200, callback);
       });
-    }
+      */
+    //}
   }
 
   //////////////////////////////////////////////////////////////////////// MOVE WIDGET //////////////////////////////////////////////////////////
@@ -1890,48 +1965,50 @@ $(document).ready(function() {
   var usrPos = false;
 
   $(document).scroll(function(){
-    //when widget reaches top of title img
-    var headerOffset = $("#content_header").offset();
-    var headerTop = headerOffset.top;
-    var scrollTop = $(this).scrollTop();
-    var refOffset = $(".tip_top").offset();
-    var refTop = refOffset.top;
-    headerTop -= refTop;
-    //alert(scrollTop + " " + headerTop);
-    if(scrollTop > headerTop){
-      if(widgetCenter && !intro_mode && !usrPos && !headedHome){
-        quickSpin();
-        var sendTop, sendLeft;
-        if(isMobile){
+    if(!intro_mode){
+      //when widget reaches top of title img
+      var headerOffset = $("#content_header").offset();
+      var headerTop = headerOffset.top;
+      var scrollTop = $(this).scrollTop();
+      var refOffset = $(".tip_top").offset();
+      var refTop = refOffset.top;
+      headerTop -= refTop;
+      //alert(scrollTop + " " + headerTop);
+      if(scrollTop > headerTop){
+        if(widgetCenter && !intro_mode && !usrPos && !headedHome){
+          quickSpin();
+          var sendTop, sendLeft;
+          if(isMobile){
 
-          sendTop = "85%";
-          sendLeft = "25%";
+            sendTop = "85%";
+            sendLeft = "25%";
+          }
+          else{
+            sendTop = "85%";
+            sendLeft = "90%";
+          }
+          sendWidget(sendTop, sendLeft);
+          widgetCenter = false;
+          usrPos = false;
+        }
+      }
+      else if(scrollTop < headerTop && !widgetCenter && !intro_mode && !usrPos && !headedHome){
+        if(isMobile){
+          // sendTop = "85%";
+          // sendLeft = "25%";
         }
         else{
-          sendTop = "85%";
-          sendLeft = "90%";
+          sendTop = "50%";
+          sendLeft = "50%";
+          quickSpin();
+          sendWidget(sendTop, sendLeft);
+          widgetCenter = true;
         }
-        sendWidget(sendTop, sendLeft);
-        widgetCenter = false;
-        usrPos = false;
+        // quickSpin();
+        // sendWidget(sendTop, sendLeft);
+        //well not exactly centered on mobile
+        //widgetCenter = true;
       }
-    }
-    else if(scrollTop < headerTop && !widgetCenter && !intro_mode && !usrPos && !headedHome){
-      if(isMobile){
-        // sendTop = "85%";
-        // sendLeft = "25%";
-      }
-      else{
-        sendTop = "50%";
-        sendLeft = "50%";
-        quickSpin();
-        sendWidget(sendTop, sendLeft);
-        widgetCenter = true;
-      }
-      // quickSpin();
-      // sendWidget(sendTop, sendLeft);
-      //well not exactly centered on mobile
-      //widgetCenter = true;
     }
 
   });
@@ -2013,7 +2090,9 @@ $(document).ready(function() {
     var bezelSpin = endPos - 360;
     //alert(navSpin + " " + bezelSpin);
     //safe to adjust speed of spin here
+
     if(!spinning){
+      //alert("set nav: " + navSpin);
       $("#nav_options_img, #widget_bezel_img").css("transition", "transform 0.8s");
       $("#nav_options_img").css("transform", "rotate(" + navSpin + "deg)");
       $("#widget_bezel_img").css("transform", "rotate(" + bezelSpin + "deg)");
@@ -2085,7 +2164,7 @@ $(document).ready(function() {
         var holder = "";
       }
       $(".current_time").html(minutes + ":" + holder + seconds);
-      if($(".current_time").css("opacity") == "0"){
+      if($(".current_time").css("opacity") == "0" && !firstSwipe){
         $(".current_time").css("opacity", "1");
       }
     //}
@@ -3094,7 +3173,7 @@ $(document).ready(function() {
     }
 
     //endPress();
-
+    quitIntro = false;
     intro_mode = true;
 
     if(menuOpen){
@@ -3856,11 +3935,11 @@ $("#widget_boi").hover(function(e){
 
     /////////////////////////////////////////////////////////////////////// INTRO TUTORIAL ////////////////////////////////////////////////////////////////
 
-  $("#widget_boi").fadeIn(3000, function(){
+  //$("#widget_boi").fadeIn(3000, function(){
     //setTimelineProgress(90);
     //var strokeWidth = $("#timeline_hilight").attr("stroke-width");
     //alert(strokeWidth);
-  });
+  //});
 
   function introAnimation(){
     intro_mode = true;
@@ -3868,15 +3947,19 @@ $("#widget_boi").hover(function(e){
     $("html").css("overflow-y", "hidden");
     //$("#nav_options_img").css("opacity", "0");
     //$(".widget_stick").css("opacity", "0");
-    $("#widget_boi").fadeIn("slow");
-    $(".intro_item").fadeIn(2000);
+    //$("#widget_boi").fadeIn("slow");
+    $(".intro_item").delay(2000).fadeIn(2000);
+    $(".intro_dots").show();
+    $(".intro_dots").delay(2000).animate({
+      "opacity" : "1"
+    }, 3000);
 
 
       //$(".intro_msg").css("opacity", "1");
 
-      $(".intro_msg").delay(3000).animate({
-        "opacity" : "1"
-      }, 2500);
+      // $(".intro_msg").delay(3000).animate({
+      //   "opacity" : "1"
+      // }, 2500);
 
     //intro msg sequence
     var intro_msgs = ["mi", "nam", "is", "wdgt", "boi", "hi"];
@@ -3901,54 +3984,56 @@ $("#widget_boi").hover(function(e){
       set_intro_msg = setTimeout(displayIntroMsg, 9000);
     }
 
-    displayIntroMsg();
+    //displayIntroMsg();
 
     //spin tings for intro
     constantSpin();
     //intro_bezel.addEventListener("animationiteration", sayHi);
-
-
   }
 
   function constantSpin(){
     //using css animations now
     //apply these here
-    $("#nav_options_dark").css("animation", "infiniteSpin 2s linear infinite");
+    //constantSpinning = true;
+    //$("#nav_options_dark").css("animation", "infiniteSpin 2s linear infinite");
+    $("#nav_options_img").css("animation", "infiniteSpin 2s linear infinite");
     $("#widget_bezel_img").css("animation", "infiniteBackSpin 2s linear infinite");
   }
+
   function stopConstantSpin(){
     var current_bezel = $("#widget_bezel_img").css("transform");
-    var current_dark_nav = $("#nav_options_dark").css("transform");
+    var current_nav = $("#nav_options_img").css("transform");
     //$("#nav_options_dark").css("transform", current_dark_nav);
-    $("#nav_options_dark").css("animation", "initial");
+    //$("#nav_options_dark").css("animation", "initial");
+    //intro_bezel.style.webkitAnimationPlayState = "paused";
+    //navOptionsImg.style.webkitAnimationPlayState = "paused";
+    $("#nav_options_img").css("animation", "initial");
     $("#widget_bezel_img").css("animation", "initial");
-    dark_nav.addEventListener("webkitTransitionEnd", function(){
-      //alert("dress widget");
-      widgetDress(true);
-    });
     $("#widget_bezel_img").css("transform", current_bezel);
+    //this one doesn't seem necessary but I have no clue why one would be required and not the other
+    $("#nav_options_img").css("transform", current_bezel);
+
+    //navOptionsImg.addEventListener("webkitTransitionEnd", widgetDress);
+    //intro_bezel.addEventListener("webkitTransitionEnd", widgetDress);
+
+    //setTimeout(widgetDress, 800);
+
+
+    //widgetDress(true);
+
+    //dark_nav is only spinning if you actually made selection
+    //not if you just quit the intro immediately if intro_done clicked while first swipe is true, need another way
+
+
+    //$("#nav_options_dark").css("transform", current_dark_nav);
+
 
     //$("#nav_options_dark").css("transform", current_dark_nav);
     //nav ring paused, need to send it to nearest multiple of 90 degrees
 
-
   }
 
-  /*
-  this is the right idea but I need to do some tweaking to get a good clean intro
-  on both platforms
-
-  if(isMobile){
-    introAnimation();
-  }
-  else{
-    finishIntro();
-    stopTimelineIntro();
-  }
-
-  */
-
-  introAnimation();
+  //introAnimation();
 
   function introScrollFx(){
     var scrollTop = $(window).scrollTop();
@@ -3986,58 +4071,79 @@ $("#widget_boi").hover(function(e){
     }
   }
 
-  function introHint(){
+  function introHint(switchNow){
 
-    switch(widget_mode){
-      case "audio_mode":
-      //audio_demo();
-      $introEl = $("#audio_intro_info");
-      if(!audio_mode_explored){
-        audio_mode_explored = true;
-        //alert("audio");
-        $(".audio_intro_dot").addClass("bright_dot");
+    //if(!quitIntro){
+      switch(widget_mode){
+        case "audio_mode":
+        //audio_demo();
+        var $introEl = $("#audio_intro_info");
+        if(!audio_mode_explored){
+          audio_mode_explored = true;
+          //alert("audio");
+          //$(".audio_intro_dot").addClass("bright_dot");
+          //intro_index++;
+        }
+        break;
+        case "home_mode":
+        var $introEl = $("#home_intro_info");
+        //home_demo();
+        if(!home_mode_explored){
+          home_mode_explored = true;
+          //$(".home_intro_dot").addClass("bright_dot");
+          //intro_index++;
+        }
+        break;
+        case "menu_mode":
+        var $introEl = $("#menu_intro_info");
+        //menu_demo();
+        if(!menu_mode_explored){
+          menu_mode_explored = true;
+          //$(".menu_intro_dot").addClass("bright_dot");
+          //intro_index++;
+        }
+        break;
+        default:
+        var $introEl = $("#download_intro_info");
+        //download_demo();
+        if(!download_mode_explored){
+          download_mode_explored = true;
+          //$(".download_intro_dot").addClass("bright_dot");
+          //intro_index++;
+        }
+      }
+      if(!quitIntro){
+        var dot_selector = "." + widget_mode.substring(0, widget_mode.indexOf("_")) + "_intro_dot";
+        $(dot_selector).addClass("bright_dot");
         intro_index++;
       }
-      break;
-      case "home_mode":
-      $introEl = $("#home_intro_info");
-      //home_demo();
-      if(!home_mode_explored){
-        home_mode_explored = true;
-        $(".home_intro_dot").addClass("bright_dot");
-        intro_index++;
-      }
-      break;
-      case "menu_mode":
-      $introEl = $("#menu_intro_info");
-      //menu_demo();
-      if(!menu_mode_explored){
-        menu_mode_explored = true;
-        $(".menu_intro_dot").addClass("bright_dot");
-        intro_index++;
-      }
-      break;
-      default:
-      $introEl = $("#download_intro_info");
-      //download_demo();
-      if(!download_mode_explored){
-        download_mode_explored = true;
-        $(".download_intro_dot").addClass("bright_dot");
-        intro_index++;
-      }
-    }
 
-    introLoadBar();
 
-    $(".intro_info").animate({
-      "opacity" : "0"
-    }, 600, function(){
+      introLoadBar();
+    //}
+
+    if(switchNow){
       $(".mode_intro_info, #init_intro_info").hide();
       $($introEl).show();
       $(".intro_info").stop().animate({
         "opacity": "1"
       }, 600);
-    });
+    }
+    else{
+      $(".intro_info").animate({
+        "opacity" : "0"
+      }, 600, function(){
+        if(!quitIntro){
+          $(".mode_intro_info, #init_intro_info").hide();
+          $($introEl).show();
+          $(".intro_info").stop().animate({
+            "opacity": "1"
+          }, 600);
+        }
+      });
+    }
+
+
   }
 
 
@@ -4079,6 +4185,7 @@ $("#widget_boi").hover(function(e){
     }, 1500, function(){
       $(".intro_msg").html("");
       //$("html").css("overflow", "auto");
+      $("html").css("overflow-y", "scroll");
       $(".widget_stick").animate({
         "opacity" : "1"
       }, 1500);
@@ -4090,25 +4197,41 @@ $("#widget_boi").hover(function(e){
       "opacity" : "1"
     }, 3000);
 
+    //$("#widget_nav_selected").addClass("widget_nav_selected");
+
+    //deleting this next bit totally destroys the smooth intro
+    //why?
+    //animationEnd? transitionEnd?
+
+    /////////////////////////////////////////////// WTF IS GOING ON HERE? WHY CANT I REMOVE THIS
+    ///// for some reason, I have to animate nav_options_img here
+    ///the content of the animation does not seem to matter. Neither does the duration
+    //just have to run an animation on this object for it to be smooth when intro_done clicked before firstSwipe
+    /////// i dont know
+    ////// i dont know why cant i remove this???
+
+    /*
+
     $("#nav_options_img").animate({
-      "opacity" : "1"
-    }, 1500, function(){
-      $("#nav_options_dark").animate({
-        "opacity" : "0"
-      }, 200, function (){
-        $("html").css("overflow-y", "scroll");
-      });
-    });
+      // "color" : "blue"
+    }, 0);
+
+    */
+
+    /////////////////////////
 
     //this interferes with quickspin when sending widget to bottom corner on mobile
     //try leaving the mode alone unless it hasn't been set
     if(firstSwipe){
       widget_mode = "audio_mode";
       //alert(prev_widget_mode);
+      //alert("calling Adjust");
       adjustIcon(prev_widget_mode, widget_mode);
     }
 
     intro_mode = false;
+    // firstSwipe = false;
+
     //send widget to bottom left if mobile
 
     if(typeof prevWidgetLeftTutorial !== 'undefined'){
@@ -4139,10 +4262,20 @@ $("#widget_boi").hover(function(e){
     */
   }
 
+  var quitIntro = false;
+
   $(".intro_done").click(function(){
-    introCleanUp();
+    //introCleanUp();
+    quitIntro = true;
+    if(firstSwipe){
+      intro_swipe();
+      //adding intro hint here makes no sense... but it makes the quit smooth
+      introHint();
+    }
+    finishIntro();
   });
 
+  //only called if they click intro_done well...
 
   function introCleanUp(){
 
@@ -4161,6 +4294,8 @@ $("#widget_boi").hover(function(e){
 
     $(".intro_msg").stop(true, true);
 
+    //alert(constantSpinning);
+
     if(!spinning){
       intro_bezel.removeEventListener("webkitTransitionEnd", introCleanUp);
       //$(".intro_msg").clearQueue();
@@ -4168,7 +4303,6 @@ $("#widget_boi").hover(function(e){
       //alert("end it");
       finishIntro();
   }
-
   //don't want to destroy widget so wait until it finishes spinning to end intro
     else{
       //it is spinning
@@ -4201,7 +4335,9 @@ $("#widget_boi").hover(function(e){
       // $(".intro_load_bar").css("background", "#1E2122");
       break;
       default:
-      alert("hmmm");
+      loadVal = "100%";
+      //alert("hmmm");
+      //could be 0 if quit before first_swipe = false
     }
     $(".intro_load_bar").animate({
       "right" : loadVal
