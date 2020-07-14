@@ -984,6 +984,77 @@ body {
   left: 100%;
 }
 
+/* Effect 18: cross */
+.cl-effect-18 {
+	position: relative;
+	z-index: 1;
+}
+
+.cl-effect-18 {
+	padding: 0 5px;
+	/* color: #b4770d; */
+	font-weight: 700;
+	-webkit-transition: color 0.3s;
+	-moz-transition: color 0.3s;
+	transition: color 0.3s;
+}
+
+.cl-effect-18::before,
+.cl-effect-18::after {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 50%;
+	height: 2px;
+	margin-top: -1px;
+	/* background: #b4770d; */
+  background: #282828;
+	content: '';
+	z-index: -1;
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+	-moz-transition: -moz-transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+	pointer-events: none;
+}
+
+.cl-effect-18::before {
+	-webkit-transform: translateY(-20px);
+	-moz-transform: translateY(-20px);
+	transform: translateY(-20px);
+}
+
+.cl-effect-18::after {
+	-webkit-transform: translateY(20px);
+	-moz-transform: translateY(20px);
+	transform: translateY(20px);
+}
+
+.cl-effect-18.active,
+.cl-effect-18:focus {
+	color: #fff;
+}
+
+.cl-effect-18.active::before,
+.cl-effect-18.active::after,
+.cl-effect-18:focus::before,
+.cl-effect-18:focus::after {
+	opacity: 0.7;
+}
+
+.cl-effect-18.active::before,
+.cl-effect-18:focus::before {
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.cl-effect-18.active::after,
+.cl-effect-18:focus::after {
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
 
 /********* Snagging this beautiful effect from github */
 
@@ -1084,16 +1155,26 @@ body {
   /* border: 1px solid blue; */
 }
 .intro_info {
-  top: 5%;
+  top: 10%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: flex-start;
 }
 .mode_intro_info {
   display: none;
+}
+.mode_intro_info > span {
+  /* border: 1px solid red; */
+  display: block;
+  margin-top: -15%;
 }
 .intro_function {
   color: #999;
 }
 .intro_mode_title{
   border-bottom: 1px solid #fff;
+  margin-bottom: 5%;
 }
 .intro_mode_title, .intro_task_done {
   color: white;

@@ -5,7 +5,8 @@ $(document).ready(function() {
 
   //var intro_mode = true;
   var widgetCenter = true;
-  var intro_mode;
+  //setting this true so widget doesn't get sent during brief loading step before intro tutorial
+  var intro_mode = true;
   var draggable = false;
   var widgetDblClick = false;
   var widget_press = false;
@@ -142,6 +143,10 @@ $(document).ready(function() {
   ///////////////////////////////////////////////////////////////////////////////// PAGE SETUP //////////////////////////////////////////
   //call functions that will set the page up how it needs to be initially
 
+  if(!isMobile){
+    $("#init_intro_info").html("Click a corner of the widget.");
+  }
+
   //introAnimation();
 
   //some elements need to load before being hidden so js can get their dimensions
@@ -153,6 +158,7 @@ $(document).ready(function() {
   sizeTimeline();
   resizeHelp();
   //good luck figure out which ones!
+
 
   $(".songs, .credits, .support, .support_img_info, .menu, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator, .intro_dots").hide();
   //hide everything but audio progress
@@ -213,6 +219,24 @@ $(document).ready(function() {
 
   var page = getQueryVariable("page");
 
+  /*
+
+  ///check if refresh
+
+  var reload;
+
+  if(window.performance){
+    if (performance.navigation.type == 1) {
+      //console.info( "This page is reloaded" );
+      reload = true;
+    }
+    else {
+      //console.info( "This page is not reloaded");
+      reload = false;
+    }
+  }
+  */
+
   // if(page){
   //   introCleanUp();
   //   //finishIntro();
@@ -239,6 +263,8 @@ $(document).ready(function() {
         $(".nav_options, .audio_indicator, .widget_nav, .widget_bezel, #widget_function_container").fadeIn();
         finishIntro();
         stopTimelineIntro();
+        //housekeeping
+
 
         if(page){
           //$("#album_art").css("opacity", "1");
@@ -780,12 +806,33 @@ $(document).ready(function() {
     //$(".widget_nav_path").removeClass("widget_nav_hover");
     var nav_box_id = $($target).attr("id");
     var pressedBox = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
-    widgetAction(pressedBox);
+    if(pressedBox == "menu_mode"){
+      //open menu in mode other than menu
+      //block widget function until mode switch
+      menuBlockFunction = true;
+      //alert("block that ish");
+      if(menuOpen){
+        displayMenu(false);
+        menuIcon(false);
+      }
+      else{
+        displayMenu(true);
+        menuIcon(true);
+      }
+    }
+    else{
+      widgetAction(pressedBox);
+    }
+    // widgetAction(pressedBox);
   }
 
+  var cleanX;
   function cleanUpWindows(){
     if(menuOpen){
       displayMenu(false);
+      //alert("menu icon pls");
+      //cleanX = true;
+      menuIcon(false);
     }
     if(downloadSimpleOpen){
       closeDownload();
@@ -973,23 +1020,32 @@ $(document).ready(function() {
         //this is a TAP
         //TAP
         //close menu on tap if it is open
-        if(menuOpen && widget_mode !== "menu_mode"){
+        if(menuOpen){
           displayMenu(false);
+          if(iconX){
+            menuIcon(false);
+          }
+
           menuMoving = true;
         }
         //alert("tap");
+        //thanks to shortcuts, menu can be open in any mode
+        //prevent click from triggering action if this is the case
         //prevent click while spinning if audio mode
         if(widget_mode == "audio_mode"){
-          if(!spinning){
+          if(!spinning && !menuBlockFunction){
             widgetAction(widget_mode);
           }
         }
         //otherwise knock yourself out
         else{
-          if(!firstSwipe){
+          if(!firstSwipe && !menuBlockFunction){
             //adding this if because clicking the widget before setting mode opens download
             widgetAction(widget_mode);
           }
+        }
+        if(menuBlockFunction){
+          menuBlockFunction = false;
         }
       }
       if(widgetGesture !== "press" && widgetGesture !== "tap"){
@@ -1277,7 +1333,6 @@ $(document).ready(function() {
 
   /////////////////////////////////////////////////////////////////// 2. WIDGET DISPLAY //////////////////////////////////////////////////////////////////////
 
-
   function getNavHover(whichBox){
     var select_widget_modes = [];
 
@@ -1295,7 +1350,8 @@ $(document).ready(function() {
       select_widget_modes = ["select_audio_mode", "select_home_mode", "select_menu_mode"];
       break;
       default:
-      //
+      //no mode in intro hmmmm
+      select_widget_modes = ["select_home_mode", "select_menu_mode", "select_download_mode", "select_audio_mode"];
     }
     return select_widget_modes;
   }
@@ -1321,8 +1377,12 @@ $(document).ready(function() {
           $("#widget_nav_3").addClass("nav_box_press");
         }
         break;
+        case select_widget_modes[3]:
+        $("#widget_nav_selected").addClass("widget_nav_hover");
         default:
         //do nothing on audio mode bc it is selected
+        //intro mode
+
       }
     //}
   }
@@ -1344,7 +1404,8 @@ $(document).ready(function() {
         //$("#widget_nav_3").removeClass("nav_box_press");
         break;
         default:
-        //do nothing on audio mode bc it is selected
+        //intro mode on desktop we do want to hilight audio mode
+        $("#widget_nav_selected").removeClass("widget_nav_hover");
       }
     //}
   }
@@ -1413,7 +1474,13 @@ $(document).ready(function() {
 
   function moveSticks(open, flip){
     ////// 0. Turn on transition if it is off //////////
-    $("#a_stick, #b_stick").css("transition", "transform 0.8s");
+    if(transformOnly){
+      $("#a_stick, #b_stick").css("transition", "transform 0.8s");
+    }
+    else{
+      $("#a_stick, #b_stick").css("transition", "all 0.8s");
+    }
+
 
     if(open){
       //open the sticks
@@ -1433,11 +1500,16 @@ $(document).ready(function() {
 
   }
 
-  var navDeg, iconDeg, navSet, iconSet, sticks, open, flip;
+  var navDeg, iconDeg, navSet, iconSet, sticks, open, flip, transformOnly;
   function adjustIcon(prev_widget_mode, widget_mode){
 
     //clear data in relevant variable from last run
     navDeg = iconDeg = navSet = iconSet = sticks = open = flip = undefined;
+    transformOnly = false;
+    if(widget_mode !== "menu_mode" && iconX){
+      //alert("menu icon pls");
+      menuIcon(false);
+    }
     ///going to try to use this one function to facilitate all updates to widget appearance
     //when mode is switched
 
@@ -1448,16 +1520,24 @@ $(document).ready(function() {
     if(prev_widget_mode == "audio_mode" && widget_mode == "menu_mode"){
       navDeg = 180;
       iconSet = 270;
-      if(playing){
-        //pause to menu
-        iconDeg = 90;
+
+      if(menuOpen){
+        menuIcon(true);
       }
       else{
-        //play to menu
-        //no spin of icon just close and reset
-        open = false;
-        flip = false;
+        if(playing){
+          //pause to menu
+          iconDeg = 90;
+        }
+        else{
+          //play to menu
+          //no spin of icon just close and reset
+          open = false;
+          flip = false;
+        }
       }
+
+
       //both require a reset
       //should only need to reset nav when switching over the 360 mark
       //ie audio to home and vice versa
@@ -1488,6 +1568,7 @@ $(document).ready(function() {
       navDeg = 90;
       if(playing){
         //pause to download
+        transformOnly = true;
         //don't spin icon just open sticks
         //from bottom
 
@@ -1509,6 +1590,15 @@ $(document).ready(function() {
     ////////////////////////////////// from menu ///////////////////////////////////////
     //menu to audio
     else if(prev_widget_mode == "menu_mode" && widget_mode == "audio_mode"){
+      if(menuOpen){
+        $(".widget_stick").css({
+          "margin" : "3%",
+          "transform-origin" : "center top"
+        });
+      }
+      else{
+        transformOnly = true;
+      }
       navDeg = 0;
       if(playing){
         //menu to pause
@@ -1531,6 +1621,13 @@ $(document).ready(function() {
     }
     //menu to home
     else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
+      if(iconX){
+
+        $(".widget_stick").css({
+          "margin" : "3%",
+          "transform-origin" : "center top"
+        });
+      }
       navDeg = 270;
       //icon should be at 270
       iconDeg = 360;
@@ -1545,6 +1642,15 @@ $(document).ready(function() {
     }
     else if(prev_widget_mode == "menu_mode" && widget_mode == "download_mode"){
       //menu to download
+
+      if(iconX){
+        //x to download
+        $(".widget_stick").css({
+          "margin" : "3%",
+          "transform-origin" : "center top"
+        });
+      }
+
       navDeg = 90;
       iconDeg = 180;
       //don't need to reset anything but i need this function to set spinning to false
@@ -1582,8 +1688,15 @@ $(document).ready(function() {
     else if(prev_widget_mode == "home_mode" && widget_mode == "menu_mode"){
       navDeg = 180;
       iconDeg = 270;
-      open = false;
-      flip = false;
+      if(menuOpen){
+        menuIcon(true);
+      }
+      else{
+        open = false;
+        flip = false;
+      }
+      // open = false;
+      // flip = false;
     }
     //home to download
     else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
@@ -1615,10 +1728,20 @@ $(document).ready(function() {
     //download to menu
     else if(prev_widget_mode == "download_mode" && widget_mode == "menu_mode"){
 
+      if(menuOpen){
+        //download to x
+        menuIcon(true);
+      }
+      else{
+        open = false;
+        flip = false;
+      }
+
+
       navDeg = 180;
       iconDeg = 270;
-      open = false;
-      flip = false;
+      //open = false;
+      //flip = false;
     }
     else{
       //either first swipe or same mode
@@ -1687,6 +1810,8 @@ $(document).ready(function() {
       moveSticks(open, flip);
     }
     //alert("endPos: " + endPos);
+    menuBlockFunction = false;
+    //alert("ok don't block");
   };
 
 
@@ -1853,8 +1978,10 @@ $(document).ready(function() {
 
 
   //this section involves moving the whole widget as a unit
+  var initialScroll = $(window).scrollTop();
   var prevScrollTop = 0;
   //they have to scroll down first
+  //not necessarily. what if they refresh the page and start near the middle?
   var prevScrollDirection = true;
   var scrollDirection;
   var widgetPosTop, widgetPosLeft;
@@ -1988,7 +2115,7 @@ $(document).ready(function() {
       headerTop -= refTop;
       //alert(scrollTop + " " + headerTop);
       if(scrollTop > headerTop){
-        if(widgetCenter && !intro_mode && !usrPos && !headedHome){
+        if(widgetCenter && !intro_mode && !usrPos && !headedHome && !menuOpen){
           quickSpin();
           var sendTop, sendLeft;
           if(isMobile){
@@ -2005,7 +2132,7 @@ $(document).ready(function() {
           usrPos = false;
         }
       }
-      else if(scrollTop < headerTop && !widgetCenter && !intro_mode && !usrPos && !headedHome){
+      else if(scrollTop < headerTop && !widgetCenter && !intro_mode && !usrPos && !headedHome && !menuOpen){
         if(isMobile){
           // sendTop = "85%";
           // sendLeft = "25%";
@@ -2302,12 +2429,15 @@ $(document).ready(function() {
   /////// audio tap //////
 
   function audioControl(){
-    $("#a_stick, #b_stick, #widget_function").css("transition", "transform 0.8s");
+    if(widget_mode == "audio_mode"){
+      $("#a_stick, #b_stick, #widget_function").css("transition", "transform 0.8s");
+    }
 
     if(playing){
         audioFile.pause();
         playing = false;
         if(widget_mode == "audio_mode"){
+          //alert("change icon")
           //change icon to play
           spinRate = 15;
           moveSticks(true, false, false);
@@ -2913,7 +3043,9 @@ $(document).ready(function() {
       $("#widget_boi").delay(500).animate({
         "top" : "50%",
         "left" : "50%"
-      }, 700, "swing");
+      }, 700, "swing", function(){
+        usrPos = false;
+      });
       if(!home_press){
         home_press = true;
         $("#home_press").addClass("intro_task_done");
@@ -2922,6 +3054,87 @@ $(document).ready(function() {
   }
 
   ////// MENU MODE /////////
+
+  var initialAStick, initialBStick, initialWidgetOrigin;
+  var iconX = false;
+  var menuBlockFunction = false;
+
+  function menuIcon(on){
+    //animate widget sticks to an x while menu is open
+    if(on){
+      //get previous state of icon
+      iconX = true;
+      initialAStick = $("#a_stick").css("transform");
+      initialBStick = $("#b_stick").css("transform");
+      initialWidgetOrigin = $(".widget_stick").css("transform-origin");
+      //turn to an x
+      $(".widget_stick").css({
+        "transition" : "all 0.8s",
+        "transform-origin" : "center center",
+        "margin" : "0"
+      });
+
+      //need to put sticks in same position
+      //smack on top of each other
+      //switching position to absolute achieves this
+      //but can't be smoothly animated
+      //switching to absolute entirely
+      //messes up the rest of the display of the widget icon
+      //try scooting them up and down respectively by correct value
+      //I guess half of their height
+      //
+      // $("#a_stick").css("transform", "rotate(-45deg) translateX(-50%)");
+      // $("#b_stick").css("transform", "rotate(45deg) translateX(-50%)");
+
+      //var stickWidth = $("#a_stick").width();
+      var stickWidth = $("#a_stick").innerWidth();
+
+      $("#a_stick").css("transform", "rotate(-45deg) translateX(" + stickWidth * 0.5 + "px)");
+      $("#b_stick").css("transform", "rotate(45deg) translateX(" + stickWidth * -0.5 + "px)");
+
+      // $("#a_stick").css("transform", "translateX(" + stickWidth * 0.5 + "px)");
+      // $("#b_stick").css("transform", "translateX(" + stickWidth * -0.5 + "px)");
+
+    }
+    else{
+      //turn off x
+      //alert("x off");
+      //if you exit out of menu in menu mode, after entering another mode with menu open,
+      //sticks will recreate shape of the previous mode
+
+      iconX = false;
+
+
+      if(widget_mode == "menu_mode" || cleanX == true){
+        //alert("go to parallel. WM: " + widget_mode + "cleanX: " + cleanX);
+        cleanX = false;
+        initialAStick = "rotate(0deg)";
+        initialBStick = "rotate(0deg)";
+
+        // $(".widget_stick").css({
+        //   "transform-origin" : initialWidgetOrigin,
+        //   "margin" : "3%"
+        // });
+        //need to reset transition? if so has to happen after x done
+        // $("#a_stick").css("transform", "initial");
+        // $("#b_stick").css("transform", "initial");
+      }
+
+    // else{
+        $(".widget_stick").css({
+          "transform-origin" : initialWidgetOrigin,
+          "margin" : "3%"
+        });
+        //need to reset transition? if so has to happen after x done
+        $("#a_stick").css("transform", initialAStick);
+        $("#b_stick").css("transform", initialBStick);
+      //}
+
+
+      //alert("a_stick: " + initialAStick + "origin: " + initialWidgetOrigin);
+
+    }
+  }
 
   ////// menu tap //////////
 
@@ -2957,6 +3170,8 @@ $(document).ready(function() {
     if(!menuMoving){
       //alert(show);
       if(show){
+
+        menuIcon(true);
 
         /*
         originalOrigin = $(".widget_stick").css("transform-origin");
@@ -3037,6 +3252,10 @@ $(document).ready(function() {
         $("#a_stick").css("transform", aDeg);
         $("#b_stick").css("transform", bDeg);
         */
+        //don't want to call this everytime the menu closes
+        //ex: go to home mode with menu open then click widget_function
+        //leave me out pls
+        //menuIcon(false);
         //alert(controlsWereOpen);
         if(controlsWereOpen){
           //alert("open controls");
@@ -3145,6 +3364,7 @@ $(document).ready(function() {
 
     // $(".menu").fadeOut("slow");
     displayMenu(false);
+    menuIcon(false);
     menuMoving = true;
     //scroll to top of content
     $("html, body").animate({
@@ -3158,6 +3378,10 @@ $(document).ready(function() {
     if ($($target).hasClass("menu_nav") == false){
       //alert("empty");
       displayMenu(false);
+      if(iconX){
+        menuIcon(false);
+      }
+
       menuMoving = true;
     }
   });
@@ -3171,9 +3395,14 @@ $(document).ready(function() {
     //var menu_pos = $("#about_nav").css("right");
     //alert(menu_pos);
     //alert($target.closest(".menu").length);
-    if(!$target.closest(".menu").length && menuOpen && !$target.hasClass("nav_box")){
+    if(!$target.closest(".menu").length && menuOpen && !$target.hasClass("nav_box") && !$target.id == "widget_function"){
       //alert("close the menu I think");
       displayMenu(false);
+      if(iconX){
+        //alert("menu icon pls");
+        menuIcon(false);
+      }
+
       menuMoving = true;
     }
     //alert(menu_pos);
@@ -3224,6 +3453,7 @@ $(document).ready(function() {
 
     if(menuOpen){
       displayMenu(false);
+      menuIcon(false);
       menuMoving = true;
     }
 
@@ -3240,7 +3470,7 @@ $(document).ready(function() {
       //widgetCenter = true;
     });
 
-    $(".widget_intro, .intro_dots").show().animate({
+    $(".widget_intro, .intro_dots, .intro_item").show().animate({
       "opacity" : "1"
     }, 1500, function(){
       //$("#real_body, #album_art").css("opacity" , "0");
@@ -4059,7 +4289,10 @@ $("#widget_boi").hover(function(e){
     //apply these here
     //constantSpinning = true;
     //$("#nav_options_dark").css("animation", "infiniteSpin 2s linear infinite");
-    $("#nav_options_img").css("animation", "infiniteSpin 2s linear infinite");
+    if(isMobile){
+      $("#nav_options_img").css("animation", "infiniteSpin 2s linear infinite");
+    }
+    //$("#nav_options_img").css("animation", "infiniteSpin 2s linear infinite");
     $("#widget_bezel_img").css("animation", "infiniteBackSpin 2s linear infinite");
   }
 
@@ -4385,6 +4618,10 @@ $("#widget_boi").hover(function(e){
       introHint();
     }
     finishIntro();
+  });
+
+  $(".intro_done").hover(function(){
+    $(".cl-effect-18").toggleClass("active");
   });
 
   //only called if they click intro_done well...

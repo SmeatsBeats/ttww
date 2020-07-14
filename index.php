@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=3" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=1" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.4"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.8"></script>
   </head>
 
   <body>
@@ -878,14 +878,14 @@
           </div>
           <div class="intro_done intro_item">
 
-            <span id="intro_done_button">Skip</span>
+            <span id="intro_done_button" class="cl-effect-18">SKIP</span>
             <span id="got_it_button">Got It</span>
 
             <div class="intro_load_bar">
 
             </div>
             <div class="intro_done_bar">
-              Done
+              DONE
             </div>
           </div>
         </div>
