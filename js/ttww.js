@@ -802,7 +802,7 @@ $(document).ready(function() {
 
   function navBoxPress(e){
     var $target = e.target;
-    cleanUpWindows();
+
     //$(".widget_nav_path").removeClass("widget_nav_hover");
     var nav_box_id = $($target).attr("id");
     var pressedBox = nav_box_id.substr(nav_box_id.indexOf("_") + 1);
@@ -812,8 +812,15 @@ $(document).ready(function() {
       menuBlockFunction = true;
       //alert("block that ish");
       if(menuOpen){
+        //alert("nbPress calls menuIcon");
         displayMenu(false);
-        menuIcon(false);
+        if(iconX){
+          var skip = false;
+        }
+        else{
+          var skip = true;
+        }
+        menuIcon(false, skip);
       }
       else{
         displayMenu(true);
@@ -821,6 +828,7 @@ $(document).ready(function() {
       }
     }
     else{
+      cleanUpWindows();
       widgetAction(pressedBox);
     }
     // widgetAction(pressedBox);
@@ -830,7 +838,7 @@ $(document).ready(function() {
   function cleanUpWindows(){
     if(menuOpen){
       displayMenu(false);
-      //alert("menu icon pls");
+      //alert("cleanUp windows calls MenuIcon");
       //cleanX = true;
       menuIcon(false);
     }
@@ -1009,7 +1017,7 @@ $(document).ready(function() {
           //need to remove handlers or movement of widget will be read as swipe
           //removeGestureHandler();
           //prevent drag before any mode set
-          if(!firstSwipe){
+          if(!firstSwipe && !menuOpen){
             dragWidget(e);
           }
 
@@ -1023,6 +1031,7 @@ $(document).ready(function() {
         if(menuOpen){
           displayMenu(false);
           if(iconX){
+            //alert("widget function tap calls menuIcon");
             menuIcon(false);
           }
 
@@ -1258,7 +1267,13 @@ $(document).ready(function() {
     $("#widget_function").on("touchstart", function(e){
       e.preventDefault();
       gestureTarget = "widget_function";
-      startPress();
+      if(menuOpen && widget_mode == "home_mode"){
+        //don't light up because not moveable if menu open
+      }
+      else{
+        startPress();
+      }
+
       initiateGesture(e);
       $(document).on("touchmove", swipeCheck);
       $(document).on("touchend", endGesture);
@@ -1296,8 +1311,14 @@ $(document).ready(function() {
     $("#widget_function").mousedown(function(e){
       e.preventDefault();
       gestureTarget = "widget_function";
+      if(menuOpen && widget_mode == "home_mode"){
+        //don't light up because not moveable if menu open
+      }
+      else{
+        startPress();
+      }
       //startPress lights up the other nav paths
-      startPress();
+      //startPress();
       initiateGesture(e);
       $(document).on("mousemove", swipeCheck);
       $(document).on("mouseup", endGesture);
@@ -1506,10 +1527,18 @@ $(document).ready(function() {
     //clear data in relevant variable from last run
     navDeg = iconDeg = navSet = iconSet = sticks = open = flip = undefined;
     transformOnly = false;
+    /*
     if(widget_mode !== "menu_mode" && iconX){
       //alert("menu icon pls");
+      ////////////////////////// this was important .... can't remember why I needed it lol
+      //was originally at top of this function
+      // ok so it is for when you use the menu shortcut then change modess
+      if(widget_mode == "audio_mode" && playing){
+        cleanX = true;
+      }
       menuIcon(false);
     }
+    */
     ///going to try to use this one function to facilitate all updates to widget appearance
     //when mode is switched
 
@@ -1521,19 +1550,35 @@ $(document).ready(function() {
       navDeg = 180;
       iconSet = 270;
 
-      if(menuOpen){
+      if(menuOpen && !iconX){
+        //going to menu mode while menu is open but icon not currently x
+        //need to make x icon
         menuIcon(true);
       }
+      else if(menuOpen && iconX){
+        //already have an x just spin it
+        iconDeg = 270;
+        iconSet = undefined;
+      }
       else{
+        //going to menu mode
+        //icon is not an x
+        //menu is not open
         if(playing){
-          //pause to menu
+          //spin icon
           iconDeg = 90;
         }
         else{
-          //play to menu
-          //no spin of icon just close and reset
-          open = false;
-          flip = false;
+            ////////////////// play to menu = ///////////////////
+            //play to menu
+            //no spin of icon just close and reset
+            open = false;
+            flip = false;
+
+          // //play to menu
+          // //no spin of icon just close and reset
+          // open = false;
+          // flip = false;
         }
       }
 
@@ -1545,7 +1590,20 @@ $(document).ready(function() {
     }
     //// audio to home
     else if(prev_widget_mode == "audio_mode" && widget_mode == "home_mode"){
+      if(iconX){
+        //might have been opened by shortcut
+        //from menu x in audio mode to home mode
+        if(playing){
+            menuIcon(false, true, "top");
+        }
+        else{
+            menuIcon(false, false, "top");
+        }
+
+      }
       //in both cases the nav wheel goes cc to top left
+      //this is firing backwards currently
+      //the bezel goes the way the nav should and vice versa
       navDeg = -90;
       navSet = 270;
       iconSet = 360;
@@ -1566,67 +1624,98 @@ $(document).ready(function() {
     //audio to download
     else if(prev_widget_mode == "audio_mode" && widget_mode == "download_mode"){
       navDeg = 90;
-      if(playing){
-        //pause to download
-        transformOnly = true;
-        //don't spin icon just open sticks
-        //from bottom
 
-        $(".widget_stick").css("transform-origin", "center bottom");
-        iconDeg = undefined;
-        iconSet = 180;
-        //will need to fix z stix
-        sticks = true;
-        open = true;
-        flip = true;
-      }
-      else {
-        //play to download
-        //spin icon to 180
+      if(iconX){
+        //////////////////// menu x in audio mode to download //////////
         iconDeg = 180;
         iconSet = undefined;
+        //second param is skip
+        //skip setting transform values for sticks
+        menuIcon(false, true);
+        // sticks = true;
+        //will this not fight with menuIcon trying to set stick transform to last position?
+        open = true;
+        // flip = true;
+        // iconDeg = 180;
+      }
+      else{
+        if(playing){
+          ////////////////// pause to download ///////////////
+          transformOnly = true;
+          //don't spin icon just open sticks
+          //from bottom
+
+          $(".widget_stick").css("transform-origin", "center bottom");
+          iconDeg = undefined;
+          iconSet = 180;
+          //will need to fix z stix
+          sticks = true;
+          open = true;
+          flip = true;
+        }
+        else{
+          ///////////////// play to download ///////////////
+          //spin icon to 180
+          iconDeg = 180;
+          iconSet = undefined;
+        }
       }
     }
     ////////////////////////////////// from menu ///////////////////////////////////////
     //menu to audio
     else if(prev_widget_mode == "menu_mode" && widget_mode == "audio_mode"){
-      if(menuOpen){
-        $(".widget_stick").css({
-          "margin" : "3%",
-          "transform-origin" : "center top"
-        });
-      }
-      else{
-        transformOnly = true;
-      }
+
       navDeg = 0;
+
       if(playing){
-        //menu to pause
+        if(iconX){
+          ///////////////////// menu x to pause ///////////////////////
+          cleanX = true;
+          //alert("adjustIcon calls menuIcon");
+          menuIcon(false);
+        }
+        else{
+          ///////////////////// menu = to pause //////////////////////
+        }
+
         //need to rotate cc 90 deg
         //should be at 270
         iconDeg = 180;
         iconSet = 0;
       }
       else{
-        //menu to play
-        //don't spin icon just open sticks
-        //from bottom?
-        iconDeg = undefined;
-        iconSet = 90;
-        $(".widget_stick").css("transform-origin", "center bottom");
-        sticks = true;
-        open = true;
-        flip = true;
+        if(iconX){
+          //////////////////////// menu x to play /////////////////////
+
+          //this one has been tricky
+          menuIcon(false, true, "top");
+          open = true;
+          iconDeg = 90;
+        }
+        else{
+          //////////////////////// menu = to play ///////////////////////
+          //don't spin icon just open sticks
+          //from bottom?
+          iconDeg = undefined;
+          iconSet = 90;
+          $(".widget_stick").css("transform-origin", "center bottom");
+          sticks = true;
+          open = true;
+          flip = true;
+          //don't want to apply transition to changing transform origin
+          //just to transform itself
+          transformOnly = true;
+        }
       }
     }
     //menu to home
     else if(prev_widget_mode == "menu_mode" && widget_mode == "home_mode"){
       if(iconX){
-
-        $(".widget_stick").css({
-          "margin" : "3%",
-          "transform-origin" : "center top"
-        });
+        menuIcon(false, true, "top");
+        // $(".widget_stick").css({
+        //   "margin" : "3%",
+        //   "transform-origin" : "center top"
+        // });
       }
       navDeg = 270;
       //icon should be at 270
@@ -1645,10 +1734,11 @@ $(document).ready(function() {
 
       if(iconX){
         //x to download
-        $(".widget_stick").css({
-          "margin" : "3%",
-          "transform-origin" : "center top"
-        });
+        menuIcon(false, true, "top");
+        // $(".widget_stick").css({
+        //   "margin" : "3%",
+        //   "transform-origin" : "center top"
+        // });
       }
 
       navDeg = 90;
@@ -1662,6 +1752,9 @@ $(document).ready(function() {
     //////////////////////////////////// from home /////////////////////////////////////
     //home to audio
     else if(prev_widget_mode == "home_mode" && widget_mode == "audio_mode"){
+      if(iconX){
+        menuIcon(false);
+      }
       navDeg = 360;
       //do I need to set this back to 0?
       //yes because other functions from audio mode anticipate 0
@@ -1700,12 +1793,18 @@ $(document).ready(function() {
     }
     //home to download
     else if(prev_widget_mode == "home_mode" && widget_mode == "download_mode"){
+      if(iconX){
+        menuIcon(false);
+      }
       navDeg = 90;
       iconDeg = 180;
     }
       ////////////////////////////////// from download ///////////////////////////////
     //download to audio
     else if(prev_widget_mode == "download_mode" && widget_mode == "audio_mode"){
+      if(iconX){
+        menuIcon(false);
+      }
       navDeg = 0;
       if(playing){
         //download to pause
@@ -1722,6 +1821,9 @@ $(document).ready(function() {
     }
     //download to home
     else if(prev_widget_mode == "download_mode" && widget_mode == "home_mode"){
+      if(iconX){
+        menuIcon(false);
+      }
       navDeg = 270;
       iconDeg = 360;
     }
@@ -1812,6 +1914,13 @@ $(document).ready(function() {
     //alert("endPos: " + endPos);
     menuBlockFunction = false;
     //alert("ok don't block");
+    if(widget_mode !== "menu_mode" && iconX){
+      //alert("menu icon pls");
+      ////////////////////////// this was important .... can't remember why I needed it lol
+      //was originally at top of this function
+      // ok so it is for when you use the menu shortcut then change modess
+      //menuIcon(false);
+    }
   };
 
 
@@ -3059,7 +3168,7 @@ $(document).ready(function() {
   var iconX = false;
   var menuBlockFunction = false;
 
-  function menuIcon(on){
+  function menuIcon(on, skip, origin){
     //animate widget sticks to an x while menu is open
     if(on){
       //get previous state of icon
@@ -3089,8 +3198,13 @@ $(document).ready(function() {
       //var stickWidth = $("#a_stick").width();
       var stickWidth = $("#a_stick").innerWidth();
 
-      $("#a_stick").css("transform", "rotate(-45deg) translateX(" + stickWidth * 0.5 + "px)");
-      $("#b_stick").css("transform", "rotate(45deg) translateX(" + stickWidth * -0.5 + "px)");
+      //if(!skip){
+      //rotate must come second or translate will move the transform origin of the rotation and x will be skewed
+        $("#a_stick").css("transform", "translateX(" + stickWidth * 0.5 + "px) rotate(-45deg)");
+        $("#b_stick").css("transform", "translateX(" + stickWidth * -0.5 + "px) rotate(45deg)");
+      //}
+      // $("#a_stick").css("transform", "rotate(-45deg) translateX(" + stickWidth * 0.5 + "px)");
+      // $("#b_stick").css("transform", "rotate(45deg) translateX(" + stickWidth * -0.5 + "px)");
 
       // $("#a_stick").css("transform", "translateX(" + stickWidth * 0.5 + "px)");
       // $("#b_stick").css("transform", "translateX(" + stickWidth * -0.5 + "px)");
@@ -3121,13 +3235,30 @@ $(document).ready(function() {
       }
 
     // else{
+    // if(!skip){
+
+        if(origin == "top"){
+          initialWidgetOrigin = "center top";
+        }
+        else if(origin == "bottom"){
+          initialWidgetOrigin = "center bottom";
+        }
+        else{
+
+        }
+
         $(".widget_stick").css({
           "transform-origin" : initialWidgetOrigin,
           "margin" : "3%"
         });
         //need to reset transition? if so has to happen after x done
-        $("#a_stick").css("transform", initialAStick);
-        $("#b_stick").css("transform", initialBStick);
+        if(!skip){
+          //alert("x off setting sticks");
+          $("#a_stick").css("transform", initialAStick);
+          $("#b_stick").css("transform", initialBStick);
+        }
+        // $("#a_stick").css("transform", initialAStick);
+        // $("#b_stick").css("transform", initialBStick);
       //}
 
 
@@ -3364,6 +3495,7 @@ $(document).ready(function() {
 
     // $(".menu").fadeOut("slow");
     displayMenu(false);
+    //alert("menu nav click calls MenuIcon");
     menuIcon(false);
     menuMoving = true;
     //scroll to top of content
@@ -3378,7 +3510,8 @@ $(document).ready(function() {
     if ($($target).hasClass("menu_nav") == false){
       //alert("empty");
       displayMenu(false);
-      if(iconX){
+      if(menuOpen){
+        //alert("menu click calls menuIcon");
         menuIcon(false);
       }
 
@@ -3398,8 +3531,8 @@ $(document).ready(function() {
     if(!$target.closest(".menu").length && menuOpen && !$target.hasClass("nav_box") && !$target.id == "widget_function"){
       //alert("close the menu I think");
       displayMenu(false);
-      if(iconX){
-        //alert("menu icon pls");
+      if(menuOpen){
+        //alert("html click calls menuIcon");
         menuIcon(false);
       }
 
@@ -3453,6 +3586,7 @@ $(document).ready(function() {
 
     if(menuOpen){
       displayMenu(false);
+      //alert("reset intro mode calls menuIcon");
       menuIcon(false);
       menuMoving = true;
     }
