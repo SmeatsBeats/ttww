@@ -451,6 +451,7 @@ body {
 }
 .slider_arrow_flip {
   transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
 }
 .arrow_svg {
   /* border: 1px solid blue; */
@@ -507,6 +508,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
   z-index: 5;
   /*
   bottom: 2vh;
@@ -636,6 +638,7 @@ body {
   /* starts on play mode */
   /*moving this transform to js after intro msg fades out */
   transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
   transform-origin: center center;
   cursor: pointer;
   /* border: 1px solid red; */
@@ -656,13 +659,16 @@ body {
   align-items: center;
   justify-content: center;
   transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
   /* border: 1px solid green; */
 }
 #a_stick {
-  transform: rotate(35deg);
+  transform: rotate(35deg) translateX(1.5%);
+  -webkit-transform: rotate(35deg) translateX(1.5%);
 }
 #b_stick {
-  transform: rotate(-35deg);
+  transform: rotate(-35deg) translateX(-1.5%);
+  -webkit-transform: rotate(-35deg) translateX(-1.5%);
 }
 #a_stick, #b_stick{
   transition: transform 0.8s;
@@ -687,7 +693,7 @@ body {
   transition: transform 0.8s;
   font-size: 260%;
   padding: 0;
-  margin: 3%;
+  /* margin: 3%; */
   fill: #999;
   transition: fill 1s ease;
   /* also for intro */
@@ -722,6 +728,7 @@ body {
   /* 10 percent missing from circle 10 percent of 360 == 36 / 2 == 18 plus 90 = 108 */
   transition: all 1s;
   transform: rotate(108deg);
+  -webkit-transform: rotate(108deg);
   transform-origin: 50% 50%;
   stroke: #999;
   fill: none;
@@ -741,6 +748,7 @@ body {
 #timeline_progress {
   transition: all 1s;
   transform: rotate(108deg);
+  -webkit-transform: rotate(108deg);
   transform-origin: 50% 50%;
   stroke: #222;
   fill: none;
@@ -799,6 +807,7 @@ body {
 
 .ffrw_icon_dark {
   transform: translateX(-32%);
+  -webkit-transform: translateX(-32%);
   fill: #282828;
   transition: transform 0.2s;
 }
@@ -806,11 +815,13 @@ body {
 .ffrw_icon_dark_hover {
   transform: translateX(-15%);
   transition: transform 0.2s;
+  -webkit-transform: translateX(-15%);
 }
 
 .ffrw_icon_dark_hold {
   transform: translateX(0%);
   transition: transform 0.2s;
+  -webkit-transform: translateX(0%);
 }
 
 .showSkip {
@@ -834,6 +845,7 @@ body {
 
 #rw {
   transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
 }
 
 /***************** DOWNLOAD MENU ****************/
@@ -1118,6 +1130,12 @@ body {
 }
 @keyframes infiniteBackSpin{
   to {transform: rotate(-360deg);}
+}
+@-webkit-keyframes infiniteSpin{
+  to {-webkit-transform: rotate(360deg);}
+}
+@-webkit-keyframes infiniteBackSpin{
+  to {-webkit-transform: rotate(-360deg);}
 }
 
 

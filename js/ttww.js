@@ -140,6 +140,21 @@ $(document).ready(function() {
   //MENU MODE
   var controlsWereOpen = false;
 
+
+  /// WIDGET STICKS
+  var stickWidth = $("#a_stick").innerWidth();
+  //alert(stickWidth);
+  var stickSpace = stickWidth * 0.75;
+
+  $("#a_stick").css({
+    "transform" : "rotate(35deg) translateX(" + stickSpace * -1 + "px)",
+    "-webkit-transform" : "rotate(35deg) translateX(" + stickSpace * -1 + "px)"
+  });
+  $("#b_stick").css({
+    "transform" : "rotate(-35deg) translateX(" + stickSpace + "px)",
+    "-webkit-transform" : "rotate(-35deg) translateX(" + stickSpace + "px)"
+  });
+
   ///////////////////////////////////////////////////////////////////////////////// PAGE SETUP //////////////////////////////////////////
   //call functions that will set the page up how it needs to be initially
 
@@ -1496,10 +1511,16 @@ $(document).ready(function() {
   function moveSticks(open, flip){
     ////// 0. Turn on transition if it is off //////////
     if(transformOnly){
-      $("#a_stick, #b_stick").css("transition", "transform 0.8s");
+      $("#a_stick, #b_stick").css({
+        WebkitTransition : "transform 0.8s",
+        transition : "transform 0.8s"
+      });
     }
     else{
-      $("#a_stick, #b_stick").css("transition", "all 0.8s");
+      $("#a_stick, #b_stick").css({
+        WebkitTransition : "all 0.8s",
+        transition : "all 0.8s"
+      });
     }
 
 
@@ -1511,12 +1532,26 @@ $(document).ready(function() {
       else{
         var openDeg = 35;
       }
-    $("#a_stick").css("transform", "rotate(" + openDeg + "deg)");
-    $("#b_stick").css("transform", "rotate(" + -openDeg + "deg)");
+
+    $("#a_stick").css({
+      "transform" : "rotate(" + openDeg + "deg) translateX(" + stickSpace * -1 + "px)",
+      "-webkit-transform" : "rotate(" + openDeg + "deg) translateX(" + stickSpace * -1 + "px)"
+    });
+    $("#b_stick").css({
+      "transform" : "rotate(" + -openDeg + "deg) translateX(" + stickSpace + "px)",
+      "-webkit-transform" : "rotate(" + -openDeg + "deg) translateX(" + stickSpace + "px)"
+    });
     }
     else{
       //close the sticks
-      $("#a_stick, #b_stick").css("transform", "rotate(0deg)");
+      $("#a_stick").css({
+        "transform" : "rotate(0deg) translateX(" + stickSpace * -1 + "px)",
+        "-webkit-transform" : "rotate(0deg) translateX(" + stickSpace * -1 + "px)"
+      });
+      $("#b_stick").css({
+        "transform" : "rotate(0deg) translateX(" + stickSpace + "px)",
+        "-webkit-transform" : "rotate(0deg) translateX(" + stickSpace + "px)"
+      });
     }
 
   }
@@ -1632,7 +1667,6 @@ $(document).ready(function() {
         //second param is skip
         //skip setting transform values for sticks
         menuIcon(false, true);
-        // sticks = true;
         //will this not fight with menuIcon trying to set stick transform to last position?
         open = true;
         // flip = true;
@@ -1934,7 +1968,10 @@ $(document).ready(function() {
     //alert("keep it simple");
 
     //////////////////////// 0. Make sure transitions are on ////////////////
-    $("#nav_options_img, #widget_bezel_img, #widget_function").css("transition", "transform 0.8s");
+    $("#nav_options_img, #widget_bezel_img, #widget_function").css({
+      WebkitTransition : "transform 0.8s",
+      transition : "transform 0.8s"
+    });
 
     if(firstSwipe){
       intro_bezel.addEventListener("webkitTransitionEnd", widgetDress);
@@ -1943,7 +1980,10 @@ $(document).ready(function() {
 
     //////////////////////// 1. send nav_options to end location /////////////
 
-    $("#nav_options_img").css("transform", "rotate(" + navDeg + "deg)");
+    $("#nav_options_img").css({
+      "transform" : "rotate(" + navDeg + "deg)",
+      "-webkit-transform" : "rotate(" + navDeg + "deg)"
+    });
     //this is not really the end position since endSet function might change these numbers
     //endPos = navDeg;
 
@@ -1960,10 +2000,16 @@ $(document).ready(function() {
       bezelDeg = navDeg - 360;
     }
 
-    $("#widget_bezel_img").css("transform", "rotate(" + bezelDeg + "deg)");
+    $("#widget_bezel_img").css({
+      "transform" : "rotate(" + bezelDeg + "deg)",
+      "-webkit-transform" : "rotate(" + bezelDeg + "deg)"
+    });
 
     ////////////////////// 3. Send icon to end position ///////////////////
-    $("#widget_function").css("transform", "rotate(" + iconDeg + "deg)");
+    $("#widget_function").css({
+      "transform" : "rotate(" + iconDeg + "deg)",
+      "-webkit-transform" : "rotate(" + iconDeg + "deg)"
+    });
 
   }
 
@@ -1989,11 +2035,18 @@ $(document).ready(function() {
         //use it for the bezel and nav options
 
         //cancel the transition so it is imperceptible for user
-        $("#nav_options_img, #widget_bezel_img").css("transition", "initial");
+        $("#nav_options_img, #widget_bezel_img").css("transition-property", "none");
 
         //set the rotation values
-        $("#nav_options_img").css("transform", "rotate(" + navSet + "deg)");
-        $("#widget_bezel_img").css("transform", "rotate(" + navSet + "deg)");
+        $("#nav_options_img").css({
+          "transform" : "rotate(" + navSet + "deg)",
+          "-webkit-transform" : "rotate(" + navSet + "deg)"
+        });
+
+        $("#widget_bezel_img").css({
+          "transform" : "rotate(" + navSet + "deg)",
+          "-webkit-transform" : "rotate(" + navSet + "deg)"
+        });
         endPos = navSet;
       }
       else{
@@ -2001,9 +2054,12 @@ $(document).ready(function() {
         ////since bezel spins like mad, should probably reset it each time
         //navDeg should still be defined globally
         endPos = navDeg;
-        $("#widget_bezel_img").css("transition", "initial");
+        $("#widget_bezel_img").css("transition-property", "none");
         //alert("reset bezel only " + navDeg);
-        $("#widget_bezel_img").css("transform", "rotate(" + navDeg + "deg)");
+        $("#widget_bezel_img").css({
+          "transform" : "rotate(" + navDeg + "deg)",
+          "-webkit-transform" : "rotate(" + navDeg + "deg)"
+        });
       }
       ////// 2B. iconSet for #widget_function /////////////
       if(!typeof iconSet !== 'undefined'){
@@ -2011,17 +2067,24 @@ $(document).ready(function() {
         //use it for the icon
 
         //cancel the transition so it is imperceptible for user
-        $("#widget_function").css("transition", "initial");
+        $("#widget_function").css("transition-property", "none");
 
         //set the rotation values
-        $("#widget_function").css("transform", "rotate(" + iconSet + "deg)");
+        $("#widget_function").css({
+          "transform" : "rotate(" + iconSet + "deg)",
+          "-webkit-transform" : "rotate(" + iconSet + "deg)"
+        });
       }
 
       ////////// 3. Reset sticks if necessary /////////
       if(typeof sticks !== "undefined"){
         //alert("fix z sticks");
+        //this is last ting fn up integration of widget x
+        //flipping sticks based on previous transform value swaps translateX value as well now
+        //only want to swap rotate value
+        //apparently this will be a thing soon in chrome?
         //cancel transition so imperceptible
-        $("#a_stick, #b_stick").css("transition", "initial");
+        $("#a_stick, #b_stick").css("transition-property", "none");
         //reset origin to top
         $(".widget_stick").css("transform-origin", "center top");
         //swap values of a and b stick
@@ -2030,8 +2093,27 @@ $(document).ready(function() {
         //alert("swapping stix");
         var bDeg = $("#b_stick").css("transform");
         var aDeg = $("#a_stick").css("transform");
-        $("#a_stick").css("transform", bDeg);
-        $("#b_stick").css("transform", aDeg);
+
+        // $("#a_stick").css({
+        //   "transform" : bDeg,
+        //   "-webkit-transform" : bDeg
+        // });
+        // $("#b_stick").css({
+        //   "transform" : aDeg,
+        //   "-webkit-transform" : aDeg
+        // });
+
+        //in both cases they are open @ 35 deg
+
+        $("#a_stick").css({
+          "transform" : "rotate(35deg) translateX(" + stickSpace * -1 + "px)",
+          "-webkit-transform" : "rotate(35deg) translateX(" + stickSpace * -1 + "px)"
+        });
+        $("#b_stick").css({
+          "transform" : "rotate(-35deg) translateX(" + stickSpace + "px)",
+          "-webkit-transform" : "rotate(-35deg) translateX(" + stickSpace + "px)"
+        });
+
       }
       //if intro_done is clicked, it will be one step behind on prev_widget mode
       prev_widget_mode = widget_mode;
@@ -2342,9 +2424,18 @@ $(document).ready(function() {
 
     if(!spinning){
       //alert("set nav: " + navSpin);
-      $("#nav_options_img, #widget_bezel_img").css("transition", "transform 0.8s");
-      $("#nav_options_img").css("transform", "rotate(" + navSpin + "deg)");
-      $("#widget_bezel_img").css("transform", "rotate(" + bezelSpin + "deg)");
+      $("#nav_options_img, #widget_bezel_img").css({
+        WebkitTransition : "transform 0.8s",
+        transition : "transform 0.8s"
+      });
+      $("#nav_options_img").css({
+        "transform" : "rotate(" + navSpin + "deg)",
+        "-webkit-transform" : "rotate(" + navSpin + "deg)"
+      });
+      $("#widget_bezel_img").css({
+        "transform" : "rotate(" + bezelSpin + "deg)",
+        "transform" : "rotate(" + bezelSpin + "deg)"
+      });
       quickSpinning = true;
       //need to undo the spin once it is complete and reset transform values to original
       function unSpin(){
@@ -2498,12 +2589,18 @@ $(document).ready(function() {
 
   function timelineIntro(){
     //alert(timelinePercent);
-    $("#timeline_hilight").css("transform", "rotate(90deg)");
-    $("#timeline_hilight").css("transition", "all 1s");
+    $("#timeline_hilight").css({
+      "transform" : "rotate(90deg)",
+      "-webkit-transform" : "rotate(90deg)"
+    });
+    $("#timeline_hilight").css({
+      WebkitTransition : "all 1s",
+      transition : "all 1s"
+  });
     // this goes up forever theoretically
     if(timelinePercent == 300){
       //reset it to beginning stage
-      $("#timeline_hilight").css("transition", "none");
+      $("#timeline_hilight").css("transition-property", "none");
       setTimelineProgress(0);
       timelinePercent = 100;
 
@@ -2520,11 +2617,17 @@ $(document).ready(function() {
   }
 
   function stopTimelineIntro(){
-    $("#timeline_hilight").css("transition", "all 1s");
+    $("#timeline_hilight").css({
+      WebkitTransition : "all 1s",
+      transition : "all 1s"
+    });
     clearInterval(loadTimeline);
     spinTimeline = false;
     setTimelineProgress(90);
-    $("#timeline_hilight").css("transform", "rotate(108deg)");
+    $("#timeline_hilight").css({
+      "transform" : "rotate(108deg)",
+      "-webkit-transform" : "rotate(108deg)"
+    });
   }
 
   timelineIntro();
@@ -2539,7 +2642,10 @@ $(document).ready(function() {
 
   function audioControl(){
     if(widget_mode == "audio_mode"){
-      $("#a_stick, #b_stick, #widget_function").css("transition", "transform 0.8s");
+      $("#a_stick, #b_stick, #widget_function").css({
+        WebkitTransition : "transform 0.8s",
+        transition : "transform 0.8s"
+      });
     }
 
     if(playing){
@@ -2552,7 +2658,10 @@ $(document).ready(function() {
           moveSticks(true, false, false);
           //iconSpin(0, 90, 15);
           //alert("audio control moving widget function");
-          $("#widget_function").css("transform", "rotate(90deg)");
+          $("#widget_function").css({
+            "transform" : "rotate(90deg)",
+            "-webkit-transform" : "rotate(90deg)"
+          });
           //reset play icon
           //simpleIconSpin(1);
         }
@@ -2566,7 +2675,10 @@ $(document).ready(function() {
           moveSticks(false, false, false);
           //iconSpin(90, 0, 15);
           //alert("audio control moving widget function");
-          $("#widget_function").css("transform", "rotate(0deg)");
+          $("#widget_function").css({
+            "transform" : "rotate(0deg)",
+            "-webkit-transform" : "rotate(0deg)"
+          });
           //reset pause icon
           //simpleIconSpin(2);
         }
@@ -3178,9 +3290,10 @@ $(document).ready(function() {
       initialWidgetOrigin = $(".widget_stick").css("transform-origin");
       //turn to an x
       $(".widget_stick").css({
-        "transition" : "all 0.8s",
-        "transform-origin" : "center center",
-        "margin" : "0"
+        WebkitTransition : "all 0.8s",
+        transition : "all 0.8s",
+        "transform-origin" : "center center"
+        //"margin" : "0"
       });
 
       //need to put sticks in same position
@@ -3196,12 +3309,18 @@ $(document).ready(function() {
       // $("#b_stick").css("transform", "rotate(45deg) translateX(-50%)");
 
       //var stickWidth = $("#a_stick").width();
-      var stickWidth = $("#a_stick").innerWidth();
+      //var stickWidth = $("#a_stick").innerWidth();
 
       //if(!skip){
       //rotate must come second or translate will move the transform origin of the rotation and x will be skewed
-        $("#a_stick").css("transform", "translateX(" + stickWidth * 0.5 + "px) rotate(-45deg)");
-        $("#b_stick").css("transform", "translateX(" + stickWidth * -0.5 + "px) rotate(45deg)");
+        $("#a_stick").css({
+          "transform" : "translateX(" + stickWidth * 0.5 + "px) rotate(-45deg)",
+          "-webkit-transform" : "translateX(" + stickWidth * 0.5 + "px) rotate(-45deg)"
+        });
+        $("#b_stick").css({
+          "transform" : "translateX(" + stickWidth * -0.5 + "px) rotate(45deg)",
+          "-webkit-transform" : "translateX(" + stickWidth * -0.5 + "px) rotate(45deg)"
+      });
       //}
       // $("#a_stick").css("transform", "rotate(-45deg) translateX(" + stickWidth * 0.5 + "px)");
       // $("#b_stick").css("transform", "rotate(45deg) translateX(" + stickWidth * -0.5 + "px)");
@@ -3222,8 +3341,8 @@ $(document).ready(function() {
       if(widget_mode == "menu_mode" || cleanX == true){
         //alert("go to parallel. WM: " + widget_mode + "cleanX: " + cleanX);
         cleanX = false;
-        initialAStick = "rotate(0deg)";
-        initialBStick = "rotate(0deg)";
+        initialAStick = "rotate(0deg) translateX(" + stickSpace * -1 + "px)";
+        initialBStick = "rotate(0deg) translateX(" + stickSpace + "px)";
 
         // $(".widget_stick").css({
         //   "transform-origin" : initialWidgetOrigin,
@@ -3248,14 +3367,20 @@ $(document).ready(function() {
         }
 
         $(".widget_stick").css({
-          "transform-origin" : initialWidgetOrigin,
-          "margin" : "3%"
+          "transform-origin" : initialWidgetOrigin
+          //"margin" : "3%"
         });
         //need to reset transition? if so has to happen after x done
         if(!skip){
           //alert("x off setting sticks");
-          $("#a_stick").css("transform", initialAStick);
-          $("#b_stick").css("transform", initialBStick);
+          $("#a_stick").css({
+            "transform" : initialAStick,
+            "-webkit-transform" : initialAStick
+          });
+          $("#b_stick").css({
+            "transform" : initialBStick,
+            "-webkit-transform" : initialBStick
+          });
         }
         // $("#a_stick").css("transform", initialAStick);
         // $("#b_stick").css("transform", initialBStick);
@@ -3510,7 +3635,7 @@ $(document).ready(function() {
     if ($($target).hasClass("menu_nav") == false){
       //alert("empty");
       displayMenu(false);
-      if(menuOpen){
+      if(iconX){
         //alert("menu click calls menuIcon");
         menuIcon(false);
       }
@@ -3531,7 +3656,7 @@ $(document).ready(function() {
     if(!$target.closest(".menu").length && menuOpen && !$target.hasClass("nav_box") && !$target.id == "widget_function"){
       //alert("close the menu I think");
       displayMenu(false);
-      if(menuOpen){
+      if(iconX){
         //alert("html click calls menuIcon");
         menuIcon(false);
       }
@@ -4439,9 +4564,15 @@ $("#widget_boi").hover(function(e){
     //navOptionsImg.style.webkitAnimationPlayState = "paused";
     $("#nav_options_img").css("animation", "initial");
     $("#widget_bezel_img").css("animation", "initial");
-    $("#widget_bezel_img").css("transform", current_bezel);
+    $("#widget_bezel_img").css({
+      "transform" : current_bezel,
+      "-webkit-transform" : current_bezel
+    });
     //this one doesn't seem necessary but I have no clue why one would be required and not the other
-    $("#nav_options_img").css("transform", current_bezel);
+    $("#nav_options_img").css({
+      "transform" : current_bezel,
+      "-webkit-transform" : current_bezel
+    });
 
     //navOptionsImg.addEventListener("webkitTransitionEnd", widgetDress);
     //intro_bezel.addEventListener("webkitTransitionEnd", widgetDress);
