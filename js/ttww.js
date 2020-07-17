@@ -786,6 +786,7 @@ $(document).ready(function() {
     //alert(spinning);
 
     if(!spinning && !draggable && !quickSpinning){
+      chromeSmells();
       $(".widget_nav_path").removeClass("widget_nav_hover");
       var nav_box_id = $($target).attr("id");
       // alert(nav_box_id);
@@ -806,10 +807,12 @@ $(document).ready(function() {
       }
 
       //alert(prev_widget_mode + " " + widget_mode);
-      if(intro_mode && prev_widget_mode !== widget_mode){
+      if(intro_mode && prev_widget_mode !== widget_mode && !firstSwipe){
         introHint();
       }
-
+      //could put this in adjustIcon
+      //but first use seems funky there
+      // chromeSmells();
       adjustIcon(prev_widget_mode, widget_mode);
     }
     // alert(widget_mode);
@@ -1090,6 +1093,7 @@ $(document).ready(function() {
           }
         }
         //alert(prev_widget_mode + " " + widget_mode);
+        // chromeSmells();
         adjustIcon(prev_widget_mode, widget_mode);
       }
     }
@@ -1143,6 +1147,7 @@ $(document).ready(function() {
       if(swipeDistX > 20 || swipeDistY > 20){
         widgetGesture = "swipe";
         clearInterval(pressTime);
+        chromeSmells();
 
         //calculate difference in x and y planes
 
@@ -1508,18 +1513,48 @@ $(document).ready(function() {
 
   //me again trying to switch animations over to css
 
+  ////////////////////////// CHROME HACK /////////////////////////
+  // widget sticks do not transition properly outside of intro mode in chrome
+  // I've tried to figure out a legitimate solution all week
+  //it's been six months
+  //cut me some slack
+  var killChrome = true;
+  function chromeSmells(){
+    ////////////////////// CHROME SEEMS TO NEED A REPAINT TO BE OCURRING
+    ////////////////////// FOR ANY ANIMATION OUT OF X MODE TO FIRE PROPERLY AT 100% speed
+    if(!intro_mode){
+      //not iconX bc need to do it when going into menu mode x form other modes not x
+      //menuOpen bc you don't relly need to run it otherwise
+      // !intro_mode because it runs fine in the intro
+      if(killChrome){
+        $(".death_to_webkit").stop().animate({
+          "opacity" : "0"
+        }, 3000);
+        //opacity off
+        killChrome = false;
+      }
+      else{
+          $(".death_to_webkit").stop().animate({
+            "opacity" : "1"
+          }, 3000);
+          killChrome = true;
+      }
+    }
+  }
+
   function moveSticks(open, flip){
     ////// 0. Turn on transition if it is off //////////
+
     if(transformOnly){
       $("#a_stick, #b_stick").css({
-        WebkitTransition : "transform 0.8s",
-        transition : "transform 0.8s"
+        "-webkit-transition" : "transform 0.8s",
+        "transition" : "transform 0.8s"
       });
     }
     else{
       $("#a_stick, #b_stick").css({
-        WebkitTransition : "all 0.8s",
-        transition : "all 0.8s"
+        "-webkit-transition" : "transform 0.8s, transform-origin 0.8s",
+        "transition" : "transform 0.8s, transform-origin 0.8s"
       });
     }
 
@@ -1533,14 +1568,14 @@ $(document).ready(function() {
         var openDeg = 35;
       }
 
-    $("#a_stick").css({
-      "transform" : "rotate(" + openDeg + "deg) translateX(" + stickSpace * -1 + "px)",
-      "-webkit-transform" : "rotate(" + openDeg + "deg) translateX(" + stickSpace * -1 + "px)"
-    });
-    $("#b_stick").css({
-      "transform" : "rotate(" + -openDeg + "deg) translateX(" + stickSpace + "px)",
-      "-webkit-transform" : "rotate(" + -openDeg + "deg) translateX(" + stickSpace + "px)"
-    });
+      $("#a_stick").css({
+        "transform" : "rotate(" + openDeg + "deg) translateX(" + stickSpace * -1 + "px)",
+        "-webkit-transform" : "rotate(" + openDeg + "deg) translateX(" + stickSpace * -1 + "px)"
+      });
+      $("#b_stick").css({
+        "transform" : "rotate(" + -openDeg + "deg) translateX(" + stickSpace + "px)",
+        "-webkit-transform" : "rotate(" + -openDeg + "deg) translateX(" + stickSpace + "px)"
+      });
     }
     else{
       //close the sticks
@@ -1969,8 +2004,8 @@ $(document).ready(function() {
 
     //////////////////////// 0. Make sure transitions are on ////////////////
     $("#nav_options_img, #widget_bezel_img, #widget_function").css({
-      WebkitTransition : "transform 0.8s",
-      transition : "transform 0.8s"
+      //WebkitTransition : "transform 0.8s",
+      "transition" : "transform 0.8s"
     });
 
     if(firstSwipe){
@@ -2133,36 +2168,6 @@ $(document).ready(function() {
       $("#widget_nav_selected").addClass("widget_nav_selected");
 
       intro_bezel.removeEventListener("webkitTransitionEnd", widgetDress);
-
-      /*
-      $("#nav_options_img").animate({
-        "opacity" : "1"
-      }, 1500, function(){
-        $("#nav_options_dark").animate({
-          "opacity" : "0"
-        }, 200, callback);
-        //$(".help_icon").addClass("help_icon_on");
-      });
-      */
-    //}
-    //else{
-      //take it off widget boi!
-      /*
-      $(".widget_stick").animate({
-        "opacity" : "0"
-      }, 1000);
-
-      //$(".help_icon").removeClass("help_icon_on");
-
-      $("#nav_options_img").animate({
-        "opacity" : "0"
-      }, 1500, function(){
-        $("#nav_options_dark").animate({
-          "opacity" : "1"
-        }, 200, callback);
-      });
-      */
-    //}
   }
 
   //////////////////////////////////////////////////////////////////////// MOVE WIDGET //////////////////////////////////////////////////////////
@@ -2425,8 +2430,8 @@ $(document).ready(function() {
     if(!spinning){
       //alert("set nav: " + navSpin);
       $("#nav_options_img, #widget_bezel_img").css({
-        WebkitTransition : "transform 0.8s",
-        transition : "transform 0.8s"
+        //WebkitTransition : "transform 0.8s",
+        "transition" : "transform 0.8s"
       });
       $("#nav_options_img").css({
         "transform" : "rotate(" + navSpin + "deg)",
@@ -2594,8 +2599,8 @@ $(document).ready(function() {
       "-webkit-transform" : "rotate(90deg)"
     });
     $("#timeline_hilight").css({
-      WebkitTransition : "all 1s",
-      transition : "all 1s"
+      //WebkitTransition : "all 1s",
+      "transition" : "all 1s"
   });
     // this goes up forever theoretically
     if(timelinePercent == 300){
@@ -2618,8 +2623,8 @@ $(document).ready(function() {
 
   function stopTimelineIntro(){
     $("#timeline_hilight").css({
-      WebkitTransition : "all 1s",
-      transition : "all 1s"
+      //WebkitTransition : "all 1s",
+      "transition" : "all 1s"
     });
     clearInterval(loadTimeline);
     spinTimeline = false;
@@ -2643,8 +2648,8 @@ $(document).ready(function() {
   function audioControl(){
     if(widget_mode == "audio_mode"){
       $("#a_stick, #b_stick, #widget_function").css({
-        WebkitTransition : "transform 0.8s",
-        transition : "transform 0.8s"
+        //WebkitTransition : "transform 0.8s",
+        "transition" : "transform 0.8s"
       });
     }
 
@@ -3290,8 +3295,8 @@ $(document).ready(function() {
       initialWidgetOrigin = $(".widget_stick").css("transform-origin");
       //turn to an x
       $(".widget_stick").css({
-        WebkitTransition : "all 0.8s",
-        transition : "all 0.8s",
+        //WebkitTransition : "transform 0.8s, transform-origin 0.8s",
+        "transition" : "transform 0.8s, transform-origin 0.8s",
         "transform-origin" : "center center"
         //"margin" : "0"
       });
@@ -3362,22 +3367,23 @@ $(document).ready(function() {
         else if(origin == "bottom"){
           initialWidgetOrigin = "center bottom";
         }
-        else{
 
-        }
+        $(".widget_stick").css("transform-origin", initialWidgetOrigin);
 
-        $(".widget_stick").css({
-          "transform-origin" : initialWidgetOrigin
-          //"margin" : "3%"
-        });
+        // $(".widget_stick").css({
+        //   "transform-origin" : initialWidgetOrigin
+        //   //"margin" : "3%"
+        // });
         //need to reset transition? if so has to happen after x done
         if(!skip){
           //alert("x off setting sticks");
           $("#a_stick").css({
+            //"transform-origin" : initialWidgetOrigin,
             "transform" : initialAStick,
             "-webkit-transform" : initialAStick
           });
           $("#b_stick").css({
+            //"transform-origin" : initialWidgetOrigin,
             "transform" : initialBStick,
             "-webkit-transform" : initialBStick
           });
@@ -4638,7 +4644,7 @@ $("#widget_boi").hover(function(e){
       switch(widget_mode){
         case "audio_mode":
         //audio_demo();
-        var $introEl = $("#audio_intro_info");
+        var introEl = document.getElementById("audio_intro_info");
         if(!audio_mode_explored){
           audio_mode_explored = true;
           if(!quitIntro){
@@ -4651,7 +4657,7 @@ $("#widget_boi").hover(function(e){
         }
         break;
         case "home_mode":
-        var $introEl = $("#home_intro_info");
+        var introEl = document.getElementById("home_intro_info");
         //home_demo();
         if(!home_mode_explored){
           home_mode_explored = true;
@@ -4664,7 +4670,7 @@ $("#widget_boi").hover(function(e){
         }
         break;
         case "menu_mode":
-        var $introEl = $("#menu_intro_info");
+        var introEl = document.getElementById("menu_intro_info");
         //menu_demo();
         if(!menu_mode_explored){
           menu_mode_explored = true;
@@ -4677,7 +4683,7 @@ $("#widget_boi").hover(function(e){
         }
         break;
         case "download_mode":
-        var $introEl = $("#download_intro_info");
+        var introEl = document.getElementById("download_intro_info");
         //download_demo();
         if(!download_mode_explored){
           download_mode_explored = true;
@@ -4703,9 +4709,15 @@ $("#widget_boi").hover(function(e){
       introLoadBar();
     //}
 
+    //WHEN THIS BIT DOENSN't HAPPEN, WIDGET ANIMATION BREAKS DOWN IN CHROME
+    //WHY???
+    //HOW DO I PREVENT ANIMATION FROM BREAKING OUTSIDE OF INTRO??
+
     if(switchNow){
       $(".mode_intro_info, #init_intro_info").hide();
-      $($introEl).show();
+      $(introEl).show();
+      //this animation must occur for animation out of x to work
+      //why in the world is this the case?
       $(".intro_info").stop().animate({
         "opacity": "1"
       }, 600);
@@ -4716,7 +4728,9 @@ $("#widget_boi").hover(function(e){
       }, 600, function(){
         if(!quitIntro){
           $(".mode_intro_info, #init_intro_info").hide();
-          $($introEl).show();
+          $(introEl).show();
+          //this animation must occur for animation out of x to work
+          //why in the world is this the case?
           $(".intro_info").stop().animate({
             "opacity": "1"
           }, 600);
@@ -4790,6 +4804,8 @@ $("#widget_boi").hover(function(e){
       $(".intro_msg").html("");
       //$("html").css("overflow", "auto");
       $("html").css("overflow-y", "scroll");
+
+      //why is this taking forever?
       $(".widget_stick").animate({
         "opacity" : "1"
       }, 1500);
@@ -4799,7 +4815,7 @@ $("#widget_boi").hover(function(e){
 
     $("#album_art").animate({
       "opacity" : "1"
-    }, 3000);
+    }, 2500);
 
     //$("#widget_nav_selected").addClass("widget_nav_selected");
 

@@ -663,16 +663,16 @@ body {
   /* border: 1px solid green; */
 }
 #a_stick {
-  transform: rotate(35deg) translateX(1.5%);
-  -webkit-transform: rotate(35deg) translateX(1.5%);
+  /* transform: rotate(35deg) translateX(1.5%);
+  -webkit-transform: rotate(35deg) translateX(1.5%); */
 }
 #b_stick {
-  transform: rotate(-35deg) translateX(-1.5%);
-  -webkit-transform: rotate(-35deg) translateX(-1.5%);
+  /* transform: rotate(-35deg) translateX(-1.5%);
+  -webkit-transform: rotate(-35deg) translateX(-1.5%); */
 }
-#a_stick, #b_stick{
-  transition: transform 0.8s;
-}
+/* #a_stick, #b_stick{
+  transition: all 0.8s;
+} */
 .download_circle{
   position: absolute;
   top: 0;
@@ -690,12 +690,12 @@ body {
 .widget_stick{
   position: relative;
   transform-origin: center top;
-  transition: transform 0.8s;
+  transition: all 0.8s;
   font-size: 260%;
   padding: 0;
   /* margin: 3%; */
   fill: #999;
-  transition: fill 1s ease;
+  /* transition: fill 1s ease; */
   /* also for intro */
   opacity: 0;
 }
@@ -855,6 +855,14 @@ body {
   height: 0;
   width: 0;
   z-index: -100;
+}
+.death_to_webkit {
+  position: fixed;
+  pointer-events: none;
+  height: 1px;
+  width: 1px;
+  background-color: transparent;
+  opacity: 1;
 }
 .download_options {
   position: fixed;
