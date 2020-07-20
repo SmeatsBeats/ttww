@@ -2444,7 +2444,7 @@ $(document).ready(function() {
       headerTop -= refTop;
       //alert(scrollTop + " " + headerTop);
       if(scrollTop > headerTop){
-        if(widgetCenter && !intro_mode && !usrPos && !headedHome && !menuOpen){
+        if(widgetCenter && !intro_mode && !usrPos && !headedHome && !menuOpen && !iconX){
           quickSpin();
           var sendTop, sendLeft;
           if(isMobile){
@@ -2461,7 +2461,7 @@ $(document).ready(function() {
           usrPos = false;
         }
       }
-      else if(scrollTop < headerTop && !widgetCenter && !intro_mode && !usrPos && !headedHome && !menuOpen){
+      else if(scrollTop < headerTop && !widgetCenter && !intro_mode && !usrPos && !headedHome && !menuOpen && !iconX){
         if(isMobile){
           // sendTop = "85%";
           // sendLeft = "25%";
