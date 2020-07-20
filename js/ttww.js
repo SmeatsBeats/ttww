@@ -162,6 +162,16 @@ $(document).ready(function() {
     $("#init_intro_info").html("Click a corner of the widget.");
   }
 
+  if(!isMobile){
+      $(".support_img_title").addClass("cl-effect-1");
+  }
+
+  $(".support_img_title").click(function(){
+    alert("Ok... so the web shop doesn't technically exist yet. And since Calum's coding it, it probably won't exist until 2050. If you're desperate for some merch, for now just send an email to smeatsbeats@gmail.com. Thanks!");
+  });
+
+
+
   //introAnimation();
 
   //some elements need to load before being hidden so js can get their dimensions
@@ -265,6 +275,9 @@ $(document).ready(function() {
   //   //menu_select(page);
   // }
 
+  // $("html").click(function(){
+  //   alert($(window).width());
+  // })
 
   //simulate laod lol
 
@@ -301,6 +314,72 @@ $(document).ready(function() {
       introAnimation();
     }
   //}, 2500);
+
+
+
+ /////////////////////////////////////////////////////////////////////////////////////////// CREDITS ///////////////////////////////////////////////
+
+   $(".credits_person").find("p").css("opacity", "0");
+
+   //if(isMobile){
+     $(window).scroll(function(){
+       //last one does not fade in on desktop
+
+       if(!isMobile){
+
+         if($(window).scrollTop() + window.innerHeight > $(document).height() - 200){
+           //alert("go");
+           // console.log("go");
+           $(".last_person").find("p").css("opacity", "1");
+           $(".last_person").find("h2").css("color", "#222");
+         }
+         else{
+           $(".last_person").find("p").css("opacity", "0");
+           $(".last_person").find("h2").css("color", "#999");
+         }
+
+         //prevent chrome overscroll
+         /*
+
+         var bottomHeight = $(document).height() - window.innerHeight;
+         if($(window).scrollTop() < 0){
+           $(window).scrollTop(0);
+         }
+         else if($(window).scrollTop() + window.innerHeight > $(document).height()){
+           //$(window).scrollTop(bottomHeight);
+         }
+         */
+
+       }
+
+
+
+       $(".credits_person").not(".last_person").each(function(){
+         personOffset = $(this).offset();
+         personTop = personOffset.top;
+         if(personTop < $(window).scrollTop() + window.innerHeight * 0.55 && personTop > $(window).scrollTop() + window.innerHeight / 15){
+           // $(this).find("p").fadeIn();
+           $(this).find("p").css("opacity", "1");
+           $(this).find("h2").css("color", "#222");
+         }
+         else{
+           // $(this).find("p").fadeOut();
+           $(this).find("p").css("opacity", "0");
+           $(this).find("h2").css("color", "#999");
+         }
+       })
+     });
+   //}
+   // else{
+   //   $(".credits_person").hover(function(){
+   //     $(this).find("h2").slideUp();
+   //     $(this).find("p").slideDown();
+   //   }, function(){
+   //     $(this).find("p").slideUp();
+   //     $(this).find("h2").slideDown();
+   //   });
+   // }
+
 
   ///////////////////////////////////////////////////////////////////////////////////////// SLIDER /////////////////////////////////////////////////
 
@@ -858,7 +937,13 @@ $(document).ready(function() {
       displayMenu(false);
       //alert("cleanUp windows calls MenuIcon");
       //cleanX = true;
-      menuIcon(false);
+      if(iconX){
+        menuIcon(false);
+      }
+      else{
+        menuIcon(false, true);
+      }
+      // menuIcon(false);
     }
     if(downloadSimpleOpen){
       closeDownload();
@@ -873,7 +958,10 @@ $(document).ready(function() {
       break;
       case "press":
       //shortcut to run primary function of mode that is held down
-      navBoxPress(e);
+      if(!firstSwipe){
+        navBoxPress(e);
+      }
+
       break;
       default:
       break;
@@ -1046,7 +1134,14 @@ $(document).ready(function() {
         //this is a TAP
         //TAP
         //close menu on tap if it is open
-        if(menuOpen){
+
+        //experimenting with doing this on click outside menu
+
+        //ok so mobile device does not recognize html click as click since I'm attaching my own touch gestures
+        //so here we need to close menu for mobile
+        //but menu is closed by html click above
+
+        if(menuOpen && isMobile){
           displayMenu(false);
           if(iconX){
             //alert("widget function tap calls menuIcon");
@@ -1055,6 +1150,9 @@ $(document).ready(function() {
 
           menuMoving = true;
         }
+
+
+
         //alert("tap");
         //thanks to shortcuts, menu can be open in any mode
         //prevent click from triggering action if this is the case
@@ -1520,9 +1618,10 @@ $(document).ready(function() {
   //cut me some slack
   var killChrome = true;
   function chromeSmells(){
+    //alert("chrome is stinky 2day");
     ////////////////////// CHROME SEEMS TO NEED A REPAINT TO BE OCURRING
     ////////////////////// FOR ANY ANIMATION OUT OF X MODE TO FIRE PROPERLY AT 100% speed
-    if(!intro_mode){
+  //  if(!intro_mode){
       //not iconX bc need to do it when going into menu mode x form other modes not x
       //menuOpen bc you don't relly need to run it otherwise
       // !intro_mode because it runs fine in the intro
@@ -1539,7 +1638,7 @@ $(document).ready(function() {
           }, 3000);
           killChrome = true;
       }
-    }
+    //}
   }
 
   function moveSticks(open, flip){
@@ -1927,12 +2026,19 @@ $(document).ready(function() {
           //will be paused
           iconDeg = 90;
         }
+        if(iconX){
+          //alert("close x");
+          menuIcon(false);
+        }
         break;
         case "home_mode":
         navDeg = 270;
         if(firstSwipe){
           //will be paused
           iconDeg = 360;
+        }
+        if(iconX){
+          menuIcon(false);
         }
         break;
         case "menu_mode":
@@ -1945,10 +2051,14 @@ $(document).ready(function() {
         }
         break;
         default:
+        //download
         navDeg = 90;
         if(firstSwipe){
           //will be paused
           iconDeg = 180;
+        }
+        if(iconX){
+          menuIcon(false);
         }
       }
       //for intro
@@ -1981,15 +2091,11 @@ $(document).ready(function() {
       moveSticks(open, flip);
     }
     //alert("endPos: " + endPos);
+    //setting this false here means that if you click navbox for same mode
+    //once it finishes you can click x and function will run
+    //need to exit x when click on same mode
     menuBlockFunction = false;
     //alert("ok don't block");
-    if(widget_mode !== "menu_mode" && iconX){
-      //alert("menu icon pls");
-      ////////////////////////// this was important .... can't remember why I needed it lol
-      //was originally at top of this function
-      // ok so it is for when you use the menu shortcut then change modess
-      //menuIcon(false);
-    }
   };
 
 
@@ -2161,9 +2267,11 @@ $(document).ready(function() {
     //if(don || don == 'undefined'){
       //alert("get dressed");
       //show some respect for yourself!
+
+
       $(".widget_stick").animate({
         "opacity" : "1"
-      }, 1000);
+      }, 700);
 
       $("#widget_nav_selected").addClass("widget_nav_selected");
 
@@ -2189,6 +2297,9 @@ $(document).ready(function() {
 
   //position the actual hint either above or below Widget
   var hintMoved = false;
+
+  /*
+
   function posHint(){
     var widgetOffset = $("#widget_boi").offset();
     var widgetTop = widgetOffset.top - $(document).scrollTop();
@@ -2206,9 +2317,17 @@ $(document).ready(function() {
       //hintMoved = false;
     }
   }
+  */
+
+  //if you define this inside function it will change when help moves to top
+  //then widget will have to go wayyyy above top of screen
+  var helpTop = helpOffset.top - $(window).scrollTop();
 
   function moveHelp(ev){
-    var helpTop = helpOffset.top - $(document).scrollTop();
+    //this needs to be recalculate each time?
+    var helpOffset = $(".help_icon").offset();
+
+    //var helpTop = helpOffset.top - $(window).scrollTop();
     //10% is currently the css width of the help_container
     //giving it a little margin with .12
     var helpRight = helpOffset.left + ($(window).width() * .12);
@@ -2219,7 +2338,7 @@ $(document).ready(function() {
       // var widgetTop = widgetPos['top'];
       //this function uses percents which I don't really want
       var windowHeight = $(window).height();
-      var scrollTop = $(document).scrollTop();
+      //var scrollTop = $(window).scrollTop();
       var widgetWidth = $("#widget_boi").outerWidth();
       var halfWidget = widgetWidth / 2;
       if(typeof ev !== 'undefined'){
@@ -2237,7 +2356,8 @@ $(document).ready(function() {
       else{
         var widgetOffset = $("#widget_boi").offset();
         var widgetLeft = widgetOffset.left;
-        var widgetTop = widgetOffset.top - scrollTop;
+        var widgetTop = widgetOffset.top - $(window).scrollTop();
+        //alert(widgetTop);
         //alert(widgetLeft + " " + widgetTop);
         var widgetBottom = widgetTop + $("#widget_boi").outerHeight();
       }
@@ -2247,19 +2367,30 @@ $(document).ready(function() {
         widgetBottom = widgetBottom * 1.05 + $("#context_hint").outerHeight();
       }
 
+
+      //set possible heights for help icon
+
+      if(window.innerHeight > 800){
+        var sendHelpTop = "94vh";
+      }
+      else{
+        var sendHelpTop = "92vh";
+      }
+
       //alert( "WL: " + widgetLeft + " WB: " + widgetBottom  + " HR: " + helpRight  + " HT: " + helpTop);
       if(widgetLeft < helpRight && widgetBottom > helpTop){
         //alert("overlap");
         //alert( "WL: " + widgetLeft + " WB: " + widgetBottom  + " HR: " + helpRight  + " HT: " + helpTop);
         if(!helpMoved){
           $(".help_container, .help_icon").fadeOut().animate({
-            "bottom" : "94vh"
+            "bottom" : sendHelpTop
           }, 0).fadeIn();
           $(".help_icon")
           helpMoved = true;
         }
       }
       else if(widgetLeft > helpRight || widgetBottom < helpTop){
+        //alert( "WL: " + widgetLeft + " WB: " + widgetBottom  + " HR: " + helpRight  + " HT: " + helpTop + "HM: " + helpMoved);
         if(helpMoved){
           $(".help_container, .help_icon").fadeOut().animate({
             "bottom" : "3vh"
@@ -2268,15 +2399,17 @@ $(document).ready(function() {
         }
       }
 
+      ////////////////////////// this bit moves context hint ////////////////
+
       if(widgetBottom > windowHeight && !hintMoved && tipsOn){
         //alert("move hint");
 
         $("#context_hint").stop(true, true).animate({
-          "opacity" : 0
+          "opacity" : "0"
         }, 300, function(){
           $("#context_hint").css("top", "-30%");
-        }).animate({
-          "opacity" : 1
+        }).stop(true, true).animate({
+          "opacity" : "1"
         }, 300);
 
         //$("#context_hint").css("top", "-30%");
@@ -2285,11 +2418,11 @@ $(document).ready(function() {
       else if(widgetBottom < windowHeight && hintMoved && tipsOn){
 
         $("#context_hint").stop(true, true).animate({
-          "opacity" : 0
+          "opacity" : "0"
         }, 300, function(){
           $("#context_hint").css("top", "110%");
-        }).animate({
-          "opacity" : 1
+        }).stop(true, true).animate({
+          "opacity" : "1"
         }, 300);
 
         //$("#context_hint").css("top", "110%");
@@ -2365,7 +2498,7 @@ $(document).ready(function() {
     else {
       if(!intro_mode && !downloadOptionsOpen){
         moveHelp(ev);
-        posHint(ev);
+        //posHint(ev);
         var widgetCallX = ev.pageX;
         var dblClickY = ev.pageY;
         var scrollTop = $(document).scrollTop();
@@ -3180,7 +3313,7 @@ $(document).ready(function() {
     controlsBump = false;
 
     moveHelp();
-    posHint();
+    //posHint();
 
     /*
 
@@ -3650,19 +3783,32 @@ $(document).ready(function() {
     }
   });
 
-  $("html").click(function(event){
+  //CLICK OUTSIDE MENU
+
+  $(window).click(function(event){
+    //why did I put this here?
+
     event.preventDefault();
     //alert("hi");
     $target = $(event.target);
+
+    //alert("clicked");
 
     //only close it if it is open
     //var menu_pos = $("#about_nav").css("right");
     //alert(menu_pos);
     //alert($target.closest(".menu").length);
-    if(!$target.closest(".menu").length && menuOpen && !$target.hasClass("nav_box") && !$target.id == "widget_function"){
+    // if(!$target.closest(".menu").length && menuOpen && !$target.hasClass("nav_box") && !$target.id == "widget_function"){
+    //widget_function is kind big, the radius sretches out beyound nav ring
+    //maybe let this function close the menu when widget function is clikced
+    //this means it will be called twice
+    //once here and once by tap on widget_function
+    if(!$target.hasClass("menu_nav") && menuOpen && !$target.hasClass("nav_box")){
+    //if(menuOpen && !$($target).hasClass("nav_box") && !$target.id == "widget_function"){
       //alert("close the menu I think");
       displayMenu(false);
       if(iconX){
+        //alert("close menuIcon");
         //alert("html click calls menuIcon");
         menuIcon(false);
       }
@@ -4092,7 +4238,18 @@ $(document).ready(function() {
   //offer hints after intro complete
   function resizeAll(){
     resizeHelp();
-
+    //alert($(window).width());
+    if($(window).width() < 850){
+      //alert("no more tips");
+      if(tipsOn){
+        $(".toolTip").stop(true, true).fadeOut();
+      }
+      $(".big_help").fadeOut();
+      tipsOn = false;
+    }
+    else{
+      $(".big_help").stop(true, true).fadeIn();
+    }
     //sizeTimeline();
     //innerCircle = document.querySelector('#timeline_hilight');
     //innerRadius = innerCircle.r.baseVal.value;
@@ -4101,6 +4258,9 @@ $(document).ready(function() {
     //$("#timeline_hilight").css("transform", "rotate(108deg)");
   }
 
+  // $(window).click(function(){
+  //   alert($(this).width());
+  // })
 
   //keep help items correct size
   function resizeHelp(){
@@ -4120,6 +4280,13 @@ $(document).ready(function() {
 
 
   $(window).on("resize", resizeAll);
+  //
+  // $("html").click(function(){
+  //   alert($(window).width());
+  //   var fSize = $(this).css("font-size");
+  //   alert(fSize);
+  // });
+
 
 
   var helpContent = false;
@@ -4313,9 +4480,17 @@ $(document).ready(function() {
     setTimeout(function(){
       if(beenIdle){
         infoMsg(playMsg);
-        setTimeout(idleHint, 2800);
+        //setTimeout(idleHint, 2800);
       }
     }, 2800);
+
+    /////////////// tip #3 ///////////////
+    setTimeout(function(){
+        if(beenIdle){
+          infoMsg("Dbl Click: call widget");
+          setTimeout(idleHint, 2800)
+        }
+    }, 5600);
   }
 
   /*
@@ -4446,7 +4621,9 @@ $("#widget_boi").hover(function(e){
     //hovered over tooltip which is inside widget_boi
   //}
   //else{
-    if(!draggable && !intro_mode && !blockHints && tipsOn){
+
+    if(!draggable && !intro_mode && !blockHints && tipsOn && $target.id !== "hint_content"){
+      //alert($target.id);
       $(".toolTip").stop(true, true).fadeIn();
     }
 //  }
@@ -4805,10 +4982,14 @@ $("#widget_boi").hover(function(e){
       //$("html").css("overflow", "auto");
       $("html").css("overflow-y", "scroll");
 
+
+
       //why is this taking forever?
+      /*
       $(".widget_stick").animate({
         "opacity" : "1"
       }, 1500);
+      */
       $(".widget_intro, .intro_dots").hide();
       //$(".help_icon").addClass("help_icon_on");
     });
@@ -4843,6 +5024,12 @@ $("#widget_boi").hover(function(e){
     //this interferes with quickspin when sending widget to bottom corner on mobile
     //try leaving the mode alone unless it hasn't been set
     if(firstSwipe){
+
+      // $(".widget_stick").css({
+      //   "transition" : "opacity 1.5s 0.5s",
+      //   "opacity" : "1"
+      // });
+
       widget_mode = "audio_mode";
       //alert(prev_widget_mode);
       //alert("calling Adjust");
@@ -4901,9 +5088,22 @@ $("#widget_boi").hover(function(e){
     finishIntro();
   });
 
-  $(".intro_done").hover(function(){
-    $(".cl-effect-18").toggleClass("active");
-  });
+  if(isMobile){
+    $(".intro_done").on("touchstart", function(){
+      $(".cl-effect-18").toggleClass("active");
+    });
+    $(".intro_done").on("touchend", function(){
+      setTimeout(function(){
+        $(".cl-effect-18").toggleClass("active");
+      }, 1000);
+    });
+  }
+  else{
+    $(".intro_done").hover(function(){
+      $(".cl-effect-18").toggleClass("active");
+    });
+  }
+
 
   //only called if they click intro_done well...
 

@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=5" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=4" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.3"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.7"></script>
   </head>
 
   <body>
@@ -49,7 +49,7 @@
         <p id="content_head_msg">
           What began as an exercise to ease cognitive disonance,
           somehow took on a life of its own, becoming an earnest
-          attempt to shed light on <em>Waiting</em> as a Mode of Being.
+          attempt to shed light on <span class="wait_cursor"><em>Waiting</em></span> as a Mode of Being.
         </p>
 
       </section>
@@ -125,12 +125,12 @@
               The audio file was a recording of one of those traffic lights, tricked out with audio <br>
               to assist blind people &mdash; though I'm certain that
               this one mostly saved clueless students, drifting towards the curb with their faces glued to some screen. <br><br>
-              "Wait... Wait... Wait..." <br><br>
+              <span class="wait_cursor"> "Wait... Wait... Wait..." </span> <br><br>
               To the more alert pedestrians, it was annoying. <br>
               To a nerd like me, it was poetry.<br><br>
               Without question, my poet had a limited arsenal of literary devices and an even worse vocabulary. <br>
               But I couldn't deny that his careful diction and subtle mastery of repitition fit the meaning of his piece. <br>
-              What struck me most of all, was the masked suggestiveness: I was stuck in the Mode of Being of Waiting. <br>
+              What struck me most of all, was the masked suggestiveness: I was stuck in the Mode of Being of <span class="wait_cursor"> Waiting.</span> <br>
               Maybe a lot of us were. <br>
               Quite the critique from a traffic light!
             </p>
@@ -164,7 +164,7 @@
               A time when you're forced to question the loyalty of your own two feet. <br><br>
               "You can turn around," I remind myself. <br>
               "You are a grown-ass man and can walk straight out of here." <br><br>
-              "Wait," suggests the light. <br><br>
+              <span class="wait_cursor">"Wait," </span> suggests the light. <br><br>
               The traitors comply. So that's how it's going to be.
             </p>
 
@@ -181,7 +181,7 @@
 
             <p>
               Three years later the opportunity presents itself. <br>
-              No more waiting. Time for some good old fashioned poetic justice. <br>
+              No more <span class="wait_cursor"> waiting. </span> Time for some good old fashioned poetic justice. <br>
               As he twisted my feet aginst my will I will twist his words in my music. <br><br>
               Now I had something to record and if I did it right, <br>
               I might just escape that poem's cruel circling.
@@ -219,7 +219,7 @@
             -->
               Before my eyes,
               the calculated, spite-born plot to transcend that poem forever melted instead into a <em>thesis</em> on its central theme. <br><br>
-              It became a phenomenology of Waiting.
+              It became a <span class="wait_cursor">phenomenology of Waiting.</span>
             </p>
 
           </div>
@@ -232,29 +232,29 @@
 
       <section class="content credits">
 
-        <div class="credits_item" id="credits_title">
+        <div class="credits_item credits_header" id="credits_title">
 
           <h1>Credits</h1>
 
           <p>
-            Strangely, few people seemed to share my fascination with <em>Waiting</em> as a <em>Mode of Being.</em> <br>
+            Strangely, few people seemed to share my fascination with <span class="wait_cursor"><em>Waiting</em></span> as a <em>Mode of Being.</em> <br>
             So the project had to complete itself with a small team. <br><br>
-            Of course, I am still indebted to the people whose ideas I stole to make it happen. <br><br>
+            <!-- Of course, I am still indebted to the people whose ideas I stole to make it happen. <br><br>
             Likewise, if it weren't for the mentors, friends and family who have always waited for me, <br>
-            I'd still be waiting for my chance to finally make my music.
+            I'd still be waiting for my chance to finally make my music. -->
           </p>
 
         </div>
 
-        <div class="credits_item">
+        <div class="credits_item boss team credits_person">
 
           <h2>Calum Smeaton</h2>
 
-          <p>Music, Digital Art & Photography</p>
+          <p>Music & Website</p>
 
         </div>
 
-        <div class="credits_item">
+        <div class="credits_item team credits_person">
 
           <h2>Justine Clougherty</h2>
 
@@ -262,15 +262,42 @@
 
         </div>
 
-        <div class="credits_item">
+        <div class="credits_item team credits_person">
 
           <h2>Louie Buchen</h2>
 
-          <p>Web Developer, Visionary, & #1 Fan</p>
+          <p>Web Developer, Visionary, <br> & #1 Fan</p>
 
         </div>
 
-        <div class="credits_item">
+        <!-- <div class="credits_item">
+          <p>
+            Of course, I am still indebted to the people whose ideas I stole to make it happen.
+          </p>
+        </div> -->
+
+        <!-- <div class="credits_item">
+
+          <h2>Stephan Fuchs</h2>
+
+          <p>Disgruntled Quasi-Thinker.</p>
+
+        </div> -->
+
+        <div class="credits_item credits_header">
+
+          <h1>Thank You</h1>
+
+          <p>
+            Of course, I am still indebted to the people <br>
+            whose ideas I stole to make it happen.<br> <br>
+            Likewise, if it weren't for the mentors, friends and family <br>
+            who have always <span class="wait_cursor"> waited </span> for me, <br>
+            I'd still be <span class="wait_cursor"> waiting </span> for my chance to finally make my music.
+          </p>
+        </div>
+
+        <div class="credits_item credits_person">
 
           <h2>Jess</h2>
 
@@ -278,23 +305,31 @@
 
         </div>
 
-        <div class="credits_item">
+        <div class="credits_item credits_person">
 
-          <h2>Mom and Dad</h2>
+          <h2>Mom & Dad</h2>
 
           <p>For not kicking me out yet.</p>
 
         </div>
 
-        <div class="credits_item">
+        <div class="credits_item credits_person">
 
-          <h2>Sammy and Mario</h2>
+          <h2>Sammy & Mario</h2>
 
           <p>Weirdos.</p>
 
         </div>
 
-        <div class="credits_item">
+        <div class="credits_item credits_person">
+
+          <h2>The Hunter Watson Fund</h2>
+
+          <p>Without which this would've been recorded on my toaster.</p>
+
+        </div>
+
+        <div class="credits_item credits_person">
 
           <h2>Stephan Fuchs</h2>
 
@@ -302,7 +337,7 @@
 
         </div>
 
-        <div class="credits_item">
+        <div class="credits_item credits_person">
 
           <h2>Ben Green</h2>
 
@@ -310,11 +345,52 @@
 
         </div>
 
-        <div class="credits_item">
+        <div class="credits_item credits_person">
 
           <h2>Oren Polak</h2>
 
           <p>Sorry I never practiced.</p>
+
+        </div>
+
+        <div class="credits_item credits_person">
+
+          <h2>Michael Rasbury & Wren Curtis</h2>
+
+          <p>For the live audio revelations.</p>
+
+        </div>
+
+        <div class="credits_item credits_person">
+
+          <h2>Swaggy D</h2>
+
+          <p>Whose style remains untouched.</p>
+
+        </div>
+
+
+        <div class="credits_item credits_person">
+
+          <h2>Jeffery Decker</h2>
+
+          <p>Sorry I never practiced.</p>
+
+        </div>
+
+        <div class="credits_item credits_person">
+
+          <h2>Kraus, Yah, & Laith</h2>
+
+          <p>For not letting me sell them CD players.</p>
+
+        </div>
+
+        <div class="credits_item credits_person last_person">
+
+          <h2>Neighbors</h2>
+
+          <p>Sorry I occasionally practiced.</p>
 
         </div>
 
@@ -351,14 +427,15 @@
               He cries! <br>
               What surer route to the heart? <br><br>
               Headlong towards the end <br>
-              Determined. He waits. <br>
+              Determined. He <span class="wait_cursor"> waits. </span> <br>
               To know what he had at the start <br><br>
               Does no mariner fear that his future is stone? <br>
               Such a ship can go down by her captain alone <br><br>
               Beckoning future <br>
               Shunning fate <br>
-              What becomes of those who wait? <br>
+              What becomes of those who <span class="wait_cursor"> wait? </span> <br>
             </p>
+
           </div>
 
           <!-- <img class="about_item_img" id="easier_said_img" src="imgs/YOUNG_PULL.JPG" alt="Nerd pulling on door"> -->
@@ -388,8 +465,8 @@
               Then you would know my fears <br>
               You know I'd give it all <br>
               To make them disappear <br>
-              I don't wanna wait a day <br>
-              I don't wanna wait a year <br>
+              I don't wanna <span class="wait_cursor"> wait </span> a day <br>
+              I don't wanna <span class="wait_cursor"> wait </span> a year <br>
               I want to do it now <br>
               I want to do it here <br><br>
 
@@ -546,8 +623,8 @@
               Still haunt my daydreams <br>
               Stubborn ghosts <br>
               Are leading me astray <br><br>
-              I tried to wait <br>
-              Wait for you  <br>
+              I tried to <span class="wait_cursor"> wait </span> <br>
+              <span class="wait_cursor">Wait</span> for you  <br>
               Left my wagers <br>
               On fading truths <br><br>
               Sleepless nights <br>
