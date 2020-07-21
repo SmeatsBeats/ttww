@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+   <url>
+
+      <loc>http://www.dirtymopmusic.com/</loc>
+
+       <lastmod>2020-07-20</lastmod>
+
+      <priority>0.8</priority>
+
+   </url>
+
+   <url>
+
+      <loc>http://www.dirtymopmusic.com?page=about</loc>
+
+      <lastmod>2020-07-20</lastmod>
+
+   </url>
+
+   <url>
+
+     <loc>http://www.dirtymopmusic.com?page=songs</loc>
+
+     <lastmod>2020-07-20</lastmod>
+
+   </url>
+
+   <url>
+
+      <loc>http://www.dirtymopmusic.com?page=support</loc>
+
+      <lastmod>2020-07-20</lastmod>
+
+   </url>
+
+   <url>
+
+     <loc>http://www.dirtymopmusic.com?page=credits</loc>
+
+     <lastmod>2020-07-20</lastmod>
+
+   </url>
+
+</urlset>
