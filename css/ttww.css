@@ -1700,7 +1700,7 @@ body {
 }
 @media only screen and (min-width:1070px) {
   .credits {
-    background-image: url("../imgs/CREDITS_BG_R_EDIT.PNG"), url("../imgs/CREDITS_BG_L.PNG");
+    background-image: url("../imgs/CREDITS_BG_R_2.PNG"), url("../imgs/CREDITS_BG_L_2.PNG");
     background-repeat: no-repeat;
     background-position: 220% 100%, -95% 0%;
     /* background-position: bottom right, bottom left; */
@@ -1819,8 +1819,6 @@ body {
   } */
 
   .credits {
-    background-image: url("../imgs/CREDITS_BG_R_EDIT.PNG"), url("../imgs/CREDITS_BG_L.PNG");
-    background-repeat: no-repeat;
     background-position: 125% 100%, -20% 0%;
     /* background-position: bottom right, bottom left; */
     /* background-size: auto 110%, auto 110%; */
@@ -1838,8 +1836,6 @@ body {
     /* background-size: 40vw; */
   }
   .credits {
-    background-image: url("../imgs/CREDITS_BG_R_EDIT.PNG"), url("../imgs/CREDITS_BG_L.PNG");
-    background-repeat: no-repeat;
     background-position: 120% 100%, -15% 0%;
     /* background-position: bottom right, bottom left; */
     /* background-size: contain, auto 110%; */
