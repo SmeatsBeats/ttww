@@ -283,7 +283,7 @@ $(document).ready(function() {
 
   //setTimeout(function(){
   //change this back to 0
-    if(visits > 5000 || page){
+    if(visits > 0 || page){
       setTimeout(function(){
         //already been to the site
         //skip the intro
@@ -3788,7 +3788,7 @@ $(document).ready(function() {
   $(window).click(function(event){
     //why did I put this here?
 
-    event.preventDefault();
+    //event.preventDefault();
     //alert("hi");
     $target = $(event.target);
 
@@ -4137,82 +4137,105 @@ $(document).ready(function() {
   function buildDownloadLink(simple){
 
     if(simple){
-      downloadLink = "ALL.zip";
+      //downloadLink = "ALL.zip";
+      downloadLink = "https://docs.google.com/uc?export=download&id=189NDGZXk-oEYdvWgy7BhLgbN8hdDdd3l";
+      var downloadTarget = "target='_blank'";
     }
     else{
       downloadLink = "";
       if(downloadTracks.length == 4){
         //download all
-        downloadLink = "ALL.zip";
+        //downloadLink = "ALL.zip";
+        downloadLink = "https://docs.google.com/uc?export=download&id=189NDGZXk-oEYdvWgy7BhLgbN8hdDdd3l";
+        var downloadTarget = "target='_blank'";
       }
       else if(downloadTracks.length == 0){
         //none slected
         downloadLink = "empty";
+        var downloadTarget = "";
       }
       else if (downloadTracks.length == 2){
+        var downloadTarget = "target='_blank'";
         //download the 2 requested tracks
         if(downloadTracks.indexOf("graduate") > -1){
           //download GRAD and something else
           if(downloadTracks.indexOf("glass") > -1){
-            downloadLink = "GRAD_GLASS.zip";
+            //downloadLink = "GRAD_GLASS.zip";
+            downloadLink = "https://docs.google.com/uc?export=download&id=1BvtAW3u7FtJBJBirAIRthZwGUeycud66";
           }
           else if(downloadTracks.indexOf("broken") > -1){
             downloadLink = "GRAD_BROKEN.zip";
           }
           else if(downloadTracks.indexOf("home") > -1){
-            downloadLink = "GRAD_HOME.zip";
+            //downloadLink = "GRAD_HOME.zip";
+            downloadLink = "https://docs.google.com/uc?export=download&id=1MUE-syhBwRd5TTA3vOSg0xpqwUOF11w9";
           }
         }
         else if(downloadTracks.indexOf("glass") > -1){
           if(downloadTracks.indexOf("home") > -1){
-            downloadLink = "GLASS_HOME.zip";
+            //downloadLink = "GLASS_HOME.zip";
+            downloadLink = "https://docs.google.com/uc?export=download&id=1T694eRaS9EQhJSzHZNdWg5lCCdK3xm8D";
           }
           else if(downloadTracks.indexOf("broken") > -1){
-            downloadLink = "GLASS_BROKEN.zip";
+            //downloadLink = "GLASS_BROKEN.zip";
+            downloadLink = "https://docs.google.com/uc?export=download&id=1G1g8ig1VskDOJLAQrMMC2jKMnHlCUohi";
           }
         }
         else if(downloadTracks.indexOf("broken") > -1){
-          downloadLink = "BROKEN_HOME.zip";
+          //downloadLink = "BROKEN_HOME.zip";
+          downloadLink = "https://docs.google.com/uc?export=download&id=19y0sOF_sQEc38tnuJs79jowsz1Ra0agG";
         }
       }
       else if (downloadTracks.length == 3){
+        var downloadTarget = "target='_blank'";
         if(downloadTracks.indexOf("home") == -1){
           //download all but home or GRAD_GLASS_BROKEN
-          downloadLink = "GRAD_GLASS_BROKEN.zip";
+          //downloadLink = "GRAD_GLASS_BROKEN.zip";
+          downloadLink = "https://docs.google.com/uc?export=download&id=1KQACbC29coUTwEACWiG9N1NzlMTfAkaC";
         }
         else if(downloadTracks.indexOf("glass") == -1){
           //download all but glass or GRAD_BROKEN_HOME
-          downloadLink = "GRAD_BROKEN_HOME.zip";
+          //downloadLink = "GRAD_BROKEN_HOME.zip";
+          downloadLink = "https://docs.google.com/uc?export=download&id=11lKh3tU8FHRvyCnpQIDs03RuUm1wMPR1";
         }
         else if(downloadTracks.indexOf("graduate") == -1){
           //all but grad
-          downloadLink = "GLASS_BROKEN_HOME.zip";
+          //downloadLink = "GLASS_BROKEN_HOME.zip";
+          downloadLink = "https://docs.google.com/uc?export=download&id=1AZi_2jPMdWMfnadZDq1mudwLbyeL8WeH";
         }
         else if(downloadTracks.indexOf("broken") == -1){
           //all but broken
-          downloadLink = "GLASS_GRAD_HOME.zip";
+          //downloadLink = "GLASS_GRAD_HOME.zip";
+          downloadLink = "https://docs.google.com/uc?export=download&id=12ONnstF_5OQutlLCGYYt3fBduGvjgeju";
         }
       }
       else{
         //one track
+        var downloadTarget = "";
+        downloadTarget = "";
         if(downloadTracks.indexOf("graduate") > -1){
-          downloadLink = "graduate.wav";
+          //downloadLink = "graduate.wav";
+          downloadLink = "https://docs.google.com/uc?export=download&id=1xJT8EbxcQtiWeaQh5HDUgv7KkZqfHGo5";
         }
         else if(downloadTracks.indexOf("glass") > -1){
-          downloadLink = "8lass.wav";
+          //downloadLink = "8lass.wav";
+          downloadLink = "https://docs.google.com/uc?export=download&id=1_4QL3NVpihEC8r27Tzdx0DSTJjSlkxzu";
         }
         else if(downloadTracks.indexOf("broken") > -1){
-          downloadLink = "_roken.wav";
+          //downloadLink = "_roken.wav";
+          downloadLink = "https://docs.google.com/uc?export=download&id=1sK17D-ciQpRRKEcThahUlt9xYGjUAq3u";
         }
         else{
-          downloadLink = "home.wav";
+          //downloadLink = "home.wav";
+          //downloadLink = "https://drive.google.com/file/d/1_F3WoNG-bpqQ7NcsKG6IOYWNmkqlF7nU/view?usp=sharing";
+          downloadLink = "https://docs.google.com/uc?export=download&id=1_F3WoNG-bpqQ7NcsKG6IOYWNmkqlF7nU";
         }
       }
     }
 
     //put the link in the anchor element
     //alert(downloadLink);
-    $("#download_button").html("<a id='audio_download_link' href='audio/" + downloadLink + "' download>Download </a>")
+    $("#download_button").html("<a id='audio_download_link'" + downloadTarget + " href=" + downloadLink + ">Download </a>");
   }
 
 
