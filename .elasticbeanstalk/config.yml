@@ -1,13 +1,13 @@
 branch-defaults:
   master:
-    environment: ttww-env
+    environment: dirtymop-env
     group_suffix: null
 environment-defaults:
   ttww-env:
     branch: null
     repository: null
 global:
-  application_name: ttww
+  application_name: dirtymop
   branch: null
   default_ec2_keyname: null
   default_platform: PHP 7.4
