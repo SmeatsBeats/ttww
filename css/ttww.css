@@ -1525,6 +1525,14 @@ body {
   align-self: flex-end;
 }
 
+@media only screen and (min-height: 750px){
+  .menu {
+    /*this is far more interesting but sucks in the intro */
+    justify-content: space-around;
+    /* justify-content: flex-start; */
+  }
+}
+
 
 @media only screen and (min-width:850px) {
 
@@ -1657,7 +1665,8 @@ body {
   }
   .menu {
     /*this is far more interesting but sucks in the intro */
-    justify-content: space-around;
+    /* gonna move this to height based query */
+    /* justify-content: space-around; */
     /* justify-content: flex-start; */
   }
   .download_option {

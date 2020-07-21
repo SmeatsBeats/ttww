@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=4" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=5" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.1"></script>
   </head>
 
   <body>
@@ -317,7 +317,7 @@
 
           <h2>Sammy & Mario</h2>
 
-          <p>Weirdos.</p>
+          <p>For not listening to me.</p>
 
         </div>
 
@@ -333,7 +333,7 @@
 
           <h2>Stephan Fuchs</h2>
 
-          <p>Disgruntled Quasi-Thinker.</p>
+          <p>The mountain GOAT.</p>
 
         </div>
 
@@ -357,7 +357,7 @@
 
           <h2>Michael Rasbury & Wren Curtis</h2>
 
-          <p>For the live audio revelations.</p>
+          <p>For dragging me out of the studio.</p>
 
         </div>
 

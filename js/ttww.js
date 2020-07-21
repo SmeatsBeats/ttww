@@ -325,7 +325,7 @@ $(document).ready(function() {
      $(window).scroll(function(){
        //last one does not fade in on desktop
 
-       if(!isMobile){
+       //if(!isMobile){
 
          if($(window).scrollTop() + window.innerHeight > $(document).height() - 200){
            //alert("go");
@@ -350,7 +350,7 @@ $(document).ready(function() {
          }
          */
 
-       }
+       //}
 
 
 
