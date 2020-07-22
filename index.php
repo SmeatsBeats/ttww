@@ -365,20 +365,28 @@
 
           <h2>Swaggy D</h2>
 
-          <p>Whose style remains untouched.</p>
+          <p>Roommates are closer than brothers.</p>
+
+        </div>
+
+        <div class="credits_item credits_person">
+
+          <h2>Rae Blumberg</h2>
+
+          <p>Whose first language is adventure.</p>
 
         </div>
 
 
         <div class="credits_item credits_person">
 
-          <h2>Jeffery Decker</h2>
+          <h2>Jeff Decker</h2>
 
           <p>Sorry I never practiced.</p>
 
         </div>
 
-        <div class="credits_item credits_person">
+        <div class="credits_item credits_person last_person">
 
           <h2>Kraus, Yah, & Laith</h2>
 
@@ -386,13 +394,13 @@
 
         </div>
 
-        <div class="credits_item credits_person last_person">
+        <!-- <div class="credits_item credits_person last_person">
 
           <h2>Neighbors</h2>
 
           <p>Sorry I occasionally practiced.</p>
 
-        </div>
+        </div> -->
 
       </section>
 
@@ -1084,7 +1092,7 @@
 
               <div id="widget_function">
 
-                  <svg style="width:5%; height:50%;" class="widget_stick no_select" id="a_stick">
+                  <svg style="width:5%; height:50%;" viewBox="" class="widget_stick no_select" id="a_stick">
                     <rect width="100%" height="100%">
                   </svg>
 
