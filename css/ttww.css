@@ -604,7 +604,7 @@ body {
   transition: fill 1s;
 }
 .widget_nav_hover {
-  fill: #383838;
+  fill: #666;
   transition: fill 0.5s;
 }
 .widget_press_bright {
