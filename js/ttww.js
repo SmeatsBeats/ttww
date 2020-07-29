@@ -283,7 +283,7 @@ $(document).ready(function() {
 
   //setTimeout(function(){
   //change this back to 0
-    if(visits > 0 || page){
+    if(visits > 3 || page){
       setTimeout(function(){
         //already been to the site
         //skip the intro
@@ -3631,6 +3631,8 @@ $(document).ready(function() {
 
 
         $(".menu").show();
+        $(".menu_curtain").fadeIn(1100);
+
         var slideDest = "0%";
         var about_delay = 0;
         var songs_delay = 100;
@@ -3684,7 +3686,10 @@ $(document).ready(function() {
         var support_delay = 0;
         // menuOpen = false;
         //hide the menu after
+        $(".menu_curtain").fadeOut(1100);
       }
+
+
 
       $("#about_nav").delay(about_delay).animate({
         "right" : slideDest

@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=9" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=4" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.1"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.7"></script>
   </head>
 
   <body>
@@ -129,7 +129,7 @@
               To the more alert pedestrians, it was annoying. <br>
               To a nerd like me, it was poetry.<br><br>
               Without question, my poet had a limited arsenal of literary devices and an even worse vocabulary. <br>
-              But I couldn't deny that his careful diction and subtle mastery of repitition fit the meaning of his piece. <br>
+              But I couldn't deny that his careful diction and subtle mastery of repetition fit the meaning of his piece. <br>
               What struck me most of all, was the masked suggestiveness: I was stuck in the Mode of Being of <span class="wait_cursor"> Waiting.</span> <br>
               Maybe a lot of us were. <br>
               Quite the critique from a traffic light!
@@ -866,6 +866,10 @@
 
         </div>
 
+        <div class="menu_curtain">
+
+        </div>
+
         <div class="death_to_webkit">
 
         </div>
@@ -1092,11 +1096,13 @@
 
               <div id="widget_function">
 
-                  <svg style="width:5%; height:50%;" viewBox="" class="widget_stick no_select" id="a_stick">
+                  <!-- <svg style="width:8px; height:60px;" class="widget_stick no_select" id="a_stick"> -->
+                  <svg class="widget_stick no_select" id="a_stick">
                     <rect width="100%" height="100%">
                   </svg>
 
-                  <svg style="width:5%; height:50%;" class="widget_stick no_select" id="b_stick">
+                  <!-- <svg style="width:8px; height:60px;" class="widget_stick no_select" id="b_stick"> -->
+                  <svg class="widget_stick no_select" id="b_stick">
                     <rect width="100%" height="100%">
                   </svg>
 
