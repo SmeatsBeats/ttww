@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+  //alert("hi");
 
   ////////////////////////////////////////////////////////////////////////////////////// INITIALIZE GLOBALS //////////////////////////////////////////////
 
@@ -184,8 +185,15 @@ $(document).ready(function() {
   resizeHelp();
   //good luck figure out which ones!
 
+  //setup noteHint
+  //adding 10px to hide shadow for now
+  //goal is to eventually add ripped looseleaf bg
+  var noteHintHeight = "-" + ($(".note_hint").height() + 10) + "px";
+  //alert(noteHintHeight);
+  $(".note_hint").css("top", noteHintHeight);
 
-  $(".songs, .credits, .support, .support_img_info, .menu, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator, .intro_dots").hide();
+
+  $(".puzzle, .songs, .credits, .support, .support_img_info, .menu, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator, .intro_dots").hide();
   //hide everything but audio progress
   //curtain gives site some privacy to get changed
   $(".acousmatic_curtain").hide();
@@ -322,7 +330,7 @@ $(document).ready(function() {
    $(".credits_person").find("p").css("opacity", "0");
 
    //if(isMobile){
-     $(window).scroll(function(){
+     $(window).scroll(function(e){
        //last one does not fade in on desktop
 
        //if(!isMobile){
@@ -368,6 +376,17 @@ $(document).ready(function() {
            $(this).find("h2").css("color", "#999");
          }
        })
+
+       //for puzzle
+       //if scroll widget off symbol, bring back widget function
+       semiotics(e);
+       if(!over_symbol){
+         offSemiotics();
+         // $("#widget_function").stop(true, false).animate({
+         //   "opacity" : "1"
+         // }, 400);
+       }
+
      });
    //}
    // else{
@@ -1157,7 +1176,29 @@ $(document).ready(function() {
         //thanks to shortcuts, menu can be open in any mode
         //prevent click from triggering action if this is the case
         //prevent click while spinning if audio mode
-        if(widget_mode == "audio_mode"){
+        //go to pouzzle if over symbol
+
+        if(over_symbol){
+          if(over_note){
+            //alert("click on note. Go to puzzle.");
+            goToPuzzle();
+            note_seen = true;
+          }
+          else{
+            if(note_seen){
+              //alert("note has been seen. Go to Puzzle.");
+              goToPuzzle();
+            }
+            else{
+              alert("note not seen. Direct user to note.");
+              $(".note_hint").animate({
+                "top" : "0%"
+              }, 800);
+            }
+          }
+          //alert("Go to puzzle");
+        }
+        else if(widget_mode == "audio_mode"){
           if(!spinning && !menuBlockFunction){
             widgetAction(widget_mode);
           }
@@ -1173,6 +1214,10 @@ $(document).ready(function() {
           menuBlockFunction = false;
         }
       }
+
+      //end switch
+
+
       if(widgetGesture !== "press" && widgetGesture !== "tap"){
 
         //since widget not initially in a mode set prev_widget_mode to first widget_mode
@@ -1469,6 +1514,107 @@ $(document).ready(function() {
       $(document).off("mouseup", endGesture);
     }
   }
+
+  /////////////////////////////////////////////////////////////////// 3. THE PUZZLE ////////////////////////////////////////////////////////////////////////
+
+  //if you are reading this you are a bloody cheat
+
+  //but hey, it's not like anyone is gonna solve this any other way
+  //so good for you skipping the bullshit on the surface and getting to the bullshit beneath
+  //but woe to him who treads through guilt to Truth!
+  var over_symbol;
+  var over_note;
+  var note_seen;
+
+  function semiotics(e){
+    //check if widget_function is over sacred symbol
+
+    if(typeof e !== 'undefined'){
+      var eType = e.type;
+    }
+    else{
+      var eType = 'none';
+    }
+
+    //alert(eType);
+
+    over_symbol = false;
+    over_note = false;
+    var widget_function_offset = $("#widget_function").offset();
+    var widget_function_top = widget_function_offset.top - $(window).scrollTop();
+    var widget_function_bottom = widget_function_top + $("#widget_function").height();
+    var widget_function_left = widget_function_offset.left;
+    var widget_function_right = widget_function_left + $("#widget_function").width();
+
+    var note_offset = $("#sacred_note").offset();
+    var note_y = note_offset.top - $(window).scrollTop() + $("#sacred_note").height() / 2;
+    var note_x = note_offset.left + $("#sacred_note").width() / 2;
+
+    $(".sacred_symbol").each(function(){
+      var $thisSymbol = $(this);
+      var symbol_offset = $(this).offset();
+      var symbol_y = symbol_offset.top - $(window).scrollTop() + $(this).height() / 2;
+      var symbol_x = symbol_offset.left + $(this).width() / 2;
+
+      if(symbol_y > widget_function_top && symbol_y < widget_function_bottom && symbol_x > widget_function_left && symbol_x < widget_function_right){
+        //return true;
+        // over_symbol = true;
+        //turn this symbol red
+        //alert(eType);
+        if(eType == "none"){
+          if($($thisSymbol).attr("id") == "sacred_note"){
+            over_note = true;
+          }
+          over_symbol = true;
+          //alert("fill it red");
+          $("#widget_function").stop(true, true).animate({
+            "opacity" : "0"
+          }, 400, function(){
+            $($thisSymbol).css({
+              "fill" : "#903",
+              "color" : "#903"
+            });
+            $(".widget_nav_selected").css("fill", "#903");
+          });
+          // $(this).css("fill", "#903");
+        }
+
+      }
+    });
+  }
+
+  function offSemiotics(){
+    $("#widget_function").stop(true, false).animate({
+      "opacity" : "1"
+    }, 500);
+    //$(".widget_nav_path").css("fill", "#282828");
+    $(".sacred_symbol").not("#symbol_lite, #sacred_note").each(function(){
+      if($(this).css("fill") !== "black"){
+        $(this).css("fill", "black");
+      }
+    });
+    if($("#symbol_lite").css("fill") !== "#999"){
+      $("#symbol_lite").css("fill", "#999");
+    }
+    if($("#sacred_note").css("color") !== "#999"){
+      $("#sacred_note").css("color", "#999");
+    }
+    $(".widget_nav_selected").css("fill", "#b3b3b3");
+
+
+    //hide note_hint
+    // $(".note_hint").animate({
+    //   "top" : noteHintHeight
+    // }, 800);
+  }
+
+  function goToPuzzle(){
+    menu_select("puzzle");
+    $("html, body").animate({
+      scrollTop: $("#real_body").offset().top
+    }, 1000);
+  }
+
 
   /////////////////////////////////////////////////////////////////// 2. WIDGET DISPLAY //////////////////////////////////////////////////////////////////////
 
@@ -2506,7 +2652,7 @@ $(document).ready(function() {
         var widgetCallY = dblClickY - scrollTop;
         //convert these to percentages
         var windowWidth = $(window).width();
-        var windowHeight = $(window).innerHeight();
+        var windowHeight = window.innerHeight;
         var widgetPosLeftPercent = (widgetCallX / windowWidth) * 100 + "%";
         var widgetPosTopPercent = (widgetCallY / windowHeight) * 100 + "%";
         //alert(dblClickX + " " + dblClickY);
@@ -2537,6 +2683,15 @@ $(document).ready(function() {
           }
           //moveHelp();
           //posHint();
+
+          //check if on symbol for puzzle
+          semiotics();
+          if(!over_symbol){
+            offSemiotics();
+            // $("#widget_function").stop(true, true).animate({
+            //   "opacity" : "1"
+            // }, 400);
+          }
         });
       }
     }
@@ -3255,7 +3410,7 @@ $(document).ready(function() {
 
     $("#hint_content").html("Drag Me");
     //fade out widget function
-    $("#widget_function").animate({
+    $("#widget_function").stop(true, true).animate({
       "opacity" : "0"
     }, 400);
 
@@ -3388,13 +3543,23 @@ $(document).ready(function() {
     draggable = false;
     quickSpin();
     endPress();
+
+    //this is for puzzle
+    semiotics();
+    //alert(over_symbol);
+
     //adjustIcon(prev_widget_mode, widget_mode);
     $("#hint_content").html("Nice");
     // $("#widget_function, .widget_function_container").css("cursor", "pointer");
     //$("#widget_function").fadeIn();
-    $("#widget_function").animate({
-      "opacity" : "1"
-    }, 400);
+
+    if(!over_symbol){
+      offSemiotics();
+    }
+
+    // $("#widget_function").animate({
+    //   "opacity" : "1"
+    // }, 400);
 
     $("#widget_function").css("cursor", "pointer");
 
@@ -3738,6 +3903,9 @@ $(document).ready(function() {
       case "support":
       msg = "Please help me buy a farm and move out of my parents' basement.";
       break;
+      case "puzzle":
+      msg ="note.";
+      break;
       default:
       alert("YOLO");
     }
@@ -3765,7 +3933,13 @@ $(document).ready(function() {
     // $(".menu").fadeOut("slow");
     displayMenu(false);
     //alert("menu nav click calls MenuIcon");
-    menuIcon(false);
+    if(widget_mode == "menu_mode"){
+      menuIcon(false);
+    }
+    else{
+      menuIcon(false, true);
+    }
+    //menuIcon(false, true);
     menuMoving = true;
     //scroll to top of content
     $("html, body").animate({

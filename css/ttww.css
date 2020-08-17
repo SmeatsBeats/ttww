@@ -69,10 +69,56 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+/*************** PUZZLE ****************/
+
+.puzzle {
+  background-color: white;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.puzzle_item{
+  width: 100%;
+}
 .sacred_symbol {
   width: auto;
   align-self: center;
+  fill: black;
+  transition: fill 1s;
 }
+#symbol_lite{
+  fill: #999;
+}
+.hate-cls-1 {
+  isolation: isolate;
+}
+#sacred_note {
+  color: #999;
+  transition: color 1s;
+}
+.past_note {
+  font-family: 'Reenie Beanie', cursive;
+  font-size: 33px;
+}
+.blud {
+  color: #903;
+}
+
+.note_hint {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  z-index: 500;
+  background-color: white;
+  box-shadow: 3px 4px 5px #333;
+}
+
+
 
 /************ add content styles *******/
 #content_header {
@@ -1730,6 +1776,10 @@ body {
     align-self: flex-end;
   }
 
+  .support_img_slider{
+    width: 50%;
+  }
+
 }
 @media only screen and (min-width:1070px) {
   .credits {
@@ -1884,4 +1934,5 @@ body {
     /* background-size: contain, auto 110%; */
     /* background-size: contain; */
   }
+
 }
