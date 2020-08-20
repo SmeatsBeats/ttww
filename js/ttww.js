@@ -171,6 +171,10 @@ $(document).ready(function() {
     alert("Ok... so the web shop doesn't technically exist yet. And since Calum's coding it, it probably won't exist until 2050. If you're desperate for some merch, for now just send an email to smeatsbeats@gmail.com. Thanks!");
   });
 
+  //I cannot get .puzzle_inside to fill 100% of the height of its container in css
+
+  var puzzle_left_height = $(".puzzle_left").height();
+  $(".puzzle_inside").height(puzzle_left_height);
 
 
   //introAnimation();
@@ -193,7 +197,14 @@ $(document).ready(function() {
   $(".note_hint").css("top", noteHintHeight);
 
 
-  $(".puzzle, .songs, .credits, .support, .support_img_info, .menu, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator, .intro_dots").hide();
+  //add extra breaks for better appearance on mobile
+  if(isMobile){
+    $(".mobile_break").after("<br>");
+  }
+
+
+
+  $(".puzzle, .songs, .credits, .support, .support_img_info, .menu, .intro_item, #got_it_button, .download_options, .download_symbol, .toolTip, #hinticator, .intro_dots, .track_puzzle").hide();
   //hide everything but audio progress
   //curtain gives site some privacy to get changed
   $(".acousmatic_curtain").hide();
@@ -1190,10 +1201,8 @@ $(document).ready(function() {
               goToPuzzle();
             }
             else{
-              alert("note not seen. Direct user to note.");
-              $(".note_hint").animate({
-                "top" : "0%"
-              }, 800);
+              //alert("note not seen. Direct user to note.");
+              displayNoteHint(true);
             }
           }
           //alert("Go to puzzle");
@@ -1525,6 +1534,7 @@ $(document).ready(function() {
   var over_symbol;
   var over_note;
   var note_seen;
+  var which_puzzle = "";
 
   function semiotics(e){
     //check if widget_function is over sacred symbol
@@ -1566,6 +1576,26 @@ $(document).ready(function() {
             over_note = true;
           }
           over_symbol = true;
+
+          //figure out which puzzle to reveal
+
+          if(note_seen){
+            if($($thisSymbol).hasClass("puzzle1_symbol")){
+              which_puzzle = "#puzzle1";
+            }
+            else if($($thisSymbol).hasClass("puzzle2_symbol")){
+              which_puzzle = "#puzzle2";
+            }
+            else if($($thisSymbol).hasClass("puzzle3_symbol")){
+              which_puzzle = "#puzzle3";
+            }
+            else if($($thisSymbol).hasClass("puzzle4_symbol")){
+              which_puzzle = "#puzzle4";
+            }
+          }
+
+
+
           //alert("fill it red");
           $("#widget_function").stop(true, true).animate({
             "opacity" : "0"
@@ -1588,7 +1618,7 @@ $(document).ready(function() {
       "opacity" : "1"
     }, 500);
     //$(".widget_nav_path").css("fill", "#282828");
-    $(".sacred_symbol").not("#symbol_lite, #sacred_note").each(function(){
+    $(".sacred_symbol").not("#symbol_lite, #sacred_note, .in_da_puzzle").each(function(){
       if($(this).css("fill") !== "black"){
         $(this).css("fill", "black");
       }
@@ -1602,18 +1632,423 @@ $(document).ready(function() {
     $(".widget_nav_selected").css("fill", "#b3b3b3");
 
 
-    //hide note_hint
-    // $(".note_hint").animate({
-    //   "top" : noteHintHeight
-    // }, 800);
+    //hide note_hint if open
+    if(noteHint){
+      //alert("hide note_hint");
+      displayNoteHint(false);
+    }
+
   }
 
-  function goToPuzzle(){
-    menu_select("puzzle");
-    $("html, body").animate({
-      scrollTop: $("#real_body").offset().top
-    }, 1000);
+  var got_prev = false;
+
+  function scrollToNewPuzzle($prev_elmt){
+    //this has to happen after the puzzle page is unhidden
+    //scroll to it
+    if(!isMobile && $(window).scrollTop() + $(window).height() >= $(document).height()){
+      //already scrolled down all the way
+      //just show puzzle
+      $(which_puzzle).slideDown();
+      $(which_puzzle).addClass("unlocked");
+      which_puzzle = "";
+    }
+    else{
+      var scroll_to_puzzle = $($prev_elmt).offset().top + $($prev_elmt).height();
+      console.log("go to new puzzle " + scroll_to_puzzle);
+      $("html, body").animate({
+        scrollTop: scroll_to_puzzle
+      }, 1000, function(){
+        $(which_puzzle).slideDown();
+        $(which_puzzle).addClass("unlocked");
+        which_puzzle = "";
+      })
+    }
   }
+
+  var $prev_elmt = "";
+
+  function goToPuzzle(){
+
+    //scoot widget out of the way
+    quickSpin();
+    if(!isMobile){
+      sendWidget("86%", "90%");
+    }
+    else{
+      sendWidget("86%", "25%");
+    }
+
+    if(which_puzzle !== ""){
+
+      //stall by going to top
+      console.log("go to top until page exists");
+      $("html, body").animate({
+
+        // scrollTop: $("#real_body").offset().top
+        scrollTop: $("#content_head_msg").offset().top
+      }, 1000);
+
+      //puzzle is defined
+      //scroll to it and reveal it
+      //since it doesn't exist yet scroll to the prev element
+      $prev_elmt = $(which_puzzle).prev();
+
+      while(!got_prev){
+        console.log($($prev_elmt).prevAll(".unlocked").length);
+        if($($prev_elmt).is(":visible")){
+          got_prev = true;
+        }
+        else{
+          $prev_elmt = $($prev_elmt).prev();
+          if($($prev_elmt).prevAll(".unlocked").length == 0){
+            console.log("no prev siblings go to parent");
+            $prev_elmt = $(".symbol_start");
+            got_prev = true;
+          }
+        }
+
+      }
+    }
+    else{
+      console.log("no puzzle set go to top");
+      $prev_elmt = "";
+      $("html, body").animate({
+        scrollTop: $("#content_head_msg").offset().top
+      }, 1000);
+    }
+    menu_select("puzzle");
+  }
+
+  var noteHint = false;
+
+  function displayNoteHint(show){
+    if(show){
+      var noteHintTop = "0%";
+      noteHint = true;
+    }
+    else{
+      var noteHintTop = noteHintHeight;
+      noteHint = false;
+    }
+    $(".note_hint").css("top", noteHintTop);
+    // $(".note_hint").animate({
+    //   "top" : noteHintTop
+    // }, 600);
+  }
+
+  $(window).scroll(function(){
+    noteOffset = $("#sacred_note").offset();
+    noteTop = noteOffset.top;
+    if(noteTop < $(window).scrollTop() + window.innerHeight * 0.75 && noteTop > $(window).scrollTop() + window.innerHeight / 15){
+      $("#sacred_note").css("color", "white");
+    }
+    else{
+      $("#sacred_note").css("color", "#999");
+    }
+  });
+
+  //if they press enter and nothing happens they will think it is broken
+
+  $(".puzzle_input input").keypress(function(e){
+    if(e.keyCode == 13){
+      $(this).val("");
+      $(this).attr("placeholder", "No need to press enter.");
+      $(this).attr("placeholder", "I'm listening.");
+    }
+  });
+
+
+  //////////// PUZZLE LOGIC ////////////////////
+
+  ///////////PUZZLE #4 ////////////////////
+  var guess4_progress = 0;
+  var puzzle4_left = false;
+  var puzzle4_top = false;
+  var puzzle4_inside = false;
+  $("#guess4").keyup(function(){
+    var guess4_val = $(this).val().toLowerCase();
+    switch(guess4_val){
+      case "hi":
+        $("#guess4").val("");
+        //alert("Hello there.");
+        $("#guess4").attr("placeholder", "Hello There.");
+      break;
+      case "6":
+        $("#guess4").val("");
+        //alert("Hello there.");
+        $("#guess4").attr("placeholder", "Hint: A = 1");
+      break;
+      case "f":
+        if(!puzzle4_top){
+          //this is correct reveal F in image
+          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+          $("#guess4").val("");
+          guess4_progress++;
+          puzzle4_top = true;
+          $("#guess4").attr("placeholder", guess4_progress + "/3");
+        }
+      break;
+      case "4":
+        if(!puzzle4_left){
+          //$(".puzzle_left").css("color", "#903");
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          $("#guess4").val("");
+          guess4_progress++;
+          puzzle4_left = true;
+          $("#guess4").attr("placeholder", guess4_progress + "/3");
+        }
+      break;
+      case "for":
+        if(!puzzle4_left){
+          //$(".puzzle_left").css("color", "#903");
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          $("#guess4").val("");
+          guess4_progress++;
+          puzzle4_left = true;
+          $("#guess4").attr("placeholder", guess4_progress + "/3");
+        }
+      break;
+      case "or":
+        if(!puzzle4_left){
+          //$(".puzzle_left").css("color", "#903");
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          $("#guess4").val("");
+          guess4_progress++;
+          puzzle4_left = true;
+          $("#guess4").attr("placeholder", guess4_progress + "/3");
+        }
+      break;
+      case "decide":
+        if(!puzzle4_inside){
+          //$(".puzzle_inside").css("color", "#903");
+          $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
+          $("#guess4").val("");
+          guess4_progress++;
+          puzzle4_inside = true;
+          $("#guess4").attr("placeholder", guess4_progress + "/3");
+        }
+      break;
+      default:
+      break;
+    }
+
+    if(guess4_progress == 3){
+      //turn the symbol red
+      $("#puzzle4").find(".sacred_symbol").css("fill", "#903");
+    }
+  });
+
+  ///////////PUZZLE #3 ////////////////////
+  var guess3_progress = 0;
+  var puzzle3_left = false;
+  var puzzle3_top = false;
+  var puzzle3_inside = false;
+  $("#guess3").keyup(function(){
+    var guess3_val = $(this).val().toLowerCase();
+    switch(guess3_val){
+      case "hi":
+        $("#guess3").val("");
+        //alert("Hello there.");
+        $("#guess3").attr("placeholder", "Greetings");
+        console.log("quit screwing around");
+      break;
+      case "l":
+        if(!puzzle3_top){
+          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+          $("#guess3").val("");
+          guess3_progress++;
+          puzzle3_top = true;
+          $("#guess3").attr("placeholder", guess3_progress + "/3");
+        }
+      break;
+      case "long":
+        if(!puzzle3_left){
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          $("#guess3").val("");
+          guess3_progress++;
+          puzzle3_left = true;
+          $("#guess3").attr("placeholder", guess3_progress + "/3");
+        }
+      break;
+      case "ong":
+        if(!puzzle3_left){
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          $("#guess3").val("");
+          guess3_progress++;
+          puzzle3_left = true;
+          $("#guess3").attr("placeholder", guess3_progress + "/3");
+        }
+      break;
+      case "never":
+        if(!puzzle3_inside){
+          $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
+          $("#guess3").val("");
+          guess3_progress++;
+          puzzle3_inside = true;
+          $("#guess3").attr("placeholder", guess3_progress + "/3");
+        }
+      break;
+      default:
+      break;
+    }
+    if(guess3_progress == 3){
+      //turn the symbol red
+      $("#puzzle3").find(".sacred_symbol").css("fill", "#903");
+    }
+  });
+
+  ///////////PUZZLE #2 ////////////////////
+  var guess2_progress = 0;
+  var puzzle2_left = false;
+  var puzzle2_top = false;
+  var puzzle2_inside = false;
+  $("#guess2").keyup(function(){
+    var guess2_val = $(this).val().toLowerCase();
+    switch(guess2_val){
+      case "hi":
+        $("#guess2").val("");
+        //alert("Hello there.");
+        $("#guess2").attr("placeholder", "Howdy");
+        console.log("get to work");
+      break;
+      case "h":
+        if(!puzzle2_top){
+          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+          $("#guess2").val("");
+          guess2_progress++;
+          puzzle2_top = true;
+          $("#guess2").attr("placeholder", guess2_progress + "/3");
+        }
+      break;
+      case "how":
+        if(!puzzle2_left){
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          $("#guess2").val("");
+          guess2_progress++;
+          puzzle2_left = true;
+          $("#guess2").attr("placeholder", guess2_progress + "/3");
+        }
+      break;
+      case "ow":
+        if(!puzzle2_left){
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          $("#guess2").val("");
+          guess2_progress++;
+          puzzle2_left = true;
+          $("#guess2").attr("placeholder", guess2_progress + "/3");
+        }
+      break;
+      case "love":
+        if(!puzzle2_inside){
+          $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
+          $("#guess2").val("");
+          guess2_progress++;
+          puzzle2_inside = true;
+          $("#guess2").attr("placeholder", guess2_progress + "/3");
+        }
+      break;
+      default:
+      break;
+    }
+    if(guess2_progress == 3){
+      //turn the symbol red
+      $("#puzzle2").find(".sacred_symbol").css("fill", "#903");
+    }
+  });
+
+  ///////////PUZZLE #1 ////////////////////
+  var guess1_progress = 0;
+  var puzzle1_top = false;
+  var puzzle1_inside = false;
+  var puzzle1_left = false;
+  $("#guess1").keyup(function(){
+    var guess1_val = $(this).val().toLowerCase();
+    switch(guess1_val){
+      case "hi":
+        $("#guess1").val("");
+        //alert("Hello there.");
+        $("#guess1").attr("placeholder", "Piss off!");
+      break;
+      case "w":
+        if(!puzzle1_top){
+          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+          $("#guess1").val("");
+          guess1_progress++;
+          puzzle1_top = true;
+          $("#guess1").attr("placeholder", guess1_progress + "/3");
+        }
+      break;
+      case "ait":
+      if(!puzzle1_left){
+        $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+        $("#guess1").val("");
+        guess1_progress++;
+        puzzle1_left = true;
+        $("#guess1").attr("placeholder", guess1_progress + "/3");
+      }
+      break;
+      case "wait":
+        if(!puzzle1_left){
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          $("#guess1").val("");
+          guess1_progress++;
+          puzzle1_left = true;
+          $("#guess1").attr("placeholder", guess1_progress + "/3");
+        }
+        else{
+          if(!puzzle1_inside){
+            $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
+            $("#guess1").val("");
+            guess1_progress++;
+            puzzle1_left = true;
+            $("#guess1").attr("placeholder", guess1_progress + "/3");
+          }
+        }
+      break;
+      default:
+      break;
+    }
+    if(guess1_progress == 3){
+      //turn the symbol red
+      $("#puzzle1").find(".sacred_symbol").css("fill", "#903");
+    }
+  });
+
+  //////////// DETECT MOBILE KEYBOARD //////////////
+  //widget is huge nuisance when keyboar open
+
+  if(isMobile){
+    var keyboard = false;
+    var original_size = $(window).width() + $(window).height();
+    $(window).resize(function(){
+      if($(window).width() + $(window).height() != original_size){
+        console.log("keyboard open");
+        keyboard = true;
+        quickSpin();
+        sendWidget("86%", "-25%");
+
+        //focus in on current puzzle
+        var puzzle_top = $(":focus").closest(".track_puzzle").offset();
+        $("html, body").animate({
+          scrollTop: puzzle_top.top - 10
+        }, 500), function(){
+          alert("puzzle focused");
+        };
+
+      }
+      else{
+        if(keyboard){
+          console.log("keyboard closed");
+          quickSpin();
+          sendWidget("86%", "25%");
+        }
+      }
+    });
+  }
+
+
+
+
 
 
   /////////////////////////////////////////////////////////////////// 2. WIDGET DISPLAY //////////////////////////////////////////////////////////////////////
@@ -3910,14 +4345,30 @@ $(document).ready(function() {
       alert("YOLO");
     }
 
-    $("#content_head_msg").html(msg);
+    //fade msg out then back in
+    $("#content_head_msg").animate({
+      "opacity" : "0"
+    }, 500, function(){
+          $("#content_head_msg").html(msg);
+              $("#content_head_msg").animate({
+                "opacity" : "1"
+              }, 500);
+    });
+
+    // $("#content_head_msg").html(msg);
 
     //dont' slide up or down if already open
 
     var selector = "." + nav_selection;
     if($(selector).is(":hidden")){
       $(".content").slideUp("slow");
-      $(selector).slideDown("slow");
+      $(selector).slideDown("slow", function(){
+        if(nav_selection == "puzzle" && $prev_elmt !== "" && got_prev){
+          //alert("scroll to new puzzle pls");
+          got_prev = false;
+          scrollToNewPuzzle($prev_elmt);
+        }
+      });
     }
   }
 
@@ -3937,11 +4388,18 @@ $(document).ready(function() {
       menuIcon(false);
     }
     else{
-      menuIcon(false, true);
+      if(iconX){
+        menuIcon(false);
+      }
+      else{
+        menuIcon(false, true);
+      }
+
     }
     //menuIcon(false, true);
     menuMoving = true;
     //scroll to top of content
+
     $("html, body").animate({
       scrollTop: $("#real_body").offset().top
     }, 1000);
@@ -4553,30 +5011,32 @@ $(document).ready(function() {
   document.body.onkeydown = function(e){
     var tipMsg = "";
       if(e.keyCode == 84){
-          //your code
-          if(tipsOn){
-            tipsOn = false;
-            $(".toolTip").stop(true, true).fadeOut(moveHelp);
-            $("#hint_content").stop(true, true).clearQueue();
-            tipMsg = "Tooltips OFF";
-          }
-          else{
-            tipsOn = true;
-            moveHelp();
-            if(!blockHints && !intro_mode){
-              if(!cursorOnWidgetBoi){
-                $("#hint_content").html("Hi There");
-              }
-              $(".toolTip").stop(true, true).fadeIn();
-            }
 
-            tipMsg = "Tooltips ON";
+          if(!$("input").is(":focus")){
+            if(tipsOn){
+              tipsOn = false;
+              $(".toolTip").stop(true, true).fadeOut(moveHelp);
+              $("#hint_content").stop(true, true).clearQueue();
+              tipMsg = "Tooltips OFF";
+            }
+            else{
+              tipsOn = true;
+              moveHelp();
+              if(!blockHints && !intro_mode){
+                if(!cursorOnWidgetBoi){
+                  $("#hint_content").html("Hi There");
+                }
+                $(".toolTip").stop(true, true).fadeIn();
+              }
+
+              tipMsg = "Tooltips ON";
+            }
+            infoMsg(tipMsg);
+            //moveHelp();
           }
-          infoMsg(tipMsg);
-          //moveHelp();
       }
       else if(e.keyCode == 32){
-        if(!firstSwipe){
+        if(!firstSwipe && !$("input").is(":focus")){
           e.preventDefault();
           //play or pause
           //alert("Spacebar");

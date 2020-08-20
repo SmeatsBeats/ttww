@@ -82,6 +82,11 @@ body {
 }
 .puzzle_item{
   width: 100%;
+  margin: 20px 0px;
+  padding: 10px;
+}
+.puzzle_item:last-child{
+  margin-bottom: 3%;
 }
 .sacred_symbol {
   width: auto;
@@ -116,9 +121,76 @@ body {
   z-index: 500;
   background-color: white;
   box-shadow: 3px 4px 5px #333;
+  transition: top 0.5s;
 }
 
+.track_puzzle {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+}
 
+.puzzle_img {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  width: 80%;
+  font-size: 40px;
+}
+
+.puzzle_img span {
+  transition: color 0.5s;
+}
+
+.puzzle_img div {
+  margin: 0;
+  padding: 0;
+}
+
+.puzzle_img > div > p {
+  flex-grow: 1;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.puzzle_left, .puzzle_corner {
+  width: 20%;
+  color: transparent;
+}
+.puzzle_inside, .puzzle_8 {
+  width: 80%;
+}
+
+.puzzle_8 {
+  /* border-bottom: 2px solid black; */
+}
+
+.puzzle_row {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.puzzle_left {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+  /* border-right: 2px solid black; */
+}
+
+.puzzle_inside {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+}
 
 /************ add content styles *******/
 #content_header {
@@ -1778,6 +1850,10 @@ body {
 
   .support_img_slider{
     width: 50%;
+  }
+
+  .puzzle_img {
+    width: 15%;
   }
 
 }
