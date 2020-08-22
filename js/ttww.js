@@ -1536,6 +1536,21 @@ $(document).ready(function() {
   var note_seen;
   var which_puzzle = "";
 
+  //redirect hints to song titles and symbols
+
+  $(".blud").click(function(){
+    menu_select("songs");
+    //scroll to top of song names
+    //go to first symbol that is not yet unlocked
+    var $quickMaths = $(".songs_item:not('.symbolSolved, #heratic')");
+    setTimeout(function(){
+      $("html, body").animate({
+        scrollTop: $($quickMaths).offset().top
+      }, 1000);
+    }, 300);
+
+  });
+
   function semiotics(e){
     //check if widget_function is over sacred symbol
 
@@ -1580,6 +1595,9 @@ $(document).ready(function() {
           //figure out which puzzle to reveal
 
           if(note_seen){
+
+            //$($thisSymbol).closest(".songs_item").addClass("symbolSolved");
+
             if($($thisSymbol).hasClass("puzzle1_symbol")){
               which_puzzle = "#puzzle1";
             }
@@ -1618,12 +1636,12 @@ $(document).ready(function() {
       "opacity" : "1"
     }, 500);
     //$(".widget_nav_path").css("fill", "#282828");
-    $(".sacred_symbol").not("#symbol_lite, #sacred_note, .in_da_puzzle").each(function(){
+    $(".sacred_symbol").not("#symbol_lite, #sacred_note, .in_da_puzzle, .perm_blud").each(function(){
       if($(this).css("fill") !== "black"){
         $(this).css("fill", "black");
       }
     });
-    if($("#symbol_lite").css("fill") !== "#999"){
+    if($("#symbol_lite:not('.perm_blud')").css("fill") !== "#999"){
       $("#symbol_lite").css("fill", "#999");
     }
     if($("#sacred_note").css("color") !== "#999"){
@@ -1650,6 +1668,7 @@ $(document).ready(function() {
       //just show puzzle
       $(which_puzzle).slideDown();
       $(which_puzzle).addClass("unlocked");
+      $(which_puzzle).find("input").focus();
       which_puzzle = "";
     }
     else{
@@ -1741,100 +1760,155 @@ $(document).ready(function() {
     noteTop = noteOffset.top;
     if(noteTop < $(window).scrollTop() + window.innerHeight * 0.75 && noteTop > $(window).scrollTop() + window.innerHeight / 15){
       $("#sacred_note").css("color", "white");
+      $(".widget_nav_selected").css("fill", "white");
     }
     else{
       $("#sacred_note").css("color", "#999");
+      $(".widget_nav_selected").css("fill", "#999");
     }
   });
 
   //if they press enter and nothing happens they will think it is broken
 
-  $(".puzzle_input input").keypress(function(e){
-    if(e.keyCode == 13){
-      $(this).val("");
-      $(this).attr("placeholder", "No need to press enter.");
-      $(this).attr("placeholder", "I'm listening.");
-    }
-  });
+  // $(".puzzle_input input").keypress(function(e){
+  //   if(e.keyCode == 13){
+  //     $(this).val("");
+  //     $(this).attr("placeholder", "No need to press enter.");
+  //     $(this).attr("placeholder", "I'm listening.");
+  //   }
+  // });
 
 
   //////////// PUZZLE LOGIC ////////////////////
+
+  ///note the hint system can currently spit out seemingly random responses if you put in random values
+  //// for example if you type "both" out of context on puzzle 1 or 2 before you are asked if it is letters or numbers
+  //// you will randomly be called wise
 
   ///////////PUZZLE #4 ////////////////////
   var guess4_progress = 0;
   var puzzle4_left = false;
   var puzzle4_top = false;
   var puzzle4_inside = false;
-  $("#guess4").keyup(function(){
-    var guess4_val = $(this).val().toLowerCase();
-    switch(guess4_val){
-      case "hi":
-        $("#guess4").val("");
-        //alert("Hello there.");
-        $("#guess4").attr("placeholder", "Hello There.");
-      break;
-      case "6":
-        $("#guess4").val("");
-        //alert("Hello there.");
-        $("#guess4").attr("placeholder", "Hint: A = 1");
-      break;
-      case "f":
-        if(!puzzle4_top){
-          //this is correct reveal F in image
-          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
-          $("#guess4").val("");
-          guess4_progress++;
-          puzzle4_top = true;
-          $("#guess4").attr("placeholder", guess4_progress + "/3");
+  $("#guess4").keypress(function(e){
+    if(e.keyCode == 13){
+      var puzzle4_hint;
+      var guess4_val = $(this).val().toLowerCase();
+      switch(guess4_val){
+        case "hint":
+        //this one is tough because they can get everything from the aphorism
+        //they don't necessarily need to apply the operator across x axis
+        //and get that fate and decide are opposites
+        //they also don't necessarily have to realize that F corresponds to 6
+          if(guess4_progress == 3){
+            puzzle4_hint = "Well done. Feel free to ask about the answers.";
+          }
+          else if(!puzzle4_inside && !puzzle4_top){
+            puzzle4_hint = "I wonder why I wrote the aphorism that way...";
+          }
+          else if(puzzle4_inside && puzzle4_top){
+            puzzle4_hint = "This must be the only aphorism that's dated.";
+          }
+          else if(puzzle4_inside || puzzle4_top){
+            //this means you've got the top and inside
+            puzzle4_hint = "That aphorism still looks strange.";
+          }
+          else{
+            puzzle4_hint = "The true is the whole.";
+          }
+        break;
+        case "hi":
+          puzzle4_hint = "Hello there."
+          //console.log("set hint to: " + puzzle4_hint);
+          //$("#guess4").attr("placeholder", "Hello There.");
+        break;
+        case "6":
+        if(puzzle4_top){
+          puzzle4_hint = "Looks like the F corresponds to 6 somehow.";
         }
-      break;
-      case "4":
-        if(!puzzle4_left){
-          //$(".puzzle_left").css("color", "#903");
-          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
-          $("#guess4").val("");
-          guess4_progress++;
-          puzzle4_left = true;
-          $("#guess4").attr("placeholder", guess4_progress + "/3");
+        else{
+          puzzle4_hint = "You're getting there. A=1.";
         }
-      break;
-      case "for":
-        if(!puzzle4_left){
-          //$(".puzzle_left").css("color", "#903");
-          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
-          $("#guess4").val("");
-          guess4_progress++;
-          puzzle4_left = true;
-          $("#guess4").attr("placeholder", guess4_progress + "/3");
-        }
-      break;
-      case "or":
-        if(!puzzle4_left){
-          //$(".puzzle_left").css("color", "#903");
-          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
-          $("#guess4").val("");
-          guess4_progress++;
-          puzzle4_left = true;
-          $("#guess4").attr("placeholder", guess4_progress + "/3");
-        }
-      break;
-      case "decide":
-        if(!puzzle4_inside){
-          //$(".puzzle_inside").css("color", "#903");
-          $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
-          $("#guess4").val("");
-          guess4_progress++;
-          puzzle4_inside = true;
-          $("#guess4").attr("placeholder", guess4_progress + "/3");
-        }
-      break;
-      default:
-      break;
-    }
 
-    if(guess4_progress == 3){
-      //turn the symbol red
-      $("#puzzle4").find(".sacred_symbol").css("fill", "#903");
+        break;
+        case "f":
+        case "fate":
+          if(!puzzle4_top){
+            //this is correct reveal F in image
+            $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+            guess4_progress++;
+            puzzle4_top = true;
+            puzzle4_hint = "Woot! " + guess4_progress + "/3";
+            //$("#guess4").attr("placeholder", guess4_progress + "/3");
+          }
+          else{
+            puzzle4_hint = "Looks like the F corresponds to 6 somehow.";
+          }
+        break;
+        case "4":
+          if(!puzzle4_left){
+            //$(".puzzle_left").css("color", "#903");
+            $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+            guess4_progress++;
+            puzzle4_left = true;
+            puzzle4_hint = "Yeet " + guess4_progress + "/3";
+          }
+        break;
+        case "for":
+        case "or":
+          if(!puzzle4_left){
+            //$(".puzzle_left").css("color", "#903");
+            $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+            guess4_progress++;
+            puzzle4_left = true;
+            puzzle4_hint = "Yeet! " + guess4_progress + "/3";
+          }
+          else{
+            puzzle4_hint = "Yes... that symbol looks like 4 of something.";
+          }
+        break;
+        case "decide":
+          if(!puzzle4_inside){
+            //$(".puzzle_inside").css("color", "#903");
+            $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
+            guess4_progress++;
+            puzzle4_inside = true;
+            puzzle4_hint = "Alright! " + guess4_progress + "/3";
+          }
+          else{
+            puzzle4_hint = "I see. The math operator applies across the X axis!";
+          }
+        break;
+        default:
+
+        break;
+      }
+
+
+
+      if(guess4_progress == 3){
+        if(guess1_progress == 3 && guess2_progress == 3 && guess3_progress == 3){
+          puzzle4_hint = "That's all of them! But what does it mean?";
+        }
+        else{
+          puzzle4_hint = "3/3 Perfect. Try the next symbol.";
+        }
+        //turn the symbol red
+        //$("#puzzle4").find(".sacred_symbol").css("fill", "#903");
+        $(".puzzle4_symbol").addClass("perm_blud").css("fill", "#903");
+        $("#home_song").addClass("symbolSolved");
+        //$(".blank4").css("color", "#903");
+        setTimeout(function(){
+          $("html, body").animate({
+            scrollTop: $(".unfinished_aphorism").offset().top
+          }, 800, function(){
+            $(".blank4").css("color", "#903");
+          })
+        }, 800)
+      }
+      console.log(puzzle4_hint);
+      $("#guess4").val("");
+      $("#guess4").attr("placeholder", puzzle4_hint);
     }
   });
 
@@ -1843,58 +1917,118 @@ $(document).ready(function() {
   var puzzle3_left = false;
   var puzzle3_top = false;
   var puzzle3_inside = false;
-  $("#guess3").keyup(function(){
-    var guess3_val = $(this).val().toLowerCase();
-    switch(guess3_val){
-      case "hi":
-        $("#guess3").val("");
-        //alert("Hello there.");
-        $("#guess3").attr("placeholder", "Greetings");
-        console.log("quit screwing around");
-      break;
-      case "l":
-        if(!puzzle3_top){
-          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
-          $("#guess3").val("");
-          guess3_progress++;
-          puzzle3_top = true;
-          $("#guess3").attr("placeholder", guess3_progress + "/3");
+  $("#guess3").keypress(function(e){
+    if(e.keyCode == 13){
+      var puzzle3_hint;
+      var guess3_val = $(this).val().toLowerCase();
+      switch(guess3_val){
+        case "hi":
+          puzzle3_hint = "Greetings.";
+          console.log("quit screwing around");
+        break;
+        case "hint":
+          if(guess3_progress == 3){
+            puzzle3_hint = "Nice! Looks like these words might relate to the work below.";
+          }
+          else if(puzzle3_top && puzzle3_inside){
+            if(guess4_progress == 3 && guess2_progress == 3 && guess1_progress == 3){
+              puzzle3_hint = "I wonder what I was working on down below.";
+            }
+            else{
+              puzzle3_hint = "Agh. I can't recall. Maybe come back to this one?";
+            }
+          }
+          else if(!puzzle3_top){
+            puzzle3_hint = "It's been a long TIME since I drew these.";
+          }
+          else if(!puzzle3_inside){
+            puzzle3_hint = "Try that math symbol.";
+          }
+          else{
+
+          }
+        break;
+        case "greater than":
+        case ">":
+        case "gt":
+        case "greater":
+          puzzle3_hint = "Yup! But what is l8 greater than?";
+        break;
+        case "less":
+        case "less than":
+        case "lt":
+        case "<":
+          puzzle3_hint = "You've got it backwards.";
+        break;
+        case "12":
+        case "twelve":
+          puzzle3_hint = "Ah! Now you're seeing. Hint: A=1.";
+        break;
+        case "l":
+          if(!puzzle3_top){
+            $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+            guess3_progress++;
+            puzzle3_top = true;
+            puzzle3_hint = guess3_progress + "/3";
+          }
+          else{
+            puzzle3_hint = "Ok. So L is 12.";
+          }
+        break;
+        case "long":
+        case "ong":
+          if(!puzzle3_left){
+            $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+            guess3_progress++;
+            puzzle3_left = true;
+            puzzle3_hint = guess3_progress + "/3";
+          }
+          else{
+            "I suppose Long fits in with the other vertical words.";
+          }
+        break;
+        case "never":
+          if(!puzzle3_inside){
+            $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
+            guess3_progress++;
+            puzzle3_inside = true;
+            puzzle3_hint = guess3_progress + "/3";
+          }
+          else{
+            puzzle3_hint = "It's a stretch. But I guess late is > never.";
+          }
+        break;
+        default:
+        break;
+      }
+
+
+
+      if(guess3_progress == 3){
+        if(guess1_progress == 3 && guess2_progress == 3 && guess4_progress == 3){
+          puzzle3_hint = "That's all of them! But what does it mean?";
         }
-      break;
-      case "long":
-        if(!puzzle3_left){
-          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
-          $("#guess3").val("");
-          guess3_progress++;
-          puzzle3_left = true;
-          $("#guess3").attr("placeholder", guess3_progress + "/3");
+        else{
+          puzzle3_hint = "3/3 Perfect. Try the next symbol.";
         }
-      break;
-      case "ong":
-        if(!puzzle3_left){
-          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
-          $("#guess3").val("");
-          guess3_progress++;
-          puzzle3_left = true;
-          $("#guess3").attr("placeholder", guess3_progress + "/3");
-        }
-      break;
-      case "never":
-        if(!puzzle3_inside){
-          $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
-          $("#guess3").val("");
-          guess3_progress++;
-          puzzle3_inside = true;
-          $("#guess3").attr("placeholder", guess3_progress + "/3");
-        }
-      break;
-      default:
-      break;
+        //turn the symbol red
+        //$("#puzzle3").find(".sacred_symbol").css("fill", "#903");
+        $(".puzzle3_symbol").addClass("perm_blud").css("fill", "#903");
+        $("#broken").addClass("symbolSolved");
+        //$(".blank3").css("color", "#903");
+        setTimeout(function(){
+          $("html, body").animate({
+            scrollTop: $(".unfinished_aphorism").offset().top
+          }, 800, function(){
+            $(".blank3").css("color", "#903");
+          })
+        }, 800)
+      }
+
+      $("#guess3").val("");
+      $("#guess3").attr("placeholder", puzzle3_hint);
     }
-    if(guess3_progress == 3){
-      //turn the symbol red
-      $("#puzzle3").find(".sacred_symbol").css("fill", "#903");
-    }
+
   });
 
   ///////////PUZZLE #2 ////////////////////
@@ -1902,58 +2036,119 @@ $(document).ready(function() {
   var puzzle2_left = false;
   var puzzle2_top = false;
   var puzzle2_inside = false;
-  $("#guess2").keyup(function(){
-    var guess2_val = $(this).val().toLowerCase();
-    switch(guess2_val){
-      case "hi":
-        $("#guess2").val("");
-        //alert("Hello there.");
-        $("#guess2").attr("placeholder", "Howdy");
-        console.log("get to work");
-      break;
-      case "h":
-        if(!puzzle2_top){
-          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
-          $("#guess2").val("");
-          guess2_progress++;
-          puzzle2_top = true;
-          $("#guess2").attr("placeholder", guess2_progress + "/3");
+  $("#guess2").keypress(function(e){
+    if(e.keyCode == 13){
+      var puzzle2_hint;
+      var guess2_val = $(this).val().toLowerCase();
+      switch(guess2_val){
+        case "hint":
+          if(guess2_progress == 3){
+            puzzle2_hint = "Good stuff! Rerun answers if you don't quite follow.";
+          }
+          else if(!puzzle2_top){
+            //prompt run of 8 or total confusion over inverse symbol
+            puzzle2_hint = "This song title looks particularly strange.";
+          }
+          else if(puzzle2_left){
+            //have top and left
+            puzzle2_hint = "Maybe try applying that math symbol?";
+          }
+          else if(puzzle2_inside || puzzle2_top){
+            //have top and inside
+            //or just top
+            puzzle2_hint = "Is that symbol letters or numbers?";
+          }
+
+
+        break;
+        case "hi":
+          puzzle2_hint = "Howdy";
+          console.log("get to work");
+        break;
+        case "h":
+          if(!puzzle2_top){
+            $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+            guess2_progress++;
+            puzzle2_top = true;
+            puzzle2_hint = guess2_progress + "/3";
+          }
+          else{
+            puzzle2_hint = "I remember. The H corresponds to the 8 in the song title.";
+          }
+        break;
+        case "both":
+          "You are wiser than I guessed!";
+        break;
+        case "letter":
+        case "letters":
+          puzzle2_hint = "I buy it. Which letters?";
+        break;
+        case "o":
+        case "w":
+          puzzle2_hint = "Looks like more than one letter.";
+        break;
+        case "wo":
+          puzzle2_hint = "Right letters. Wrong order.";
+        break;
+        case "how":
+        case "ow":
+          if(!puzzle2_left){
+            $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+            guess2_progress++;
+            puzzle2_left = true;
+            puzzle2_hint = guess2_progress + "/3";
+          }
+          else{
+            puzzle2_hint = "Ah this symbol does resemble that. A bit squished.";
+          }
+        break;
+        case "love":
+          if(!puzzle2_inside){
+            $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
+            guess2_progress++;
+            puzzle2_inside = true;
+            puzzle2_hint = guess2_progress + "/3";
+          }
+          else{
+            puzzle2_hint = "Love is the inverse of hate. I get it.";
+          }
+        break;
+        case "8":
+        case "eight":
+          puzzle2_hint = "If A=1, then what is 8?";
+        break;
+        case "1/8":
+        case "inverse":
+          puzzle2_hint = "Yes. That is the operator! But where to apply it?";
+        break;
+        default:
+        break;
+      }
+
+      if(guess2_progress == 3){
+        if(guess1_progress == 3 && guess3_progress == 3 && guess4_progress == 3){
+          puzzle2_hint = "That's all of them! But what does it mean?";
         }
-      break;
-      case "how":
-        if(!puzzle2_left){
-          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
-          $("#guess2").val("");
-          guess2_progress++;
-          puzzle2_left = true;
-          $("#guess2").attr("placeholder", guess2_progress + "/3");
+        else{
+          puzzle2_hint = "3/3 Nailed it. Try the next symbol.";
         }
-      break;
-      case "ow":
-        if(!puzzle2_left){
-          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
-          $("#guess2").val("");
-          guess2_progress++;
-          puzzle2_left = true;
-          $("#guess2").attr("placeholder", guess2_progress + "/3");
-        }
-      break;
-      case "love":
-        if(!puzzle2_inside){
-          $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
-          $("#guess2").val("");
-          guess2_progress++;
-          puzzle2_inside = true;
-          $("#guess2").attr("placeholder", guess2_progress + "/3");
-        }
-      break;
-      default:
-      break;
+        //turn the symbol red
+        //$("#puzzle2").find(".sacred_symbol").css("fill", "#903");
+        $(".puzzle2_symbol").addClass("perm_blud").css("fill", "#903");
+        $("#glass").addClass("symbolSolved");
+        //wait for symbol to fade in then show blanks fade in
+        setTimeout(function(){
+          $("html, body").animate({
+            scrollTop: $(".unfinished_aphorism").offset().top
+          }, 800, function(){
+            $(".blank2").css("color", "#903");
+          })
+        }, 800)
+      }
+      $("#guess2").val("");
+      $("#guess2").attr("placeholder", puzzle2_hint);
     }
-    if(guess2_progress == 3){
-      //turn the symbol red
-      $("#puzzle2").find(".sacred_symbol").css("fill", "#903");
-    }
+
   });
 
   ///////////PUZZLE #1 ////////////////////
@@ -1961,56 +2156,142 @@ $(document).ready(function() {
   var puzzle1_top = false;
   var puzzle1_inside = false;
   var puzzle1_left = false;
-  $("#guess1").keyup(function(){
-    var guess1_val = $(this).val().toLowerCase();
-    switch(guess1_val){
-      case "hi":
-        $("#guess1").val("");
-        //alert("Hello there.");
-        $("#guess1").attr("placeholder", "Piss off!");
-      break;
-      case "w":
-        if(!puzzle1_top){
-          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
-          $("#guess1").val("");
-          guess1_progress++;
-          puzzle1_top = true;
-          $("#guess1").attr("placeholder", guess1_progress + "/3");
-        }
-      break;
-      case "ait":
-      if(!puzzle1_left){
-        $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
-        $("#guess1").val("");
-        guess1_progress++;
-        puzzle1_left = true;
-        $("#guess1").attr("placeholder", guess1_progress + "/3");
-      }
-      break;
-      case "wait":
+  $("#guess1").keypress(function(e){
+    if(e.keyCode == 13){
+      var puzzle1_hint;
+      var guess1_val = $(this).val().toLowerCase();
+      switch(guess1_val){
+        case "hint":
+        //provide hint based on which questions have been answered
+
+          //alert("Hello there.");
+          if(guess1_progress == 3){
+            puzzle1_hint = "Happy to discuss the solutions.";
+          }
+          else if(!puzzle1_top){
+            puzzle1_hint = "Is that symbol letters or numbers?";
+          }
+          else if (!puzzle1_inside || !puzzle1_left){
+            puzzle1_hint = "Why are those A's upside down?";
+          }
+          // else{
+          //   if(guess2_progress == 3 && guess3_progress == 3 && guess4_progress == 3){
+          //     puzzle1_hint = "What could all these words mean?";
+          //   }
+          //   else{
+          //     puzzle1_hint = "Puzzle complete. What about the other symbols?";
+          //   }
+          // }
+        break;
+        case "number":
+        case "numbers":
+          puzzle1_hint = "That sounds right. But which numbers?";
+        break;
+        case "long division":
+        case "division":
+        case "divide":
+        case "/":
+          puzzle1_hint = "What do those symbols in the song titles mean?";
+        break;
+        case "2":
+        case "3":
+          puzzle1_hint = "Looks like more than one number.";
+        break;
+        case "32":
+          puzzle1_hint = "Right numbers. Wrong order.";
+        break;
+        case "23":
+          if(!puzzle1_top){
+            puzzle1_hint = "Nice. Hint: A=1.";
+          }
+          else{
+            puzzle1_hint = "Good work. If A=1 23=W.";
+          }
+        break;
+        case "forall":
+        case "for all":
+        case "all":
+          puzzle1_hint = "That's right. Now how to apply it...";
+        break;
+        case "hi":
+          //alert("Hello there.");
+          puzzle1_hint = "Piss off!";
+        break;
+        case "w":
+          if(!puzzle1_top){
+            $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+            guess1_progress++;
+            puzzle1_top = true;
+            puzzle1_hint = guess1_progress + "/3";
+          }
+          else{
+            puzzle1_hint = "That rings a bell. W comes from 23.";
+          }
+        break;
+        case "ait":
+        case "8":
         if(!puzzle1_left){
           $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
-          $("#guess1").val("");
           guess1_progress++;
           puzzle1_left = true;
-          $("#guess1").attr("placeholder", guess1_progress + "/3");
+          puzzle1_hint = guess1_progress + "/3";
         }
         else{
-          if(!puzzle1_inside){
-            $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
-            $("#guess1").val("");
+          puzzle1_hint = 'So the "forall" operator applied to all indeed!';
+        }
+        break;
+        case "wait":
+        case "w8":
+          if(!puzzle1_left){
+            $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
             guess1_progress++;
             puzzle1_left = true;
-            $("#guess1").attr("placeholder", guess1_progress + "/3");
+            puzzle1_hint = guess1_progress + "/3";
           }
+          else{
+            if(!puzzle1_inside){
+              $(this).closest(".track_puzzle").find(".puzzle_inside").css("color", "#903");
+              guess1_progress++;
+              puzzle1_inside = true;
+              puzzle1_hint = guess1_progress + "/3";
+            }
+            else{
+              puzzle1_hint = 'So the "forall" operator applied to all indeed!';
+            }
+          }
+        break;
+        default:
+        break;
+      }
+
+
+
+      if(guess1_progress == 3){
+        //check if buddies done
+        if(guess2_progress == 3 && guess3_progress == 3 && guess4_progress == 3){
+          puzzle1_hint = "That's all of them! But what does it mean?";
         }
-      break;
-      default:
-      break;
-    }
-    if(guess1_progress == 3){
-      //turn the symbol red
-      $("#puzzle1").find(".sacred_symbol").css("fill", "#903");
+        else{
+          puzzle1_hint = "3/3 Done here. Try the next symbol.";
+        }
+
+        //turn the symbol red
+        //$("#puzzle1").find(".sacred_symbol").css("fill", "#903");
+        $(".puzzle1_symbol").addClass("perm_blud").css("fill", "#903");
+        $("#graduate").addClass("symbolSolved");
+        //$(".blank1").css("color", "#903");
+        setTimeout(function(){
+          $("html, body").animate({
+            scrollTop: $(".unfinished_aphorism").offset().top
+          }, 800, function(){
+            $(".blank1").css("color", "#903");
+          })
+        }, 800)
+      }
+
+      $("#guess1").val("");
+      $("#guess1").attr("placeholder", puzzle1_hint);
+
     }
   });
 

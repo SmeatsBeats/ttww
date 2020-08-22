@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=5" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=9" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.5"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.6"></script>
   </head>
 
   <body>
@@ -962,7 +962,7 @@
           </div>
 
           <div class="puzzle_input">
-            <input type="text" id="guess4" name="guess4" placeholder="0/3">
+            <input type="text" id="guess4" name="guess4" placeholder='Ask for a "hint" anytime.'>
           </div>
         </div>
 
@@ -989,7 +989,7 @@
           </div>
 
           <div class="puzzle_input">
-            <input type="text" id="guess3" name="guess3" placeholder="0/3">
+            <input type="text" id="guess3" name="guess3" placeholder='Ask for a "hint" anytime.'>
           </div>
         </div>
 
@@ -1022,7 +1022,7 @@
           </div>
 
           <div class="puzzle_input">
-            <input type="text" id="guess2" name="guess2" placeholder="0/3">
+            <input type="text" id="guess2" name="guess2" placeholder='Ask for a "hint" anytime.'>
           </div>
         </div>
 
@@ -1059,7 +1059,7 @@
           </div>
 
           <div class="puzzle_input">
-            <input type="text" id="guess1" name="guess1" placeholder="0/3">
+            <input type="text" id="guess1" name="guess1" placeholder='Ask for a "hint" anytime.'>
           </div>
         </div>
 
@@ -1068,9 +1068,9 @@
           The words were scratched out several times, but I can still make out the structure:
         </div>
 
-        <div class="puzzle_item past_note">
-          blank blank blank blank ? <br>
-          blank blank blank blank .
+        <div class="puzzle_item past_note unfinished_aphorism">
+          <span class="blank1">blank</span> <span class="blank4">blank</span> <span class="blank2">blank</span> <span class="blank3">blank</span>  ? <br>
+          <span class="blank1">blank</span> <span class="blank2">blank</span> <span class="blank3">blank</span> <span class="blank4">blank</span> .
         </div>
 
       </section>

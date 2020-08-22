@@ -110,6 +110,11 @@ body {
 }
 .blud {
   color: #903;
+  transition: text-shadow 0.5s;
+}
+
+.blud:hover {
+  text-shadow: 1px 1px 2px #666;
 }
 
 .note_hint {
@@ -129,6 +134,18 @@ body {
   flex-flow: column;
   justify-content: space-around;
   align-items: center;
+}
+
+.puzzle_input {
+  width: 80%;
+}
+
+.puzzle_input input {
+  width: 100%;
+  /* background-color: #999;
+  background-size: 100% 100%;
+  background-position: 100%; */
+  /* text-align: center; */
 }
 
 .puzzle_img {
@@ -190,6 +207,10 @@ body {
   color: transparent;
   border-top: 1px solid black;
   border-left: 1px solid black;
+}
+
+.blank1, .blank2, .blank3, .blank4 {
+  transition: color 0.5s;
 }
 
 /************ add content styles *******/
@@ -1854,6 +1875,10 @@ body {
 
   .puzzle_img {
     width: 15%;
+  }
+
+  .puzzle_input {
+    width: 20%;
   }
 
 }
