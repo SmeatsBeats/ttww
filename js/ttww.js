@@ -176,6 +176,12 @@ $(document).ready(function() {
   var puzzle_left_height = $(".puzzle_left").height();
   $(".puzzle_inside").height(puzzle_left_height);
 
+  //if you don't want things to wiggle around when the puzzle is revealed
+  //need to set a width for the blanks
+  // var blankWidth = $(".blank1").width();
+  // console.log(blankWidth);
+  // $(".unfinished_aphorism span").width(blankWidth);
+
 
   //introAnimation();
 
@@ -1679,6 +1685,7 @@ $(document).ready(function() {
       }, 1000, function(){
         $(which_puzzle).slideDown();
         $(which_puzzle).addClass("unlocked");
+        $(which_puzzle).find("input").focus();
         which_puzzle = "";
       })
     }
@@ -1827,11 +1834,13 @@ $(document).ready(function() {
           puzzle4_hint = "Looks like the F corresponds to 6 somehow.";
         }
         else{
-          puzzle4_hint = "You're getting there. A=1.";
+          puzzle4_hint = "You're getting there. Hint: P=16.";
         }
 
         break;
         case "f":
+        case "f=6":
+        case "6=f":
         case "fate":
           if(!puzzle4_top){
             //this is correct reveal F in image
@@ -1845,16 +1854,27 @@ $(document).ready(function() {
             puzzle4_hint = "Looks like the F corresponds to 6 somehow.";
           }
         break;
-        case "4":
+        case "for":
+          if(!puzzle4_top){
+            //this is correct reveal F in image
+            $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+            guess4_progress++;
+            puzzle4_top = true;
+            puzzle4_hint = "Woot! " + guess4_progress + "/3";
+            //$("#guess4").attr("placeholder", guess4_progress + "/3");
+          }
           if(!puzzle4_left){
             //$(".puzzle_left").css("color", "#903");
             $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
             guess4_progress++;
             puzzle4_left = true;
-            puzzle4_hint = "Yeet " + guess4_progress + "/3";
+            puzzle4_hint = "Yeet! " + guess4_progress + "/3";
+          }
+          else{
+            puzzle4_hint = "Yes... that symbol looks like 4 of something.";
           }
         break;
-        case "for":
+        case "4":
         case "or":
           if(!puzzle4_left){
             //$(".puzzle_left").css("color", "#903");
@@ -1902,7 +1922,16 @@ $(document).ready(function() {
           $("html, body").animate({
             scrollTop: $(".unfinished_aphorism").offset().top
           }, 800, function(){
-            $(".blank4").css("color", "#903");
+            $(".blank4").animate({
+              "opacity" : "0"
+            }, 500, function(){
+              $(".blank4:first").html("for");
+              $(".blank4:last").html("decide");
+              $(".blank4").css("color", "#903");
+              $(this).animate({
+                "opacity" : "1"
+              }, 800)
+            })
           })
         }, 800)
       }
@@ -1962,9 +1991,13 @@ $(document).ready(function() {
         break;
         case "12":
         case "twelve":
-          puzzle3_hint = "Ah! Now you're seeing. Hint: A=1.";
+          puzzle3_hint = "Ah! Now you're seeing. Hint: C=3.";
         break;
         case "l":
+        case "l=12":
+        case "12=l":
+        case "12 = l":
+        case "l = 12":
           if(!puzzle3_top){
             $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
             guess3_progress++;
@@ -1976,6 +2009,22 @@ $(document).ready(function() {
           }
         break;
         case "long":
+        if(!puzzle3_top){
+          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+          guess3_progress++;
+          puzzle3_top = true;
+          puzzle3_hint = guess3_progress + "/3";
+        }
+        if(!puzzle3_left){
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          guess3_progress++;
+          puzzle3_left = true;
+          puzzle3_hint = guess3_progress + "/3";
+        }
+        else{
+          "I suppose Long fits in with the other vertical words.";
+        }
+        break;
         case "ong":
           if(!puzzle3_left){
             $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
@@ -2020,7 +2069,18 @@ $(document).ready(function() {
           $("html, body").animate({
             scrollTop: $(".unfinished_aphorism").offset().top
           }, 800, function(){
-            $(".blank3").css("color", "#903");
+
+            $(".blank3").animate({
+              "opacity" : "0"
+            }, 500, function(){
+              $(".blank3:first").html("long");
+              $(".blank3:last").html("never");
+              $(".blank3").css("color", "#903");
+              $(this).animate({
+                "opacity" : "1"
+              }, 800)
+            })
+
           })
         }, 800)
       }
@@ -2036,6 +2096,8 @@ $(document).ready(function() {
   var puzzle2_left = false;
   var puzzle2_top = false;
   var puzzle2_inside = false;
+  //prevent responses that don't make sense until other hint given
+  var letter_hint = false;
   $("#guess2").keypress(function(e){
     if(e.keyCode == 13){
       var puzzle2_hint;
@@ -2057,6 +2119,7 @@ $(document).ready(function() {
             //have top and inside
             //or just top
             puzzle2_hint = "Is that symbol letters or numbers?";
+            letter_hint = true;
           }
 
 
@@ -2066,6 +2129,10 @@ $(document).ready(function() {
           console.log("get to work");
         break;
         case "h":
+        case "8=h":
+        case "h=8":
+        case "h = 8":
+        case "8 = h":
           if(!puzzle2_top){
             $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
             guess2_progress++;
@@ -2077,11 +2144,15 @@ $(document).ready(function() {
           }
         break;
         case "both":
-          "You are wiser than I guessed!";
+        if(letter_hint){
+          puzzle2_hint = "That's right! Let's start with letters.";
+        }
         break;
         case "letter":
         case "letters":
+        if(letter_hint){
           puzzle2_hint = "I buy it. Which letters?";
+        }
         break;
         case "o":
         case "w":
@@ -2091,6 +2162,23 @@ $(document).ready(function() {
           puzzle2_hint = "Right letters. Wrong order.";
         break;
         case "how":
+        //this gets both corner and left in one go
+        if(!puzzle2_top){
+          $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+          guess2_progress++;
+          puzzle2_top = true;
+          puzzle2_hint = guess2_progress + "/3";
+        }
+        if(!puzzle2_left){
+          $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
+          guess2_progress++;
+          puzzle2_left = true;
+          puzzle2_hint = guess2_progress + "/3";
+        }
+        else{
+          puzzle2_hint = "Ah this symbol does resemble that. A bit squished.";
+        }
+        break;
         case "ow":
           if(!puzzle2_left){
             $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
@@ -2141,7 +2229,20 @@ $(document).ready(function() {
           $("html, body").animate({
             scrollTop: $(".unfinished_aphorism").offset().top
           }, 800, function(){
-            $(".blank2").css("color", "#903");
+
+            $(".blank2").animate({
+              "opacity" : "0"
+            }, 500, function(){
+              $(".blank2:first").html("how");
+              $(".blank2:last").html("love");
+              $(".blank2").css("color", "#903");
+              $(this).animate({
+                "opacity" : "1"
+              }, 800)
+            })
+
+
+            //$(".blank2").css("color", "#903");
           })
         }, 800)
       }
@@ -2185,7 +2286,13 @@ $(document).ready(function() {
         break;
         case "number":
         case "numbers":
-          puzzle1_hint = "That sounds right. But which numbers?";
+          puzzle1_hint = "Which numbers do you see?";
+        break;
+        case "letters":
+          puzzle1_hint = "I see numbers.";
+        break;
+        case "both":
+          puzzle1_hint = "Of course. Explain yourself.";
         break;
         case "long division":
         case "division":
@@ -2242,7 +2349,13 @@ $(document).ready(function() {
         break;
         case "wait":
         case "w8":
-          if(!puzzle1_left){
+          if(!puzzle1_top){
+            $(this).closest(".track_puzzle").find(".puzzle_corner").css("color", "#903");
+            guess1_progress++;
+            puzzle1_top = true;
+            puzzle1_hint = guess1_progress + "/3";
+          }
+          else if(!puzzle1_left){
             $(this).closest(".track_puzzle").find(".puzzle_left").css("color", "#903");
             guess1_progress++;
             puzzle1_left = true;
@@ -2284,7 +2397,16 @@ $(document).ready(function() {
           $("html, body").animate({
             scrollTop: $(".unfinished_aphorism").offset().top
           }, 800, function(){
-            $(".blank1").css("color", "#903");
+            $(".blank1").animate({
+              "opacity" : "0"
+            }, 500, function(){
+              $(".blank1").html("Wait");
+              $(".blank1").css("color", "#903");
+              $(this).animate({
+                "opacity" : "1"
+              }, 800)
+            })
+
           })
         }, 800)
       }

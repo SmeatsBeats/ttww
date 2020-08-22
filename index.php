@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=9" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=3" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.6"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
   </head>
 
   <body>
@@ -1069,8 +1069,14 @@
         </div>
 
         <div class="puzzle_item past_note unfinished_aphorism">
-          <span class="blank1">blank</span> <span class="blank4">blank</span> <span class="blank2">blank</span> <span class="blank3">blank</span>  ? <br>
-          <span class="blank1">blank</span> <span class="blank2">blank</span> <span class="blank3">blank</span> <span class="blank4">blank</span> .
+          <div class="unfinished_container">
+            <div class="unfinished_row1">
+              <span class="blank1 blank">blank</span> <span class="blank4 blank">blank</span> <span class="blank2 blank">blank</span> <span class="blank3 blank">blank</span><span class="blank blank_punc">?</span>
+            </div>
+            <div class="unfinished_row2">
+              <span class="blank1 blank">blank</span> <span class="blank2 blank">blank</span> <span class="blank3 blank">blank</span> <span class="blank4 blank">blank</span><span class="blank blank_punc">.</span>
+            </div>
+          </div>
         </div>
 
       </section>
