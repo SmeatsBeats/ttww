@@ -1548,7 +1548,7 @@ $(document).ready(function() {
     menu_select("songs");
     //scroll to top of song names
     //go to first symbol that is not yet unlocked
-    var $quickMaths = $(".songs_item:not('.symbolSolved, #heratic')");
+    var $quickMaths = $(".song_title_container:not('.symbolSolved, #heratic_title')");
     setTimeout(function(){
       $("html, body").animate({
         scrollTop: $($quickMaths).offset().top
@@ -1751,12 +1751,20 @@ $(document).ready(function() {
     if(show){
       var noteHintTop = "0%";
       noteHint = true;
+      $(".note_hint").show();
     }
     else{
       var noteHintTop = noteHintHeight;
       noteHint = false;
     }
-    $(".note_hint").css("top", noteHintTop);
+
+    $(".note_hint").animate({
+      "top" : noteHintTop
+    }, function(){
+      if(!show){
+        $(this).hide()
+      }
+    })
     // $(".note_hint").animate({
     //   "top" : noteHintTop
     // }, 600);
@@ -1814,7 +1822,7 @@ $(document).ready(function() {
             puzzle4_hint = "I wonder why I wrote the aphorism that way...";
           }
           else if(puzzle4_inside && puzzle4_top){
-            puzzle4_hint = "This must be the only aphorism that's dated.";
+            puzzle4_hint = "Dreary aphorism for such a nice month!";
           }
           else if(puzzle4_inside || puzzle4_top){
             //this means you've got the top and inside
@@ -1916,7 +1924,7 @@ $(document).ready(function() {
         //turn the symbol red
         //$("#puzzle4").find(".sacred_symbol").css("fill", "#903");
         $(".puzzle4_symbol").addClass("perm_blud").css("fill", "#903");
-        $("#home_song").addClass("symbolSolved");
+        $("#home_song").find(".song_title_container").addClass("symbolSolved");
         //$(".blank4").css("color", "#903");
         setTimeout(function(){
           $("html, body").animate({
@@ -1981,13 +1989,22 @@ $(document).ready(function() {
         case ">":
         case "gt":
         case "greater":
-          puzzle3_hint = "Yup! But what is l8 greater than?";
+          puzzle3_hint = "Yup! But what is L8 greater than?";
         break;
         case "less":
         case "less than":
         case "lt":
         case "<":
           puzzle3_hint = "You've got it backwards.";
+        break;
+        case "clock":
+          puzzle3_hint = "Right. But what time?";
+        break;
+        case "midnight":
+          puzzle3_hint = "Correct. So, 12. If 17=Q then 12=?";
+        break;
+        case "noon":
+          puzzle3_hint = "Nice. So, 12. And if 1=A then 12=?";
         break;
         case "12":
         case "twelve":
@@ -2063,7 +2080,7 @@ $(document).ready(function() {
         //turn the symbol red
         //$("#puzzle3").find(".sacred_symbol").css("fill", "#903");
         $(".puzzle3_symbol").addClass("perm_blud").css("fill", "#903");
-        $("#broken").addClass("symbolSolved");
+        $("#broken").find(".song_title_container").addClass("symbolSolved");
         //$(".blank3").css("color", "#903");
         setTimeout(function(){
           $("html, body").animate({
@@ -2206,6 +2223,8 @@ $(document).ready(function() {
           puzzle2_hint = "If A=1, then what is 8?";
         break;
         case "1/8":
+          puzzle2_hint = "I think the 8 and the inverse were separate.";
+        break;
         case "inverse":
           puzzle2_hint = "Yes. That is the operator! But where to apply it?";
         break;
@@ -2223,7 +2242,7 @@ $(document).ready(function() {
         //turn the symbol red
         //$("#puzzle2").find(".sacred_symbol").css("fill", "#903");
         $(".puzzle2_symbol").addClass("perm_blud").css("fill", "#903");
-        $("#glass").addClass("symbolSolved");
+        $("#glass").find(".song_title_container").addClass("symbolSolved");
         //wait for symbol to fade in then show blanks fade in
         setTimeout(function(){
           $("html, body").animate({
@@ -2391,7 +2410,7 @@ $(document).ready(function() {
         //turn the symbol red
         //$("#puzzle1").find(".sacred_symbol").css("fill", "#903");
         $(".puzzle1_symbol").addClass("perm_blud").css("fill", "#903");
-        $("#graduate").addClass("symbolSolved");
+        $("#graduate").find(".song_title_container").addClass("symbolSolved");
         //$(".blank1").css("color", "#903");
         setTimeout(function(){
           $("html, body").animate({
@@ -4723,6 +4742,7 @@ $(document).ready(function() {
       });
     }
   };
+  var msg_counter = 2;
 
   function menu_select(nav_selection){
 
@@ -4731,18 +4751,23 @@ $(document).ready(function() {
     switch(nav_selection){
       case "about":
       msg = "The key question is whether such a system has braking mechanisms at its disposal...";
+      msg2 = "For someone who has struggled tremendously to take life seriously, I have taken everything in life far too seriously.";
       break;
       case "songs":
-      msg = "6. Death is a choice. Life is indecision.";
+      msg = "But is the second hand not truly the third hand?";
+      msg2 = "He who laughs at my threshold is laughed at forever.";
       break;
       case "credits":
       msg = "Death, if that is what we want to call this non-entity, is of all things the most dreadful.";
+      msg2 = "Levitation is simple. Deprived of their <em>whom,</em> the greatest structures will drift and float.";
       break;
       case "support":
       msg = "Please help me buy a farm and move out of my parents' basement.";
+      msg2 = "The world doesn't make sense, the world <em>makes</em> sense.";
       break;
       case "puzzle":
       msg ="note.";
+      msg2 = "note.";
       break;
       default:
       alert("YOLO");
@@ -4752,10 +4777,16 @@ $(document).ready(function() {
     $("#content_head_msg").animate({
       "opacity" : "0"
     }, 500, function(){
-          $("#content_head_msg").html(msg);
-              $("#content_head_msg").animate({
-                "opacity" : "1"
-              }, 500);
+      if(msg_counter % 2 == 0){
+        $("#content_head_msg").html(msg);
+      }
+      else{
+        $("#content_head_msg").html(msg2);
+      }
+      msg_counter++;
+      $("#content_head_msg").animate({
+        "opacity" : "1"
+      }, 500);
     });
 
     // $("#content_head_msg").html(msg);

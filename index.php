@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=3" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=4" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.9"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.2"></script>
   </head>
 
   <body>
@@ -933,10 +933,10 @@
 
         <div class="puzzle_item present_note symbol_start">
           I was a big Nietzsche fanboy back then and wrote aphorisms on everything, <br class="mobile_break">
-          but this one had <span class="blud">strange symbols</span> sketched out beneath it. <br>
+          but this one had four <span class="blud">strange symbols</span> sketched out beneath it. <br>
           I can't remember where they came from...<br><br>
-          I also built the <span class="blud">song names</span> around symbols I found on this note. <br class="mobile_break">
-          At first I thought these symbols went with the aphorism. <br>
+          I also built the <span class="blud">song names</span> around different symbols I found on this note. <br class="mobile_break">
+          At first I thought these symbols went with the others. <br>
           On further reflection, it seems I also used the note as scratch paper for <span class="blud">math</span> homework...
         </div>
 

@@ -126,7 +126,7 @@ body {
   z-index: 10;
   background-color: white;
   box-shadow: 3px 4px 5px #333;
-  transition: top 0.5s;
+  /* transition: top 0.5s; */
 }
 
 .track_puzzle {
