@@ -1668,6 +1668,7 @@ $(document).ready(function() {
 
   function scrollToNewPuzzle($prev_elmt){
     //this has to happen after the puzzle page is unhidden
+    //we've learned that a brief time
     //scroll to it
     if(!isMobile && $(window).scrollTop() + $(window).height() >= $(document).height()){
       //already scrolled down all the way
@@ -4759,7 +4760,7 @@ $(document).ready(function() {
       break;
       case "credits":
       msg = "Death, if that is what we want to call this non-entity, is of all things the most dreadful.";
-      msg2 = "Levitation is simple. Deprived of their <em>whom,</em> the greatest structures will drift and float.";
+      msg2 = "Deprived of their <em>whom,</em> the greatest structures will drift and float.";
       break;
       case "support":
       msg = "Please help me buy a farm and move out of my parents' basement.";

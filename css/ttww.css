@@ -79,6 +79,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
+  overflow-x: hidden;
 }
 .puzzle_item{
   width: 100%;
@@ -216,7 +217,7 @@ body {
 }
 
 .unfinished_container {
-  width: 370px;
+  width: 340px;
   /* border: 1px solid blue; */
   display: flex;
   flex-flow: row wrap;
@@ -1912,7 +1913,9 @@ body {
     width: 20%;
   }
 
-
+  .unfinished_container {
+    width: 370px;
+  }
 
 }
 @media only screen and (min-width:1070px) {
