@@ -1668,7 +1668,7 @@ $(document).ready(function() {
 
   function scrollToNewPuzzle($prev_elmt){
     //this has to happen after the puzzle page is unhidden
-    //we've learned that a brief time
+
     //scroll to it
     if(!isMobile && $(window).scrollTop() + $(window).height() >= $(document).height()){
       //already scrolled down all the way
@@ -2451,12 +2451,12 @@ $(document).ready(function() {
         sendWidget("86%", "-25%");
 
         //focus in on current puzzle
-        var puzzle_top = $(":focus").closest(".track_puzzle").offset();
+        var puzzle_top = $(":focus").closest(".track_puzzle").offset().top - 10;
         $("html, body").animate({
-          scrollTop: puzzle_top.top - 10
-        }, 500), function(){
-          alert("puzzle focused");
-        };
+          scrollTop: puzzle_top
+        }, 500, function(){
+          // alert("puzzle focused");
+        });
 
       }
       else{
