@@ -1194,6 +1194,10 @@ $(document).ready(function() {
         //prevent click from triggering action if this is the case
         //prevent click while spinning if audio mode
         //go to pouzzle if over symbol
+        if(loopHole){
+          console.log("A puzzle in a puzzle. Seems like some sort of loophole... \n Coming Soon: The Loop Hole");
+          alert("A puzzle in a puzzle. Seems like some sort of loophole... \n Coming Soon: The Loop Hole");
+        }
 
         if(over_symbol){
           if(over_note){
@@ -1557,6 +1561,8 @@ $(document).ready(function() {
 
   });
 
+  var loopHole;
+
   function semiotics(e){
     //check if widget_function is over sacred symbol
 
@@ -1603,8 +1609,10 @@ $(document).ready(function() {
           if(note_seen){
 
             //$($thisSymbol).closest(".songs_item").addClass("symbolSolved");
-
-            if($($thisSymbol).hasClass("puzzle1_symbol")){
+            if($($thisSymbol).hasClass("in_da_puzzle")){
+              loopHole = true;
+            }
+            else if($($thisSymbol).hasClass("puzzle1_symbol")){
               which_puzzle = "#puzzle1";
             }
             else if($($thisSymbol).hasClass("puzzle2_symbol")){
@@ -1680,7 +1688,7 @@ $(document).ready(function() {
     }
     else{
       var scroll_to_puzzle = $($prev_elmt).offset().top + $($prev_elmt).height();
-      console.log("go to new puzzle " + scroll_to_puzzle);
+      //console.log("go to new puzzle " + scroll_to_puzzle);
       $("html, body").animate({
         scrollTop: scroll_to_puzzle
       }, 1000, function(){
@@ -1708,7 +1716,7 @@ $(document).ready(function() {
     if(which_puzzle !== ""){
 
       //stall by going to top
-      console.log("go to top until page exists");
+      //console.log("go to top until page exists");
       $("html, body").animate({
 
         // scrollTop: $("#real_body").offset().top
@@ -1721,14 +1729,14 @@ $(document).ready(function() {
       $prev_elmt = $(which_puzzle).prev();
 
       while(!got_prev){
-        console.log($($prev_elmt).prevAll(".unlocked").length);
+        //console.log($($prev_elmt).prevAll(".unlocked").length);
         if($($prev_elmt).is(":visible")){
           got_prev = true;
         }
         else{
           $prev_elmt = $($prev_elmt).prev();
           if($($prev_elmt).prevAll(".unlocked").length == 0){
-            console.log("no prev siblings go to parent");
+            //console.log("no prev siblings go to parent");
             $prev_elmt = $(".symbol_start");
             got_prev = true;
           }
@@ -1737,7 +1745,7 @@ $(document).ready(function() {
       }
     }
     else{
-      console.log("no puzzle set go to top");
+      //console.log("no puzzle set go to top");
       $prev_elmt = "";
       $("html, body").animate({
         scrollTop: $("#content_head_msg").offset().top
@@ -1944,7 +1952,7 @@ $(document).ready(function() {
           })
         }, 800)
       }
-      console.log(puzzle4_hint);
+      //console.log(puzzle4_hint);
       $("#guess4").val("");
       $("#guess4").attr("placeholder", puzzle4_hint);
     }
@@ -1962,7 +1970,7 @@ $(document).ready(function() {
       switch(guess3_val){
         case "hi":
           puzzle3_hint = "Greetings.";
-          console.log("quit screwing around");
+          //console.log("quit screwing around");
         break;
         case "hint":
           if(guess3_progress == 3){
@@ -2144,7 +2152,7 @@ $(document).ready(function() {
         break;
         case "hi":
           puzzle2_hint = "Howdy";
-          console.log("get to work");
+          //console.log("get to work");
         break;
         case "h":
         case "8=h":
@@ -2445,7 +2453,7 @@ $(document).ready(function() {
     var original_size = $(window).width() + $(window).height();
     $(window).resize(function(){
       if($(window).width() + $(window).height() != original_size){
-        console.log("keyboard open");
+        //console.log("keyboard open");
         keyboard = true;
         quickSpin();
         sendWidget("86%", "-25%");
@@ -2461,7 +2469,7 @@ $(document).ready(function() {
       }
       else{
         if(keyboard){
-          console.log("keyboard closed");
+          //console.log("keyboard closed");
           quickSpin();
           sendWidget("86%", "25%");
         }

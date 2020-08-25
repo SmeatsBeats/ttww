@@ -9,7 +9,7 @@
     <title>To Those Who Wait</title>
     <link rel="icon" href="imgs/WAIT.svg">
 
-    <link rel="stylesheet" href="css/ttww.css?v=6" type="text/css">
+    <link rel="stylesheet" href="css/ttww.css?v=2" type="text/css">
 
     <!--google fonts to include -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!--
     <script src="https://hammerjs.github.io/dist/hammer.js"></script>
   -->
-    <script type="text/javascript" src="js/ttww.js?v=1.1"></script>
+    <script type="text/javascript" src="js/ttww.js?v=1.6"></script>
   </head>
 
   <body>
@@ -487,7 +487,7 @@
 
         <div class="songs_item" id="graduate">
 
-          <div>
+          <div class="center_column">
 
             <!-- <h2>Graduate</h2> -->
             <div class="song_title_container">
@@ -598,7 +598,7 @@
         </div>
 
         <div class="songs_item" id="broken">
-          <div>
+          <div class="center_column">
 
             <!-- <h2>>roken</h2> -->
             <div class="song_title_container">
