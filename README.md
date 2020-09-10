@@ -21,7 +21,8 @@ time and non-linearity, circles/cycles/loops/revolutions, decision making and un
 Minimal audio controls encourage continuous playback. Automatically repeating the piece seamlessly hints that the project
 was designed as a hermeneutic circle. <br/> 
 <img src="imgs/TTWW_WIDGET.gif" alt="TTWW WIDGET"> <br/><br/>
-All key project art is featured and arranged in a style that conveys the narrative. 
+All key project art is featured and arranged in a style that conveys the narrative.<br/><br/>
+<img src="imgs/TTWW_ARTEX1.png" alt="TTWW ART>
 Like the music, the site itself is one giant semiotic puzzle. To solve it (impossible) the user will need to exploit yet another theme
 of the piece: observing and drawing distinctions. To this end, the widget transforms from a clock into a lens capable of seeing the art behind artifice.<br/><br/>
 <img src="imgs/TTWW_PUZZLE.gif" alt="Glimpse of puzzle"> <br/><br/>
