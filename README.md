@@ -1,6 +1,6 @@
 View live @ www.dirtymopmusic.com
 
-Grounding the convenience of digital audio platforms in the artistic context that they sacrifice. 
+Grounding the convenience of digital audio platforms in the artistic context that they sacrifice. <br/>
 The reunion of medium and message realized in experienced audio. <br/> <br/> 
 ############################# dirtyMOPmusic ############################# <br/> 
 While contemporary audio platforms operate more or less independently of their content, 
