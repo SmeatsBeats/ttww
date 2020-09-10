@@ -1,3 +1,5 @@
+View live @ www.dirtymopmusic.com
+
 Grounding the convenience of digital audio platforms in the artistic context that they sacrifice. 
 The reunion of medium and message realized in experienced audio. <br/> <br/> 
 ############################# dirtyMOPmusic ############################# <br/> 
@@ -17,6 +19,7 @@ Rather than a linear navbar, the clock-like navigation widget forces the operato
 time and non-linearity, circles/cycles/loops/revolutions, decision making and uncertainty. 
 Minimal audio controls encourage continuous playback. Automatically repeating the piece seamlessly hints that the project
 was designed as a hermeneutic circle. <br/> 
+![TTWW Widget](https://drive.google.com/file/d/1CXEpa2xvK8zj4wOIio-L1yTwDfdTHc1M/view?usp=sharing)
 All key project art is featured and arranged in a style that conveys the narrative. 
 Like the music, the site itself is one giant semiotic puzzle. To solve it (impossible) the user will need to exploit yet another theme
 of the piece: observing and drawing distinctions. To this end, the widget transforms from a clock into a lens capable of seeing the art behind artifice. 
