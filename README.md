@@ -13,7 +13,7 @@ Unfortunately, there is only one record to play currently
 React composition to the rescue? To be determined) <br/> <br/> 
 ############################# TO THOSE WHO W8 ############################# <br/> 
 With design and implementation driven entirely by the art, 
-listeners cannot experience the project without encountering its central themes. <br/>
+listeners cannot experience the project without encountering its central themes. <br/><br/>
 <img src="imgs/TTWW_HEADER.png" alt="TTWW HEADER"> <br/><br/>
 Every aspect of the platform immerses the listener in exactly the artistic context that its author intended. 
 Rather than a linear navbar, the clock-like navigation widget forces the operator to confront the project's central themes: 
