@@ -22,7 +22,6 @@ Minimal audio controls encourage continuous playback. Automatically repeating th
 was designed as a hermeneutic circle. <br/> 
 <img src="imgs/TTWW_WIDGET.gif" alt="TTWW WIDGET"> <br/><br/>
 All key project art is featured and arranged in a style that conveys the narrative.<br/><br/>
-<img src="imgs/TTWW_ARTEX2.png" alt="TTWW ART">
 <img src="imgs/TTWW_ARTEX3.png" alt="TTWW ART"> <br/><br/>
 Like the music, the site itself is one giant semiotic puzzle. To solve it (impossible) the user will need to exploit yet another theme
 of the piece: observing and drawing distinctions. To this end, the widget transforms from a clock into a lens capable of seeing the art behind artifice.<br/><br/>
