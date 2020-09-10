@@ -17,7 +17,7 @@ listeners cannot experience the project without encountering its central themes.
 <img src="imgs/TTWW_HEADER.png" alt="TTWW HEADER"> <br/><br/>
 Every aspect of the platform immerses the listener in exactly the artistic context that its author intended. 
 Rather than a linear navbar, the clock-like navigation widget forces the operator to confront the project's central themes: 
-time and non-linearity, circles/cycles/loops/revolutions, decision making and uncertainty. 
+time and non-linearity, circles/cycles/loops/revolutions, decision making and uncertainty. <br/><br/>
 Minimal audio controls encourage continuous playback. Automatically repeating the piece seamlessly hints that the project
 was designed as a hermeneutic circle. <br/> 
 <img src="imgs/TTWW_WIDGET.gif" alt="TTWW WIDGET"> <br/><br/>
