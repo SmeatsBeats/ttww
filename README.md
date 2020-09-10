@@ -23,7 +23,8 @@ was designed as a hermeneutic circle. <br/>
 <img src="imgs/TTWW_WIDGET.gif" alt="TTWW WIDGET"> <br/><br/>
 All key project art is featured and arranged in a style that conveys the narrative. 
 Like the music, the site itself is one giant semiotic puzzle. To solve it (impossible) the user will need to exploit yet another theme
-of the piece: observing and drawing distinctions. To this end, the widget transforms from a clock into a lens capable of seeing the art behind artifice. 
+of the piece: observing and drawing distinctions. To this end, the widget transforms from a clock into a lens capable of seeing the art behind artifice.<br/><br/>
+<img src="imgs/TTWW_PUZZLE.gif" alt="Glimpse of puzzle"> <br/><br/>
 Other small quirks and easter eggs abound. Hover over "wait" and your cursor will remind you yet again that the boundary between medium and message does not apply here. The layout of the songs page beneath the prologue, Heratic (not a typo), reflects a cross. And so on... <br/> <br/> 
 ##########################################################<br/> 
 Settle in for a few loops, but remember to leave some breadcrumbs so you can make your way back out. 
