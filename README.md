@@ -10,7 +10,7 @@ like a dusty old record sliding home into its sleeve.
 Though it won't warp like a record, it should warp your perspective sufficiently to appreciate each record you play. 
 Unfortunately, there is only one record to play currently
 (and considering how long it took to make that happen, I'm going to need some ideas... 
-React composition to the rescue? To be determined) <br/> <br/> 
+React composition to the rescue? To be determined.) <br/> <br/> 
 ############################# TO THOSE WHO W8 ############################# <br/> 
 With design and implementation driven entirely by the art, 
 listeners cannot experience the project without encountering its central themes. <br/><br/>
@@ -27,5 +27,10 @@ Like the music, the site itself is one giant semiotic puzzle. To solve it (impos
 of the piece: observing and drawing distinctions. To this end, the widget transforms from a clock into a lens capable of seeing the art behind artifice.<br/><br/>
 <img src="imgs/TTWW_PUZZLE.gif" alt="Glimpse of puzzle"> <br/><br/>
 Other small quirks and easter eggs abound. Hover over "wait" and your cursor will remind you yet again that the boundary between medium and message does not apply here. The layout of the songs page beneath the prologue, Heratic (not a typo), reflects a cross. And so on... <br/> <br/> 
+############################# FAQS #############################
+Q: Do you believe this vision is actually viable financially? <br/>
+A: No. In fact, I listened to Pandora the whole time I was coding this and am listening to it currently... man their algorithms are good! <br/><br/>
+Q: Why is everything black and white? <br/>
+A: It is black and white and gray to symbolize the two sides of a distinction and the crossing (shout out Stephan Fuchs). Ok. you got me. It is black and white because the same art features on the CD case which I manufacture in my basement. Color ink is expensive!<br/><br/>
 ##########################################################<br/> 
 Settle in for a few loops, but remember to leave some breadcrumbs so you can make your way back out. 
