@@ -13,13 +13,14 @@ Unfortunately, there is only one record to play currently
 React composition to the rescue? To be determined) <br/> <br/> 
 ############################# TO THOSE WHO W8 ############################# <br/> 
 With design and implementation driven entirely by the art, 
-listeners cannot experience the project without encountering its central themes. 
+listeners cannot experience the project without encountering its central themes. <br/>
+<img src="imgs/TTWW_HEADER.jpg" alt="TTWW HEADER"> <br/><br/>
 Every aspect of the platform immerses the listener in exactly the artistic context that its author intended. 
 Rather than a linear navbar, the clock-like navigation widget forces the operator to confront the project's central themes: 
 time and non-linearity, circles/cycles/loops/revolutions, decision making and uncertainty. 
 Minimal audio controls encourage continuous playback. Automatically repeating the piece seamlessly hints that the project
 was designed as a hermeneutic circle. <br/> 
-<img src="imgs/TTWW_WIDGET.gif">
+<img src="imgs/TTWW_WIDGET.gif" alt="TTWW WIDGET"> <br/><br/>
 All key project art is featured and arranged in a style that conveys the narrative. 
 Like the music, the site itself is one giant semiotic puzzle. To solve it (impossible) the user will need to exploit yet another theme
 of the piece: observing and drawing distinctions. To this end, the widget transforms from a clock into a lens capable of seeing the art behind artifice. 
